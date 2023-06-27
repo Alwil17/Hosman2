@@ -5,6 +5,16 @@
     }
   },
   "MENUITEMS": {
+    "SECRETARIAT": {
+      "TEXT": "SECRETARIAT",
+      "LIST": {
+        "PATIENTS": "Patients",
+        "EXPENSES": "Dépenses",
+        "DEBT": "Créances",
+        "TARIFF": "Tarifs",
+        "ACTIVITIES": "Activités"
+      }
+    },
     "MENU": {
       "TEXT": "MENU"
     },

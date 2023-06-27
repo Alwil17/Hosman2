@@ -22,7 +22,7 @@ export class TwoColumnSidebarComponent implements OnInit {
     // router.events.subscribe((val) => {
     //   this.initActiveMenu();
     // });
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('fr');
   }
 
   ngOnInit(): void {
