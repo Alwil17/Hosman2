@@ -25,6 +25,7 @@ import { SharedModule } from "../shared/shared.module";
 // import { WidgetModule } from '../shared/widget/widget.module';
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { DashboardsModule } from "./dashboards/dashboards.module";
+import { PatientsModule } from './patients/patients.module';
 // import { AppsModule } from "./apps/apps.module";
 // import { EcommerceModule } from "./ecommerce/ecommerce.module";
 
@@ -35,7 +36,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +54,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DashboardsModule,
     // AppsModule,
     // EcommerceModule
+    PatientsModule
   ],
   providers: [
     {

@@ -1,0 +1,286 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="PATIENTS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<form action="javascript:void(0);">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <em
+        >Les champs marqués par <span class="text-danger">*</span> sont
+        obligatoires</em
+      >
+    </div>
+
+    <div class="col-3">
+      <div class="mb-3">
+        <label for="titleInput" class="form-label"
+          >Titre <span class="text-danger">*</span></label
+        >
+        <select id="titleInput" class="form-select">
+          <option selected>Monsieur</option>
+          <option>Mademoiselle</option>
+          <option>Madame</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="lastNameInput" class="form-label"
+          >Nom <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Entrez le nom"
+          id="lastNameInput"
+        />
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-5">
+      <div class="mb-3">
+        <label for="firstNameInput" class="form-label"
+          >Prénom(s) <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Entrez le prénom"
+          id="firstNameInput"
+        />
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-3">
+      <div class="mb-3">
+        <label for="genderInput" class="form-label"
+          >Sexe <span class="text-danger">*</span></label
+        >
+        <select id="genderInput" class="form-select">
+          <option selected>Masculin</option>
+          <option>Féminin</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-3">
+      <div class="mb-3">
+        <label for="dateOfBirthInput" class="form-label"
+          >Date de naissance <span class="text-danger">*</span></label
+        >
+        <input
+          type="date"
+          class="form-control"
+          placeholder="jj-mm-yyyy"
+          id="dateOfBirthInput"
+        />
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-6">
+      <div class="mb-3">
+        <label for="ageInput" class="form-label">Âge</label>
+        <input readonly type="text" class="form-control" id="ageInput" />
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-5">
+      <div class="mb-3">
+        <label for="insuranceTypeInput" class="form-label"
+          >Assuré <span class="text-danger">*</span></label
+        >
+        <select id="insuranceTypeInput" class="form-select">
+          <option selected>Non - Local</option>
+          <option>Non - Etranger</option>
+          <option>Oui - Assurance locale</option>
+          <option>Oui - Assurance étrangère</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-5">
+      <div class="mb-3">
+        <label for="insuranceInput" class="form-label"
+          >Assurance <span class="text-danger">*</span></label
+        >
+        <select id="insuranceInput" class="form-select">
+          <option selected>ASCOMA</option>
+          <option>GTA</option>
+          <option>INAM</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-2">
+      <div class="mb-3">
+        <label for="insurancePercentageInput" class="form-label"
+          >Taux de PEC</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="insurancePercentageInput"
+        />
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="employerInput" class="form-label"
+            >Employeur / Souscripteur</label
+          >
+          <select id="employerInput" class="form-select">
+            <option selected>BIDC</option>
+            <option>ARCEP</option>
+            <option>Autres</option>
+          </select>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="homelandInput" class="form-label"
+          >Pays d'origine <span class="text-danger">*</span></label
+        >
+        <select id="homelandInput" class="form-select">
+          <option selected>BENIN</option>
+          <option>GHANA</option>
+          <option>TOGO</option>
+          <option>CÔTE D'IVOIRE</option>
+          <option>CAMEROUN</option>
+          <option>NIGERIA</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="nationalityInput" class="form-label">Nationalité</label>
+        <select id="nationalityInput" class="form-select">
+          <option selected>Béninoise</option>
+          <option>Ghanéenne</option>
+          <option>Togoloaise</option>
+          <option>Ivoirienne</option>
+          <option>Camérounaise</option>
+          <option>Nigérianne</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="professionInput" class="form-label">Profession</label>
+        <select id="professionInput" class="form-select">
+          <option selected>Ingénieur</option>
+          <option>Commerçant</option>
+          <option>Médecin</option>
+          <option>Chomeur</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="livingCoutryInput" class="form-label"
+          >Pays de résidence</label
+        >
+        <select id="livingCoutryInput" class="form-select">
+          <option selected>BENIN</option>
+          <option>GHANA</option>
+          <option>TOGO</option>
+          <option>CÔTE D'IVOIRE</option>
+          <option>CAMEROUN</option>
+          <option>NIGERIA</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="cityInput" class="form-label">Ville</label>
+        <select id="cityInput" class="form-select">
+          <option selected>Lomé</option>
+          <option>Kpalimé</option>
+          <option>Ouagadougou</option>
+          <option>Lagos</option>
+          <option>Porto-Novo</option>
+          <option>Accra</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-4">
+      <div class="mb-3">
+        <label for="neighborhoodInput" class="form-label">Quartier</label>
+        <select id="neighborhoodInput" class="form-select">
+          <option selected>Gbossimé</option>
+          <option>Casablanca</option>
+          <option>Avé Maria</option>
+          <option>Autres</option>
+        </select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="row">
+      <div class="col-4">
+        <div class="mb-3">
+          <label for="telephoneInput" class="form-label">Téléphone</label>
+          <input type="number" class="form-control" id="telephoneInput" />
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+
+    <div class="col-12">
+      <div class="mb-3">
+        <label for="personToContactInput" class="form-label"
+          >Personne à prévenir</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Nom, prénom(s), adresse, contact"
+          id="personToContactInput"
+        />
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-lg-12">
+      <div class="text-end">
+        <button type="submit" class="btn btn-light me-4">
+          Vider les champs
+        </button>
+        <button
+          type="submit"
+          class="btn btn-success btn-label waves-effect waves-light me-4"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer
+        </button>
+        <button
+          type="submit"
+          class="btn btn-secondary btn-label waves-effect right waves-light"
+        >
+          <i class="ri-arrow-right-fill label-icon align-middle fs-16 ms-2"></i
+          >Enregistrer et continuer
+        </button>
+      </div>
+    </div>
+    <!--end col-->
+  </div>
+  <!--end row-->
+</form>
