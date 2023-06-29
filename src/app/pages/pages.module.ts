@@ -25,7 +25,7 @@ import { SharedModule } from "../shared/shared.module";
 // import { WidgetModule } from '../shared/widget/widget.module';
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { DashboardsModule } from "./dashboards/dashboards.module";
-import { PatientsModule } from './patients/patients.module';
+import { SecretariatModule } from './secretariat/secretariat.module';
 // import { AppsModule } from "./apps/apps.module";
 // import { EcommerceModule } from "./ecommerce/ecommerce.module";
 
@@ -47,14 +47,14 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgbDropdownModule,
     SimplebarAngularModule,
     PagesRoutingModule,
-    SharedModule,
+    // SharedModule,
     // WidgetModule,
     SwiperModule,
     LightboxModule,
     DashboardsModule,
     // AppsModule,
-    // EcommerceModule
-    PatientsModule
+    // EcommerceModule,
+    SecretariatModule
   ],
   providers: [
     {

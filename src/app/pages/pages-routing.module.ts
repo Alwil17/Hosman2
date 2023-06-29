@@ -3,19 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Component pages
 import { DashboardComponent } from "./dashboards/dashboard/dashboard.component";
-import { PatientCreateComponent } from './patients/patient-create/patient-create.component';
 
 const routes: Routes = [
     {
-        path: "",
-        component: PatientCreateComponent
+      path: '', loadChildren: () => import('./secretariat/secretariat.module').then(m => m.SecretariatModule)
     },
     {
       path: 'dashboards', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
     },
-    {
-      path: '', loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule)
-    },
+    
     // {
     //   path: 'apps', loadChildren: () => import('./apps/apps.module').then(m => m.AppsModule)
     // },
