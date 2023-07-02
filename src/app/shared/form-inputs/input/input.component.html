@@ -6,8 +6,24 @@
   [type]="type"
   [placeholder]="placeholder"
   [readOnly]="readOnly"
-  [formControl]="formControl"
+  [formControl]="control"
+  [ngClass]="{
+    'is-invalid': control.touched && control.dirty && control.errors
+  }"
 />
 
 <!-- [mask]="format"
   [dropSpecialCharacters]="false" -->
+
+<ng-container *ngIf="control.touched && control.dirty">
+  <div *ngIf="control.errors?.['required']" class="invalid-feedback">
+    Ce champ est obligatoire.
+  </div>
+
+  <div *ngIf="control.errors?.['min']" class="invalid-feedback">
+    Ce champ doit être supérieur ou égale à {{ control.errors?.['min']['min'] }}
+  </div>
+  <div *ngIf="control.errors?.['max']" class="invalid-feedback">
+    Ce champ doit être inférieur ou égale à {{ control.errors?.['max']['max'] }}
+  </div>
+</ng-container>

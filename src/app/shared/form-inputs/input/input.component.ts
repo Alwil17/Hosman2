@@ -12,7 +12,7 @@ export class InputComponent implements OnInit {
   @Input() placeholder = "";
   @Input() isMandatory = false;
   @Input() readOnly = false;
-  @Input() formControl = new FormControl();
+  @Input() control = new FormControl();
   // @Input() format = "";
 
   constructor() {}

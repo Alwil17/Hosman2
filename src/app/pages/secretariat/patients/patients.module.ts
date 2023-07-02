@@ -4,6 +4,7 @@ import { PatientsRoutingModule } from './patients-routing.module';
 import { PatientCreateComponent } from './patient-create/patient-create.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PatientFormComponent } from './patient-form/patient-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -12,7 +13,8 @@ import { PatientFormComponent } from './patient-form/patient-form.component';
   imports: [
     CommonModule,
     PatientsRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   exports:[
     
