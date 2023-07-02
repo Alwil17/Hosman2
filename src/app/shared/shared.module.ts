@@ -25,6 +25,9 @@ import { BreadcrumbsComponent } from "./breadcrumbs/breadcrumbs.component";
 // import { ContactComponent } from './landing/index/contact/contact.component';
 // import { FooterComponent } from './landing/index/footer/footer.component';
 import { ScrollspyDirective } from "./scrollspy.directive";
+import { InputComponent } from './form-inputs/input/input.component';
+import { SelectComponent } from './form-inputs/select/select.component';
+import { ReactiveFormsModule } from "@angular/forms";
 
 // NFT Landing
 // import { MarketPlaceComponent } from './landing/nft/market-place/market-place.component';
@@ -56,6 +59,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     // ContactComponent,
     // FooterComponent,
     ScrollspyDirective,
+    InputComponent,
+    SelectComponent,
     // MarketPlaceComponent,
     // WalletComponent,
     // FeaturesComponent,
@@ -69,6 +74,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgbAccordionModule,
     SwiperModule,
     CountToModule,
+    ReactiveFormsModule
   ],
   exports: [
     BreadcrumbsComponent,
@@ -92,6 +98,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     // CategoriesComponent,
     // DiscoverComponent,
     // TopCreatorComponent,
+    InputComponent,
+    SelectComponent
   ],
 })
 export class SharedModule {}

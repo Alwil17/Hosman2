@@ -1,0 +1,11 @@
+<label class="form-label"
+  >{{ label }} <span *ngIf="isMandatory" class="text-danger">*</span></label
+>
+<select class="form-select" [formControl]="formControl">
+  <option
+    *ngFor="let option of options; index as i"
+    value="option"
+  >
+    {{ option }}
+  </option>
+</select>

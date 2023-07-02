@@ -1,0 +1,238 @@
+<form action="javascript:void(0);" class="mb-4">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <em
+        >Les champs marqués par <span class="text-danger">*</span> sont
+        obligatoires</em
+      >
+    </div>
+
+    <div class="col-md-3">
+      <div class="mb-3">
+        <app-select
+          label="Titre"
+          [isMandatory]="true"
+          [options]="['Monsieur', 'Mademoiselle', 'Madame']"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-input label="Nom" placeholder="Entrez le nom" [isMandatory]="true">
+        </app-input>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-5">
+      <div class="mb-3">
+        <app-input
+          label="Prénom(s)"
+          placeholder="Entrez le prénom"
+          [isMandatory]="true"
+        >
+        </app-input>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-md-3">
+      <div class="mb-3">
+        <app-select
+          label="Sexe"
+          [isMandatory]="true"
+          [options]="['Masculin', 'Féminin']"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-3">
+      <div class="mb-3">
+        <app-input label="Date de naissance" type="date" [isMandatory]="true">
+        </app-input>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <app-input label="Âge" [readOnly]="true"> </app-input>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-md-5">
+      <div class="mb-3">
+        <app-select
+          label="Assuré"
+          [isMandatory]="true"
+          [options]="[
+            'Non - Local',
+            'Non - Etranger',
+            'Oui - Assurance local',
+            'Oui - Assurance étrangère'
+          ]"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-md-5">
+      <div class="mb-3">
+        <app-select
+          label="Assurance"
+          [isMandatory]="true"
+          [options]="['ASCOMA', 'GTA', 'INAM', 'GRAS SAVOYE']"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-2">
+      <div class="mb-3">
+        <app-input label="Taux de PEC" type="number" [isMandatory]="true">
+        </app-input>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-select
+            label="Employeur / Souscripteur"
+            [options]="['BIDC', 'ARCEP', 'Autres']"
+          ></app-select>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Pays d'origine"
+          [isMandatory]="true"
+          [options]="[
+            'BENIN',
+            'GHANA',
+            'TOGO',
+            'CÔTE D\'IVOIRE',
+            'CAMEROUN',
+            'NIGERIA'
+          ]"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Nationalité"
+          [options]="[
+            'Béninoise',
+            'Ghanéenne',
+            'Togolaise',
+            'Ivoirienne',
+            'Camérounaise',
+            'Nigérianne'
+          ]"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Profession"
+          [options]="['Ingénieur', 'Commerçant', 'Médecin', 'Chômeur']"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Pays de résidence"
+          [options]="[
+            'BENIN',
+            'GHANA',
+            'TOGO',
+            'CÔTE D\'IVOIRE',
+            'CAMEROUN',
+            'NIGERIA'
+          ]"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Ville"
+          [options]="[
+            'Lomé',
+            'Kpalimé',
+            'Ouagadougou',
+            'Lagos',
+            'Porto-Novo',
+            'Accra'
+          ]"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+    <div class="col-md-4">
+      <div class="mb-3">
+        <app-select
+          label="Quartier"
+          [options]="['Gbossimé', 'Casablanca', 'Avé Maria', 'Autres']"
+        ></app-select>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <app-input label="Téléphone"> </app-input>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+
+    <div class="col-md-12">
+      <div class="mb-3">
+        <app-input
+          label="Personne à prévenir"
+          placeholder="Nom, prénom(s), adresse, contact"
+        >
+        </app-input>
+      </div>
+    </div>
+    <!--end col-->
+
+    <div class="col-lg-12">
+      <div class="text-end">
+        <button type="submit" class="btn btn-light me-4">
+          Vider les champs
+        </button>
+        <button
+          type="submit"
+          class="btn btn-success btn-label waves-effect waves-light me-4"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer
+        </button>
+        <button
+          type="submit"
+          class="btn btn-secondary btn-label waves-effect right waves-light"
+        >
+          <i class="ri-arrow-right-fill label-icon align-middle fs-16 ms-2"></i
+          >Continuer
+        </button>
+      </div>
+    </div>
+    <!--end col-->
+  </div>
+  <!--end row-->
+</form>

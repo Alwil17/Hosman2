@@ -1,0 +1,13 @@
+<label class="form-label"
+  >{{ label }} <span *ngIf="isMandatory" class="text-danger">*</span></label
+>
+<input
+  class="form-control"
+  [type]="type"
+  [placeholder]="placeholder"
+  [readOnly]="readOnly"
+  [formControl]="formControl"
+/>
+
+<!-- [mask]="format"
+  [dropSpecialCharacters]="false" -->
