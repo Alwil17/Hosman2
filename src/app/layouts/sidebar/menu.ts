@@ -1,43 +1,134 @@
-import { MenuItem } from './menu.model';
+import { MenuItem } from "./menu.model";
 
 export const MENU: MenuItem[] = [
   {
     id: 1,
-    label: 'MENUITEMS.SECRETARIAT.TEXT',
-    isTitle: true
+    label: "MENUITEMS.MENU.SECRETARIAT.TEXT",
+    isTitle: true,
   },
   {
     id: 2,
-    label: 'MENUITEMS.SECRETARIAT.LIST.PATIENTS',
-    link: '/patients',
-    icon: 'ri-user-5-fill',
+    label: "MENUITEMS.PATIENTS.TEXT",
+    link: "/patients",
+    icon: "ri-user-5-fill",
     // icon: 'mdi mdi-doctor',
+    subItems: [
+      {
+        id: 3,
+        label: "MENUITEMS.PATIENTS.LIST.PATIENT_NEW",
+        link: "/patient_new",
+        parentId: 2,
+      },
+      {
+        id: 4,
+        label: "MENUITEMS.PATIENTS.LIST.PATIENTS_LIST",
+        link: "/patients_old",
+        parentId: 2,
+      },
+      {
+        id: 5,
+        label: "MENUITEMS.PATIENTS.LIST.DEBTS",
+        link: "/debts",
+        parentId: 2,
+      },
+      {
+        id: 6,
+        label: "MENUITEMS.PATIENTS.LIST.RESTS",
+        link: "/rests",
+        parentId: 2,
+      },
+    ],
   },
   {
-    id: 3,
-    label: 'MENUITEMS.SECRETARIAT.LIST.EXPENSES',
-    link: '/expenses',
-    icon: 'ri-money-dollar-circle-fill',
+    id: 7,
+    label: "MENUITEMS.ACTIVITIES.TEXT",
+    link: "/activities",
+    icon: "ri-user-5-fill",
+    // icon: 'mdi mdi-doctor',
+    subItems: [
+      {
+        id: 8,
+        label: "MENUITEMS.ACTIVITIES.LIST.EXPENSES",
+        link: "/expenses",
+        parentId: 7,
+      },
+      {
+        id: 9,
+        label: "MENUITEMS.ACTIVITIES.LIST.COLLECTIONS",
+        link: "/collections",
+        parentId: 7,
+      },
+      {
+        id: 10,
+        label: "MENUITEMS.ACTIVITIES.LIST.RECEIPTS",
+        link: "/receipts",
+        parentId: 7,
+      },
+      {
+        id: 11,
+        label: "MENUITEMS.ACTIVITIES.LIST.ACCOUNT_SHEET",
+        link: "/account_sheet",
+        parentId: 7,
+      },
+    ],
   },
   {
-    id: 4,
-    label: 'MENUITEMS.SECRETARIAT.LIST.DEBT',
-    link: '/debt',
-    icon: 'ri-money-dollar-circle-fill',
+    id: 12,
+    label: "MENUITEMS.INFORMATIONS.TEXT",
+    link: "/informations",
+    icon: "ri-user-5-fill",
+    // icon: 'mdi mdi-doctor',
+    subItems: [
+      {
+        id: 13,
+        label: "MENUITEMS.INFORMATIONS.LIST.TARIFFS",
+        link: "/tariffs",
+        parentId: 12,
+      },
+      {
+        id: 14,
+        label: "MENUITEMS.INFORMATIONS.LIST.CIM_11",
+        link: "/cim_11",
+        parentId: 12,
+      },
+      {
+        id: 15,
+        label: "MENUITEMS.INFORMATIONS.LIST.TELEPHONE_BOOK",
+        link: "/telephone_book",
+        parentId: 12,
+      },
+      {
+        id: 16,
+        label: "MENUITEMS.INFORMATIONS.LIST.HOSPITALIZED_PATIENTS",
+        link: "/hospitalized_patients",
+        parentId: 12,
+      },
+    ],
   },
-  {
-    id: 5,
-    label: 'MENUITEMS.SECRETARIAT.LIST.TARIFF',
-    link: '/tariff',
-    icon: 'ri-money-dollar-circle-fill',
-  },
-  {
-    id: 6,
-    label: 'MENUITEMS.SECRETARIAT.LIST.ACTIVITIES',
-    link: '/activities',
-    icon: 'bx bx-stats',
-  },
-
+  // {
+  //   id: 3,
+  //   label: 'MENUITEMS.SECRETARIAT.LIST.EXPENSES',
+  //   link: '/expenses',
+  //   icon: 'ri-money-dollar-circle-fill',
+  // },
+  // {
+  //   id: 4,
+  //   label: 'MENUITEMS.SECRETARIAT.LIST.DEBT',
+  //   link: '/debt',
+  //   icon: 'ri-money-dollar-circle-fill',
+  // },
+  // {
+  //   id: 5,
+  //   label: 'MENUITEMS.SECRETARIAT.LIST.TARIFF',
+  //   link: '/tariff',
+  //   icon: 'ri-money-dollar-circle-fill',
+  // },
+  // {
+  //   id: 6,
+  //   label: 'MENUITEMS.SECRETARIAT.LIST.ACTIVITIES',
+  //   link: '/activities',
+  //   icon: 'bx bx-stats',
+  // },
 
   // {
   //   id: 1,
@@ -119,7 +210,7 @@ export const MENU: MenuItem[] = [
   //           link: '/mailbox',
   //           parentId: 11
   //         },
-  //         { 
+  //         {
   //           id: 14,
   //           label: 'MENUITEMS.APPS.LIST.MAILTEMPLATES',
   //           parentId: 11,
@@ -1272,5 +1363,4 @@ export const MENU: MenuItem[] = [
   //     },
   //   ]
   // }
-
 ];

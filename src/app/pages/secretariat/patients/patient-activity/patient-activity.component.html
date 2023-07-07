@@ -1,0 +1,285 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header align-items-center d-flex border-bottom-dashed">
+        <h4 class="card-title mb-0 flex-grow-1">Prestations voulues</h4>
+      </div>
+      <!-- end card header -->
+      <div class="card-body border-bottom-dashed border-bottom">
+        <div class="col-12 mb-3">
+          <em>Le patient souhaite</em>
+        </div>
+
+        <div class="ms-4">
+          <div class="form-check form-check-inline form-radio-secondary mb-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault1"
+              (click)="patientWish(1)"
+            />
+            <label class="form-check-label" for="flexRadioDefault1">
+              voir un médecin
+            </label>
+          </div>
+
+          <div class="form-check form-check-inline form-radio-secondary mb-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault2"
+              (click)="patientWish(2)"
+            />
+            <label class="form-check-label" for="flexRadioDefault2">
+              faire des analyses médicales
+            </label>
+          </div>
+
+          <div class="form-check form-check-inline form-radio-secondary mb-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault3"
+              (click)="patientWish(3)"
+            />
+            <label class="form-check-label" for="flexRadioDefault3">
+              faire des imageries médicales
+            </label>
+          </div>
+
+          <div class="form-check form-check-inline form-radio-secondary mb-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault4"
+              (click)="patientWish(4)"
+            />
+            <label class="form-check-label" for="flexRadioDefault4">
+              payer des produits pharmaceutiques
+            </label>
+          </div>
+
+          <div class="form-check form-check-inline form-radio-secondary mb-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault5"
+              (click)="patientWish(5)"
+            />
+            <label class="form-check-label" for="flexRadioDefault5">
+              faire autres choses
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- end card-body -->
+
+      <div class="card-body">
+        <div class="live-preview">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic radio toggle button group"
+              *ngIf="true"
+            >
+              <ng-container *ngFor="let prestationType of prestationTypes; index as i">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio"
+                  [id]="'wishRadio-' + i"
+                />
+                <label
+                  class="btn btn-outline-secondary mb-0"
+                  [for]="'wishRadio-' + i"
+                  >{{ prestationType }}</label
+                >
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-header border-bottom-dashed">
+      <div class="row g-4 align-items-center">
+        <div class="col-sm">
+          <div>
+            <h5 class="card-title mb-0">Prestations</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body border-bottom-dashed border-bottom">
+      <form [formGroup]="activityForm">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-select
+                label="Type Médecin"
+                [options]="['Interne', 'Externe']"
+              ></app-select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-select
+                label="Médecin"
+                [options]="['Dr J-P', 'Dr Gael']"
+              ></app-select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-input label="Provenance" placeholder=""></app-input>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-input label="Date" type="date"></app-input>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-input
+                label="Quantité"
+                type="number"
+                [control]="quantityControl"
+              >
+              </app-input>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <app-select
+                label="Effectué par"
+                [options]="['Dr J-P', 'Dr Gael']"
+              ></app-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Rechercher</label>
+            <div class="search-box">
+              <input
+                type="text"
+                name="searchTerm"
+                class="form-control"
+                placeholder="Rechercher prestation, prix, etc."
+              />
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="col-12 mb-3">
+            <em>Double-cliquer un élément pour l'ajouter</em>
+          </div>
+
+          <div class="table-responsive mt-4 mt-xl-0">
+            <table
+              class="table table-hover table-striped table-bordered align-middle table-nowrap mb-0"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">Prestation</th>
+                  <th scope="col">Prix</th>
+                  <th scope="col">Sous-traitance</th>
+                  <th scope="col">Nouveaux tarifs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of activities" (dblclick)="add(item)">
+                  <td>{{ item.prestation }}</td>
+                  <td>{{ item.prix }}</td>
+                  <td>{{ item.ss_traitance }}</td>
+                  <td>{{ item.new_tariff }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="collectionSize"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="refreshActivities()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="pageSize"
+              (ngModelChange)="refreshActivities()"
+            >
+              <option [ngValue]="5">5 éléments par page</option>
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-1 text-center">
+          <i class="ri-arrow-left-right-fill fs-24"></i>
+        </div>
+
+        <div class="col-md-5">
+          <div class="col-12 mb-3">
+            <em>Double-cliquer un élément pour le retirer</em>
+          </div>
+
+          <div class="table-responsive mt-4 mt-xl-0">
+            <table
+              class="table table-hover table-striped table-bordered align-middle table-nowrap mb-0"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">Rubrique</th>
+                  <th scope="col">Activité</th>
+                  <th scope="col">Prix unitaire</th>
+                  <th scope="col">Quantité</th>
+                  <th scope="col">Prix total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of table2" (dblclick)="remove(item)">
+                  <td>{{ item.rubrique }}</td>
+                  <td>{{ item.activity }}</td>
+                  <td>{{ item.prix }}</td>
+                  <td>{{ item.quantite }}</td>
+                  <td>{{ item.prix_total }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--end col-->
+      </div>
+    </div>
+  </div>
+</div>
