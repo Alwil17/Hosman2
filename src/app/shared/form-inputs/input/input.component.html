@@ -20,6 +20,10 @@
     Ce champ est obligatoire.
   </div>
 
+  <div *ngIf="control.errors?.['email']" class="invalid-feedback">
+    Veuillez saisir un email valide
+  </div>
+
   <div *ngIf="control.errors?.['min']" class="invalid-feedback">
     Ce champ doit être supérieur ou égale à {{ control.errors?.['min']['min'] }}
   </div>

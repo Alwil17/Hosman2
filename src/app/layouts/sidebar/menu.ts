@@ -10,7 +10,7 @@ export const MENU: MenuItem[] = [
     id: 2,
     label: "MENUITEMS.PATIENTS.TEXT",
     link: "/patients",
-    icon: "ri-user-5-fill",
+    icon: "ri-user-5-line",
     // icon: 'mdi mdi-doctor',
     subItems: [
       {
@@ -43,8 +43,7 @@ export const MENU: MenuItem[] = [
     id: 7,
     label: "MENUITEMS.ACTIVITIES.TEXT",
     link: "/activities",
-    icon: "ri-user-5-fill",
-    // icon: 'mdi mdi-doctor',
+    icon: "mdi mdi-sticker-text-outline",
     subItems: [
       {
         id: 8,
@@ -76,8 +75,7 @@ export const MENU: MenuItem[] = [
     id: 12,
     label: "MENUITEMS.INFORMATIONS.TEXT",
     link: "/informations",
-    icon: "ri-user-5-fill",
-    // icon: 'mdi mdi-doctor',
+    icon: "ri-information-line",
     subItems: [
       {
         id: 13,
