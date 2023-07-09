@@ -1,5 +1,7 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/core/helpers/age-calculator";
 
 @Component({
@@ -8,6 +10,7 @@ import { calculateExactAge } from "src/app/core/helpers/age-calculator";
   styleUrls: ["./patient-form.component.scss"],
 })
 export class PatientFormComponent implements OnInit {
+  // General information controls
   lastNameControl = new FormControl("", [Validators.required]);
   firstNameControl = new FormControl("", [Validators.required]);
   genderControl = new FormControl("", [Validators.required]);
@@ -25,6 +28,7 @@ export class PatientFormComponent implements OnInit {
   professionControl = new FormControl("");
   hasInsuranceControl = new FormControl("", [Validators.required]);
 
+  // Insurance informations control
   insuranceControl = new FormControl({ value: "", disabled: true });
   insuranceTypeControl = new FormControl({ value: "", disabled: true });
   insuranceRateControl = new FormControl({ value: "", disabled: true });
@@ -37,18 +41,26 @@ export class PatientFormComponent implements OnInit {
   insuranceTel2Control = new FormControl("");
   insuranceEmailControl = new FormControl("", [Validators.email]);
 
+  // Other informations controls
   patientAddressControl = new FormControl("");
   cityControl = new FormControl("");
   neighborhoodControl = new FormControl("");
-  
+
   patientTel2Control = new FormControl("");
   personToContactControl = new FormControl("");
 
+  // Form groups
   generalInfoForm: FormGroup = new FormGroup({});
   insuranceInfoForm: FormGroup = new FormGroup({});
   otherInfoForm: FormGroup = new FormGroup({});
 
-  constructor() {}
+  // Nav steps variables
+  activeStep = 1;
+  isGeneralInfoFormSubmitted = false;
+  isInsuranceInfoFormSubmitted = false;
+  isOtherInfoFormSubmitted = false;
+
+  constructor(private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.generalInfoForm = new FormGroup({
@@ -140,6 +152,103 @@ export class PatientFormComponent implements OnInit {
         // this.insuranceTag.disabled
       }
     });
+  }
+
+  onNavChange(changeEvent: NgbNavChangeEvent) {
+    if (changeEvent.activeId === 1 && changeEvent.nextId === 2) {
+      this.isGeneralInfoFormSubmitted = true;
+      if (this.generalInfoForm.invalid) {
+        changeEvent.preventDefault();
+      } else {
+        if (this.hasInsuranceControl.value.startsWith("Non")) {
+          changeEvent.preventDefault();
+
+          this.isInsuranceInfoFormSubmitted = true;
+
+          this.activeStep = 3;
+        }
+      }
+    } else if (changeEvent.activeId === 2 && changeEvent.nextId === 3) {
+      this.isInsuranceInfoFormSubmitted = true;
+      if (this.insuranceInfoForm.invalid) {
+        changeEvent.preventDefault();
+      }
+    } else if (changeEvent.activeId === 3 && changeEvent.nextId === 4) {
+      this.isOtherInfoFormSubmitted = true;
+      if (this.otherInfoForm.invalid) {
+        changeEvent.preventDefault();
+      }
+    }
+
+    if (changeEvent.nextId - changeEvent.activeId > 1) {
+      changeEvent.preventDefault();
+    }
+
+    // If user goes back, set previous submitted to false ?
+  }
+
+  stepNavigateFromTo(activeId: number, nextId: number) {
+    if (activeId === 1 && nextId === 2) {
+      this.isGeneralInfoFormSubmitted = true;
+      if (this.generalInfoForm.valid) {
+        if (this.hasInsuranceControl.value.startsWith("Non")) {
+          this.isInsuranceInfoFormSubmitted = true;
+
+          this.activeStep = 3;
+        } else {
+          this.activeStep = 2;
+        }
+      }
+    } else if (activeId === 2 && nextId === 3) {
+      this.isInsuranceInfoFormSubmitted = true;
+      if (this.insuranceInfoForm.valid) {
+        this.activeStep = 3;
+      }
+    } else if (activeId === 3 && nextId === 4) {
+      this.isOtherInfoFormSubmitted = true;
+      if (this.otherInfoForm.valid) {
+        this.activeStep = 4;
+      }
+    }
+  }
+
+  generateSummary(): string[] {
+    console.log();
+
+    return [
+      (this.genderControl.value === "Masculin"
+        ? "Monsieur "
+        : "Mademoiselle ") +
+        this.lastNameControl.value +
+        " " +
+        this.firstNameControl.value +
+        ", né le " +
+        this.datePipe.transform(this.dateOfBirthControl.value, "dd/MM/yyyy") +
+        " (" +
+        this.ageControl.value +
+        ")" +
+        (this.birthPlaceControl.value !== ""
+          ? " à " + this.birthPlaceControl.value
+          : "") +
+        (this.professionControl.value !== ""
+          ? ", " + this.professionControl.value
+          : "") +
+        ((this.hasInsuranceControl.value as string).startsWith("Oui")
+          ? ", " +
+            " assuré à " +
+            this.insuranceRateControl.value +
+            " % par " +
+            this.insuranceControl.value +
+            " jusqu'au " +
+            (this.datePipe.transform(
+              this.insuranceEndControl.value,
+              "dd/MM/yyyy"
+            ) ?? "")
+          : ""),
+
+      this.patientTel1Control.value + " / " + this.patientTel2Control.value,
+      this.personToContactControl.value,
+    ];
   }
 
   registerPatient() {

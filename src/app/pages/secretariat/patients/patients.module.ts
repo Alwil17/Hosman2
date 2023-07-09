@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { PatientsRoutingModule } from "./patients-routing.module";
 import { PatientCreateComponent } from "./patient-create/patient-create.component";
 import { SharedModule } from "src/app/shared/shared.module";
@@ -25,5 +25,6 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     // NgbTypeaheadModule,
   ],
   exports: [],
+  providers: [DatePipe]
 })
 export class PatientsModule {}

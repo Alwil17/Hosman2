@@ -9,6 +9,7 @@ import { FormControl } from "@angular/forms";
 export class SelectComponent implements OnInit {
   @Input() label = "";
   @Input() isMandatory = false;
+  @Input() isFormSubmitted = false;
   @Input() defaultOption = "Sélectionner...";
   @Input() options: string[] = [];
   @Input() control = new FormControl();

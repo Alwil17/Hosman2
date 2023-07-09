@@ -13,7 +13,8 @@
                 <ul
                   ngbNav
                   #customNav="ngbNav"
-                  [activeId]="1"
+                  [(activeId)]="activeStep"
+                  (navChange)="onNavChange($event)"
                   class="nav flex-column custom-nav nav-pills"
                   role="tablist"
                 >
@@ -22,6 +23,12 @@
                     <a
                       ngbNavLink
                       class="nav-link"
+                      [ngClass]="{
+                        done:
+                          isGeneralInfoFormSubmitted &&
+                          generalInfoForm.valid &&
+                          activeStep !== 1
+                      }"
                       data-bs-toggle="tab"
                       role="tab"
                     >
@@ -56,6 +63,7 @@
                                 placeholder="Sasir le nom du patient"
                                 [isMandatory]="true"
                                 [control]="lastNameControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -67,6 +75,7 @@
                                 placeholder="Saisir le(s) prénom(s) du patient"
                                 [isMandatory]="true"
                                 [control]="firstNameControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -78,6 +87,7 @@
                                 [isMandatory]="true"
                                 [options]="['Masculin', 'Féminin']"
                                 [control]="genderControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -89,6 +99,7 @@
                                 type="date"
                                 [isMandatory]="true"
                                 [control]="dateOfBirthControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -99,6 +110,7 @@
                                 label="Âge"
                                 [readOnly]="true"
                                 [control]="ageControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -109,6 +121,7 @@
                                 label="Lieu de naissance"
                                 placeholder="Saisir le lieu de naissance"
                                 [control]="birthPlaceControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -120,6 +133,7 @@
                                 label="Téléphone"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel1Control"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -130,6 +144,7 @@
                                 label="Email"
                                 placeholder="test@example.org"
                                 [control]="patientEmailControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -141,6 +156,7 @@
                                   label="Type"
                                   [options]="['CNI', 'Passeport', 'Autres']"
                                   [control]="idTypeControl"
+                                  [isFormSubmitted]="isGeneralInfoFormSubmitted"
                                 ></app-select>
                               </div>
                               <div class="col-8">
@@ -148,6 +164,7 @@
                                   label="N° Pièce"
                                   placeholder="N° de la pièce d'identité"
                                   [control]="idNumberControl"
+                                  [isFormSubmitted]="isGeneralInfoFormSubmitted"
                                 >
                                 </app-input>
                               </div>
@@ -168,6 +185,7 @@
                                   'NIGERIA'
                                 ]"
                                 [control]="homelandControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -182,6 +200,7 @@
                                   'Chômeur'
                                 ]"
                                 [control]="professionControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -191,12 +210,13 @@
                                 label="Assuré ?"
                                 [isMandatory]="true"
                                 [options]="[
-                                  'Non - Local',
-                                  'Non - Etranger',
-                                  'Oui - Assurance local',
-                                  'Oui - Assurance étrangère'
+                                  'Non - Le patient est un local',
+                                  'Non - Le patient est un étranger',
+                                  'Oui - Il s\'agit d\'une assurance locale',
+                                  'Oui - Il s\'agit d\'une assurance étrangère'
                                 ]"
                                 [control]="hasInsuranceControl"
+                                [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -208,7 +228,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-bill-address-tab"
-                          [disabled]="generalInfoForm.invalid"
+                          (click)="stepNavigateFromTo(1,2)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -224,6 +244,12 @@
                     <a
                       ngbNavLink
                       class="nav-link"
+                      [ngClass]="{
+                        done:
+                          isInsuranceInfoFormSubmitted &&
+                          insuranceInfoForm.valid &&
+                          activeStep !== 2
+                      }"
                       data-bs-toggle="tab"
                       role="tab"
                     >
@@ -263,6 +289,7 @@
                                   'GRAS SAVOYE'
                                 ]"
                                 [control]="insuranceControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -273,6 +300,7 @@
                                 [isMandatory]="true"
                                 [options]="['Locale', 'Etrangère']"
                                 [control]="insuranceTypeControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -284,6 +312,7 @@
                                 type="number"
                                 [isMandatory]="true"
                                 [control]="insuranceRateControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -295,6 +324,7 @@
                                 label="Employeur de l'assuré"
                                 [options]="['BIDC', 'ARCEP', 'Autres']"
                                 [control]="patientEmployerControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -304,6 +334,7 @@
                                 label="Date de début PEC"
                                 type="date"
                                 [control]="insuranceStartControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -314,6 +345,7 @@
                                 label="Date de fin PEC"
                                 type="date"
                                 [control]="insuranceEndControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -325,6 +357,7 @@
                                 label="Téléphone 1"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel1Control"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -335,6 +368,7 @@
                                 label="Téléphone 2"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel2Control"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -345,6 +379,7 @@
                                 label="Email"
                                 placeholder="test@example.org"
                                 [control]="insuranceEmailControl"
+                                [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -357,6 +392,7 @@
                           type="button"
                           class="btn btn-light btn-label previestab"
                           data-previous="v-pills-bill-info-tab"
+                          (click)="customNav.select(1)"
                         >
                           <i
                             class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
@@ -367,7 +403,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-payment-tab"
-                          [disabled]="insuranceInfoForm.invalid"
+                          (click)="stepNavigateFromTo(2,3)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -383,6 +419,12 @@
                     <a
                       ngbNavLink
                       class="nav-link"
+                      [ngClass]="{
+                        done:
+                          isOtherInfoFormSubmitted &&
+                          otherInfoForm.valid &&
+                          activeStep !== 3
+                      }"
                       data-bs-toggle="tab"
                       role="tab"
                     >
@@ -396,13 +438,8 @@
                       <div>
                         <h5>Autres informations</h5>
                         <p class="text-muted">
-                          Veuillez fournir les informations suivantes
-                          <br />
-                          <em
-                            >Les champs marqués par
-                            <span class="text-danger">*</span> sont
-                            obligatoires</em
-                          >
+                          Ces informations sont complémentaires. Fournisssez-les
+                          si vous les avez.
                         </p>
                       </div>
 
@@ -416,6 +453,7 @@
                                 label="Adresse"
                                 placeholder="Rue, appartement, n° maison"
                                 [control]="patientAddressControl"
+                                [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -433,6 +471,7 @@
                                   'Accra'
                                 ]"
                                 [control]="cityControl"
+                                [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -447,6 +486,7 @@
                                   'Autres'
                                 ]"
                                 [control]="neighborhoodControl"
+                                [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
                             </div>
                           </div>
@@ -457,6 +497,7 @@
                                 label="Autre contact"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel2Control"
+                                [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -467,6 +508,7 @@
                                 label="Personne à prévenir"
                                 placeholder="Nom, prénom(s), contact, adresse"
                                 [control]="personToContactControl"
+                                [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
                               </app-input>
                             </div>
@@ -479,6 +521,7 @@
                           type="button"
                           class="btn btn-light btn-label previestab"
                           data-previous="v-pills-bill-address-tab"
+                          (click)="customNav.select(2)"
                         >
                           <i
                             class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
@@ -489,7 +532,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-finish-tab"
-                          [disabled]="otherInfoForm.invalid"
+                          (click)="stepNavigateFromTo(3,4)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -515,13 +558,57 @@
                       Fin
                     </a>
                     <ng-template ngbNavContent>
-                      <div class="text-center pt-4 pb-2">
-                        <div class="mb-4"></div>
-                        <h5>Your Order is Completed !</h5>
+                      <div>
+                        <h5>Résumé des informations</h5>
                         <p class="text-muted">
-                          You Will receive an order confirmation email with
-                          details of your order.
+                          Ceci est un résumé de toutes les informations saisies.
+                          Prière de vérifier et retourner en arrière si besoin.
                         </p>
+                      </div>
+
+                      <hr />
+
+                      <div>
+                        <p><b>Patient : </b> {{ generateSummary()[0] }}</p>
+                        <p><b>Contact : </b> {{ generateSummary()[1] }}</p>
+                        <p>
+                          <b>Personne à prévenir : </b>
+                          {{ generateSummary()[2] }}
+                        </p>
+                      </div>
+
+                      <div class="d-flex align-items-start gap-3 mt-4">
+                        <button
+                          type="button"
+                          class="btn btn-light btn-label me-auto previestab"
+                          data-previous="v-pills-bill-address-tab"
+                          (click)="customNav.select(3)"
+                        >
+                          <i
+                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                          ></i>
+                          Retour
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary btn-label nexttab nexttab"
+                          data-nexttab="v-pills-finish-tab"
+                        >
+                          <i
+                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"
+                          ></i>
+                          Enregistrer et quitter
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-success btn-label right nexttab nexttab"
+                          data-nexttab="v-pills-finish-tab"
+                        >
+                          <i
+                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                          ></i>
+                          Continuer vers Activités/Prestations
+                        </button>
                       </div>
                     </ng-template>
                   </li>

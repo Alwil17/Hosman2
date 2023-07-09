@@ -8,14 +8,14 @@
   [readOnly]="readOnly"
   [formControl]="control"
   [ngClass]="{
-    'is-invalid': control.touched && control.dirty && control.errors
+    'is-invalid': ((control.touched && control.dirty) || isFormSubmitted) && control.errors 
   }"
 />
 
 <!-- [mask]="format"
   [dropSpecialCharacters]="false" -->
 
-<ng-container *ngIf="control.touched && control.dirty">
+<ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
   <div *ngIf="control.errors?.['required']" class="invalid-feedback">
     Ce champ est obligatoire.
   </div>
