@@ -1,4 +1,4 @@
-export class City {
-  id?: number;
-  name?: string;
+export interface ICity {
+  id: number;
+  nom: string;
 }

@@ -1,8 +1,8 @@
-export class Country {
-  id?: number;
-  name?: string;
+export interface ICountry {
+  id: number;
+  nom: string;
   // slug?: string ???
-  nationality?: string;
+  nationalite: string;
   code?: string;
-  telephonePrefix?: string;
+  indicatif?: string;
 }

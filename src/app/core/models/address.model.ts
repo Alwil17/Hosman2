@@ -1,9 +1,12 @@
-export class Address {
+import { ICity } from "./city.model";
+import { INeighborhood } from "./neighborhood.model";
+
+export interface IAddress {
   id?: number;
-  district?: string; // ???
-  houseNumber?: string; // ???
-  street?: string; // ???
-  pb?: string; // ???
-  cityId?: number;
-  neighborhoodId?: number;
+  arrondissement?: string; // ???
+  no_number?: string; // ???
+  rue?: string; // ???
+  bp?: string; // ???
+  ville?: ICity;
+  quartier?: INeighborhood;
 }

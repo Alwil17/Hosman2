@@ -1,119 +1,151 @@
-<!-- Tables Border Colors -->
-<table class="table table-bordered border-secondary table-nowrap">
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Title</th>
-      <th scope="col">Status</th>
-      <th scope="col">Assignee</th>
-      <th scope="col">Price</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Implement new UX</td>
-      <td><span class="badge badge-soft-primary">Backlog</span></td>
-      <td>Lanora Sandoval</td>
-      <td>$4,521</td>
-      <td>
-        <div class="dropdown">
-          <a
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="ri-more-2-fill"></i>
-          </a>
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-7 col-xl-4">
+          <div class="hstack gap-2">
+            <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
+              <button
+                type="button"
+                class="btn btn-light btn-icon waves-effect"
+                ngbDropdownToggle
+              >
+                <i class="ri-filter-2-fill"></i>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem>Nom & Prénom(s)</button>
+                <button ngbDropdownItem>Numéro patient</button>
+                <button ngbDropdownItem>Date de naissance</button>
+                <button ngbDropdownItem>Date d'entrée</button>
+              </div>
+            </div>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">View</a></li>
-            <li><a class="dropdown-item" href="#">Edit</a></li>
-            <li><a class="dropdown-item" href="#">Delete</a></li>
-          </ul>
+            <div class="search-box">
+              <input
+                type="text"
+                name="searchTerm"
+                class="form-control"
+                placeholder="Rechercher"
+              />
+              <!-- [(ngModel)]="service.searchTerm" -->
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Design syntax</td>
-      <td><span class="badge badge-soft-secondary">In Progress</span></td>
-      <td>Calvin Garrett</td>
-      <td>$7,546</td>
-      <td>
-        <div class="dropdown">
-          <a
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+        <div class="d-flex col-md-5 col-xl-8">
+          <button
+            type="button"
+            class="btn btn-success btn-label ms-auto"
+            (click)="goToPatientNew()"
           >
-            <i class="ri-more-2-fill"></i>
-          </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">View</a></li>
-            <li><a class="dropdown-item" href="#">Edit</a></li>
-            <li><a class="dropdown-item" href="#">Delete</a></li>
-          </ul>
+            <i class="ri-user-add-fill label-icon align-middle fs-16 me-2"></i>
+            Ajouter
+          </button>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Configurable resources</td>
-      <td><span class="badge badge-soft-success">Done</span></td>
-      <td>Florence Guzman</td>
-      <td>$1,350</td>
-      <td>
-        <div class="dropdown">
-          <a
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="ri-more-2-fill"></i>
-          </a>
+      </div>
+    </div>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">View</a></li>
-            <li><a class="dropdown-item" href="#">Edit</a></li>
-            <li><a class="dropdown-item" href="#">Delete</a></li>
-          </ul>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive table-card">
+            <table
+              class="table table-hover table-striped align-middle table-nowrap mb-0"
+            >
+              <thead class="table-light text-muted">
+                <tr>
+                  <th scope="col">{{ "Référence" | uppercase }}</th>
+                  <th scope="col">{{ "Nom" | uppercase }}</th>
+                  <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
+                  <th scope="col">{{ "Né(e) le" | uppercase }}</th>
+                  <th scope="col">{{ "Âge" | uppercase }}</th>
+                  <th scope="col">{{ "Sexe" | uppercase }}</th>
+                  <th scope="col">{{ "Contact" | uppercase }}</th>
+                  <th scope="col">{{ "Date d'entrée" | uppercase }}</th>
+                  <th scope="col">{{ "N° Pièce" | uppercase }}</th>
+                  <th scope="col">{{ "Assurance" | uppercase }}</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let patient of patients"
+                  (dblclick)="view(patient)"
+                  class="user-select-none"
+                >
+                  <td>{{ patient.reference }}</td>
+                  <td>{{ patient.nom | uppercase }}</td>
+                  <td>{{ patient.prenoms }}</td>
+                  <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
+                  <td>{{ patient.age }}</td>
+                  <td>{{ patient.sexe }}</td>
+                  <td>{{ patient.tel1 }}</td>
+                  <td>{{ patient.date_entre | date : "dd/MM/yyyy" }}</td>
+                  <td>{{ patient.no_carte }}</td>
+                  <td>{{ patient.assurance }}</td>
+                  <td>
+                    <div
+                      class="d-inline-block"
+                      ngbDropdown
+                      #filterDrop="ngbDropdown"
+                      container="body"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-icon btn-outline-dark waves-effect waves-light"
+                        ngbDropdownToggle
+                      >
+                        <i class="ri-more-fill fs-24"></i>
+                      </button>
+                      <div ngbDropdownMenu>
+                        <button ngbDropdownItem>
+                          Voir
+                          <i
+                            class="ri-information-fill label-icon align-middle fs-16 ms-3"
+                          ></i>
+                        </button>
+                        <button ngbDropdownItem>
+                          Modifier
+                          <i
+                            class="ri-pencil-fill label-icon align-middle fs-16 ms-3"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Implement extensions</td>
-      <td><span class="badge badge-soft-secondary">In Progress</span></td>
-      <td>Maritza Blanda</td>
-      <td>$4,521</td>
-      <td>
-        <div class="dropdown">
-          <a
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="ri-more-2-fill"></i>
-          </a>
+      </div>
+    </div>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">View</a></li>
-            <li><a class="dropdown-item" href="#">Edit</a></li>
-            <li><a class="dropdown-item" href="#">Delete</a></li>
-          </ul>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="collectionSize"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="refreshActivities()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="pageSize"
+              (ngModelChange)="refreshActivities()"
+            >
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
+            </select>
+          </div>
         </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-export class Profession {
-    id?: number;
-    name?: string;
+export interface IProfession {
+    id: number;
+    nom: string;
     // slug?: string ???
   }
   

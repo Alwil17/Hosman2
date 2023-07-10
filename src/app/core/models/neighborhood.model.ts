@@ -1,4 +1,4 @@
-export class Neighborhood {
-  id?: number;
-  name?: string;
+export interface INeighborhood {
+  id: number;
+  nom: string;
 }

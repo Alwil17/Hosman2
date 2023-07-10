@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // Wizard
 import { ArchwizardModule } from "angular-archwizard";
 import { PatientActivityComponent } from './patient-activity/patient-activity.component';
-import { NgbNavModule, NgbPaginationModule, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { PatientListComponent } from './patient-list/patient-list.component';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     FormsModule,
     NgbPaginationModule,
     NgbNavModule,
+    NgbDropdownModule,
     // NgbTypeaheadModule,
   ],
   exports: [],

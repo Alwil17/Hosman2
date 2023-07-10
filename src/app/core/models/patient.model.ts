@@ -1,21 +1,28 @@
-export class Patient {
-  id?: number;
-  reference?: string;
-  title?: string;
-  lastName?: string;
-  firstName?: string;
-  gender?: string;
-  dateOfBirth?: Date;
-  hasInsurance?: boolean;
-  homeland?: string;
-  nationality?: string;
-  profession?: string;
-  livingCountry?: string;
-  city?: string;
-  neighborhood?: string;
-  tel1?: string;
+import { IAddress } from "./address.model";
+import { ICountry } from "./country.model";
+import { IEmployer } from "./employer.model";
+import { IInsurance } from "./insurance.model";
+import { IProfession } from "./profession.model";
+
+export interface IPatient {
+  id: number;
+  reference: string;
+  nom: string;
+  prenoms: string;
+  date_naissance: Date;
+  sexe: string;
+  lieu_naissance?: string;
+  is_assure: boolean;
+  tel1: string;
   tel2?: string;
-  personToContact?: string; // ???
-  employerId?: number;
-  addressId?: number;
+  personToContact: string; // ???
+  type_carte?: string;
+  no_carte?: string;
+  date_entre: Date;
+  pays_origine?: ICountry;
+  profession?: IProfession;
+  assurance?: IInsurance;
+  employer?: IEmployer;
+  adresse: IAddress;
+
 }

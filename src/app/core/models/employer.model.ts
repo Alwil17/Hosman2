@@ -1,6 +1,6 @@
-export class Employer {
-  id?: number;
-  name?: string;
+export interface IEmployer {
+  id: number;
+  nom: string;
   email?: string;
   tel1?: string;
   tel2?: string;
