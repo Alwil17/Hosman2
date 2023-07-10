@@ -51,7 +51,7 @@
                       <div class="collapse menu-dropdown" id="sidebarDashboards" *ngIf="hasItems(item)">
                         <ul *ngIf="hasItems(item)" class="nav nav-sm flex-column" aria-expanded="false">
                             <li *ngFor="let subitem of item.subItems" class="nav-item">
-                            <a [routerLink]="subitem.link" *ngIf="!hasItems(subitem)" class="nav-link"
+                            <a [routerLink]="item.link + subitem.link" *ngIf="!hasItems(subitem)" class="nav-link"
                                 [attr.data-parent]="subitem.parentId" routerLinkActive="active" (click)="updateActive($event)">
                                 <i class="bx {{ subitem.icon }} icon nav-icon" *ngIf="subitem.icon" class=""></i>{{ subitem.label | translate}}
                             </a>

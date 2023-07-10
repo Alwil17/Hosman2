@@ -1,14 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
 const routes: Routes = [
+  { path: "", redirectTo: "patients", pathMatch: "full" },
+
   {
-    path: '', loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule)
+    path: "patients",
+    loadChildren: () =>
+      import("./patients/patients.module").then((m) => m.PatientsModule),
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class SecretariatRoutingModule { }
+export class SecretariatRoutingModule {}

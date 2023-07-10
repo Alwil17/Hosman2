@@ -9,32 +9,32 @@ export const MENU: MenuItem[] = [
   {
     id: 2,
     label: "MENUITEMS.PATIENTS.TEXT",
-    link: "/patients",
+    link: "/secretariat/patients",
     icon: "ri-user-5-line",
     // icon: 'mdi mdi-doctor',
     subItems: [
       {
         id: 3,
         label: "MENUITEMS.PATIENTS.LIST.PATIENT_NEW",
-        link: "/patient_new",
+        link: "/patient-new",
         parentId: 2,
       },
       {
         id: 4,
         label: "MENUITEMS.PATIENTS.LIST.PATIENTS_LIST",
-        link: "/patients_old",
+        link: "/patient-list",
         parentId: 2,
       },
       {
         id: 5,
         label: "MENUITEMS.PATIENTS.LIST.DEBTS",
-        link: "/debts",
+        link: "/patient-debts",
         parentId: 2,
       },
       {
         id: 6,
         label: "MENUITEMS.PATIENTS.LIST.RESTS",
-        link: "/rests",
+        link: "/patient-rests",
         parentId: 2,
       },
     ],
