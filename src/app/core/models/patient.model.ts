@@ -19,10 +19,10 @@ export interface IPatient {
   type_carte?: string;
   no_carte?: string;
   date_entre: Date;
-  pays_origine?: ICountry;
-  profession?: IProfession;
-  assurance?: IInsurance;
+  pays_origine?: ICountry | string;
+  profession?: IProfession | string;
+  assurance?: IInsurance | string;
   employer?: IEmployer;
-  adresse: IAddress;
+  adresse: string;
 
 }

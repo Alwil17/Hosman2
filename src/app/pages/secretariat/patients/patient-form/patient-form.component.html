@@ -228,7 +228,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-bill-address-tab"
-                          (click)="stepNavigateFromTo(1,2)"
+                          (click)="stepNavigateFromTo(1, 2)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -403,7 +403,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-payment-tab"
-                          (click)="stepNavigateFromTo(2,3)"
+                          (click)="stepNavigateFromTo(2, 3)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -532,7 +532,7 @@
                           type="button"
                           class="btn btn-success btn-label right ms-auto nexttab nexttab"
                           data-nexttab="v-pills-finish-tab"
-                          (click)="stepNavigateFromTo(3,4)"
+                          (click)="stepNavigateFromTo(3, 4)"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -569,11 +569,41 @@
                       <hr />
 
                       <div>
-                        <p><b>Patient : </b> {{ generateSummary()[0] }}</p>
-                        <p><b>Contact : </b> {{ generateSummary()[1] }}</p>
+                        <p>
+                          <b>Patient : </b> {{ summary.title }}
+                          <span class="text-secondary">{{
+                            summary.fullName
+                          }}</span
+                          >, né(e) le
+                          <span class="text-secondary">{{
+                            summary.birth
+                          }}</span>
+                          ({{ summary.age }})
+                          <span class="text-secondary">
+                            {{
+                              summary.insurance
+                                ? "assuré à " +
+                                  summary.insuranceRate +
+                                  "% par " +
+                                  summary.insurance
+                                : ""
+                            }}
+                          </span>
+                          {{
+                            summary.insuranceEnd
+                              ? "jusqu'au " + summary.insuranceEnd
+                              : ""
+                          }}
+                        </p>
+
+                        <p>
+                          <b>Contact : </b>
+                          {{ summary.tel1 + " / " + summary.tel2 }}
+                        </p>
+
                         <p>
                           <b>Personne à prévenir : </b>
-                          {{ generateSummary()[2] }}
+                          {{ summary.personToContact }}
                         </p>
                       </div>
 
@@ -593,6 +623,7 @@
                           type="button"
                           class="btn btn-secondary btn-label nexttab nexttab"
                           data-nexttab="v-pills-finish-tab"
+                          (click)="registerPatientAndLeave()"
                         >
                           <i
                             class="ri-save-2-fill label-icon align-middle fs-16 me-2"
@@ -603,6 +634,7 @@
                           type="button"
                           class="btn btn-success btn-label right nexttab nexttab"
                           data-nexttab="v-pills-finish-tab"
+                          (click)="registerPatientAndContinue()"
                         >
                           <i
                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -638,81 +670,3 @@
   </div>
   <!-- end col -->
 </div>
-
-<!-- <form class="mb-4" [formGroup]="patientForm" (ngSubmit)="registerPatient()">
-  <div class="row">
-    <div class="col-12">
-      <em
-        >Les champs marqués par <span class="text-danger">*</span> sont
-        obligatoires</em
-      >
-    </div>
-
-    
-
-    <div class="mt-4">
-      <hr />
-       <hr class="bg-danger border-2 border-top border-danger">
-    </div>
-    <div class="mb-3">
-      <h5>Informations d'assurance</h5>
-    </div>
-
-    
-    
-
-    <div class="mt-4">
-      <hr />
-    </div>
-    <div class="mb-3">
-      <h5>Origines et occupations</h5>
-    </div>
-
-    
-    
-
-    <div class="mt-4">
-      <hr />
-    </div>
-    <div class="mb-3">
-      <h5>Adresse et contact</h5>
-    </div>
-
-    
-
-    
-
-    <div class="mt-4">
-      <hr />
-    </div>
-    <div class="mb-3">
-      <h5>Personne à prévenir</h5>
-    </div>
-
-    
-
-    <div class="col-lg-12 mt-4">
-      <div class="text-end">
-        <button class="btn btn-light me-4" (click)="emptyFields()">
-          Vider les champs
-        </button>
-        <button
-          type="submit"
-          class="btn btn-success btn-label waves-effect waves-light me-4"
-          [disabled]="patientForm.invalid"
-        >
-          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
-          Enregistrer
-        </button>
-        <button
-          class="btn btn-secondary btn-label waves-effect right waves-light"
-          awNextStep
-          [disabled]="patientForm.invalid"
-        >
-          <i class="ri-arrow-right-fill label-icon align-middle fs-16 ms-2"></i
-          >Continuer
-        </button>
-      </div>
-    </div>
-  </div>
-</form> -->

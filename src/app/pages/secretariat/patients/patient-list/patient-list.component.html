@@ -50,7 +50,7 @@
         <div class="col-12">
           <div class="table-responsive table-card">
             <table
-              class="table table-hover table-striped align-middle table-nowrap mb-0"
+              class="table table-hover table-striped align-middle mb-0"
             >
               <thead class="table-light text-muted">
                 <tr>
@@ -129,7 +129,7 @@
               [collectionSize]="collectionSize"
               [(page)]="page"
               [pageSize]="pageSize"
-              (pageChange)="refreshActivities()"
+              (pageChange)="refreshPatients()"
             >
             </ngb-pagination>
 
@@ -137,7 +137,7 @@
               class="form-select"
               style="width: auto"
               [(ngModel)]="pageSize"
-              (ngModelChange)="refreshActivities()"
+              (ngModelChange)="refreshPatients()"
             >
               <option [ngValue]="10">10 éléments par page</option>
               <option [ngValue]="15">15 éléments par page</option>

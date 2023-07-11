@@ -11,7 +11,6 @@ export const MENU: MenuItem[] = [
     label: "MENUITEMS.PATIENTS.TEXT",
     link: "/secretariat/patients",
     icon: "ri-user-5-line",
-    // icon: 'mdi mdi-doctor',
     subItems: [
       {
         id: 3,

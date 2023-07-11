@@ -2,12 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { IActivity, IActivitySelect } from "./activity.models";
 import { FormControl, FormGroup } from "@angular/forms";
 
-import { DecimalPipe } from "@angular/common";
+import { DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {
   NgbPaginationModule,
   NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
+import { PatientsService } from "../services/patients.service";
 
 @Component({
   selector: "app-patient-activity",
@@ -69,7 +70,12 @@ export class PatientActivityComponent implements OnInit {
   collectionSize = this.table1.length;
   activities: IActivity[] = [];
 
-  constructor() {
+  constructor(
+    public patientService: PatientsService,
+    private datePipe: DatePipe
+  ) {
+    this.generateSummary();
+
     this.refreshActivities();
   }
 
@@ -129,23 +135,83 @@ export class PatientActivityComponent implements OnInit {
     "Déplacements",
   ];
 
-  prestationTypes: string[] = [];
+  prestationTypes: string[] = [
+    "Bilan",
+    "Actes médicaux",
+    "Analyses",
+    "Hémodialyses",
+    "Radio",
+    "Scanners",
+    "IRM",
+    "Echographie",
+    "ECG",
+    "EEG",
+    "Médicaments",
+    "Solutés",
+    "Consommables",
+    "Kinésithérapie",
+    "Pansement",
+    "Injections",
+    "Endoscopie",
+    "Déplacements",
+  ];
 
-  patientWish(code: number) {
-    if (code == 1) {
-      this.prestationTypes = this.medicalProcedures;
-    } else if (code == 2) {
-      this.prestationTypes = this.examinations;
-    } else if (code == 3) {
-      this.prestationTypes = this.medicalImaging;
-    } else if (code == 4) {
-      this.prestationTypes = this.meds;
-    } else if (code == 5) {
-      this.prestationTypes = this.others;
-    }
+  summary = {
+    title: "",
+    fullName: "",
+    birth: "",
+    // age: "",
+    birthPlace: "",
+    profession: "",
+    // nationality: "",
+    // insuranceRate: "",
+    // insurance: "",
+    // insuranceEnd: "",
+    tel1: "",
+    tel2: "",
+    personToContact: "",
+  };
+
+  generateSummary() {
+    this.summary = {
+      title:
+        this.patientService.getActivePatient().sexe === "Masculin"
+          ? "Monsieur"
+          : "Mademoiselle",
+      fullName:
+        this.patientService.getActivePatient().nom +
+        " " +
+        this.patientService.getActivePatient().prenoms,
+      birth: this.datePipe.transform(
+        this.patientService.getActivePatient().date_naissance,
+        "dd/MM/yyyy"
+      )!,
+      // age: this.ageControl.value as string,
+      birthPlace: this.patientService.getActivePatient().lieu_naissance
+        ? this.patientService.getActivePatient().lieu_naissance!
+        : "",
+      profession: this.patientService.getActivePatient().profession
+        ? (this.patientService.getActivePatient().profession as string)
+        : "",
+      // nationality: this.patientService.getActivePatient().pays_origine ? this.patientService.getActivePatient().pays_origine as string : "",
+      // insuranceRate: this.patientService.getActivePatient().assurance..value
+      //   ? this.insuranceRateControl.value
+      //   : "",
+      // insurance: this.insuranceControl.value ? this.insuranceControl.value : "",
+      // insuranceEnd: this.insuranceEndControl.value
+      //   ? this.datePipe.transform(this.insuranceEndControl.value, "dd/MM/yyyy")!
+      //   : "",
+
+      tel1: this.patientService.getActivePatient().tel1
+        ? this.patientService.getActivePatient().tel1
+        : "",
+      tel2: this.patientService.getActivePatient().tel2
+        ? this.patientService.getActivePatient().tel2!
+        : "",
+
+      personToContact: this.patientService.getActivePatient().personToContact
+        ? this.patientService.getActivePatient().personToContact
+        : "",
+    };
   }
-
-  // changeImage(e: KeyboardEvent) {
-  //   this.imgURL = (e.target as HTMLInputElement).value;
-  // }
 }

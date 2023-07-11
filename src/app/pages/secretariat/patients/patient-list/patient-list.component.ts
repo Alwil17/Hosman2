@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { calculateExactAge } from "src/app/core/helpers/age-calculator";
 import { IPatient } from "src/app/core/models/patient.model";
+import { PatientsService } from "../services/patients.service";
 
 @Component({
   selector: "app-patient-list",
@@ -9,7 +10,7 @@ import { IPatient } from "src/app/core/models/patient.model";
   styleUrls: ["./patient-list.component.scss"],
 })
 export class PatientListComponent implements OnInit {
-  allPatients: [{}] = [
+  allPatients: Array<{}> = [
     {
       age: calculateExactAge(new Date("1998-04-25")),
       ...{
@@ -34,13 +35,21 @@ export class PatientListComponent implements OnInit {
   collectionSize = this.allPatients.length;
   patients: any[] = [];
 
-  constructor(private router: Router) {
-    this.refreshActivities();
+  constructor(private router: Router, private patientService: PatientsService) {
+    this.allPatients = [
+      ...this.allPatients,
+      ...this.patientService.getAllPatients().map((value) => ({
+        age: calculateExactAge(value.date_naissance),
+        ...value,
+      })),
+    ];
+
+    this.refreshPatients();
   }
 
   ngOnInit(): void {}
 
-  refreshActivities() {
+  refreshPatients() {
     this.patients = this.allPatients
       // .map((item, i) => ({ id: i + 1, ...item }))
       .slice(
@@ -51,9 +60,9 @@ export class PatientListComponent implements OnInit {
 
   view(patient: any) {
     console.log(patient);
-    
   }
-  goToPatientNew() {
-    this.router.navigateByUrl('/secretariat/patients/patient-new');
+
+  async goToPatientNew() {
+    await this.router.navigateByUrl("/secretariat/patients/patient-new");
   }
 }
