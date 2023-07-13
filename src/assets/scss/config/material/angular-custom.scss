@@ -181,7 +181,8 @@ File: Custom Css File
   .dropdown-toggle {
     &.arrow-none {
       &::after {
-        content: "";
+        // content: ""; //original
+        display: none; // perso
       }
     }
   }

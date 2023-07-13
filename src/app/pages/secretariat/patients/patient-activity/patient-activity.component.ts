@@ -8,7 +8,7 @@ import {
   NgbPaginationModule,
   NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
-import { PatientsService } from "../services/patients.service";
+import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 
 @Component({
   selector: "app-patient-activity",
@@ -71,7 +71,7 @@ export class PatientActivityComponent implements OnInit {
   activities: IActivity[] = [];
 
   constructor(
-    public patientService: PatientsService,
+    public patientService: PatientService,
     private datePipe: DatePipe
   ) {
     this.generateSummary();

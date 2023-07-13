@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { calculateExactAge } from "src/app/core/helpers/age-calculator";
-import { IPatient } from "src/app/core/models/patient.model";
-import { PatientsService } from "../services/patients.service";
+import { calculateExactAge } from "src/app/helpers/age-calculator";
+import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 
 @Component({
   selector: "app-patient-list",
@@ -35,7 +34,7 @@ export class PatientListComponent implements OnInit {
   collectionSize = this.allPatients.length;
   patients: any[] = [];
 
-  constructor(private router: Router, private patientService: PatientsService) {
+  constructor(private router: Router, private patientService: PatientService) {
     this.allPatients = [
       ...this.allPatients,
       ...this.patientService.getAllPatients().map((value) => ({
