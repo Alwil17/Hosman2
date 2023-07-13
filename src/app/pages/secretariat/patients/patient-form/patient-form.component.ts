@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/core/helpers/age-calculator";
-import { PatientsService } from "../services/patients.service";
+import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -64,7 +64,7 @@ export class PatientFormComponent implements OnInit {
 
   constructor(
     private datePipe: DatePipe,
-    private patientService: PatientsService,
+    private patientService: PatientService,
     private router: Router
   ) {}
 

@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
 import { IPatient } from "src/app/core/models/patient.model";
 
+// const baseUrl = 'http://localhost:8080/api/...';
+
 @Injectable({
   providedIn: "root",
 })
-export class PatientsService {
-  activePatient: IPatient = {
+export class PatientService {
+  private activePatient: IPatient = {
     id: -1,
     reference: "",
     nom: "",
@@ -21,7 +23,8 @@ export class PatientsService {
 
   allPatients: IPatient[] = [];
 
-  constructor() {}
+  constructor() // private http: HttpClient
+  {}
 
   registerPatient(patient: IPatient) {
     this.activePatient = patient;
@@ -38,4 +41,20 @@ export class PatientsService {
   getAllPatients() {
     return [...this.allPatients];
   }
+
+  // getAll(): Observable<IPatient[]> {
+  //   return this.http.get<IPatient[]>(baseUrl);
+  // }
+
+  // get(id: any): Observable<IPatient> {
+  //   return this.http.get(`${baseUrl}/${id}`);
+  // }
+
+  // create(data: any): Observable<any> {
+  //   return this.http.post(baseUrl, data);
+  // }
+
+  // update(id: any, data: any): Observable<any> {
+  //   return this.http.put(`${baseUrl}/${id}`, data);
+  // }
 }
