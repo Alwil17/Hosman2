@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { calculateExactAge } from "src/app/core/helpers/age-calculator";
-import { IPatient } from "src/app/core/models/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 
 @Component({

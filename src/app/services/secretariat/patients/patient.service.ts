@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IPatient } from "src/app/core/models/patient.model";
+import { IPatient } from "src/app/models/secretariat/patients/patient.model";
 
 // const baseUrl = 'http://localhost:8080/api/...';
 
