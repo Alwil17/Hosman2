@@ -10,6 +10,7 @@ import { ArchwizardModule } from "angular-archwizard";
 import { PatientActivityComponent } from './patient-activity/patient-activity.component';
 import { NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { PatientListComponent } from './patient-list/patient-list.component';
+import { NgxMaskModule } from "ngx-mask";
 
 @NgModule({
   declarations: [PatientCreateComponent, PatientFormComponent,  PatientActivityComponent, PatientListComponent],
@@ -23,6 +24,7 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     NgbPaginationModule,
     NgbNavModule,
     NgbDropdownModule,
+    NgxMaskModule
     // NgbTypeaheadModule,
   ],
   exports: [],

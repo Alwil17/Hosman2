@@ -1,19 +1,25 @@
 <label class="form-label"
-  >{{ label }} <span *ngIf="isMandatory" class="text-danger">*</span></label
+  >{{ label }}
+  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    >*</span
+  ></label
 >
 <input
   class="form-control"
   [type]="type"
   [placeholder]="placeholder"
   [readOnly]="readOnly"
+  [mask]="maskFormat"
+  [suffix]="maskSuffix"
+  [dropSpecialCharacters]="false"
+  [min]="minDate"
+  [max]="maxDate"
   [formControl]="control"
   [ngClass]="{
-    'is-invalid': ((control.touched && control.dirty) || isFormSubmitted) && control.errors 
+    'is-invalid':
+      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
   }"
 />
-
-<!-- [mask]="format"
-  [dropSpecialCharacters]="false" -->
 
 <ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
   <div *ngIf="control.errors?.['required']" class="invalid-feedback">
@@ -21,13 +27,23 @@
   </div>
 
   <div *ngIf="control.errors?.['email']" class="invalid-feedback">
-    Veuillez saisir un email valide
+    Veuillez saisir un email valide.
   </div>
 
   <div *ngIf="control.errors?.['min']" class="invalid-feedback">
-    Ce champ doit être supérieur ou égale à {{ control.errors?.['min']['min'] }}
+    Ce champ doit être supérieur ou égale à
+    {{ control.errors?.['min']['min'] }}.
   </div>
+
   <div *ngIf="control.errors?.['max']" class="invalid-feedback">
-    Ce champ doit être inférieur ou égale à {{ control.errors?.['max']['max'] }}
+    Ce champ doit être inférieur ou égale à
+    {{ control.errors?.['max']['max'] }}.
+  </div>
+
+  <div
+    *ngIf="(control.errors?.['mask'] && type == 'tel')"
+    class="invalid-feedback"
+  >
+    Veuillez vérifier le format du numéro. Le numéro doit comporter 8 chiffres.
   </div>
 </ng-container>

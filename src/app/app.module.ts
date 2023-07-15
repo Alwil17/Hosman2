@@ -18,6 +18,7 @@ import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 // Language
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { NgxMaskModule } from 'ngx-mask';
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -47,7 +48,9 @@ if (environment.defaultauth === 'firebase') {
     BrowserModule,
     AppRoutingModule,
     LayoutsModule,
-    PagesModule
+    PagesModule,
+    NgxMaskModule.forRoot()
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

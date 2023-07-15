@@ -56,6 +56,9 @@ export class PatientFormComponent implements OnInit {
   insuranceInfoForm: FormGroup = new FormGroup({});
   otherInfoForm: FormGroup = new FormGroup({});
 
+  // To set date max
+  today = new Date().toLocaleDateString("fr-ca");
+
   // Nav steps variables
   activeStep = 1;
   isGeneralInfoFormSubmitted = false;

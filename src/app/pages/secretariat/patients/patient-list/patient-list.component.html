@@ -79,7 +79,7 @@
                   <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
-                  <td>{{ patient.tel1 }}</td>
+                  <td>{{ patient.tel1 | mask: '99 99 99 99'}}</td>
                   <td>{{ patient.date_entre | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.no_carte }}</td>
                   <td>{{ patient.assurance }}</td>
@@ -87,7 +87,6 @@
                     <div
                       class="d-inline-block"
                       ngbDropdown
-                      #filterDrop="ngbDropdown"
                       container="body"
                     >
                       <button

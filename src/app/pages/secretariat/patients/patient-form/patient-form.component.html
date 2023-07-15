@@ -98,6 +98,7 @@
                                 label="Date de naissance"
                                 type="date"
                                 [isMandatory]="true"
+                                [maxDate]="today"
                                 [control]="dateOfBirthControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
@@ -131,9 +132,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel1Control"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -142,6 +145,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Email"
+                                type="email"
                                 placeholder="test@example.org"
                                 [control]="patientEmailControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
@@ -309,8 +313,9 @@
                               <app-input
                                 label="Taux de PEC"
                                 placeholder="Taux de prise en charge du patient"
-                                type="number"
                                 [isMandatory]="true"
+                                maskFormat="percent"
+                                maskSuffix=" %"
                                 [control]="insuranceRateControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -333,6 +338,7 @@
                               <app-input
                                 label="Date de début PEC"
                                 type="date"
+                                [maxDate]="today"
                                 [control]="insuranceStartControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -344,6 +350,7 @@
                               <app-input
                                 label="Date de fin PEC"
                                 type="date"
+                                [minDate]="today"
                                 [control]="insuranceEndControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -355,9 +362,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone 1"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel1Control"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -366,9 +375,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone 2"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel2Control"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -377,6 +388,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Email"
+                                type="email"
                                 placeholder="test@example.org"
                                 [control]="insuranceEmailControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
@@ -495,9 +507,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Autre contact"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel2Control"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
