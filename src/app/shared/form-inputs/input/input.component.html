@@ -1,25 +1,63 @@
-<label class="form-label"
-  >{{ label }}
-  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
-    >*</span
-  ></label
->
-<input
-  class="form-control"
-  [type]="type"
-  [placeholder]="placeholder"
-  [readOnly]="readOnly"
-  [mask]="maskFormat"
-  [suffix]="maskSuffix"
-  [dropSpecialCharacters]="false"
-  [min]="minDate"
-  [max]="maxDate"
-  [formControl]="control"
-  [ngClass]="{
-    'is-invalid':
-      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
-  }"
-/>
+<ng-container *ngIf="isLayoutHorizontal; else layoutVertical">
+  <div class="row">
+    <div class="col-lg-6 d-flex align-items-center">
+      <label *ngIf="label !== ''" class="form-label m-0"
+        >{{ label }}
+        <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+          >*</span
+        ></label
+      >
+    </div>
+    <div class="col-lg-6">
+      <input
+        class="form-control"
+        [type]="type"
+        [placeholder]="placeholder"
+        [readOnly]="readOnly"
+        [mask]="maskFormat"
+        [suffix]="maskSuffix"
+        [dropSpecialCharacters]="false"
+        [min]="minDate"
+        [max]="maxDate"
+        [formControl]="control"
+        [ngClass]="{
+          'is-invalid':
+            ((control.touched && control.dirty) || isFormSubmitted) &&
+            control.errors
+        }"
+        [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+      />
+      <!-- [formControlName]="controlName" -->
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #layoutVertical>
+  <label *ngIf="label !== ''" class="form-label"
+    >{{ label }}
+    <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+      >*</span
+    ></label
+  >
+  <input
+    class="form-control"
+    [type]="type"
+    [placeholder]="placeholder"
+    [readOnly]="readOnly"
+    [mask]="maskFormat"
+    [suffix]="maskSuffix"
+    [dropSpecialCharacters]="false"
+    [min]="minDate"
+    [max]="maxDate"
+    [formControl]="control"
+    [ngClass]="{
+      'is-invalid':
+        ((control.touched && control.dirty) || isFormSubmitted) &&
+        control.errors
+    }"
+    [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+  />
+</ng-template>
 
 <ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
   <div *ngIf="control.errors?.['required']" class="invalid-feedback">

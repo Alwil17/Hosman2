@@ -5,10 +5,12 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {
+  NgbModal,
   NgbPaginationModule,
   NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
+import { PatientInvoiceFormComponent } from "../patient-invoice-form/patient-invoice-form.component";
 
 @Component({
   selector: "app-patient-activity",
@@ -72,14 +74,17 @@ export class PatientActivityComponent implements OnInit {
 
   constructor(
     public patientService: PatientService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private modalService: NgbModal
   ) {
     this.generateSummary();
 
     this.refreshActivities();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.openInvoiceModal();
+  }
 
   activityForm = new FormGroup({
     quantityControl: this.quantityControl,
@@ -213,5 +218,13 @@ export class PatientActivityComponent implements OnInit {
         ? this.patientService.getActivePatient().personToContact
         : "",
     };
+  }
+
+  openInvoiceModal() {
+    const modalRef = this.modalService.open(PatientInvoiceFormComponent, {
+      size: "xl",
+      centered: true,
+    });
+    modalRef.componentInstance.patientActivities = this.table2;
   }
 }
