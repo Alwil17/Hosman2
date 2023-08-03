@@ -69,14 +69,13 @@
 </div>
 <!--end row-->
 
+<!-- ACTIVITIES/PRESTATIONS CHOICE -->
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
       <div class="card-body">
         <div class="d-flex flex-wrap">
-          <ng-container
-            *ngFor="let prestationType of prestationTypes; index as i"
-          >
+          <ng-container *ngFor="let prestation of prestations; index as i">
             <div class="col-12 col-md-3 col-xl-2">
               <input
                 type="radio"
@@ -87,7 +86,8 @@
               <label
                 class="btn btn-outline-secondary me-2 d-block"
                 [for]="'pType-' + i"
-                ><b>{{ prestationType | uppercase }}</b></label
+                (click)="updateTable(i)"
+                ><b>{{ prestation.name | uppercase }}</b></label
               >
             </div>
           </ng-container>
@@ -117,7 +117,10 @@
                 <div class="mb-3">
                   <app-select
                     label="Type Médecin"
-                    [options]="['Interne', 'Externe']"
+                    [options]="[
+                      { id: 0, text: 'Interne' },
+                      { id: 1, text: 'Externe' }
+                    ]"
                   ></app-select>
                 </div>
               </div>
@@ -125,7 +128,10 @@
                 <div class="mb-3">
                   <app-select
                     label="Médecin"
-                    [options]="['Dr J-P', 'Dr Gael']"
+                    [options]="[
+                      { id: 0, text: 'Dr J-P' },
+                      { id: 1, text: 'Dr Gael' }
+                    ]"
                   ></app-select>
                 </div>
               </div>
@@ -154,7 +160,10 @@
                 <div class="mb-3">
                   <app-select
                     label="Effectué par"
-                    [options]="['Dr J-P', 'Dr Gael']"
+                    [options]="[
+                      { id: 0, text: 'Dr J-P' },
+                      { id: 1, text: 'Dr Gael' }
+                    ]"
                   ></app-select>
                 </div>
               </div>
@@ -207,7 +216,11 @@
         </div>
 
         <div class="col-md-8 d-flex">
-          <button type="button" class="btn btn-success btn-label right ms-auto" (click)="openInvoiceModal()">
+          <button
+            type="button"
+            class="btn btn-success btn-label right ms-auto"
+            (click)="openInvoiceModal()"
+          >
             <i
               class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
             ></i>
@@ -232,16 +245,14 @@
                 <tr>
                   <th scope="col">Prestation</th>
                   <th scope="col">Prix</th>
-                  <th scope="col">Sous-traitance</th>
-                  <th scope="col">Nouveaux tarifs</th>
+                  <th scope="col">Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of activities" (dblclick)="add(item)">
-                  <td>{{ item.prestation }}</td>
-                  <td>{{ item.prix }}</td>
-                  <td>{{ item.ss_traitance }}</td>
-                  <td>{{ item.new_tariff }}</td>
+                  <td>{{ item.designation }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>{{ item.description }}</td>
                 </tr>
               </tbody>
             </table>
@@ -252,6 +263,8 @@
               [collectionSize]="collectionSize"
               [(page)]="page"
               [pageSize]="pageSize"
+              [maxSize]="5"
+              [rotate]="true"
               (pageChange)="refreshActivities()"
             >
             </ngb-pagination>
@@ -295,9 +308,9 @@
                 <tr *ngFor="let item of table2" (dblclick)="remove(item)">
                   <td>{{ item.rubrique }}</td>
                   <td>{{ item.activity }}</td>
-                  <td>{{ item.prix }}</td>
-                  <td>{{ item.quantite }}</td>
-                  <td>{{ item.prix_total }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.total_price }}</td>
                 </tr>
               </tbody>
             </table>

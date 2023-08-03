@@ -3,7 +3,7 @@ import {
   NgbActiveModal,
   NgbPanelChangeEvent,
 } from "@ng-bootstrap/ng-bootstrap";
-import { IActivitySelect } from "../patient-activity/activity.models";
+import { IPrestationSelect } from "../patient-activity/activity.models";
 import {
   FormBuilder,
   FormControl,
@@ -18,14 +18,14 @@ import {
 })
 export class PatientInvoiceFormComponent implements OnInit {
   @Input()
-  patientActivities: IActivitySelect[] = [];
+  patientActivities: IPrestationSelect[] = [];
 
   // To set date max
   today = new Date().toLocaleDateString("fr-ca");
 
   invoiceForm?: FormGroup;
 
-  totalAmountControl = new FormControl("200000000");
+  totalAmountControl = new FormControl("30000");
   insuranceRateControl = new FormControl("60");
 
   rptpRadioControl = new FormControl("", [Validators.required]);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
+import { IPatient } from "src/app/models/secretariat/patients/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 
 @Component({
@@ -9,23 +10,23 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
   styleUrls: ["./patient-list.component.scss"],
 })
 export class PatientListComponent implements OnInit {
-  allPatients: Array<{}> = [
-    {
-      age: calculateExactAge(new Date("1998-04-25")),
-      ...{
-        id: 0,
-        reference: "PAT1",
-        nom: "Catastrophe",
-        prenoms: "Climatique",
-        date_naissance: new Date("1998-04-25"),
-        sexe: "Masculin",
-        is_assure: false,
-        tel1: "00000000",
-        date_entre: new Date("2023-06-03"),
-        no_carte: "0003-154-1324",
-        assurance: "ASCOMA",
-      },
-    },
+  allPatients: IPatient[] = [
+    // {
+    //   age: calculateExactAge(new Date("1998-04-25")),
+    //   ...{
+    //     id: 0,
+    //     reference: "PAT1",
+    //     nom: "Catastrophe",
+    //     prenoms: "Climatique",
+    //     date_naissance: new Date("1998-04-25"),
+    //     sexe: "Masculin",
+    //     is_assure: false,
+    //     tel1: "00000000",
+    //     date_entre: new Date("2023-06-03"),
+    //     no_carte: "0003-154-1324",
+    //     assurance: "ASCOMA",
+    //   },
+    // },
   ];
 
   // Pagination handling variables
@@ -35,13 +36,13 @@ export class PatientListComponent implements OnInit {
   patients: any[] = [];
 
   constructor(private router: Router, private patientService: PatientService) {
-    this.allPatients = [
-      ...this.allPatients,
-      ...this.patientService.getAllPatients().map((value) => ({
-        age: calculateExactAge(value.date_naissance),
-        ...value,
-      })),
-    ];
+    this.allPatients =
+      // ...this.allPatients,
+      this.patientService.getAllPatients().map((patient) => ({
+        ...patient,
+        age: calculateExactAge(patient.date_naissance),
+        nomAssurance: patientService.getInsurance(patient.id)?.nom,
+      }));
 
     this.refreshPatients();
   }
@@ -49,6 +50,8 @@ export class PatientListComponent implements OnInit {
   ngOnInit(): void {}
 
   refreshPatients() {
+    this.collectionSize = this.allPatients.length;
+
     this.patients = this.allPatients
       // .map((item, i) => ({ id: i + 1, ...item }))
       .slice(

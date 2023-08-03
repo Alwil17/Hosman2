@@ -26,8 +26,11 @@
   }"
 >
   <option value="" [disabled]="isMandatory">{{ defaultOption }}</option>
-  <option *ngFor="let option of options; index as i" [value]="option">
-    {{ option }}
+  <option
+    *ngFor="let option of options; index as i"
+    [value]="option.id"
+  >
+    {{ option.text }}
   </option>
 </select>
 

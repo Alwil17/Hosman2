@@ -39,7 +39,7 @@
             (click)="goToPatientNew()"
           >
             <i class="ri-user-add-fill label-icon align-middle fs-16 me-2"></i>
-            Ajouter
+            Nouveau patient
           </button>
         </div>
       </div>
@@ -49,9 +49,7 @@
       <div class="row">
         <div class="col-12">
           <div class="table-responsive table-card">
-            <table
-              class="table table-hover table-striped align-middle mb-0"
-            >
+            <table class="table table-hover table-striped align-middle mb-0">
               <thead class="table-light text-muted">
                 <tr>
                   <th scope="col">{{ "Référence" | uppercase }}</th>
@@ -79,16 +77,19 @@
                   <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
-                  <td>{{ patient.tel1 | mask: '99 99 99 99'}}</td>
+                  <td>{{ patient.tel1 | mask : "99 99 99 99" }}</td>
                   <td>{{ patient.date_entre | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.no_carte }}</td>
-                  <td>{{ patient.assurance }}</td>
+
+                  <td *ngIf="patient.is_assure; else noInsurance">
+                    {{ patient.nomAssurance }}
+                  </td>
+                  <ng-template #noInsurance>
+                    <td><em>Non assuré</em></td>
+                  </ng-template>
+
                   <td>
-                    <div
-                      class="d-inline-block"
-                      ngbDropdown
-                      container="body"
-                    >
+                    <div class="d-inline-block" ngbDropdown container="body">
                       <button
                         type="button"
                         class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"

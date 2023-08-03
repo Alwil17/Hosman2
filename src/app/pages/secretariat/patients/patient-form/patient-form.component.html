@@ -85,7 +85,7 @@
                               <app-select
                                 label="Sexe"
                                 [isMandatory]="true"
-                                [options]="['Masculin', 'Féminin']"
+                                [options]="genders"
                                 [control]="genderControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -158,7 +158,7 @@
                               <div class="col-4">
                                 <app-select
                                   label="Type"
-                                  [options]="['CNI', 'Passeport', 'Autres']"
+                                  [options]="idTypes"
                                   [control]="idTypeControl"
                                   [isFormSubmitted]="isGeneralInfoFormSubmitted"
                                 ></app-select>
@@ -180,14 +180,7 @@
                               <app-select
                                 label="Pays d'origine"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'BENIN',
-                                  'GHANA',
-                                  'TOGO',
-                                  'CÔTE D\'IVOIRE',
-                                  'CAMEROUN',
-                                  'NIGERIA'
-                                ]"
+                                [options]="countries"
                                 [control]="homelandControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -197,12 +190,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Profession"
-                                [options]="[
-                                  'Ingénieur',
-                                  'Commerçant',
-                                  'Médecin',
-                                  'Chômeur'
-                                ]"
+                                [options]="professions"
                                 [control]="professionControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -213,12 +201,7 @@
                               <app-select
                                 label="Assuré ?"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'Non - Le patient est un local',
-                                  'Non - Le patient est un étranger',
-                                  'Oui - Il s\'agit d\'une assurance locale',
-                                  'Oui - Il s\'agit d\'une assurance étrangère'
-                                ]"
+                                [options]="hasInsurances"
                                 [control]="hasInsuranceControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -286,12 +269,7 @@
                               <app-select
                                 label="Nom de l'assurance"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'ASCOMA',
-                                  'GTA',
-                                  'INAM',
-                                  'GRAS SAVOYE'
-                                ]"
+                                [options]="insurances"
                                 [control]="insuranceControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -302,7 +280,7 @@
                               <app-select
                                 label="Type de l'assurance"
                                 [isMandatory]="true"
-                                [options]="['Locale', 'Etrangère']"
+                                [options]="insuranceTypes"
                                 [control]="insuranceTypeControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -327,7 +305,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Employeur de l'assuré"
-                                [options]="['BIDC', 'ARCEP', 'Autres']"
+                                [options]="employers"
                                 [control]="patientEmployerControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -463,7 +441,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Adresse"
-                                placeholder="Rue, appartement, n° maison"
+                                placeholder="Rue, BP, Arrondissement, N° maison"
                                 [control]="patientAddressControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
@@ -474,14 +452,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Ville"
-                                [options]="[
-                                  'Lomé',
-                                  'Kpalimé',
-                                  'Ouagadougou',
-                                  'Lagos',
-                                  'Porto-Novo',
-                                  'Accra'
-                                ]"
+                                [options]="cities"
                                 [control]="cityControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
@@ -491,12 +462,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Quartier"
-                                [options]="[
-                                  'Gbossimé',
-                                  'Casablanca',
-                                  'Avé Maria',
-                                  'Autres'
-                                ]"
+                                [options]="neighborhoods"
                                 [control]="neighborhoodControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
