@@ -9,7 +9,7 @@
       "TEXT": "Patients",
       "LIST": {
         "PATIENT_NEW": "New patient",
-        "PATIENTS_LIST": "Old patient - list",
+        "PATIENTS_LIST": "Old patient",
         "DEBTS": "Debts",
         "RESTS": "Rests"
       }

@@ -9,9 +9,9 @@
       "TEXT": "Patients",
       "LIST": {
         "PATIENT_NEW": "Nouveau patient",
-        "PATIENTS_LIST": "Ancien patient - liste",
+        "PATIENTS_LIST": "Ancien patient",
         "DEBTS": "Créances",
-        "RESTS": "A rendre"
+        "RESTS": "Reliquats"
       }
     },
     "ACTIVITIES": {

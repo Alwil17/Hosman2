@@ -18,6 +18,7 @@ import { IPatient } from "src/app/models/secretariat/patients/patient.model";
 import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
 import { IInsurance } from "src/app/models/secretariat/patients/insurance.model";
 import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
+import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 
 @Component({
   selector: "app-patient-form",
@@ -124,7 +125,7 @@ export class PatientFormComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private patientService: PatientService,
-    private router: Router
+    private secretariatRouter: SecretariatRouterService
   ) {}
 
   ngOnInit(): void {
@@ -451,7 +452,7 @@ export class PatientFormComponent implements OnInit {
       patientData.patientInsurance
     );
 
-    await this.router.navigateByUrl("secretariat/patients/patient-list");
+    await this.secretariatRouter.navigateToPatientList();
   }
 
   async registerPatientAndContinue() {
@@ -463,6 +464,6 @@ export class PatientFormComponent implements OnInit {
       patientData.patientInsurance
     );
 
-    await this.router.navigateByUrl("secretariat/patients/patient-activity");
+    await this.secretariatRouter.navigateToPatientActivity();
   }
 }

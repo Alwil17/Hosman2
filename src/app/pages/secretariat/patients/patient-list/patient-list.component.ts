@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
 import { IPatient } from "src/app/models/secretariat/patients/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
+import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 
 @Component({
   selector: "app-patient-list",
@@ -35,7 +36,10 @@ export class PatientListComponent implements OnInit {
   collectionSize = this.allPatients.length;
   patients: any[] = [];
 
-  constructor(private router: Router, private patientService: PatientService) {
+  constructor(
+    private secretariatRouter: SecretariatRouterService,
+    private patientService: PatientService
+  ) {
     this.allPatients =
       // ...this.allPatients,
       this.patientService.getAllPatients().map((patient) => ({
@@ -65,6 +69,6 @@ export class PatientListComponent implements OnInit {
   }
 
   async goToPatientNew() {
-    await this.router.navigateByUrl("/secretariat/patients/patient-new");
+    await this.secretariatRouter.navigateToPatientNew();
   }
 }
