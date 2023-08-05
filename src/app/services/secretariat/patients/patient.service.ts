@@ -9,9 +9,9 @@ import { PATIENT_INSURANCES } from "src/app/data/secretariat/patient-insurance.d
 import { PATIENTS } from "src/app/data/secretariat/patients.data";
 import { PROFESSIONS } from "src/app/data/secretariat/professions.data";
 import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
-import { IInsurance } from "src/app/models/secretariat/patients/insurance.model";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
-import { IPatient } from "src/app/models/secretariat/patients/patient.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 
 // const baseUrl = 'http://localhost:8080/api/...';
 
@@ -19,7 +19,7 @@ import { IPatient } from "src/app/models/secretariat/patients/patient.model";
   providedIn: "root",
 })
 export class PatientService {
-  private activePatient: IPatient = {
+  private activePatient: Patient = {
     id: -1,
     reference: "",
     nom: "",
@@ -39,15 +39,15 @@ export class PatientService {
     type_patient: HAS_INSURANCES[0],
   };
 
-  allPatients: IPatient[] = PATIENTS;
+  allPatients: Patient[] = PATIENTS;
 
   private patientInsurances: IPatientInsurance[] = PATIENT_INSURANCES;
 
   constructor() {} // private http: HttpClient
 
   registerPatient(
-    patient: IPatient,
-    insurance?: IInsurance,
+    patient: Patient,
+    insurance?: Insurance,
     patientInsurance?: IPatientInsurance
   ) {
     // PATIENT
@@ -147,11 +147,11 @@ export class PatientService {
     return insurance;
   }
 
-  // getAll(): Observable<IPatient[]> {
-  //   return this.http.get<IPatient[]>(baseUrl);
+  // getAll(): Observable<Patient[]> {
+  //   return this.http.get<Patient[]>(baseUrl);
   // }
 
-  // get(id: any): Observable<IPatient> {
+  // get(id: any): Observable<Patient> {
   //   return this.http.get(`${baseUrl}/${id}`);
   // }
 

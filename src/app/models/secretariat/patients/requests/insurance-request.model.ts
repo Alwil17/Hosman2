@@ -1,33 +1,33 @@
-import { InsuranceType } from "./insurance-type.model";
+import { InsuranceTypeRequest } from "./insurance-type-request.model";
 
-export class Insurance {
-  id: number;
-  reference: string;
+export class InsuranceRequest {
   nom: string;
+  type_assurance: InsuranceTypeRequest;
   email?: string;
   tel1?: string;
   tel2?: string;
   representant?: string;
-  type_assurance: InsuranceType;
+  id?: number;
+  reference?: string;
   // taux ?
 
   constructor(
-    id: number,
-    reference: string,
     nom: string,
-    type_assurance: InsuranceType,
+    type_assurance: InsuranceTypeRequest,
     email?: string,
     tel1?: string,
     tel2?: string,
-    representant?: string
+    representant?: string,
+    id?: number,
+    reference?: string
   ) {
-    this.id = id;
-    this.reference = reference;
     this.nom = nom;
     this.type_assurance = type_assurance;
     this.email = email;
     this.tel1 = tel1;
     this.tel2 = tel2;
     this.representant = representant;
+    this.id = id;
+    this.reference = reference;
   }
 }

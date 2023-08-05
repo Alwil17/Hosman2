@@ -1,9 +1,9 @@
 import {
   HasInsuranceCode,
-  IHasInsurance,
+  HasInsurance,
 } from "src/app/models/secretariat/patients/has-insurance.model";
 
-const HAS_INSURANCES: IHasInsurance[] = [
+const HAS_INSURANCES: HasInsurance[] = [
   {
     id: 1,
     code: HasInsuranceCode.NO_LOCAL,

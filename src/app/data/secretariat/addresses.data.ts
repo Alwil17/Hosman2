@@ -1,8 +1,8 @@
-import { IAddress } from "src/app/models/secretariat/patients/address.model";
+import { Address } from "src/app/models/secretariat/patients/address.model";
 import { CITIES } from "./cities.data";
 import { NEIGHBORHOODS } from "./neighborhoods.data";
 
-const ADDRESSES: IAddress[] = [
+const ADDRESSES: Address[] = [
   {
     id: 1,
     ville: CITIES[0],

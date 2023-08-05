@@ -1,21 +1,21 @@
-export class Employer {
-  id: number;
+export class EmployerRequest {
   nom: string;
   email?: string;
   tel1?: string;
   tel2?: string;
+  id?: number;
 
   constructor(
-    id: number,
     nom: string,
     email?: string,
     tel1?: string,
-    tel2?: string
+    tel2?: string,
+    id?: number
   ) {
-    this.id = id;
     this.nom = nom;
     this.email = email;
     this.tel1 = tel1;
     this.tel2 = tel2;
+    this.id = id;
   }
 }

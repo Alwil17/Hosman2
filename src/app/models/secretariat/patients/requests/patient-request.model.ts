@@ -1,12 +1,10 @@
-import { Address } from "./address.model";
-import { Country } from "./country.model";
-import { Employer } from "./employer.model";
-import { HasInsurance } from "./has-insurance.model";
-import { Profession } from "./profession.model";
+import { HasInsurance } from "../has-insurance.model";
+import { AddressRequest } from "./address-request.model";
+import { CountryRequest } from "./country-request.model";
+import { EmployerRequest } from "./employer-request.model";
+import { ProfessionRequest } from "./profession-request.model";
 
-export class Patient {
-  id: number;
-  reference: string;
+export class PatientRequest {
   nom: string;
   prenoms: string;
   date_naissance: Date;
@@ -14,21 +12,18 @@ export class Patient {
   tel1: string;
   is_assure: boolean;
   personne_a_prevenir: string;
-  adresse: Address;
+  adresse: AddressRequest;
   date_entre: Date;
-  pays_origine: Country;
+  pays_origine: CountryRequest;
   type_patient: HasInsurance;
   lieu_naissance?: string;
   tel2?: string;
   type_carte?: string;
   no_carte?: string;
-  profession?: Profession;
-  // assurance?: IInsurance;
-  employeur?: Employer;
+  profession?: ProfessionRequest;
+  employeur?: EmployerRequest;
 
   constructor(
-    id: number,
-    reference: string,
     nom: string,
     prenoms: string,
     date_naissance: Date,
@@ -36,19 +31,17 @@ export class Patient {
     tel1: string,
     is_assure: boolean,
     personne_a_prevenir: string,
-    adresse: Address,
+    adresse: AddressRequest,
     date_entre: Date,
-    pays_origine: Country,
+    pays_origine: CountryRequest,
     type_patient: HasInsurance,
     lieu_naissance?: string,
     tel2?: string,
     type_carte?: string,
     no_carte?: string,
-    profession?: Profession,
-    employeur?: Employer
+    profession?: ProfessionRequest,
+    employeur?: EmployerRequest
   ) {
-    this.id = id;
-    this.reference = reference;
     this.nom = nom;
     this.prenoms = prenoms;
     this.date_naissance = date_naissance;

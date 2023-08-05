@@ -1,10 +1,9 @@
-import { City } from "./city.model";
-import { Neighborhood } from "./neighborhood.model";
+import { CityRequest } from "./city-request.model";
+import { NeighborhoodRequest } from "./neighborhood-request.model";
 
-export class Address {
-  id: number;
-  ville: City;
-  quartier: Neighborhood;
+export class AddressRequest {
+  ville: CityRequest;
+  quartier: NeighborhoodRequest;
   details?: string;
   // arrondissement?: string; // ???
   // no_number?: string; // ???
@@ -12,12 +11,10 @@ export class Address {
   // bp?: string; // ???
 
   constructor(
-    id: number,
-    ville: City,
-    quartier: Neighborhood,
+    ville: CityRequest,
+    quartier: NeighborhoodRequest,
     details?: string
   ) {
-    this.id = id;
     this.ville = ville;
     this.quartier = quartier;
     this.details = details;

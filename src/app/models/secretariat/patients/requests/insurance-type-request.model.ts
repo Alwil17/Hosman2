@@ -1,4 +1,4 @@
-export class InsuranceType {
+export class InsuranceTypeRequest {
   id: number;
   libelle: string;
 

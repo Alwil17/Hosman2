@@ -1,6 +1,6 @@
-import { ICountry } from "src/app/models/secretariat/patients/country.model";
+import { Country } from "src/app/models/secretariat/patients/country.model";
 
-const COUNTRIES: ICountry[] = [
+const COUNTRIES: Country[] = [
   {
     id: 1,
     nom: "BENIN",

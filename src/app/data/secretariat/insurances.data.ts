@@ -1,7 +1,7 @@
-import { IInsurance } from "src/app/models/secretariat/patients/insurance.model";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { INSURANCE_TYPES } from "./insurance-types.data";
 
-const INSURANCES: IInsurance[] = [
+const INSURANCES: Insurance[] = [
   {
     id: 1,
     reference: "INS1",

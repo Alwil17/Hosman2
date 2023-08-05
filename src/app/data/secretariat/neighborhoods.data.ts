@@ -1,6 +1,6 @@
-import { INeighborhood } from "src/app/models/secretariat/patients/neighborhood.model";
+import { Neighborhood } from "src/app/models/secretariat/patients/neighborhood.model";
 
-const NEIGHBORHOODS: INeighborhood[] = [
+const NEIGHBORHOODS: Neighborhood[] = [
   {
     id: 1,
     nom: "Avé Maria",

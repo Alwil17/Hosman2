@@ -4,19 +4,17 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
-import { Router } from "@angular/router";
 import { COUNTRIES } from "src/app/data/secretariat/countries.data";
 import { PROFESSIONS } from "src/app/data/secretariat/professions.data";
 import { INSURANCES } from "src/app/data/secretariat/insurances.data";
 import { EMPLOYERS } from "src/app/data/secretariat/employers.data";
-import { ADDRESSES } from "src/app/data/secretariat/addresses.data";
 import { CITIES } from "src/app/data/secretariat/cities.data";
 import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
 import { INSURANCE_TYPES } from "src/app/data/secretariat/insurance-types.data";
 import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
-import { IPatient } from "src/app/models/secretariat/patients/patient.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
-import { IInsurance } from "src/app/models/secretariat/patients/insurance.model";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
 import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 
@@ -351,7 +349,7 @@ export class PatientFormComponent implements OnInit {
       },
     };
 
-    const patient: IPatient = {
+    const patient: Patient = {
       id: -1,
       reference: "",
       nom: this.lastNameControl.value,
@@ -379,7 +377,7 @@ export class PatientFormComponent implements OnInit {
     };
     console.log(patient);
 
-    const insurance: IInsurance = {
+    const insurance: Insurance = {
       id: this.insuranceControl.value,
       reference: "",
       nom: "",

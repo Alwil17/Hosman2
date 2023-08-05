@@ -1,6 +1,6 @@
-import { ICity } from "src/app/models/secretariat/patients/city.model";
+import { City } from "src/app/models/secretariat/patients/city.model";
 
-const CITIES: ICity[] = [
+const CITIES: City[] = [
   {
     id: 1,
     nom: "Lomé",

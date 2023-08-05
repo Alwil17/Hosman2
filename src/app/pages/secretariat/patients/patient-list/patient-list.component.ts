@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
-import { IPatient } from "src/app/models/secretariat/patients/patient.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 
@@ -11,7 +11,7 @@ import { SecretariatRouterService } from "src/app/services/secretariat/router/se
   styleUrls: ["./patient-list.component.scss"],
 })
 export class PatientListComponent implements OnInit {
-  allPatients: IPatient[] = [
+  allPatients: Patient[] = [
     // {
     //   age: calculateExactAge(new Date("1998-04-25")),
     //   ...{

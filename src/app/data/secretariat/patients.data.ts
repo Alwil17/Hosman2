@@ -1,4 +1,4 @@
-import { IPatient } from "src/app/models/secretariat/patients/patient.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { COUNTRIES } from "./countries.data";
 import { PROFESSIONS } from "./professions.data";
 import { INSURANCES } from "./insurances.data";
@@ -6,7 +6,7 @@ import { EMPLOYERS } from "./employers.data";
 import { ADDRESSES } from "./addresses.data";
 import { HAS_INSURANCES } from "./has-insurance.data";
 
-const PATIENTS: IPatient[] = [
+const PATIENTS: Patient[] = [
   {
     id: 1,
     reference: "PAT1",

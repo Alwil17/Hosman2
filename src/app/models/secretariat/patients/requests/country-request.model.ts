@@ -1,22 +1,22 @@
-export class Country {
-  id: number;
+export class CountryRequest {
   nom: string;
   // slug?: string ???
   nationalite: string;
   code?: string;
   indicatif?: string;
+  id?: number;
 
   constructor(
-    id: number,
     nom: string,
     nationalite: string,
     code?: string,
-    indicatif?: string
+    indicatif?: string,
+    id?: number
   ) {
-    this.id = id;
     this.nom = nom;
     this.nationalite = nationalite;
     this.code = code;
     this.indicatif = indicatif;
+    this.id = id;
   }
 }

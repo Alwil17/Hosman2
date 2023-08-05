@@ -5,7 +5,7 @@ export enum HasInsuranceCode {
   YES_FOREIGNER = "Patient avec une assurance étrangère",
 }
 
-export interface IHasInsurance {
+export interface HasInsurance {
   id: number;
   code: HasInsuranceCode;
 }

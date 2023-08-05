@@ -1,6 +1,6 @@
-import { IEmployer } from "src/app/models/secretariat/patients/employer.model";
+import { Employer } from "src/app/models/secretariat/patients/employer.model";
 
-const EMPLOYERS: IEmployer[] = [
+const EMPLOYERS: Employer[] = [
   {
     id: 1,
     nom: "ARCEP",
