@@ -1,10 +1,13 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -18,4 +21,7 @@ public class Acte {
     private String libelle;
     private String slug;
     private long structure_id;
+    @OneToMany(mappedBy = "acte")
+    @JsonIgnore
+    private List<SousActe> sous_actes;
 }

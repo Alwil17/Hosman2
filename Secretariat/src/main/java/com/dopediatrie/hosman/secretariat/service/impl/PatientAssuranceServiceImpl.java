@@ -1,10 +1,13 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.PatientAssurance;
+import com.dopediatrie.hosman.secretariat.entity.PatientAssurancePK;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientAssuranceRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientAssuranceResponse;
+import com.dopediatrie.hosman.secretariat.repository.AssuranceRepository;
 import com.dopediatrie.hosman.secretariat.repository.PatientAssuranceRepository;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.service.PatientAssuranceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +22,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class PatientAssuranceServiceImpl implements PatientAssuranceService {
     private final PatientAssuranceRepository patientAssuranceRepository;
+    private final PatientRepository patientRepository;
+    private final AssuranceRepository assuranceRepository;
     private final String NOT_FOUND = "PATIENT_ASSURANCE_NOT_FOUND";
 
     @Override
@@ -27,13 +32,13 @@ public class PatientAssuranceServiceImpl implements PatientAssuranceService {
     }
 
     @Override
-    public long addPatientAssurance(PatientAssuranceRequest patientAssuranceRequest) {
+    public PatientAssurancePK addPatientAssurance(PatientAssuranceRequest patientAssuranceRequest) {
         log.info("PatientAssuranceServiceImpl | addPatientAssurance is called");
 
         PatientAssurance patientAssurance
                 = PatientAssurance.builder()
-                .patient_id(patientAssuranceRequest.getPatient_id())
-                .assurance_id(patientAssuranceRequest.getAssurance_id())
+                .patient(patientRepository.findById(patientAssuranceRequest.getPatient_id()).get())
+                .assurance(assuranceRepository.findById(patientAssuranceRequest.getAssurance_id()).get())
                 .date_debut(patientAssuranceRequest.getDate_debut())
                 .date_fin(patientAssuranceRequest.getDate_fin())
                 .taux(patientAssuranceRequest.getTaux())
@@ -75,8 +80,8 @@ public class PatientAssuranceServiceImpl implements PatientAssuranceService {
                         "PatientAssurance with given Id not found",
                         NOT_FOUND
                 ));
-        patientAssurance.setPatient_id(patientAssuranceRequest.getPatient_id());
-        patientAssurance.setAssurance_id(patientAssuranceRequest.getAssurance_id());
+        patientAssurance.setPatient(patientRepository.findById(patientAssuranceRequest.getPatient_id()).get());
+        patientAssurance.setAssurance(assuranceRepository.findById(patientAssuranceRequest.getAssurance_id()).get());
         patientAssurance.setDate_debut(patientAssuranceRequest.getDate_debut());
         patientAssurance.setDate_fin(patientAssuranceRequest.getDate_fin());
         patientAssurance.setTaux(patientAssuranceRequest.getTaux());

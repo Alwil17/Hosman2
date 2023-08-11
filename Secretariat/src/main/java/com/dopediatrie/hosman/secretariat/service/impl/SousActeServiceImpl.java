@@ -4,6 +4,7 @@ import com.dopediatrie.hosman.secretariat.entity.SousActe;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.SousActeRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.SousActeResponse;
+import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.SousActeRepository;
 import com.dopediatrie.hosman.secretariat.service.SousActeService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class SousActeServiceImpl implements SousActeService {
     private final SousActeRepository sousActeRepository;
+    private final ActeRepository acteRepository;
     private final String NOT_FOUND = "SOUSACTE_NOT_FOUND";
 
     @Override
@@ -34,7 +36,7 @@ public class SousActeServiceImpl implements SousActeService {
                 = SousActe.builder()
                 .libelle(sousActeRequest.getLibelle())
                 .code(sousActeRequest.getCode())
-                .acte_id(sousActeRequest.getActe_id())
+                .acte(acteRepository.findById(sousActeRequest.getActe_id()).get())
                 .build();
 
         sousActe = sousActeRepository.save(sousActe);
@@ -75,7 +77,7 @@ public class SousActeServiceImpl implements SousActeService {
                 ));
         sousActe.setLibelle(sousActeRequest.getLibelle());
         sousActe.setCode(sousActeRequest.getCode());
-        sousActe.setActe_id(sousActeRequest.getActe_id());
+        sousActe.setActe(acteRepository.findById(sousActeRequest.getActe_id()).get());
         sousActeRepository.save(sousActe);
 
         log.info("SousActeServiceImpl | editSousActe | SousActe Updated");

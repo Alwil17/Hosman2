@@ -5,6 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AssuranceRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AssuranceResponse;
 import com.dopediatrie.hosman.secretariat.repository.AssuranceRepository;
+import com.dopediatrie.hosman.secretariat.repository.TypeAssuranceRepository;
 import com.dopediatrie.hosman.secretariat.service.AssuranceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class AssuranceServiceImpl implements AssuranceService {
     private final AssuranceRepository assuranceRepository;
+    private final TypeAssuranceRepository typeAssuranceRepository;
     private final String NOT_FOUND = "ASSURANCE_NOT_FOUND";
 
     @Override
@@ -38,7 +40,7 @@ public class AssuranceServiceImpl implements AssuranceService {
                 .email(assuranceRequest.getEmail())
                 .tel1(assuranceRequest.getTel1())
                 .tel2(assuranceRequest.getTel2())
-                .type_assurance_id(assuranceRequest.getType_assurance_id())
+                .type_assurance(typeAssuranceRepository.findById(assuranceRequest.getType_assurance_id()).get())
                 .build();
 
         assurance = assuranceRepository.save(assurance);
@@ -83,7 +85,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         assurance.setEmail(assuranceRequest.getEmail());
         assurance.setTel1(assuranceRequest.getTel1());
         assurance.setTel2(assuranceRequest.getTel2());
-        assurance.setType_assurance_id(assuranceRequest.getType_assurance_id());
+        assurance.setType_assurance(typeAssuranceRepository.findById(assuranceRequest.getType_assurance_id()).get());
         assuranceRepository.save(assurance);
 
         log.info("AssuranceServiceImpl | editAssurance | Assurance Updated");

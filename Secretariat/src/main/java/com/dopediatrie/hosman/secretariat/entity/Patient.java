@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -39,4 +41,17 @@ public class Patient {
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
     private long structure_id;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Intervention> interventions;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "patient_adresse",
+            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "adresse_id", referencedColumnName = "id"))
+    private List<Adresse> adresses;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "patient_assurance",
+            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "assurance_id", referencedColumnName = "id"))
+    private List<Assurance> assurances;
 }

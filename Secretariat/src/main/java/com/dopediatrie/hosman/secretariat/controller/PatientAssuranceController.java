@@ -1,6 +1,7 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
 import com.dopediatrie.hosman.secretariat.entity.PatientAssurance;
+import com.dopediatrie.hosman.secretariat.entity.PatientAssurancePK;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientAssuranceRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientAssuranceResponse;
 import com.dopediatrie.hosman.secretariat.service.PatientAssuranceService;
@@ -28,13 +29,13 @@ public class PatientAssuranceController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addPatientAssurance(@RequestBody PatientAssuranceRequest patientAssuranceRequest) {
+    public ResponseEntity<PatientAssurancePK> addPatientAssurance(@RequestBody PatientAssuranceRequest patientAssuranceRequest) {
 
         log.info("PatientAssuranceController | addPatientAssurance is called");
 
         log.info("PatientAssuranceController | addPatientAssurance | patientAssuranceRequest : " + patientAssuranceRequest.toString());
 
-        long patientAssuranceId = patientAssuranceService.addPatientAssurance(patientAssuranceRequest);
+        PatientAssurancePK patientAssuranceId = patientAssuranceService.addPatientAssurance(patientAssuranceRequest);
         return new ResponseEntity<>(patientAssuranceId, HttpStatus.CREATED);
     }
 

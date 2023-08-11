@@ -1,13 +1,13 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -25,6 +25,14 @@ public class Tarif {
     private double tarif_assur_etr;
     private double tarif_assur_hors_zone;
     private long structure_id;
-    private long sous_acte_id;
+    @ManyToOne
+    @JoinColumn(name = "sous_acte_id")
+    private SousActe sous_acte;
     private String description;
+    @ManyToMany(mappedBy = "tarifs")
+    @JsonIgnore
+    private List<Assurance> assurances;
+    @ManyToMany(mappedBy = "tarifs")
+    @JsonIgnore
+    private List<Intervention> interventions;
 }

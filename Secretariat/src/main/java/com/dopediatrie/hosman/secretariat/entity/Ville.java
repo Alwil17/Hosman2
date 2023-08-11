@@ -1,13 +1,13 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,4 +19,7 @@ public class Ville {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String nom;
+    @OneToMany(mappedBy = "ville")
+    @JsonIgnore
+    private List<Adresse> adresses;
 }

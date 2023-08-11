@@ -5,6 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.InterventionRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.InterventionResponse;
 import com.dopediatrie.hosman.secretariat.repository.InterventionRepository;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.service.InterventionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class InterventionServiceImpl implements InterventionService {
     private final InterventionRepository interventionRepository;
+    private final PatientRepository patientRepository;
     private final String NOT_FOUND = "INTERVENTION_NOT_FOUND";
 
     @Override
@@ -32,7 +34,7 @@ public class InterventionServiceImpl implements InterventionService {
 
         Intervention intervention
                 = Intervention.builder()
-                .patient_id(interventionRequest.getPatient_id())
+                .patient(patientRepository.findById(interventionRequest.getPatient_id()).get())
                 .date_entree(interventionRequest.getDate_entree())
                 .date_sortie(interventionRequest.getDate_sortie())
                 .commentaires(interventionRequest.getCommentaires())
@@ -74,7 +76,7 @@ public class InterventionServiceImpl implements InterventionService {
                         "Intervention with given Id not found",
                         NOT_FOUND
                 ));
-        intervention.setPatient_id(interventionRequest.getPatient_id());
+        intervention.setPatient(patientRepository.findById(interventionRequest.getPatient_id()).get());
         intervention.setDate_entree(interventionRequest.getDate_entree());
         intervention.setDate_sortie(interventionRequest.getDate_sortie());
         intervention.setCommentaires(interventionRequest.getCommentaires());

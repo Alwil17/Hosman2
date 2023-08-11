@@ -4,6 +4,7 @@ import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
+import com.dopediatrie.hosman.secretariat.repository.SousActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
 import com.dopediatrie.hosman.secretariat.service.TarifService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class TarifServiceImpl implements TarifService {
     private final TarifRepository tarifRepository;
+    private final SousActeRepository sousActeRepository;
     private final String NOT_FOUND = "ACTE_NOT_FOUND";
 
     @Override
@@ -39,7 +41,7 @@ public class TarifServiceImpl implements TarifService {
                 .tarif_assur_etr(tarifRequest.getTarif_assur_etr())
                 .tarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone())
                 .structure_id(tarifRequest.getStructure_id())
-                .sous_acte_id(tarifRequest.getSous_acte_id())
+                .sous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get())
                 .description(tarifRequest.getDescription())
                 .build();
 
@@ -86,7 +88,7 @@ public class TarifServiceImpl implements TarifService {
         tarif.setTarif_assur_etr(tarifRequest.getTarif_assur_etr());
         tarif.setTarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone());
         tarif.setStructure_id(tarifRequest.getStructure_id());
-        tarif.setSous_acte_id(tarifRequest.getSous_acte_id());
+        tarif.setSous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get());
         tarif.setDescription(tarifRequest.getDescription());
         tarifRepository.save(tarif);
 

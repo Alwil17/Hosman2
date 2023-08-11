@@ -1,6 +1,7 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
 import com.dopediatrie.hosman.secretariat.entity.AssuranceTarif;
+import com.dopediatrie.hosman.secretariat.entity.AssuranceTarifPK;
 import com.dopediatrie.hosman.secretariat.payload.request.AssuranceTarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AssuranceTarifResponse;
 import com.dopediatrie.hosman.secretariat.service.AssuranceTarifService;
@@ -28,13 +29,13 @@ public class AssuranceTarifController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addAssuranceTarif(@RequestBody AssuranceTarifRequest assuranceTarifRequest) {
+    public ResponseEntity<AssuranceTarifPK> addAssuranceTarif(@RequestBody AssuranceTarifRequest assuranceTarifRequest) {
 
         log.info("AssuranceTarifController | addAssuranceTarif is called");
 
         log.info("AssuranceTarifController | addAssuranceTarif | assuranceTarifRequest : " + assuranceTarifRequest.toString());
 
-        long assuranceTarifId = assuranceTarifService.addAssuranceTarif(assuranceTarifRequest);
+        AssuranceTarifPK assuranceTarifId = assuranceTarifService.addAssuranceTarif(assuranceTarifRequest);
         return new ResponseEntity<>(assuranceTarifId, HttpStatus.CREATED);
     }
 

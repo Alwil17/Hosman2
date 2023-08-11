@@ -1,10 +1,13 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.AssuranceTarif;
+import com.dopediatrie.hosman.secretariat.entity.AssuranceTarifPK;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AssuranceTarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AssuranceTarifResponse;
+import com.dopediatrie.hosman.secretariat.repository.AssuranceRepository;
 import com.dopediatrie.hosman.secretariat.repository.AssuranceTarifRepository;
+import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
 import com.dopediatrie.hosman.secretariat.service.AssuranceTarifService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +22,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class AssuranceTarifServiceImpl implements AssuranceTarifService {
     private final AssuranceTarifRepository assuranceTarifRepository;
+    private final AssuranceRepository assuranceRepository;
+    private final TarifRepository tarifRepository;
     private final String NOT_FOUND = "ASSURANCE_TARIF_NOT_FOUND";
 
     @Override
@@ -27,13 +32,13 @@ public class AssuranceTarifServiceImpl implements AssuranceTarifService {
     }
 
     @Override
-    public long addAssuranceTarif(AssuranceTarifRequest assuranceTarifRequest) {
+    public AssuranceTarifPK addAssuranceTarif(AssuranceTarifRequest assuranceTarifRequest) {
         log.info("AssuranceTarifServiceImpl | addAssuranceTarif is called");
 
         AssuranceTarif assuranceTarif
                 = AssuranceTarif.builder()
-                .assurance_id(assuranceTarifRequest.getAssurance_id())
-                .tarif_id(assuranceTarifRequest.getTarif_id())
+                .assurance(assuranceRepository.findById(assuranceTarifRequest.getAssurance_id()).get())
+                .tarif(tarifRepository.findById(assuranceTarifRequest.getTarif_id()).get())
                 .base_remboursement(assuranceTarifRequest.getBase_remboursement())
                 .build();
 
@@ -73,8 +78,8 @@ public class AssuranceTarifServiceImpl implements AssuranceTarifService {
                         "AssuranceTarif with given Id not found",
                         NOT_FOUND
                 ));
-        assuranceTarif.setAssurance_id(assuranceTarifRequest.getAssurance_id());
-        assuranceTarif.setTarif_id(assuranceTarifRequest.getTarif_id());
+        assuranceTarif.setAssurance(assuranceRepository.findById(assuranceTarifRequest.getAssurance_id()).get());
+        assuranceTarif.setTarif(tarifRepository.findById(assuranceTarifRequest.getTarif_id()).get());
         assuranceTarif.setBase_remboursement(assuranceTarifRequest.getBase_remboursement());
         assuranceTarifRepository.save(assuranceTarif);
 

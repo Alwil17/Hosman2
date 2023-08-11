@@ -5,6 +5,8 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AdresseRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AdresseResponse;
 import com.dopediatrie.hosman.secretariat.repository.AdresseRepository;
+import com.dopediatrie.hosman.secretariat.repository.QuartierRepository;
+import com.dopediatrie.hosman.secretariat.repository.VilleRepository;
 import com.dopediatrie.hosman.secretariat.service.AdresseService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class AdresseServiceImpl implements AdresseService {
     private final AdresseRepository adresseRepository;
+    private final VilleRepository villeRepository;
+    private final QuartierRepository quartierRepository;
     private final String NOT_FOUND = "ADRESSE_NOT_FOUND";
 
     @Override
@@ -37,8 +41,8 @@ public class AdresseServiceImpl implements AdresseService {
                 .arrondissement(adresseRequest.getArrondissement())
                 .no_maison(adresseRequest.getNo_maison())
                 .rue(adresseRequest.getRue())
-                .ville_id(adresseRequest.getVille_id())
-                .quartier_id(adresseRequest.getQuartier_id())
+                .ville(villeRepository.findById(adresseRequest.getVille_id()).get())
+                .quartier(quartierRepository.findById(adresseRequest.getQuartier_id()).get())
                 .build();
 
         adresse = adresseRepository.save(adresse);
@@ -81,8 +85,8 @@ public class AdresseServiceImpl implements AdresseService {
         adresse.setArrondissement(adresseRequest.getArrondissement());
         adresse.setNo_maison(adresseRequest.getNo_maison());
         adresse.setRue(adresseRequest.getRue());
-        adresse.setVille_id(adresseRequest.getVille_id());
-        adresse.setQuartier_id(adresseRequest.getQuartier_id());
+        adresse.setVille(villeRepository.findById(adresseRequest.getVille_id()).get());
+        adresse.setQuartier(quartierRepository.findById(adresseRequest.getQuartier_id()).get());
         adresseRepository.save(adresse);
 
         log.info("AdresseServiceImpl | editAdresse | Adresse Updated");

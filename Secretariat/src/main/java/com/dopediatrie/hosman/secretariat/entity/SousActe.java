@@ -1,13 +1,13 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -22,5 +22,10 @@ public class SousActe {
     private String libelle;
     private String slug;
     private String code;
-    private Long acte_id;
+    @ManyToOne
+    @JoinColumn(name = "acte_id")
+    private Acte acte;
+    @OneToMany(mappedBy = "sous_acte")
+    @JsonIgnore
+    private List<Tarif> tarifs;
 }
