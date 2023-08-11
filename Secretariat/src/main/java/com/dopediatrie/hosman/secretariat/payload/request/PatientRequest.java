@@ -19,7 +19,7 @@ public class PatientRequest {
     private String email = "";
     private String type_piece = "CNI";
     private String no_piece;
-    private boolean is_assure = false;
+    private int is_assure = 0;
     private long pays_origine_id;
     private long profession_id;
     private long employeur_id;

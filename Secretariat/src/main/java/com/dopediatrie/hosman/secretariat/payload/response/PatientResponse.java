@@ -1,5 +1,8 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
+import com.dopediatrie.hosman.secretariat.entity.Employeur;
+import com.dopediatrie.hosman.secretariat.entity.Pays;
+import com.dopediatrie.hosman.secretariat.entity.Profession;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,9 +27,9 @@ public class PatientResponse {
     private String email;
     private String type_piece;
     private String no_piece;
-    private boolean is_assure;
-    private long pays_origine_id;
-    private long profession_id;
-    private long employeur_id;
+    private int is_assure;
+    private Pays pays_origine;
+    private Profession profession;
+    private Employeur employeur;
     private long structure_id;
 }

@@ -1,13 +1,13 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +20,7 @@ public class Profession {
     private long id;
     private String denomination;
     private String slug;
+    @OneToMany(mappedBy = "profession")
+    @JsonIgnore
+    private List<Patient> patients;
 }

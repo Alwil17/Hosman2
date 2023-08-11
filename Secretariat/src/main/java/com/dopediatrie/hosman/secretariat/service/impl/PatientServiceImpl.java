@@ -4,7 +4,10 @@ import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
+import com.dopediatrie.hosman.secretariat.repository.EmployeurRepository;
 import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
+import com.dopediatrie.hosman.secretariat.repository.PaysRepository;
+import com.dopediatrie.hosman.secretariat.repository.ProfessionRepository;
 import com.dopediatrie.hosman.secretariat.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +23,9 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
+    private final PaysRepository paysRepository;
+    private final ProfessionRepository professionRepository;
+    private final EmployeurRepository employeurRepository;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -44,10 +50,10 @@ public class PatientServiceImpl implements PatientService {
                 .email(patientRequest.getEmail())
                 .type_piece(patientRequest.getType_piece())
                 .no_piece(patientRequest.getNo_piece())
-                .is_assure(patientRequest.is_assure())
-                .pays_origine_id(patientRequest.getPays_origine_id())
-                .profession_id(patientRequest.getProfession_id())
-                .employeur_id(patientRequest.getEmployeur_id())
+                .is_assure(patientRequest.getIs_assure())
+                .pays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get())
+                .profession(professionRepository.findById(patientRequest.getProfession_id()).get())
+                .employeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get())
                 .structure_id(patientRequest.getStructure_id())
                 .build();
 
@@ -98,10 +104,10 @@ public class PatientServiceImpl implements PatientService {
         patient.setEmail(patientRequest.getEmail());
         patient.setType_piece(patientRequest.getType_piece());
         patient.setNo_piece(patientRequest.getNo_piece());
-        patient.set_assure(patientRequest.is_assure());
-        patient.setPays_origine_id(patientRequest.getPays_origine_id());
-        patient.setProfession_id(patientRequest.getProfession_id());
-        patient.setEmployeur_id(patientRequest.getEmployeur_id());
+        patient.setIs_assure(patientRequest.getIs_assure());
+        patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
+        patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
+        patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
         patient.setStructure_id(patientRequest.getStructure_id());
         patientRepository.save(patient);
 

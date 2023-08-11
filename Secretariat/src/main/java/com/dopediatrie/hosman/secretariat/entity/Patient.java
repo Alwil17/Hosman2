@@ -1,9 +1,6 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,9 +28,15 @@ public class Patient {
     private String email;
     private String type_piece;
     private String no_piece;
-    private boolean is_assure;
-    private long pays_origine_id;
-    private long profession_id;
-    private long employeur_id;
+    private int is_assure;
+    @ManyToOne
+    @JoinColumn(name = "pays_origine_id")
+    private Pays pays_origine;
+    @ManyToOne
+    @JoinColumn(name = "profession_id")
+    private Profession profession;
+    @ManyToOne
+    @JoinColumn(name = "employeur_id")
+    private Employeur employeur;
     private long structure_id;
 }
