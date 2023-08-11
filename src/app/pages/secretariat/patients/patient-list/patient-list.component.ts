@@ -64,8 +64,10 @@ export class PatientListComponent implements OnInit {
       );
   }
 
-  view(patient: any) {
-    console.log(patient);
+  async view(patient: any) {
+    this.patientService.setActivePatient(patient.id);
+
+    await this.secretariatRouter.navigateToPatientActivity();
   }
 
   async goToPatientNew() {

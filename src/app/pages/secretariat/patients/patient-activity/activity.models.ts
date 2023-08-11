@@ -35,7 +35,7 @@ export interface IPrestation {
 export interface IPrestationSelect {
   id: any;
   rubrique: string;
-  activity: string;
+  prestation: string;
   price: number;
   quantity: number;
   total_price: number;

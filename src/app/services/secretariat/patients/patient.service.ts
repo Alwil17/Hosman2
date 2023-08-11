@@ -19,25 +19,26 @@ import { Patient } from "src/app/models/secretariat/patients/patient.model";
   providedIn: "root",
 })
 export class PatientService {
-  private activePatient: Patient = {
-    id: -1,
-    reference: "",
-    nom: "",
-    prenoms: "",
-    date_naissance: new Date(),
-    sexe: "",
-    is_assure: false,
-    tel1: "",
-    personne_a_prevenir: "",
-    date_entre: new Date(),
-    adresse: {
-      id: -1,
-      ville: CITIES[0],
-      quartier: NEIGHBORHOODS[0],
-    },
-    pays_origine: COUNTRIES[0],
-    type_patient: HAS_INSURANCES[0],
-  };
+  private activePatient: Patient = PATIENTS[0];
+  // {
+  //   id: -1,
+  //   reference: "",
+  //   nom: "",
+  //   prenoms: "",
+  //   date_naissance: new Date(),
+  //   sexe: "",
+  //   is_assure: false,
+  //   tel1: "",
+  //   personne_a_prevenir: "",
+  //   date_entre: new Date(),
+  //   adresse: {
+  //     id: -1,
+  //     ville: CITIES[0],
+  //     quartier: NEIGHBORHOODS[0],
+  //   },
+  //   pays_origine: COUNTRIES[0],
+  //   type_patient: HAS_INSURANCES[0],
+  // };
 
   allPatients: Patient[] = PATIENTS;
 
@@ -111,10 +112,26 @@ export class PatientService {
     return { ...this.activePatient };
   }
 
+  setActivePatient(patientId: number) {
+    this.activePatient = this.allPatients.find(
+      (patient) => patientId == patient.id
+    )!;
+  }
+
   getActivePatientType() {
     // console.log("active patient type", this.activePatient.type_patient.id);
 
     return this.activePatient.type_patient.id;
+  }
+
+  getActivePatientRate() {
+    // console.log("active patient type", this.activePatient.type_patient.id);
+
+    const patientInsurance = this.patientInsurances.find(
+      (value) => value.patient_id == this.activePatient.id
+    );
+
+    return patientInsurance ? patientInsurance.taux : 80;
   }
 
   getAllPatients() {
