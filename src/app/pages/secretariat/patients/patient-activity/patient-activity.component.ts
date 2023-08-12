@@ -26,6 +26,9 @@ import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
   styleUrls: ["./patient-activity.component.scss"],
 })
 export class PatientActivityComponent implements OnInit {
+  // bread crumb items
+  breadCrumbItems!: Array<{}>;
+
   isMedicalProceduresSelected = true;
 
   // Activity form controls
@@ -62,7 +65,7 @@ export class PatientActivityComponent implements OnInit {
   collectionSize = this.table1.length;
   activities: IPrestation[] = [];
 
-  invoiceModalRef!: NgbModalRef;
+  // invoiceModalRef!: NgbModalRef;
 
   constructor(
     public patientService: PatientService,
@@ -97,7 +100,15 @@ export class PatientActivityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.openInvoiceModal();
+    /**
+     * BreadCrumb
+     */
+    this.breadCrumbItems = [
+      { label: "Patients" },
+      { label: "Activité", active: true },
+    ];
+
+    // this.openInvoiceModal();
 
     this.activityForm = new FormGroup({
       sectorControl: this.sectorControl,
@@ -358,18 +369,21 @@ export class PatientActivityComponent implements OnInit {
   }
 
   openInvoiceModal() {
-    // this.isActivityFormSubmitted = true;
+    this.isActivityFormSubmitted = true;
 
-    // if (this.activityForm.valid) {
-    // if (!this.invoiceModalRef) {
-    this.invoiceModalRef = this.modalService.open(PatientInvoiceFormComponent, {
-      size: "xl",
-      centered: true,
-      scrollable: true,
-    });
-    // }
+    if (this.activityForm.valid) {
+      // if (!this.invoiceModalRef) {
+      const invoiceModalRef = this.modalService.open(
+        PatientInvoiceFormComponent,
+        {
+          size: "xl",
+          centered: true,
+          scrollable: true,
+        }
+      );
+      // }
 
-    this.invoiceModalRef.componentInstance.patientActivities = this.table2;
-    // }
+      invoiceModalRef.componentInstance.patientActivities = this.table2;
+    }
   }
 }

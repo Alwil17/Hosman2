@@ -11,6 +11,8 @@ export class SecretariatRouterService {
     patientActivity: "/secretariat/patients/patient-activity",
     patientDebts: "/secretariat/patients/patient-debts",
     patientRests: "/secretariat/patients/patient-rests",
+    patientWaitingList: "/secretariat/patients/patient-waiting-list",
+
   };
 
   constructor(private router: Router) {}
@@ -33,5 +35,9 @@ export class SecretariatRouterService {
 
   async navigateToPatientRests() {
     await this.router.navigateByUrl(this.routesPath.patientRests);
+  }
+
+  async navigateToPatientWaitingList() {
+    await this.router.navigateByUrl(this.routesPath.patientWaitingList);
   }
 }

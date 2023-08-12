@@ -11,6 +11,9 @@ import { SecretariatRouterService } from "src/app/services/secretariat/router/se
   styleUrls: ["./patient-list.component.scss"],
 })
 export class PatientListComponent implements OnInit {
+  // bread crumb items
+  breadCrumbItems!: Array<{}>;
+
   allPatients: Patient[] = [
     // {
     //   age: calculateExactAge(new Date("1998-04-25")),
@@ -51,7 +54,15 @@ export class PatientListComponent implements OnInit {
     this.refreshPatients();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    /**
+     * BreadCrumb
+     */
+    this.breadCrumbItems = [
+      { label: "Patients" },
+      { label: "Ancien patient", active: true },
+    ];
+  }
 
   refreshPatients() {
     this.collectionSize = this.allPatients.length;

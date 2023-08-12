@@ -1,3 +1,10 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="PATIENTS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
@@ -221,6 +228,7 @@
                     label="Quantité"
                     type="number"
                     [isMandatory]="true"
+                    [alignRight]="true"
                     [control]="quantityControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   >

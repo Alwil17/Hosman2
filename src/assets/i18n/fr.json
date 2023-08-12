@@ -11,7 +11,8 @@
         "PATIENT_NEW": "Nouveau patient",
         "PATIENTS_LIST": "Ancien patient",
         "DEBTS": "Créances",
-        "RESTS": "Reliquats"
+        "RESTS": "Reliquats",
+        "WAITING_LIST": "Liste d'attente"
       }
     },
     "ACTIVITIES": {

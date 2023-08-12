@@ -40,14 +40,52 @@
           </div>
         </div>
         <div class="d-flex col-md-5 col-xl-8">
-          <button
-            type="button"
-            class="btn btn-success btn-label ms-auto"
-            (click)="goToPatientNew()"
-          >
-            <i class="ri-user-add-fill label-icon align-middle fs-16 me-2"></i>
-            Nouveau patient
-          </button>
+          <div class="ms-auto">
+            <div
+              class="form-check form-check-inline form-radio-outline form-radio-secondary"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                name="waitingListRadio"
+                id="all"
+                value="all"
+                checked
+              />
+              <label class="form-check-label" for="all">
+                Toute la liste d'attente
+              </label>
+            </div>
+
+            <div
+              class="form-check form-check-inline form-radio-outline form-radio-secondary"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                name="waitingListRadio"
+                id="sector"
+                value="sector"
+              />
+              <label class="form-check-label" for="sector">
+                Liste d'attente par secteur
+              </label>
+            </div>
+            <div
+              class="form-check form-check-inline form-radio-outline form-radio-secondary"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                name="waitingListRadio"
+                id="doctor"
+                value="doctor"
+              />
+              <label class="form-check-label" for="doctor">
+                Liste d'attente par médecin
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -65,35 +103,36 @@
                   <th scope="col">{{ "Né(e) le" | uppercase }}</th>
                   <th scope="col">{{ "Âge" | uppercase }}</th>
                   <th scope="col">{{ "Sexe" | uppercase }}</th>
-                  <th scope="col">{{ "Contact" | uppercase }}</th>
-                  <th scope="col">{{ "Date d'entrée" | uppercase }}</th>
-                  <th scope="col">{{ "N° Pièce" | uppercase }}</th>
-                  <th scope="col">{{ "Assurance" | uppercase }}</th>
+                  <th scope="col">{{ "Prestations" | uppercase }}</th>
+                  <th scope="col">{{ "Total facture" | uppercase }}</th>
+                  <th scope="col">{{ "Secteur" | uppercase }}</th>
+                  <th scope="col">{{ "Médecin" | uppercase }}</th>
+                  <th scope="col">{{ "Date arrivée" | uppercase }}</th>
+                  <th scope="col">{{ "Heure" | uppercase }}</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let patient of patients"
-                  (dblclick)="view(patient)"
+                  *ngFor="let item of waitingListCut"
                   class="user-select-none"
                 >
-                  <td>{{ patient.reference }}</td>
-                  <td>{{ patient.nom | uppercase }}</td>
-                  <td>{{ patient.prenoms }}</td>
-                  <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
-                  <td>{{ patient.age }}</td>
-                  <td>{{ patient.sexe }}</td>
-                  <td>{{ patient.tel1 | mask : "99 99 99 99" }}</td>
-                  <td>{{ patient.date_entre | date : "dd/MM/yyyy" }}</td>
-                  <td>{{ patient.no_carte }}</td>
-
-                  <td *ngIf="patient.is_assure; else noInsurance">
-                    {{ patient.nomAssurance }}
+                  <td>{{ item.reference }}</td>
+                  <td>{{ item.lastname | uppercase }}</td>
+                  <td>{{ item.firstname }}</td>
+                  <td>{{ item.dob | date : "dd/MM/yyyy" }}</td>
+                  <td>{{ item.age }}</td>
+                  <td>{{ item.gender }}</td>
+                  <td>
+                    <span *ngFor="let prestation of item.acts">
+                      {{ prestation }},
+                    </span>
                   </td>
-                  <ng-template #noInsurance>
-                    <td><em>Non assuré</em></td>
-                  </ng-template>
+                  <td>{{ item.invoiceTotal | mask : "separator" }}</td>
+                  <td>{{ item.sector }}</td>
+                  <td>{{ item.doctor }}</td>
+                  <td>{{ item.dateOfArrival | date : "dd/MM/yyyy" }}</td>
+                  <td>{{ item.timeOfArrival | date : "hh:mm:ss" }}</td>
 
                   <td>
                     <div class="d-inline-block" ngbDropdown container="body">
@@ -109,13 +148,19 @@
                           <i
                             class="ri-information-line label-icon align-middle fs-16 me-2 text-success"
                           ></i>
-                          Voir
+                          Détails de la facture
                         </button>
                         <button ngbDropdownItem>
                           <i
-                            class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                            class="ri-exchange-line label-icon align-middle fs-16 me-2 text-warning"
                           ></i>
-                          Modifier
+                          Changer de médecin de destination
+                        </button>
+                        <button ngbDropdownItem>
+                          <i
+                            class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                          ></i>
+                          Retirer de la liste d'attente
                         </button>
                       </div>
                     </div>

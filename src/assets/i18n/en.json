@@ -11,7 +11,8 @@
         "PATIENT_NEW": "New patient",
         "PATIENTS_LIST": "Old patient",
         "DEBTS": "Debts",
-        "RESTS": "Rests"
+        "RESTS": "Rests",
+        "WAITING_LIST": "Waiting list"
       }
     },
     "ACTIVITIES": {

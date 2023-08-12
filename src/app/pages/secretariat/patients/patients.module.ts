@@ -12,9 +12,10 @@ import { NgbAccordionModule, NgbDropdownModule, NgbNavModule, NgbPaginationModul
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { NgxMaskModule } from "ngx-mask";
 import { PatientInvoiceFormComponent } from './patient-invoice-form/patient-invoice-form.component';
+import { PatientWaitingListComponent } from './patient-waiting-list/patient-waiting-list.component';
 
 @NgModule({
-  declarations: [PatientCreateComponent, PatientFormComponent,  PatientActivityComponent, PatientListComponent, PatientInvoiceFormComponent],
+  declarations: [PatientCreateComponent, PatientFormComponent,  PatientActivityComponent, PatientListComponent, PatientInvoiceFormComponent, PatientWaitingListComponent],
   imports: [
     CommonModule,
     PatientsRoutingModule,
