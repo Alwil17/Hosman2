@@ -85,7 +85,7 @@
                               <app-select
                                 label="Sexe"
                                 [isMandatory]="true"
-                                [options]="['Masculin', 'Féminin']"
+                                [options]="genders"
                                 [control]="genderControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -98,6 +98,7 @@
                                 label="Date de naissance"
                                 type="date"
                                 [isMandatory]="true"
+                                [maxDate]="today"
                                 [control]="dateOfBirthControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               >
@@ -131,9 +132,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel1Control"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -142,6 +145,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Email"
+                                type="email"
                                 placeholder="test@example.org"
                                 [control]="patientEmailControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
@@ -154,7 +158,7 @@
                               <div class="col-4">
                                 <app-select
                                   label="Type"
-                                  [options]="['CNI', 'Passeport', 'Autres']"
+                                  [options]="idTypes"
                                   [control]="idTypeControl"
                                   [isFormSubmitted]="isGeneralInfoFormSubmitted"
                                 ></app-select>
@@ -176,14 +180,7 @@
                               <app-select
                                 label="Pays d'origine"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'BENIN',
-                                  'GHANA',
-                                  'TOGO',
-                                  'CÔTE D\'IVOIRE',
-                                  'CAMEROUN',
-                                  'NIGERIA'
-                                ]"
+                                [options]="countries"
                                 [control]="homelandControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -193,12 +190,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Profession"
-                                [options]="[
-                                  'Ingénieur',
-                                  'Commerçant',
-                                  'Médecin',
-                                  'Chômeur'
-                                ]"
+                                [options]="professions"
                                 [control]="professionControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -209,12 +201,7 @@
                               <app-select
                                 label="Assuré ?"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'Non - Le patient est un local',
-                                  'Non - Le patient est un étranger',
-                                  'Oui - Il s\'agit d\'une assurance locale',
-                                  'Oui - Il s\'agit d\'une assurance étrangère'
-                                ]"
+                                [options]="hasInsurances"
                                 [control]="hasInsuranceControl"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                               ></app-select>
@@ -282,12 +269,7 @@
                               <app-select
                                 label="Nom de l'assurance"
                                 [isMandatory]="true"
-                                [options]="[
-                                  'ASCOMA',
-                                  'GTA',
-                                  'INAM',
-                                  'GRAS SAVOYE'
-                                ]"
+                                [options]="insurances"
                                 [control]="insuranceControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -298,7 +280,7 @@
                               <app-select
                                 label="Type de l'assurance"
                                 [isMandatory]="true"
-                                [options]="['Locale', 'Etrangère']"
+                                [options]="insuranceTypes"
                                 [control]="insuranceTypeControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -309,8 +291,9 @@
                               <app-input
                                 label="Taux de PEC"
                                 placeholder="Taux de prise en charge du patient"
-                                type="number"
                                 [isMandatory]="true"
+                                maskFormat="percent"
+                                maskSuffix=" %"
                                 [control]="insuranceRateControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -322,7 +305,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Employeur de l'assuré"
-                                [options]="['BIDC', 'ARCEP', 'Autres']"
+                                [options]="employers"
                                 [control]="patientEmployerControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               ></app-select>
@@ -333,6 +316,7 @@
                               <app-input
                                 label="Date de début PEC"
                                 type="date"
+                                [maxDate]="today"
                                 [control]="insuranceStartControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -344,6 +328,7 @@
                               <app-input
                                 label="Date de fin PEC"
                                 type="date"
+                                [minDate]="today"
                                 [control]="insuranceEndControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
                               >
@@ -355,9 +340,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone 1"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel1Control"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -366,9 +353,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Téléphone 2"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="insuranceTel2Control"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>
@@ -377,6 +366,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Email"
+                                type="email"
                                 placeholder="test@example.org"
                                 [control]="insuranceEmailControl"
                                 [isFormSubmitted]="isInsuranceInfoFormSubmitted"
@@ -451,7 +441,7 @@
                             <div class="mb-3">
                               <app-input
                                 label="Adresse"
-                                placeholder="Rue, appartement, n° maison"
+                                placeholder="Rue, BP, Arrondissement, N° maison"
                                 [control]="patientAddressControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
@@ -462,14 +452,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Ville"
-                                [options]="[
-                                  'Lomé',
-                                  'Kpalimé',
-                                  'Ouagadougou',
-                                  'Lagos',
-                                  'Porto-Novo',
-                                  'Accra'
-                                ]"
+                                [options]="cities"
                                 [control]="cityControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
@@ -479,12 +462,7 @@
                             <div class="mb-3">
                               <app-select
                                 label="Quartier"
-                                [options]="[
-                                  'Gbossimé',
-                                  'Casablanca',
-                                  'Avé Maria',
-                                  'Autres'
-                                ]"
+                                [options]="neighborhoods"
                                 [control]="neighborhoodControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               ></app-select>
@@ -495,9 +473,11 @@
                             <div class="mb-3">
                               <app-input
                                 label="Autre contact"
+                                type="tel"
                                 placeholder="XX XX XX XX"
                                 [control]="patientTel2Control"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
+                                maskFormat="00 00 00 00"
                               >
                               </app-input>
                             </div>

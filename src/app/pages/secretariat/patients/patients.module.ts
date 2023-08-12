@@ -8,11 +8,14 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // Wizard
 import { ArchwizardModule } from "angular-archwizard";
 import { PatientActivityComponent } from './patient-activity/patient-activity.component';
-import { NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbAccordionModule, NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { PatientListComponent } from './patient-list/patient-list.component';
+import { NgxMaskModule } from "ngx-mask";
+import { PatientInvoiceFormComponent } from './patient-invoice-form/patient-invoice-form.component';
+import { PatientWaitingListComponent } from './patient-waiting-list/patient-waiting-list.component';
 
 @NgModule({
-  declarations: [PatientCreateComponent, PatientFormComponent,  PatientActivityComponent, PatientListComponent],
+  declarations: [PatientCreateComponent, PatientFormComponent,  PatientActivityComponent, PatientListComponent, PatientInvoiceFormComponent, PatientWaitingListComponent],
   imports: [
     CommonModule,
     PatientsRoutingModule,
@@ -23,6 +26,8 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     NgbPaginationModule,
     NgbNavModule,
     NgbDropdownModule,
+    NgxMaskModule,
+    NgbAccordionModule
     // NgbTypeaheadModule,
   ],
   exports: [],

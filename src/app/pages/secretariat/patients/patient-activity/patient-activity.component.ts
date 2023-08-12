@@ -1,14 +1,24 @@
 import { Component, OnInit } from "@angular/core";
-import { IActivity, IActivitySelect } from "./activity.models";
-import { FormControl, FormGroup } from "@angular/forms";
+import { IActivity, IPrestation, IPrestationSelect } from "./activity.models";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {
+  NgbModal,
+  NgbModalRef,
   NgbPaginationModule,
   NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
+import { PatientInvoiceFormComponent } from "../patient-invoice-form/patient-invoice-form.component";
+import { ACTS } from "src/app/data/secretariat/activities/acts.data";
+import { ANALYSIS } from "src/app/data/secretariat/activities/analysis.data";
+import { ECHOGRAPHIES } from "src/app/data/secretariat/activities/echographies.data";
+import { ENDOSCOPIES } from "src/app/data/secretariat/activities/endoscopies.data";
+import { HEMODIALYSES } from "src/app/data/secretariat/activities/hemodialyses.data";
+import { MRIS } from "src/app/data/secretariat/activities/mris.data";
+import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
 
 @Component({
   selector: "app-patient-activity",
@@ -16,85 +26,202 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
   styleUrls: ["./patient-activity.component.scss"],
 })
 export class PatientActivityComponent implements OnInit {
-  table1 = [
-    {
-      prestation: "VS",
-      prix: 3250,
-      ss_traitance: 0,
-      new_tariff: 2990,
-    },
-    {
-      prestation: "NB",
-      prix: 1500,
-      ss_traitance: 0,
-      new_tariff: 1500,
-    },
-    {
-      prestation: "GE",
-      prix: 2500,
-      ss_traitance: 1,
-      new_tariff: 2300,
-    },
-    {
-      prestation: "HB",
-      prix: 2000,
-      ss_traitance: 0,
-      new_tariff: 2000,
-    },
-    {
-      prestation: "NFS/Plaquette",
-      prix: 8750,
-      ss_traitance: 0,
-      new_tariff: 8050,
-    },
-    {
-      prestation: "TS",
-      prix: 3750,
-      ss_traitance: 0,
-      new_tariff: 3450,
-    },
-    {
-      prestation: "TP",
-      prix: 8750,
-      ss_traitance: 0,
-      new_tariff: 8050,
-    },
-  ];
+  // bread crumb items
+  breadCrumbItems!: Array<{}>;
 
-  table2: Array<IActivitySelect> = [];
+  isMedicalProceduresSelected = true;
 
-  quantityControl = new FormControl(1);
+  // Activity form controls
+  sectorControl = new FormControl("", [Validators.required]);
+  consultingDoctorControl = new FormControl("", [Validators.required]);
+
+  doctorTypeControl = new FormControl({ value: "", disabled: true }, [
+    Validators.required,
+  ]);
+  doctorControl = new FormControl({ value: "", disabled: true }, [
+    Validators.required,
+  ]);
+  performedByControl = new FormControl({ value: "", disabled: true }, [
+    Validators.required,
+  ]);
+
+  activityDateControl = new FormControl("", [Validators.required]);
+  quantityControl = new FormControl(1, [Validators.required]);
+  originControl = new FormControl("", [Validators.required]);
+
+  // Activity form group
+  activityForm: FormGroup = new FormGroup({});
+  isActivityFormSubmitted = false;
+
+  // To set date min
+  today = new Date().toLocaleDateString("fr-ca");
+
+  table1: IPrestation[] = [];
+
+  table2: Array<IPrestationSelect> = [];
 
   page = 1;
   pageSize = 5;
   collectionSize = this.table1.length;
-  activities: IActivity[] = [];
+  activities: IPrestation[] = [];
+
+  // invoiceModalRef!: NgbModalRef;
 
   constructor(
     public patientService: PatientService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private modalService: NgbModal
   ) {
     this.generateSummary();
+
+    this.table1 = (this.prestations[0].items as IActivity[]).map((item) => {
+      let patientPrice = 0;
+      if (this.patientService.getActivePatientType() == 1) {
+        patientPrice = item.NA;
+      } else if (this.patientService.getActivePatientType() == 2) {
+        patientPrice = item.ENA;
+      } else if (this.patientService.getActivePatientType() == 3) {
+        patientPrice = item.AL_S;
+      } else {
+        patientPrice = item.AHZ;
+      }
+
+      return {
+        id: item.id,
+        designation: item.designation,
+        price: patientPrice,
+        description: item.description,
+      };
+    }) as IPrestation[];
+
+    this.collectionSize = this.table1.length;
 
     this.refreshActivities();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    /**
+     * BreadCrumb
+     */
+    this.breadCrumbItems = [
+      { label: "Patients" },
+      { label: "Activité", active: true },
+    ];
 
-  activityForm = new FormGroup({
-    quantityControl: this.quantityControl,
-  });
+    // this.openInvoiceModal();
 
-  add(item: IActivity) {
+    this.activityForm = new FormGroup({
+      sectorControl: this.sectorControl,
+      consultingDoctorControl: this.consultingDoctorControl,
+
+      doctorTypeControl: this.doctorTypeControl,
+      doctorControl: this.doctorControl,
+      performedByControl: this.performedByControl,
+
+      activityDateControl: this.activityDateControl,
+      quantityControl: this.quantityControl,
+      originControl: this.originControl,
+    });
+  }
+
+  updateTable(selectedPrestationType: number) {
+    if (selectedPrestationType == 0) {
+      this.isMedicalProceduresSelected = true;
+
+      // Enabling medical procedures controls
+      this.sectorControl.addValidators([Validators.required]);
+      this.sectorControl.updateValueAndValidity();
+      this.sectorControl.enable();
+
+      this.consultingDoctorControl.addValidators([Validators.required]);
+      this.consultingDoctorControl.updateValueAndValidity();
+      this.consultingDoctorControl.enable();
+
+      // Disabling non-medical procedures controls
+      this.doctorTypeControl.clearValidators();
+      this.doctorTypeControl.updateValueAndValidity();
+      this.doctorTypeControl.disable();
+
+      this.doctorControl.clearValidators();
+      this.doctorControl.updateValueAndValidity();
+      this.doctorControl.disable();
+
+      this.performedByControl.clearValidators();
+      this.performedByControl.updateValueAndValidity();
+      this.performedByControl.disable();
+    } else {
+      this.isMedicalProceduresSelected = false;
+
+      // Disabling medical procedures controls
+      this.sectorControl.clearValidators();
+      this.sectorControl.updateValueAndValidity();
+      this.sectorControl.disable();
+
+      this.consultingDoctorControl.clearValidators();
+      this.consultingDoctorControl.updateValueAndValidity();
+      this.consultingDoctorControl.disable();
+
+      // Enabling non-medical procedures controls
+      this.doctorTypeControl.addValidators([Validators.required]);
+      this.doctorTypeControl.updateValueAndValidity();
+      this.doctorTypeControl.enable();
+
+      this.doctorControl.addValidators([Validators.required]);
+      this.doctorControl.updateValueAndValidity();
+      this.doctorControl.enable();
+
+      this.performedByControl.addValidators([Validators.required]);
+      this.performedByControl.updateValueAndValidity();
+      this.performedByControl.enable();
+    }
+
+    this.table1 = (
+      this.prestations[selectedPrestationType].items as IActivity[]
+    ).map((item) => {
+      let patientPrice = 0;
+      if (this.patientService.getActivePatientType() == 1) {
+        patientPrice = item.NA;
+      } else if (this.patientService.getActivePatientType() == 2) {
+        patientPrice = item.ENA;
+      } else if (this.patientService.getActivePatientType() == 3) {
+        patientPrice = item.AL_S;
+      } else {
+        patientPrice = item.AHZ;
+      }
+
+      return {
+        id: item.id,
+        designation: item.designation,
+        price: patientPrice,
+        description: item.description,
+      };
+    }) as IPrestation[];
+
+    this.page = 1;
+    this.collectionSize = this.table1.length;
+
+    this.refreshActivities();
+  }
+
+  refreshActivities() {
+    this.activities = this.table1
+      // .map((item, i) => ({ id: i + 1, ...item }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
+  add(item: IPrestation) {
     console.log(item);
 
-    const item2: IActivitySelect = {
+    const item2: IPrestationSelect = {
       id: item.id,
       rubrique: "ANALYSE",
-      activity: item.prestation,
-      prix: item.prix,
-      quantite: this.quantityControl.value,
-      prix_total: item.prix * this.quantityControl.value,
+      prestation: item.designation,
+      price: item.price,
+      quantity: this.quantityControl.value,
+      total_price: item.price * this.quantityControl.value,
     };
     var index = this.table2.findIndex((value) => value.id == item.id);
 
@@ -104,7 +231,7 @@ export class PatientActivityComponent implements OnInit {
     }
   }
 
-  remove(item: IActivitySelect) {
+  remove(item: IPrestationSelect) {
     console.log(item);
 
     this.table2 = [
@@ -114,26 +241,17 @@ export class PatientActivityComponent implements OnInit {
     ];
   }
 
-  refreshActivities() {
-    this.activities = this.table1
-      .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.page - 1) * this.pageSize,
-        (this.page - 1) * this.pageSize + this.pageSize
-      );
-  }
-
-  medicalProcedures = ["Actes médicaux"];
-  examinations = ["Analyses", "Hémodialyses"];
-  medicalImaging = ["Radio", "Scanners", "IRM", "Echographie", "ECG", "EEG"];
-  meds = ["Médicaments", "Solutés", "Consommables"];
-  others = [
-    "Kinésithérapie",
-    "Pansement",
-    "Injections",
-    "Endoscopie",
-    "Déplacements",
-  ];
+  // medicalProcedures = ["Actes médicaux"];
+  // examinations = ["Analyses", "Hémodialyses"];
+  // medicalImaging = ["Radio", "Scanners", "IRM", "Echographie", "ECG", "EEG"];
+  // meds = ["Médicaments", "Solutés", "Consommables"];
+  // others = [
+  //   "Kinésithérapie",
+  //   "Pansement",
+  //   "Injections",
+  //   "Endoscopie",
+  //   "Déplacements",
+  // ];
 
   prestationTypes: string[] = [
     "Bilan",
@@ -154,6 +272,40 @@ export class PatientActivityComponent implements OnInit {
     "Injections",
     "Endoscopie",
     "Déplacements",
+  ];
+
+  prestations = [
+    {
+      name: "Actes médicaux",
+      items: ACTS,
+    },
+    {
+      name: "Analyses",
+      items: ANALYSIS.map((anal, index) => ({
+        id: index,
+        ...anal,
+      })),
+    },
+    {
+      name: "Echograpies",
+      items: ECHOGRAPHIES,
+    },
+    {
+      name: "Endoscopies",
+      items: ENDOSCOPIES,
+    },
+    {
+      name: "Hémodialyses",
+      items: HEMODIALYSES,
+    },
+    {
+      name: "IRM",
+      items: MRIS,
+    },
+    {
+      name: "Scanners",
+      items: SCANNERS,
+    },
   ];
 
   summary = {
@@ -191,7 +343,7 @@ export class PatientActivityComponent implements OnInit {
         ? this.patientService.getActivePatient().lieu_naissance!
         : "",
       profession: this.patientService.getActivePatient().profession
-        ? (this.patientService.getActivePatient().profession as string)
+        ? this.patientService.getActivePatient().profession!.nom
         : "",
       // nationality: this.patientService.getActivePatient().pays_origine ? this.patientService.getActivePatient().pays_origine as string : "",
       // insuranceRate: this.patientService.getActivePatient().assurance..value
@@ -209,9 +361,29 @@ export class PatientActivityComponent implements OnInit {
         ? this.patientService.getActivePatient().tel2!
         : "",
 
-      personToContact: this.patientService.getActivePatient().personToContact
-        ? this.patientService.getActivePatient().personToContact
+      personToContact: this.patientService.getActivePatient()
+        .personne_a_prevenir
+        ? this.patientService.getActivePatient().personne_a_prevenir
         : "",
     };
+  }
+
+  openInvoiceModal() {
+    this.isActivityFormSubmitted = true;
+
+    if (this.activityForm.valid) {
+      // if (!this.invoiceModalRef) {
+      const invoiceModalRef = this.modalService.open(
+        PatientInvoiceFormComponent,
+        {
+          size: "xl",
+          centered: true,
+          scrollable: true,
+        }
+      );
+      // }
+
+      invoiceModalRef.componentInstance.patientActivities = this.table2;
+    }
   }
 }

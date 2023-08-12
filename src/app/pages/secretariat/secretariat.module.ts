@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SecretariatRoutingModule } from './secretariat-routing.module';
 import { PatientsModule } from './patients/patients.module';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -10,7 +11,8 @@ import { PatientsModule } from './patients/patients.module';
   imports: [
     CommonModule,
     SecretariatRoutingModule,
-    PatientsModule
+    PatientsModule,
+    // NgbModalModule
   ]
 })
 export class SecretariatModule { }

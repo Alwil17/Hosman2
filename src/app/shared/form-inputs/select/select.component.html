@@ -1,6 +1,22 @@
 <label class="form-label"
-  >{{ label }} <span *ngIf="isMandatory" class="text-danger">*</span></label
+  >{{ label }}
+  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    >*</span
+  ></label
 >
+<!-- <ng-select
+  [formControl]="control"
+  [ngClass]="{
+    'is-invalid':
+      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
+  }"
+>
+  <ng-option value="" [disabled]="isMandatory">{{ defaultOption }}</ng-option>
+  <ng-option *ngFor="let option of options; index as i" [value]="option">{{
+    option
+  }}</ng-option>
+</ng-select> -->
+
 <select
   class="form-select"
   [formControl]="control"
@@ -10,13 +26,16 @@
   }"
 >
   <option value="" [disabled]="isMandatory">{{ defaultOption }}</option>
-  <option *ngFor="let option of options; index as i" [value]="option">
-    {{ option }}
+  <option
+    *ngFor="let option of options; index as i"
+    [value]="option.id"
+  >
+    {{ option.text }}
   </option>
 </select>
 
 <ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
   <div *ngIf="control.errors?.['required']" class="invalid-feedback">
-    Veuillez sélectionner une valeur
+    Veuillez sélectionner une valeur.
   </div>
 </ng-container>

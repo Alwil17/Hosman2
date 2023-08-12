@@ -11,7 +11,7 @@ export class SelectComponent implements OnInit {
   @Input() isMandatory = false;
   @Input() isFormSubmitted = false;
   @Input() defaultOption = "Sélectionner...";
-  @Input() options: string[] = [];
+  @Input() options: { id: any; text: string }[] = [];
   @Input() control = new FormControl();
 
   constructor() {}

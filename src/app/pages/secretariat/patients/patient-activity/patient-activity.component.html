@@ -1,3 +1,10 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="PATIENTS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
@@ -69,14 +76,22 @@
 </div>
 <!--end row-->
 
+<!-- ACTIVITIES/PRESTATIONS CHOICE -->
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
+      <div class="card-header">
+        <div class="row g-4 align-items-center">
+          <div class="col-sm">
+            <div>
+              <h5 class="card-title mb-0">Rubriques</h5>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="card-body">
         <div class="d-flex flex-wrap">
-          <ng-container
-            *ngFor="let prestationType of prestationTypes; index as i"
-          >
+          <ng-container *ngFor="let prestation of prestations; index as i">
             <div class="col-12 col-md-3 col-xl-2">
               <input
                 type="radio"
@@ -87,7 +102,8 @@
               <label
                 class="btn btn-outline-secondary me-2 d-block"
                 [for]="'pType-' + i"
-                ><b>{{ prestationType | uppercase }}</b></label
+                (click)="updateTable(i)"
+                ><b>{{ prestation.name | uppercase }}</b></label
               >
             </div>
           </ng-container>
@@ -112,50 +128,122 @@
       <div class="row">
         <div class="col-9">
           <form [formGroup]="activityForm">
-            <div class="row">
-              <div class="col-md-4">
+            <div class="row" *ngIf="isMedicalProceduresSelected">
+              <div class="col-md-8">
                 <div class="mb-3">
                   <app-select
-                    label="Type Médecin"
-                    [options]="['Interne', 'Externe']"
+                    label="Secteur"
+                    [isMandatory]="true"
+                    [options]="[
+                      { id: 0, text: 'MEDECINE INTERNE ET GENERALE' },
+                      { id: 1, text: 'PEDIATRIE' },
+                      { id: 2, text: 'CARDIOLOGIE' },
+                      { id: 3, text: 'NEUROLOGIE' }
+                    ]"
+                    [control]="sectorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <app-select
-                    label="Médecin"
-                    [options]="['Dr J-P', 'Dr Gael']"
-                  ></app-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <app-input label="Provenance" placeholder=""></app-input>
                 </div>
               </div>
 
               <div class="col-md-4">
                 <div class="mb-3">
-                  <app-input label="Date" type="date"></app-input>
+                  <app-select
+                    [isMandatory]="true"
+                    label="Médecin consulteur"
+                    [options]="[
+                      { id: 0, text: 'Dr J-P' },
+                      { id: 1, text: 'Dr Gael' }
+                    ]"
+                    [control]="consultingDoctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
               </div>
+            </div>
+
+            <div class="row" *ngIf="!isMedicalProceduresSelected">
               <div class="col-md-4">
                 <div class="mb-3">
-                  <app-input
-                    label="Quantité"
-                    type="number"
-                    [control]="quantityControl"
-                  >
-                  </app-input>
+                  <app-select
+                    label="Type Médecin"
+                    [isMandatory]="true"
+                    [options]="[
+                      { id: 0, text: 'Interne' },
+                      { id: 1, text: 'Externe' }
+                    ]"
+                    [control]="doctorTypeControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <app-select
+                    label="Médecin"
+                    [isMandatory]="true"
+                    [options]="[
+                      { id: 0, text: 'Dr J-P' },
+                      { id: 1, text: 'Dr Gael' }
+                    ]"
+                    [control]="doctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
                   <app-select
                     label="Effectué par"
-                    [options]="['Dr J-P', 'Dr Gael']"
+                    [isMandatory]="true"
+                    [options]="[
+                      { id: 0, text: 'Dr J-P' },
+                      { id: 1, text: 'Dr Gael' }
+                    ]"
+                    [control]="performedByControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <app-input
+                    label="Date"
+                    type="date"
+                    [minDate]="today"
+                    [isMandatory]="true"
+                    [control]="activityDateControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <app-input
+                    label="Quantité"
+                    type="number"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    [control]="quantityControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  >
+                  </app-input>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <app-input
+                    label="Provenance"
+                    placeholder=""
+                    [isMandatory]="true"
+                    [control]="originControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
                 </div>
               </div>
             </div>
@@ -207,7 +295,11 @@
         </div>
 
         <div class="col-md-8 d-flex">
-          <button type="button" class="btn btn-success btn-label right ms-auto">
+          <button
+            type="button"
+            class="btn btn-success btn-label right ms-auto"
+            (click)="openInvoiceModal()"
+          >
             <i
               class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
             ></i>
@@ -226,22 +318,20 @@
 
           <div class="table-responsive mt-4 mt-xl-0">
             <table
-              class="table table-hover table-striped table-bordered align-middle table-nowrap mb-0"
+              class="table table-hover table-striped table-bordered align-middle mb-0"
             >
               <thead>
                 <tr>
                   <th scope="col">Prestation</th>
                   <th scope="col">Prix</th>
-                  <th scope="col">Sous-traitance</th>
-                  <th scope="col">Nouveaux tarifs</th>
+                  <th scope="col">Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of activities" (dblclick)="add(item)">
-                  <td>{{ item.prestation }}</td>
-                  <td>{{ item.prix }}</td>
-                  <td>{{ item.ss_traitance }}</td>
-                  <td>{{ item.new_tariff }}</td>
+                  <td>{{ item.designation }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>{{ item.description }}</td>
                 </tr>
               </tbody>
             </table>
@@ -252,6 +342,8 @@
               [collectionSize]="collectionSize"
               [(page)]="page"
               [pageSize]="pageSize"
+              [maxSize]="5"
+              [rotate]="true"
               (pageChange)="refreshActivities()"
             >
             </ngb-pagination>
@@ -280,12 +372,12 @@
 
           <div class="table-responsive mt-4 mt-xl-0">
             <table
-              class="table table-hover table-striped table-bordered align-middle table-nowrap mb-0"
+              class="table table-hover table-striped table-bordered align-middle mb-0"
             >
               <thead>
                 <tr>
                   <th scope="col">Rubrique</th>
-                  <th scope="col">Activité</th>
+                  <th scope="col">Prestation</th>
                   <th scope="col">Prix unitaire</th>
                   <th scope="col">Quantité</th>
                   <th scope="col">Prix total</th>
@@ -294,10 +386,10 @@
               <tbody>
                 <tr *ngFor="let item of table2" (dblclick)="remove(item)">
                   <td>{{ item.rubrique }}</td>
-                  <td>{{ item.activity }}</td>
-                  <td>{{ item.prix }}</td>
-                  <td>{{ item.quantite }}</td>
-                  <td>{{ item.prix_total }}</td>
+                  <td>{{ item.prestation }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.total_price }}</td>
                 </tr>
               </tbody>
             </table>

@@ -1,12 +1,25 @@
-import { ICity } from "./city.model";
-import { INeighborhood } from "./neighborhood.model";
+import { City } from "./city.model";
+import { Neighborhood } from "./neighborhood.model";
 
-export interface IAddress {
-  id?: number;
-  arrondissement?: string; // ???
-  no_number?: string; // ???
-  rue?: string; // ???
-  bp?: string; // ???
-  ville?: ICity;
-  quartier?: INeighborhood;
+export class Address {
+  id: number;
+  ville: City;
+  quartier: Neighborhood;
+  details?: string;
+  // arrondissement?: string; // ???
+  // no_number?: string; // ???
+  // rue?: string; // ???
+  // bp?: string; // ???
+
+  constructor(
+    id: number,
+    ville: City,
+    quartier: Neighborhood,
+    details?: string
+  ) {
+    this.id = id;
+    this.ville = ville;
+    this.quartier = quartier;
+    this.details = details;
+  }
 }
