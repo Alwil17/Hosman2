@@ -4,11 +4,11 @@ export class Insurance {
   id: number;
   reference: string;
   nom: string;
+  type_assurance: InsuranceType;
   email?: string;
   tel1?: string;
   tel2?: string;
   representant?: string;
-  type_assurance: InsuranceType;
   // taux ?
 
   constructor(
@@ -30,4 +30,8 @@ export class Insurance {
     this.tel2 = tel2;
     this.representant = representant;
   }
+
+  // static emptyInsurance() {
+  //   return new Insurance(-1, "", "", new InsuranceType(-1, ""));
+  // }
 }

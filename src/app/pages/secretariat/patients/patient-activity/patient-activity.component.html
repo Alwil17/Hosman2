@@ -11,10 +11,12 @@
       <div class="card-header align-items-center d-flex">
         <h4 class="card-title mb-0 me-4">Patient</h4>
         <ng-container *ngIf="patientService.getActivePatient().id > 0">
-          <span class="badge badge-label bg-primary me-3"
-            ><i class="mdi mdi-circle-medium"></i>
-            {{ patientService.getActivePatient().reference }}</span
-          >
+          <h4>
+            <span class="badge bg-primary me-3"
+              ><i class="mdi mdi-circle-medium"></i>
+              {{ patientService.getActivePatient().reference }}</span
+            >
+          </h4>
           <button
             type="button"
             class="btn btn-warning btn-label waves-effect waves-light"
@@ -27,41 +29,115 @@
       <!-- end card header -->
       <div class="card-body">
         <div
+          class="row"
           *ngIf="patientService.getActivePatient().id > 0; else infoUnavailable"
         >
-          <p>
-            <b>Patient : </b> {{ summary.title }}
-            <span class="text-secondary">{{ summary.fullName }}</span
-            >, né(e) le
-            <span class="text-secondary">{{ summary.birth }}</span>
-            <!-- ({{ summary.age }})
-            <span class="text-secondary">
-              {{
-                summary.insurance
-                  ? "assuré à " +
-                    summary.insuranceRate +
-                    "% par " +
-                    summary.insurance
-                  : ""
-              }}
-            </span>
-            {{
-              summary.insuranceEnd
-                ? "jusqu'au " + summary.insuranceEnd
-                : ""
-            }}
-          </p> -->
-          </p>
+          <div class="col-12 col-lg-4">
+            <h5>
+              <b> Nom : </b>
+              <b class="text-secondary">{{
+                selectedPatient.nom | uppercase
+              }}</b>
+            </h5>
 
-          <p>
-            <b>Contact : </b>
-            {{ summary.tel1 + " / " + summary.tel2 }}
-          </p>
+            <h5>
+              <b> Né(e) le : </b>
+              <b class="text-secondary">{{
+                selectedPatient.date_naissance | date : "dd/MM/yyyy"
+              }}</b>
+            </h5>
 
-          <p>
-            <b>Personne à prévenir : </b>
-            {{ summary.personToContact }}
-          </p>
+            <h5>
+              <b> Assurance : </b>
+              <b class="text-secondary">{{
+                selectedInsurance ? selectedInsurance.nom : "-"
+              }}</b>
+            </h5>
+
+            <h5>
+              <b> Contact(s) : </b>
+              <b class="text-secondary">{{
+                selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
+              }}</b>
+            </h5>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <h5>
+              <b class="ms-4"> Prénoms : </b
+              ><b class="text-secondary">{{
+                selectedPatient.prenoms | titlecase
+              }}</b>
+            </h5>
+
+            <h5>
+              <b class="ms-4"> Lieu de naissance : </b>
+              <b class="text-secondary">{{
+                selectedPatient.lieu_naissance ?? "-"
+              }}</b>
+            </h5>
+
+            <h5>
+              <b class="ms-4"> Taux de prise en charge : </b>
+              <b class="text-secondary">{{
+                selectedPatientInsurance
+                  ? selectedPatientInsurance.taux + " %"
+                  : "-"
+              }}</b>
+            </h5>
+
+            <h5>
+              <b class="ms-4"> Personne à prévenir : </b>
+              <b class="text-secondary">{{
+                selectedPatient.personne_a_prevenir
+              }}</b>
+            </h5>
+          </div>
+
+          <!-- <h5>
+            <b> Nom : </b>
+            <b class="text-secondary">{{ selectedPatient.nom | uppercase }}</b>
+
+            <b class="ms-4"> Prénoms : </b
+            ><b class="text-secondary">{{
+              selectedPatient.prenoms | titlecase
+            }}</b>
+          </h5>
+          <h5>
+            <b> Né(e) le : </b>
+            <b class="text-secondary">{{
+              selectedPatient.date_naissance | date : "dd/MM/yyyy"
+            }}</b>
+
+            <b class="ms-4"> Lieu de naissance : </b>
+            <b class="text-secondary">{{
+              selectedPatient.lieu_naissance ?? "-"
+            }}</b>
+          </h5>
+          <h5>
+            <b> Assurance : </b>
+            <b class="text-secondary">{{
+              selectedInsurance ? selectedInsurance.nom : "-"
+            }}</b>
+
+            <b class="ms-4"> Taux de prise en charge : </b>
+            <b class="text-secondary">{{
+              selectedPatientInsurance
+                ? selectedPatientInsurance.taux + " %"
+                : "-"
+            }}</b>
+          </h5>
+          <h5>
+            <b> Contact(s) : </b>
+            <b class="text-secondary">{{
+              selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
+            }}</b>
+
+            <b class="ms-4"> Personne à prévenir : </b>
+            <b class="text-secondary">{{
+              selectedPatient.personne_a_prevenir
+            }}</b>
+          </h5> -->
         </div>
 
         <ng-template #infoUnavailable>
@@ -125,6 +201,12 @@
       </div>
     </div>
     <div class="card-body border-bottom">
+      <p class="text-muted">
+        <em
+          >Les champs marqués par <span class="text-danger">*</span> sont
+          obligatoires</em
+        >
+      </p>
       <div class="row">
         <div class="col-9">
           <form [formGroup]="activityForm">
@@ -226,11 +308,11 @@
                 <div class="mb-3">
                   <app-input
                     label="Quantité"
-                    type="number"
                     [isMandatory]="true"
                     [alignRight]="true"
                     [control]="quantityControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
+                    maskFormat="separator"
                   >
                   </app-input>
                 </div>

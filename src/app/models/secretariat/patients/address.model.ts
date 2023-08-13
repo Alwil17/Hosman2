@@ -22,4 +22,8 @@ export class Address {
     this.quartier = quartier;
     this.details = details;
   }
+
+  // static emptyAddress(): Address {
+  //   return new Address(-1, new City(-1, ""), new Neighborhood(-1, ""));
+  // }
 }

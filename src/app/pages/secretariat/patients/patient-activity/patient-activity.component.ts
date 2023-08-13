@@ -19,6 +19,9 @@ import { ENDOSCOPIES } from "src/app/data/secretariat/activities/endoscopies.dat
 import { HEMODIALYSES } from "src/app/data/secretariat/activities/hemodialyses.data";
 import { MRIS } from "src/app/data/secretariat/activities/mris.data";
 import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
+import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -65,6 +68,10 @@ export class PatientActivityComponent implements OnInit {
   collectionSize = this.table1.length;
   activities: IPrestation[] = [];
 
+  selectedPatient!: Patient;
+  selectedInsurance?: Insurance;
+  selectedPatientInsurance?: IPatientInsurance;
+
   // invoiceModalRef!: NgbModalRef;
 
   constructor(
@@ -72,6 +79,17 @@ export class PatientActivityComponent implements OnInit {
     private datePipe: DatePipe,
     private modalService: NgbModal
   ) {
+    this.selectedPatient = patientService.getActivePatient();
+    this.selectedInsurance = patientService.getInsurance(
+      this.selectedPatient.id
+    );
+    if (this.selectedInsurance) {
+      this.selectedPatientInsurance = patientService.getPatientInsurance(
+        this.selectedPatient.id,
+        this.selectedInsurance.id
+      );
+    }
+
     this.generateSummary();
 
     this.table1 = (this.prestations[0].items as IActivity[]).map((item) => {

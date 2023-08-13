@@ -134,6 +134,7 @@
                                 label="Téléphone"
                                 type="tel"
                                 placeholder="XX XX XX XX"
+                                [isMandatory]="true"
                                 [control]="patientTel1Control"
                                 [isFormSubmitted]="isGeneralInfoFormSubmitted"
                                 maskFormat="00 00 00 00"
@@ -487,6 +488,7 @@
                               <app-input
                                 label="Personne à prévenir"
                                 placeholder="Nom, prénom(s), contact, adresse"
+                                [isMandatory]="true"
                                 [control]="personToContactControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
                               >
@@ -547,6 +549,51 @@
                       </div>
 
                       <hr />
+
+                      <!-- <div>
+                        <h5>
+                          <b> Nom : </b>
+                          <b class="text-secondary">{{ summary.lastname | uppercase }}</b>
+              
+                          <b class="ms-4"> Prénoms : </b
+                          ><b class="text-secondary">{{
+                            summary.prenoms | titlecase
+                          }}</b>
+                        </h5>
+                        <h5>
+                          <b> Né(e) le : </b>
+                          <b class="text-secondary">{{
+                            summary.date_naissance | date : "dd/MM/yyyy"
+                          }}</b>
+              
+                          <b class="ms-4"> Lieu de naissance : </b>
+                          <b class="text-secondary">{{ summary.lieu_naissance ?? "-" }}</b>
+                        </h5>
+                        <h5>
+                          <b> Assurance : </b>
+                          <b class="text-secondary">{{
+                            selectedInsurance ? selectedInsurance.nom : "-"
+                          }}</b>
+              
+                          <b class="ms-4"> Taux de prise en charge : </b>
+                          <b class="text-secondary">{{
+                            selectedPatientInsurance
+                              ? selectedPatientInsurance.taux + " %"
+                              : "-"
+                          }}</b>
+                        </h5>
+                        <h5>
+                          <b> Contact(s) : </b>
+                          <b class="text-secondary">{{
+                            selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
+                          }}</b>
+              
+                          <b class="ms-4"> Personne à prévenir : </b>
+                          <b class="text-secondary">{{
+                            selectedPatient.personne_a_prevenir
+                          }}</b>
+                        </h5>
+                      </div> -->
 
                       <div>
                         <p>

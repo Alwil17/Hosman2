@@ -1,7 +1,7 @@
 import { Address } from "./address.model";
 import { Country } from "./country.model";
 import { Employer } from "./employer.model";
-import { HasInsurance } from "./has-insurance.model";
+import { HasInsurance, HasInsuranceCode } from "./has-insurance.model";
 import { Profession } from "./profession.model";
 
 export class Patient {
@@ -67,4 +67,22 @@ export class Patient {
     this.profession = profession;
     this.employeur = employeur;
   }
+
+  // static emptyPatient(): Patient {
+  //   return new Patient(
+  //     -1,
+  //     "",
+  //     "",
+  //     "",
+  //     new Date(),
+  //     "",
+  //     "",
+  //     false,
+  //     "",
+  //     Address.emptyAddress(),
+  //     new Date(),
+  //     new Country(-1, "", ""),
+  //     new HasInsurance(-1, HasInsuranceCode.NO_LOCAL)
+  //   );
+  // }
 }

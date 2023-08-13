@@ -73,7 +73,7 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    private patientService: PatientService
+    public patientService: PatientService
   ) {}
 
   ngOnInit(): void {

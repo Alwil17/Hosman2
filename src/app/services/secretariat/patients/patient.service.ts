@@ -1,4 +1,6 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { CITIES } from "src/app/data/secretariat/cities.data";
 import { COUNTRIES } from "src/app/data/secretariat/countries.data";
 import { EMPLOYERS } from "src/app/data/secretariat/employers.data";
@@ -13,7 +15,7 @@ import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 
-// const baseUrl = 'http://localhost:8080/api/...';
+// const baseUrl = "http://localhost:8081/patients";
 
 @Injectable({
   providedIn: "root",
@@ -44,13 +46,17 @@ export class PatientService {
 
   private patientInsurances: IPatientInsurance[] = PATIENT_INSURANCES;
 
-  constructor() {} // private http: HttpClient
+  constructor(private http: HttpClient) {}
 
   registerPatient(
     patient: Patient,
     insurance?: Insurance,
     patientInsurance?: IPatientInsurance
-  ) {
+  ) 
+  // : Observable<any> 
+  {
+    
+
     // PATIENT
     patient.id = this.allPatients.length + 1;
 
@@ -102,6 +108,13 @@ export class PatientService {
 
     console.log(patient);
     console.log(insurance);
+
+    // return this.http.post(baseUrl, {
+    //   ...patient,
+    //   employeur_id: 1, //patient.employeur!.id,
+    //   pays_origine_id: 1, //patient.employeur!.id,
+    //   profession_id: 1, //patient.employeur!.id,
+    // });
   }
 
   getPatient(patientId: number) {

@@ -1,5 +1,5 @@
 import { DatePipe } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
@@ -24,6 +24,19 @@ import { SecretariatRouterService } from "src/app/services/secretariat/router/se
   styleUrls: ["./patient-form.component.scss"],
 })
 export class PatientFormComponent implements OnInit {
+  // @Input()
+  // patientInfos = {
+  //   patient: Patient.emptyPatient(),
+  //   insurance: Insurance.emptyInsurance(),
+  //   patientInsurance: {
+  //     id: -1,
+  //     patient_id: -1,
+  //     assurance_id: -1,
+  //     taux: 0,
+  //     date_expiration: new Date(),
+  //   },
+  // };
+
   // General information controls
   lastNameControl = new FormControl("", [Validators.required]);
   firstNameControl = new FormControl("", [Validators.required]);
@@ -33,7 +46,7 @@ export class PatientFormComponent implements OnInit {
   ageControl = new FormControl("");
   birthPlaceControl = new FormControl("");
 
-  patientTel1Control = new FormControl("");
+  patientTel1Control = new FormControl("", [Validators.required]);
   patientEmailControl = new FormControl("", [Validators.email]);
   idTypeControl = new FormControl("");
   idNumberControl = new FormControl("");
@@ -61,7 +74,7 @@ export class PatientFormComponent implements OnInit {
   neighborhoodControl = new FormControl("");
 
   patientTel2Control = new FormControl("");
-  personToContactControl = new FormControl("");
+  personToContactControl = new FormControl("", [Validators.required]);
 
   // Form groups
   generalInfoForm: FormGroup = new FormGroup({});
@@ -449,6 +462,14 @@ export class PatientFormComponent implements OnInit {
       patientData.insurance,
       patientData.patientInsurance
     );
+    // .subscribe(
+    //   {
+    //     next: (data) => {
+    //       console.log(data, "Here");
+    //     },
+    //     error: (e) => console.error(e),
+    //   }
+    // );
 
     await this.secretariatRouter.navigateToPatientList();
   }

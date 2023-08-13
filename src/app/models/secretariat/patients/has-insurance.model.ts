@@ -5,7 +5,12 @@ export enum HasInsuranceCode {
   YES_FOREIGNER = "Patient avec une assurance étrangère",
 }
 
-export interface HasInsurance {
+export class HasInsurance {
   id: number;
   code: HasInsuranceCode;
+
+  constructor(id: number, code: HasInsuranceCode) {
+    this.id = id;
+    this.code = code;
+  }
 }
