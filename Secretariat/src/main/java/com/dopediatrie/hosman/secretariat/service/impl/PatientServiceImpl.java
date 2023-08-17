@@ -4,10 +4,7 @@ import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
-import com.dopediatrie.hosman.secretariat.repository.EmployeurRepository;
-import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
-import com.dopediatrie.hosman.secretariat.repository.PaysRepository;
-import com.dopediatrie.hosman.secretariat.repository.ProfessionRepository;
+import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +23,7 @@ public class PatientServiceImpl implements PatientService {
     private final PaysRepository paysRepository;
     private final ProfessionRepository professionRepository;
     private final EmployeurRepository employeurRepository;
+    private final PersonneAPrevenirRepository personneAPrevenirRepository;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -54,6 +52,7 @@ public class PatientServiceImpl implements PatientService {
                 .pays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get())
                 .profession(professionRepository.findById(patientRequest.getProfession_id()).get())
                 .employeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get())
+                .personne_a_prevenir(personneAPrevenirRepository.findById(patientRequest.getPersonne_a_prevenir_id()).get())
                 .structure_id(patientRequest.getStructure_id())
                 .build();
 
@@ -108,6 +107,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
         patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
         patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
+        patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(patientRequest.getPersonne_a_prevenir_id()).get());
         patient.setStructure_id(patientRequest.getStructure_id());
         patientRepository.save(patient);
 

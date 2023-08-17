@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.secretariat.payload.response;
 
 import com.dopediatrie.hosman.secretariat.entity.Employeur;
 import com.dopediatrie.hosman.secretariat.entity.Pays;
+import com.dopediatrie.hosman.secretariat.entity.PersonneAPrevenir;
 import com.dopediatrie.hosman.secretariat.entity.Profession;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,5 +32,6 @@ public class PatientResponse {
     private Pays pays_origine;
     private Profession profession;
     private Employeur employeur;
+    private PersonneAPrevenir personne_a_prevenir;
     private long structure_id;
 }

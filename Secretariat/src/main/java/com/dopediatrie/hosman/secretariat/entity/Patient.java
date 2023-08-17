@@ -40,6 +40,9 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
+    @OneToOne
+    @JoinColumn(name = "personne_a_prevenir_id")
+    private PersonneAPrevenir personne_a_prevenir;
     private long structure_id;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore

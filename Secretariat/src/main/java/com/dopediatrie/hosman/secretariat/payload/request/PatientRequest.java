@@ -21,6 +21,7 @@ public class PatientRequest {
     private String no_piece;
     private int is_assure = 0;
     private long pays_origine_id;
+    private long personne_a_prevenir_id;
     private long profession_id;
     private long employeur_id;
     private long structure_id;
