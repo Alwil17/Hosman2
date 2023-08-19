@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Invoice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <style>
+        @page {
+            /* dimensions for the whole page */
+            /*size: A4;*/
+
+            margin: 0;
+        }
+
+        html {
+            /* off-white, so body edge is visible in browser */
+            background: #eee;
+        }
+
+        body {
+            /* A5 dimensions */
+            height: 210mm;
+            width: 148mm;
+
+            margin: auto;
+            margin-top: 15mm;
+
+            padding: 2%;
+            border: solid 1mm;
+            background: #fff;
+        }
+
+        /* .header-top {
+            display: block;
+        }
+        .header-bottom {
+            display: block;
+        }
+        .header-top-left, .header-bottom-left {
+            float: left;
+        }
+
+        .header-top-right, .header-bottom-right {
+            float: right;
+        }
+
+        .header-top-right:after, .header-bottom-right:after {
+            clear: both; content: ""; display: table;
+        } */
+
+        .content-top {
+            border-top: solid 0.5mm;
+            border-bottom: solid 0.5mm;
+        }
+
+        .receipt-number {
+            display: inline-block;
+            width: 25%;
+            padding-left: 5%;
+        }
+
+        .patient-info {
+            display: inline-block;
+            width: 60%;
+            border-left: solid 0.5mm;
+            padding-left: 5%;
+        }
+
+        table,
+        th,
+        td {
+            border: solid 0.5mm;
+            border-collapse: collapse;
+        }
+
+        .order-number {
+            float: left;
+            border: solid 0.5mm;
+            margin-top: 10mm;
+            padding: 2%;
+        }
+
+        .payment-table {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <div class="header-top">
+                <span class="header-top-left"> POLYCLINIQUE
+
+                    90 12 55 00
+                </span>
+                <span class="header-top-right">Date and Time</span>
+            </div>
+
+            <div class="header-bottom">
+                <span class="header-bottom-left">Reçu de caisse</span>
+                <span class="header-bottom-right">Caissière</span>
+            </div>
+        </div>
+    </header>
+
+    <article>
+        <div class="content">
+            <div class="content-top">
+                <div class="receipt-number">
+                    <p>Reçu N°</p>
+                    <p th:text="${reference}">-</p>
+                </div>
+                <div class="patient-info">
+                    <p>Patient(e): <b>SODJI-GAZ Atalakou</b></p>
+                    <p>Sexe: <b>F</b> <span style="margin-left: 10mm;">Date de naissance: <b>12/05/2002</b></span></p>
+                </div>
+            </div>
+
+            <div class="insurance-info">
+                ASSUREUR: LUI-MÊME - Taux de PEC: 0%
+            </div>
+
+            <div class="activities">
+                <table class="activities-table" style="width: 100%;">
+                    <thead>
+                        <tr style="background: #eee;">
+                            <th style="width: 70%; text-align: start;">ACTIVITES</th>
+                            <th style="width: 10%; ">QTE</th>
+                            <th style="width: 20%; text-align: center;">Montants(CFA)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3"><em><u>ANALYSE</u></em></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 70%;">TP / INR</td>
+                            <td style="width: 10%; text-align: end;">1</td>
+                            <td style="width: 20%; text-align: end;">3000</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 70%;">VS</td>
+                            <td style="width: 10%; text-align: end;">2</td>
+                            <td style="width: 20%; text-align: end;">10000</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="order-number">
+                    <h1>
+                        ANALYSE 7
+                    </h1>
+                </div>
+
+                <table class="payment-table" style="width: 50%;">
+                    <tbody>
+                        <tr>
+                            <td>Montant total : </td>
+                            <td style="width: 40%; text-align: end;">3000</td>
+                        </tr>
+                        <tr>
+                            <td>Montant PEC :</td>
+                            <td style="width: 40%; text-align: end;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Urgence/Major :</td>
+                            <td style="width: 40%; text-align: end;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Réduction :</td>
+                            <td style="width: 40%; text-align: end;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Montant à payer :</td>
+                            <td style="width: 40%; text-align: end;">3000</td>
+                        </tr>
+                        <tr>
+                            <td>Montant versé :</td>
+                            <td style="width: 40%; text-align: end;">5000</td>
+                        </tr>
+                        <tr>
+                            <td>Reliquat :</td>
+                            <td style="width: 40%; text-align: end;">2000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="payment-info">
+
+            </div>
+        </div>
+    </article>
+</body>
+
+</html>

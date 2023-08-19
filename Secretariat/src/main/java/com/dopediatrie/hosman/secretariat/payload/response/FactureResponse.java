@@ -31,4 +31,5 @@ public class FactureResponse {
     private LocalDateTime date_reglement;
     private int etat_id;
     private int exporte;
+    private String path;
 }

@@ -4,12 +4,27 @@ import com.dopediatrie.hosman.secretariat.entity.Facture;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
+import com.dopediatrie.hosman.secretariat.utils.Utils;
+import com.lowagie.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.xhtmlrenderer.layout.SharedContext;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -19,6 +34,9 @@ import java.util.List;
 public class FactureController {
 
     private final FactureService factureService;
+
+    @Autowired
+    SpringTemplateEngine templateEngine;
 
     @GetMapping
     public ResponseEntity<List<Facture>> getAllFactures() {
@@ -47,6 +65,65 @@ public class FactureController {
 
         FactureResponse factureResponse
                 = factureService.getFactureById(factureId);
+        return new ResponseEntity<>(factureResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/show")
+    public ResponseEntity<FactureResponse> displayFactureById(@PathVariable("id") long factureId) throws IOException, DocumentException {
+
+        log.info("FactureController | displayFactureById is called");
+
+        log.info("FactureController | displayFactureById | factureId : " + factureId);
+
+        FactureResponse factureResponse
+                = factureService.getFactureById(factureId);
+
+        Context context = new Context();
+
+        context.setVariable("reference",factureResponse.getReference());
+
+        String htmlContentToRender = templateEngine.process("invoice", context);
+        String xHtml = Utils.xhtmlConvert(htmlContentToRender);
+
+
+        ITextRenderer renderer = new ITextRenderer();
+        SharedContext sharedContext = renderer.getSharedContext();
+        sharedContext.setPrint(true);
+        sharedContext.setInteractive(false);
+
+        String baseUrl = FileSystems
+                .getDefault()
+                .getPath("src", "main", "resources","templates")
+                .toUri()
+                .toURL()
+                .toString();
+
+        renderer.setDocumentFromString(xHtml, baseUrl);
+        renderer.layout();
+
+        OutputStream outputStream = new FileOutputStream("src//test.pdf");
+        renderer.createPDF(outputStream);
+        outputStream.close();
+        factureResponse.setPath(FileSystems
+                .getDefault()
+                .getPath("src")
+                .resolve("test.pdf")
+                .toUri().toURL().toString());
+        //System.out.println(outputStream.);
+        /*HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", FileSystems
+                .getDefault()
+                .getPath("src")
+                .resolve("test.pdf")
+                .toUri().toURL().toString());
+
+        Resource resource = new UrlResource(FileSystems
+                .getDefault()
+                .getPath("src")
+                .resolve("test.pdf")
+                .toUri());*/
+
         return new ResponseEntity<>(factureResponse, HttpStatus.OK);
     }
 
