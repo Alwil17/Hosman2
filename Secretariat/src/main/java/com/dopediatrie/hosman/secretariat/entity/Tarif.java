@@ -34,5 +34,5 @@ public class Tarif {
     private List<Assurance> assurances;
     @ManyToMany(mappedBy = "tarifs")
     @JsonIgnore
-    private List<Intervention> interventions;
+    private List<Prestation> prestations;
 }

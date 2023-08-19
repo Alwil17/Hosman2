@@ -37,4 +37,10 @@ public class Medecin {
     @ManyToOne
     @JoinColumn(name = "secteur_id")
     private Secteur secteur;
+    @OneToMany(mappedBy = "demandeur")
+    @JsonIgnore
+    private List<Prestation> prestations_demandeur;
+    @OneToMany(mappedBy = "consulteur")
+    @JsonIgnore
+    private List<Prestation> prestations_consulteur;
 }

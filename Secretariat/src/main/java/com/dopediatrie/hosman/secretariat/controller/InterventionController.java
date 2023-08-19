@@ -1,6 +1,6 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
-import com.dopediatrie.hosman.secretariat.entity.Intervention;
+import com.dopediatrie.hosman.secretariat.entity.Prestation;
 import com.dopediatrie.hosman.secretariat.payload.request.InterventionRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.InterventionResponse;
 import com.dopediatrie.hosman.secretariat.service.InterventionService;
@@ -21,7 +21,7 @@ public class InterventionController {
     private final InterventionService interventionService;
 
     @GetMapping
-    public ResponseEntity<List<Intervention>> getAllInterventions() {
+    public ResponseEntity<List<Prestation>> getAllInterventions() {
 
         log.info("InterventionController | getAllInterventions is called");
         return new ResponseEntity<>(interventionService.getAllInterventions(), HttpStatus.OK);

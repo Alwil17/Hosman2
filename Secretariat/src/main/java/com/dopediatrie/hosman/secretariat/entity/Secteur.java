@@ -25,4 +25,7 @@ public class Secteur {
     @OneToMany(mappedBy = "secteur")
     @JsonIgnore
     private List<Medecin> medecins;
+    @OneToMany(mappedBy = "secteur")
+    @JsonIgnore
+    private List<Prestation> prestations;
 }

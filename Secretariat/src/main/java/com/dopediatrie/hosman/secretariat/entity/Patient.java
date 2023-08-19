@@ -46,7 +46,7 @@ public class Patient {
     private long structure_id;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
-    private List<Intervention> interventions;
+    private List<Prestation> prestations;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "patient_adresse",
             joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),

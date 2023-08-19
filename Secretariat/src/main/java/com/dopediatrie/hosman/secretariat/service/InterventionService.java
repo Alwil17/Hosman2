@@ -1,13 +1,13 @@
 package com.dopediatrie.hosman.secretariat.service;
 
-import com.dopediatrie.hosman.secretariat.entity.Intervention;
+import com.dopediatrie.hosman.secretariat.entity.Prestation;
 import com.dopediatrie.hosman.secretariat.payload.request.InterventionRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.InterventionResponse;
 
 import java.util.List;
 
 public interface InterventionService {
-    List<Intervention> getAllInterventions();
+    List<Prestation> getAllInterventions();
 
     long addIntervention(InterventionRequest interventionRequest);
 
