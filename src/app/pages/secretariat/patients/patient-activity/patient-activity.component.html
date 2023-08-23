@@ -174,6 +174,7 @@
                 class="btn-check"
                 name="btnradio"
                 [id]="'pType-' + i"
+                [checked]="i === 0"
               />
               <label
                 class="btn btn-outline-secondary me-2 d-block"
@@ -216,12 +217,7 @@
                   <app-select
                     label="Secteur"
                     [isMandatory]="true"
-                    [options]="[
-                      { id: 0, text: 'MEDECINE INTERNE ET GENERALE' },
-                      { id: 1, text: 'PEDIATRIE' },
-                      { id: 2, text: 'CARDIOLOGIE' },
-                      { id: 3, text: 'NEUROLOGIE' }
-                    ]"
+                    [options]="sectors"
                     [control]="sectorControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
@@ -233,10 +229,7 @@
                   <app-select
                     [isMandatory]="true"
                     label="Médecin consulteur"
-                    [options]="[
-                      { id: 0, text: 'Dr J-P' },
-                      { id: 1, text: 'Dr Gael' }
-                    ]"
+                    [options]="consultingDoctors"
                     [control]="consultingDoctorControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
@@ -250,10 +243,7 @@
                   <app-select
                     label="Type Médecin"
                     [isMandatory]="true"
-                    [options]="[
-                      { id: 0, text: 'Interne' },
-                      { id: 1, text: 'Externe' }
-                    ]"
+                    [options]="doctorTypes"
                     [control]="doctorTypeControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
@@ -265,10 +255,7 @@
                   <app-select
                     label="Médecin"
                     [isMandatory]="true"
-                    [options]="[
-                      { id: 0, text: 'Dr J-P' },
-                      { id: 1, text: 'Dr Gael' }
-                    ]"
+                    [options]="doctors"
                     [control]="doctorControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
@@ -279,10 +266,7 @@
                   <app-select
                     label="Effectué par"
                     [isMandatory]="true"
-                    [options]="[
-                      { id: 0, text: 'Dr J-P' },
-                      { id: 1, text: 'Dr Gael' }
-                    ]"
+                    [options]="performedBys"
                     [control]="performedByControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>
@@ -421,9 +405,9 @@
 
           <div class="d-flex justify-content-between p-2">
             <ngb-pagination
-              [collectionSize]="collectionSize"
-              [(page)]="page"
-              [pageSize]="pageSize"
+              [(page)]="table1Page"
+              [pageSize]="table1PageSize"
+              [collectionSize]="table1CollectionSize"
               [maxSize]="5"
               [rotate]="true"
               (pageChange)="refreshActivities()"
@@ -433,7 +417,7 @@
             <select
               class="form-select"
               style="width: auto"
-              [(ngModel)]="pageSize"
+              [(ngModel)]="table1PageSize"
               (ngModelChange)="refreshActivities()"
             >
               <option [ngValue]="5">5 éléments par page</option>
@@ -466,15 +450,51 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of table2" (dblclick)="remove(item)">
-                  <td>{{ item.rubrique }}</td>
+                <tr
+                  *ngFor="let item of activitiesSelect"
+                  (dblclick)="remove(item)"
+                >
+                  <td>{{ item.rubrique | uppercase }}</td>
                   <td>{{ item.prestation }}</td>
                   <td>{{ item.price }}</td>
                   <td>{{ item.quantity }}</td>
                   <td>{{ item.total_price }}</td>
                 </tr>
               </tbody>
+              <!-- <tfoot>
+                <tr>
+                  <th>Total</th>
+                  <td colspan="3"></td>
+                  <th>Here</th>
+                </tr>
+              </tfoot> -->
             </table>
+          </div>
+
+          <div
+            class="d-flex justify-content-between p-2"
+            *ngIf="table2CollectionSize"
+          >
+            <ngb-pagination
+              [(page)]="table2Page"
+              [pageSize]="table2PageSize"
+              [collectionSize]="table2CollectionSize"
+              [maxSize]="5"
+              [rotate]="true"
+              (pageChange)="refreshActivitiesSelect()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="table2PageSize"
+              (ngModelChange)="refreshActivitiesSelect()"
+            >
+              <option [ngValue]="5">5 éléments par page</option>
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+            </select>
           </div>
         </div>
         <!--end col-->

@@ -22,6 +22,7 @@ import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
+import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -61,18 +62,52 @@ export class PatientActivityComponent implements OnInit {
 
   table1: IPrestation[] = [];
 
-  table2: Array<IPrestationSelect> = [];
+  table2: IPrestationSelect[] = [];
 
-  page = 1;
-  pageSize = 5;
-  collectionSize = this.table1.length;
+  table1Page = 1;
+  table1PageSize = 5;
+  table1CollectionSize = this.table1.length;
   activities: IPrestation[] = [];
+
+  table2Page = 1;
+  table2PageSize = 5;
+  table2CollectionSize = this.table2.length;
+  activitiesSelect: IPrestationSelect[] = [];
 
   selectedPatient!: Patient;
   selectedInsurance?: Insurance;
   selectedPatientInsurance?: IPatientInsurance;
 
+  selectedPrestationIndex = 0;
+
   // invoiceModalRef!: NgbModalRef;
+
+  sectors = [
+    { id: 0, text: "MEDECINE INTERNE ET GENERALE" },
+    { id: 1, text: "PEDIATRIE" },
+    { id: 2, text: "CARDIOLOGIE" },
+    { id: 3, text: "NEUROLOGIE" },
+  ];
+
+  consultingDoctors = [
+    { id: 0, text: "Dr J-P" },
+    { id: 1, text: "Dr Gael" },
+  ];
+
+  doctorTypes = [
+    { id: 0, text: "Interne" },
+    { id: 1, text: "Externe" },
+  ];
+
+  doctors = [
+    { id: 0, text: "Dr J-P" },
+    { id: 1, text: "Dr Gael" },
+  ];
+
+  performedBys = [
+    { id: 0, text: "Dr J-P" },
+    { id: 1, text: "Dr Gael" },
+  ];
 
   constructor(
     public patientService: PatientService,
@@ -112,7 +147,7 @@ export class PatientActivityComponent implements OnInit {
       };
     }) as IPrestation[];
 
-    this.collectionSize = this.table1.length;
+    this.table1CollectionSize = this.table1.length;
 
     this.refreshActivities();
   }
@@ -143,6 +178,8 @@ export class PatientActivityComponent implements OnInit {
   }
 
   updateTable(selectedPrestationType: number) {
+    this.selectedPrestationIndex = selectedPrestationType;
+
     if (selectedPrestationType == 0) {
       this.isMedicalProceduresSelected = true;
 
@@ -215,8 +252,8 @@ export class PatientActivityComponent implements OnInit {
       };
     }) as IPrestation[];
 
-    this.page = 1;
-    this.collectionSize = this.table1.length;
+    this.table1Page = 1;
+    this.table1CollectionSize = this.table1.length;
 
     this.refreshActivities();
   }
@@ -225,8 +262,17 @@ export class PatientActivityComponent implements OnInit {
     this.activities = this.table1
       // .map((item, i) => ({ id: i + 1, ...item }))
       .slice(
-        (this.page - 1) * this.pageSize,
-        (this.page - 1) * this.pageSize + this.pageSize
+        (this.table1Page - 1) * this.table1PageSize,
+        (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+      );
+  }
+
+  refreshActivitiesSelect() {
+    this.activitiesSelect = this.table2
+      // .map((item, i) => ({ id: i + 1, ...item }))
+      .slice(
+        (this.table2Page - 1) * this.table2PageSize,
+        (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
       );
   }
 
@@ -235,7 +281,7 @@ export class PatientActivityComponent implements OnInit {
 
     const item2: IPrestationSelect = {
       id: item.id,
-      rubrique: "ANALYSE",
+      rubrique: this.prestations[this.selectedPrestationIndex].name,
       prestation: item.designation,
       price: item.price,
       quantity: this.quantityControl.value,
@@ -245,8 +291,10 @@ export class PatientActivityComponent implements OnInit {
 
     if (index === -1) {
       this.table2 = [...this.table2, item2];
-    } else {
     }
+
+    this.table2CollectionSize = this.table2.length;
+    this.refreshActivitiesSelect();
   }
 
   remove(item: IPrestationSelect) {
@@ -257,6 +305,9 @@ export class PatientActivityComponent implements OnInit {
         return value.id !== item.id;
       }),
     ];
+
+    this.table2CollectionSize = this.table2.length;
+    this.refreshActivitiesSelect();
   }
 
   // medicalProcedures = ["Actes médicaux"];
@@ -389,7 +440,7 @@ export class PatientActivityComponent implements OnInit {
   openInvoiceModal() {
     this.isActivityFormSubmitted = true;
 
-    if (this.activityForm.valid) {
+    // if (this.activityForm.valid) {
       // if (!this.invoiceModalRef) {
       const invoiceModalRef = this.modalService.open(
         PatientInvoiceFormComponent,
@@ -401,7 +452,30 @@ export class PatientActivityComponent implements OnInit {
       );
       // }
 
+      const prestation = new Prestation(
+        1,
+        this.sectorControl.value
+          ? this.sectors[parseInt(this.sectorControl.value)].text
+          : "",
+        this.consultingDoctorControl.value
+          ? this.consultingDoctors[parseInt(this.consultingDoctorControl.value)]
+              .text
+          : "",
+        new Date(),
+        this.originControl.value ?? "PISJO",
+        this.doctorTypeControl.value
+          ? this.doctorTypes[parseInt(this.doctorTypeControl.value)].text
+          : "",
+        this.doctorControl.value
+          ? this.doctors[parseInt(this.doctorControl.value)].text
+          : "",
+        this.performedByControl.value
+          ? this.performedBys[parseInt(this.performedByControl.value)].text
+          : ""
+      );
+
       invoiceModalRef.componentInstance.patientActivities = this.table2;
-    }
+      invoiceModalRef.componentInstance.patientPrestationInfo = prestation;
+    // }
   }
 }

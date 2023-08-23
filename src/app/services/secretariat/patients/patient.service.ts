@@ -144,7 +144,7 @@ export class PatientService {
       (value) => value.patient_id == this.activePatient.id
     );
 
-    return patientInsurance ? patientInsurance.taux : 80;
+    return patientInsurance ? patientInsurance.taux : 0;
   }
 
   getAllPatients() {

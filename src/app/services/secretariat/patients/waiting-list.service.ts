@@ -79,6 +79,10 @@ export class WaitingListService {
     return [...this.waitingList];
   }
 
+  create(data: WaitingListItem) {
+    this.waitingList = [...this.waitingList, data];
+  }
+
   // getAll(): Observable<Patient[]> {
   //   return this.http.get<Patient[]>(baseUrl);
   // }

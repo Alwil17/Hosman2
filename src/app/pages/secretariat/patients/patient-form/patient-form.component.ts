@@ -461,7 +461,7 @@ export class PatientFormComponent implements OnInit {
       patientData.patient,
       patientData.insurance,
       patientData.patientInsurance
-    );
+    )
     // .subscribe(
     //   {
     //     next: (data) => {

@@ -12,6 +12,9 @@ import {
 } from "@angular/forms";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
+import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
+import { WaitingListService } from "src/app/services/secretariat/patients/waiting-list.service";
+import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -21,6 +24,9 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 export class PatientInvoiceFormComponent implements OnInit {
   @Input()
   patientActivities: IPrestationSelect[] = [];
+
+  @Input()
+  patientPrestationInfo!: Prestation;
 
   // @Input()
   // patient: Patient;
@@ -73,7 +79,8 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    public patientService: PatientService
+    public patientService: PatientService,
+    private waitingListService: WaitingListService
   ) {}
 
   ngOnInit(): void {
@@ -356,7 +363,27 @@ export class PatientInvoiceFormComponent implements OnInit {
   validatePayment() {
     this.isInvoiceFormSubmitted = true;
     console.log("Validate payment");
-    
+
+    const wlItem = new WaitingListItem(
+      1,
+      this.patientService.getActivePatient().reference,
+      this.patientService.getActivePatient().nom,
+
+      this.patientService.getActivePatient().prenoms,
+
+      this.patientService.getActivePatient().date_naissance,
+
+      this.patientService.getActivePatient().sexe,
+
+      this.patientActivities.map((act) => act.prestation),
+      this.patientActivities
+        .map((act) => act.total_price)
+        .reduce((pVal, cVal) => pVal + cVal),
+      this.patientPrestationInfo.sector ?? "",
+      this.patientPrestationInfo.consultingDoctor ?? "",
+      new Date()
+    );
+    this.waitingListService.create(wlItem);
   }
 
   // openInvoiceModal(invoiceModal: any) {
