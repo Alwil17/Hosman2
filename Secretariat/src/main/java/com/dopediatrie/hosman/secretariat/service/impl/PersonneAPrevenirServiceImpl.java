@@ -29,16 +29,19 @@ public class PersonneAPrevenirServiceImpl implements PersonneAPrevenirService {
     @Override
     public long addPersonneAPrevenir(PersonneAPrevenirRequest personneAPrevenirRequest) {
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir is called");
+        PersonneAPrevenir personneAPrevenir;
 
-        PersonneAPrevenir personneAPrevenir
-                = PersonneAPrevenir.builder()
-                .nom(personneAPrevenirRequest.getNom())
-                .prenoms(personneAPrevenirRequest.getPrenoms())
-                .tel(personneAPrevenirRequest.getTel())
-                .adresse(personneAPrevenirRequest.getAdresse())
-                .build();
+        personneAPrevenir = personneAPrevenirRepository.searchByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms()).get();
+        if(personneAPrevenir == null){
 
-        personneAPrevenir = personneAPrevenirRepository.save(personneAPrevenir);
+            personneAPrevenir = PersonneAPrevenir.builder()
+                    .nom(personneAPrevenirRequest.getNom())
+                    .prenoms(personneAPrevenirRequest.getPrenoms())
+                    .tel(personneAPrevenirRequest.getTel())
+                    .adresse(personneAPrevenirRequest.getAdresse())
+                    .build();
+            personneAPrevenir = personneAPrevenirRepository.save(personneAPrevenir);
+        }
 
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir | PersonneAPrevenir Created");
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir | PersonneAPrevenir Id : " + personneAPrevenir.getId());
@@ -60,6 +63,25 @@ public class PersonneAPrevenirServiceImpl implements PersonneAPrevenirService {
         copyProperties(personneAPrevenir, personneAPrevenirResponse);
 
         log.info("PersonneAPrevenirServiceImpl | getPersonneAPrevenirById | personneAPrevenirResponse :" + personneAPrevenirResponse.toString());
+
+        return personneAPrevenirResponse;
+    }
+
+    @Override
+    public PersonneAPrevenirResponse searchByNomAndPrenoms(String nom, String prenoms) {
+        log.info("PersonneAPrevenirServiceImpl | searchByNomAndPrenoms is called");
+        log.info("PersonneAPrevenirServiceImpl | searchByNomAndPrenoms | Get the personneAPrevenir for personneAPrevenirId: {}", nom+" "+prenoms);
+
+        PersonneAPrevenir personneAPrevenir
+                = personneAPrevenirRepository.searchByNomAndPrenoms(nom, prenoms)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("PersonneAPrevenir with given Name not found", NOT_FOUND));
+
+        PersonneAPrevenirResponse personneAPrevenirResponse = new PersonneAPrevenirResponse();
+
+        copyProperties(personneAPrevenir, personneAPrevenirResponse);
+
+        log.info("PersonneAPrevenirServiceImpl | searchByNomAndPrenoms | personneAPrevenirResponse :" + personneAPrevenirResponse.toString());
 
         return personneAPrevenirResponse;
     }

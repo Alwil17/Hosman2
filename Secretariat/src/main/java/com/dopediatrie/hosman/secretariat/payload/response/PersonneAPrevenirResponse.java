@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonneAPrevenirResponse {
+    private long id;
     private String nom;
     private String prenoms;
     private String tel;

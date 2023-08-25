@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class ActeRequest {
     private String libelle;
-    private long structure_id;
+    private long structure_id = 1;
 }

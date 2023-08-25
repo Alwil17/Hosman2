@@ -13,6 +13,8 @@ public interface PersonneAPrevenirService {
 
     PersonneAPrevenirResponse getPersonneAPrevenirById(long patientId);
 
+    PersonneAPrevenirResponse searchByNomAndPrenoms(String nom, String prenoms);
+
     void editPersonneAPrevenir(PersonneAPrevenirRequest patientRequest, long patientId);
 
     public void deletePersonneAPrevenirById(long patientId);

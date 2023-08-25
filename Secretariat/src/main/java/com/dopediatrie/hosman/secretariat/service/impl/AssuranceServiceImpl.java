@@ -31,19 +31,24 @@ public class AssuranceServiceImpl implements AssuranceService {
     @Override
     public long addAssurance(AssuranceRequest assuranceRequest) {
         log.info("AssuranceServiceImpl | addAssurance is called");
+        Assurance assurance;
 
-        Assurance assurance
-                = Assurance.builder()
-                .nom(assuranceRequest.getNom())
-                .reference(assuranceRequest.getReference())
-                .representant(assuranceRequest.getRepresentant())
-                .email(assuranceRequest.getEmail())
-                .tel1(assuranceRequest.getTel1())
-                .tel2(assuranceRequest.getTel2())
-                .type_assurance(typeAssuranceRepository.findById(assuranceRequest.getType_assurance_id()).get())
-                .build();
+        if(!assuranceRepository.existsByNom(assuranceRequest.getNom())){
+            assurance
+                    = Assurance.builder()
+                    .nom(assuranceRequest.getNom())
+                    .representant(assuranceRequest.getRepresentant())
+                    .email(assuranceRequest.getEmail())
+                    .tel1(assuranceRequest.getTel1())
+                    .tel2(assuranceRequest.getTel2())
+                    .type_assurance(typeAssuranceRepository.findById(assuranceRequest.getType_assurance_id()).get())
+                    .build();
 
-        assurance = assuranceRepository.save(assurance);
+            assurance = assuranceRepository.save(assurance);
+        }else{
+            assurance = assuranceRepository.findByNom(assuranceRequest.getNom()).get();
+        }
+
 
         log.info("AssuranceServiceImpl | addAssurance | Assurance Created");
         log.info("AssuranceServiceImpl | addAssurance | Assurance Id : " + assurance.getId());
@@ -80,7 +85,6 @@ public class AssuranceServiceImpl implements AssuranceService {
                         NOT_FOUND
                 ));
         assurance.setNom(assuranceRequest.getNom());
-        assurance.setReference(assuranceRequest.getReference());
         assurance.setRepresentant(assuranceRequest.getRepresentant());
         assurance.setEmail(assuranceRequest.getEmail());
         assurance.setTel1(assuranceRequest.getTel1());

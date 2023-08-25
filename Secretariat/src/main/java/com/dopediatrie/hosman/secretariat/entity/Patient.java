@@ -31,6 +31,7 @@ public class Patient {
     private String type_piece;
     private String no_piece;
     private int is_assure;
+    private LocalDateTime date_ajout;
     @ManyToOne
     @JoinColumn(name = "pays_origine_id")
     private Pays pays_origine;
@@ -47,11 +48,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Prestation> prestations;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "patient_adresse",
-            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "adresse_id", referencedColumnName = "id"))
-    private List<Adresse> adresses;
+    @OneToOne
+    @JoinColumn(name = "adresse_id")
+    private Adresse adresse;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "patient_assurance",
             joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),

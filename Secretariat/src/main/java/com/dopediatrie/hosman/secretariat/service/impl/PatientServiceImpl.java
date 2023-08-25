@@ -2,10 +2,11 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.PatientAssuranceRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
-import com.dopediatrie.hosman.secretariat.service.PatientService;
+import com.dopediatrie.hosman.secretariat.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,17 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @RequiredArgsConstructor
 @Log4j2
 public class PatientServiceImpl implements PatientService {
+    private final AdresseRepository adresseRepository;
     private final PatientRepository patientRepository;
     private final PaysRepository paysRepository;
     private final ProfessionRepository professionRepository;
     private final EmployeurRepository employeurRepository;
     private final PersonneAPrevenirRepository personneAPrevenirRepository;
+
+    private final PersonneAPrevenirService personneAPrevenirService;
+    private final AdresseService adresseService;
+    private final AssuranceService assuranceService;
+    private final PatientAssuranceService patientAssuranceService;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -34,6 +41,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public long addPatient(PatientRequest patientRequest) {
         log.info("PatientServiceImpl | addPatient is called");
+
+        long personne_a_prevenir_id = personneAPrevenirService.addPersonneAPrevenir(patientRequest.getPersonne_a_prevenir());
+        long adresse_id = adresseService.addAdresse(patientRequest.getAdresse());
+        long assurance_id = assuranceService.addAssurance(patientRequest.getAssurance());
 
         Patient patient
                 = Patient.builder()
@@ -48,15 +59,23 @@ public class PatientServiceImpl implements PatientService {
                 .email(patientRequest.getEmail())
                 .type_piece(patientRequest.getType_piece())
                 .no_piece(patientRequest.getNo_piece())
+                .date_ajout(patientRequest.getDate_ajout())
                 .is_assure(patientRequest.getIs_assure())
+                .adresse(adresseRepository.findById(adresse_id).get())
                 .pays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get())
                 .profession(professionRepository.findById(patientRequest.getProfession_id()).get())
                 .employeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get())
-                .personne_a_prevenir(personneAPrevenirRepository.findById(patientRequest.getPersonne_a_prevenir_id()).get())
+                .personne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get())
                 .structure_id(patientRequest.getStructure_id())
                 .build();
 
         patient = patientRepository.save(patient);
+
+        PatientAssuranceRequest par = patientRequest.getPatient_assurance();
+        par.setPatient_id(patient.getId());
+        par.setAssurance_id(assurance_id);
+
+        patientAssuranceService.addPatientAssurance(par);
 
         log.info("PatientServiceImpl | addPatient | Patient Created");
         log.info("PatientServiceImpl | addPatient | Patient Id : " + patient.getId());
@@ -103,11 +122,11 @@ public class PatientServiceImpl implements PatientService {
         patient.setEmail(patientRequest.getEmail());
         patient.setType_piece(patientRequest.getType_piece());
         patient.setNo_piece(patientRequest.getNo_piece());
+        patient.setDate_ajout(patientRequest.getDate_ajout());
         patient.setIs_assure(patientRequest.getIs_assure());
         patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
         patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
         patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
-        patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(patientRequest.getPersonne_a_prevenir_id()).get());
         patient.setStructure_id(patientRequest.getStructure_id());
         patientRepository.save(patient);
 

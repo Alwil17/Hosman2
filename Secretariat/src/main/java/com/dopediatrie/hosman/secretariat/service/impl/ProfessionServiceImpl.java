@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.ProfessionRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.ProfessionResponse;
 import com.dopediatrie.hosman.secretariat.repository.ProfessionRepository;
 import com.dopediatrie.hosman.secretariat.service.ProfessionService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class ProfessionServiceImpl implements ProfessionService {
         Profession profession
                 = Profession.builder()
                 .denomination(professionRequest.getDenomination())
+                .slug(Str.slug(professionRequest.getDenomination()))
                 .build();
 
         profession = professionRepository.save(profession);
@@ -72,6 +74,7 @@ public class ProfessionServiceImpl implements ProfessionService {
                         NOT_FOUND
                 ));
         profession.setDenomination(professionRequest.getDenomination());
+        profession.setSlug(Str.slug(professionRequest.getDenomination()));
         professionRepository.save(profession);
 
         log.info("ProfessionServiceImpl | editProfession | Profession Updated");

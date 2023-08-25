@@ -9,5 +9,5 @@ public class PersonneAPrevenirRequest {
     private String nom;
     private String prenoms;
     private String tel;
-    private String adresse;
+    private String adresse = "";
 }

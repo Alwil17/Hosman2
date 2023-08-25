@@ -7,5 +7,4 @@ import lombok.Data;
 @Builder
 public class ProfessionRequest {
     private String denomination;
-    private String slug;
 }

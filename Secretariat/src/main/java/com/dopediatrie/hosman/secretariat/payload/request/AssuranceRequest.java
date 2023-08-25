@@ -7,7 +7,6 @@ import lombok.Data;
 @Builder
 public class AssuranceRequest {
     private String nom;
-    private String reference;
     private String representant;
     private String email;
     private String tel1;

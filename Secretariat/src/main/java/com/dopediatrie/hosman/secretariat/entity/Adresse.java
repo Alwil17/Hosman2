@@ -28,7 +28,7 @@ public class Adresse {
     @ManyToOne
     @JoinColumn(name = "quartier_id")
     private Quartier quartier;
-    @ManyToMany(mappedBy = "adresses")
+    @OneToOne(mappedBy = "adresse")
     @JsonIgnore
-    private List<Patient> patients;
+    private Patient patient;
 }

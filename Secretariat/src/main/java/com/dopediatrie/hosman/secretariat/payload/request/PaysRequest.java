@@ -9,7 +9,6 @@ import java.util.Date;
 @Builder
 public class PaysRequest {
     private String nom;
-    private String slug;
     private String nationalite;
     private String code;
     private int indicatif;

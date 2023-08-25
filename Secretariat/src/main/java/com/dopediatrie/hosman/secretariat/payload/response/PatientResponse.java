@@ -1,9 +1,6 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
-import com.dopediatrie.hosman.secretariat.entity.Employeur;
-import com.dopediatrie.hosman.secretariat.entity.Pays;
-import com.dopediatrie.hosman.secretariat.entity.PersonneAPrevenir;
-import com.dopediatrie.hosman.secretariat.entity.Profession;
+import com.dopediatrie.hosman.secretariat.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +25,9 @@ public class PatientResponse {
     private String email;
     private String type_piece;
     private String no_piece;
+    private LocalDateTime date_ajout;
     private int is_assure;
+    private Adresse adresse;
     private Pays pays_origine;
     private Profession profession;
     private Employeur employeur;
