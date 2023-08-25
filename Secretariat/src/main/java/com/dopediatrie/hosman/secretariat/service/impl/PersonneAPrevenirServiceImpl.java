@@ -31,9 +31,7 @@ public class PersonneAPrevenirServiceImpl implements PersonneAPrevenirService {
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir is called");
         PersonneAPrevenir personneAPrevenir;
 
-        personneAPrevenir = personneAPrevenirRepository.searchByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms()).get();
-        if(personneAPrevenir == null){
-
+        if(personneAPrevenirRepository.existsByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms()) == null || !personneAPrevenirRepository.existsByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms())){
             personneAPrevenir = PersonneAPrevenir.builder()
                     .nom(personneAPrevenirRequest.getNom())
                     .prenoms(personneAPrevenirRequest.getPrenoms())
@@ -41,6 +39,8 @@ public class PersonneAPrevenirServiceImpl implements PersonneAPrevenirService {
                     .adresse(personneAPrevenirRequest.getAdresse())
                     .build();
             personneAPrevenir = personneAPrevenirRepository.save(personneAPrevenir);
+        }else{
+            personneAPrevenir = personneAPrevenirRepository.searchByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms()).get();
         }
 
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir | PersonneAPrevenir Created");
