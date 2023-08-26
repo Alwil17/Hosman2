@@ -6,6 +6,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class AssuranceTarifPK implements Serializable {
-    private long assurance_id;
-    private long tarif_id;
+    public long assurance_id;
+    public long tarif_id;
 }

@@ -35,8 +35,13 @@ public class AssuranceTarifServiceImpl implements AssuranceTarifService {
     public AssuranceTarifPK addAssuranceTarif(AssuranceTarifRequest assuranceTarifRequest) {
         log.info("AssuranceTarifServiceImpl | addAssuranceTarif is called");
 
+        AssuranceTarifPK pk = new AssuranceTarifPK();
+        pk.assurance_id = assuranceTarifRequest.getAssurance_id();
+        pk.tarif_id = assuranceTarifRequest.getTarif_id();
+
         AssuranceTarif assuranceTarif
                 = AssuranceTarif.builder()
+                .id(pk)
                 .assurance(assuranceRepository.findById(assuranceTarifRequest.getAssurance_id()).get())
                 .tarif(tarifRepository.findById(assuranceTarifRequest.getTarif_id()).get())
                 .base_remboursement(assuranceTarifRequest.getBase_remboursement())

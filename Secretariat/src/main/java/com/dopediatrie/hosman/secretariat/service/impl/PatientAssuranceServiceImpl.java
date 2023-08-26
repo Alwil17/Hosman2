@@ -56,25 +56,6 @@ public class PatientAssuranceServiceImpl implements PatientAssuranceService {
         return patientAssurance.getId();
     }
 
-    /*public void addPatientAssurance(Long patientId, Long assuranceId, Date dateEntree) {
-
-        PatientAssurancePK pk = new PatientAssurancePK();
-        pk.setPatientId(patientId);
-        pk.setAssuranceId(assuranceId);
-
-        PatientAssurance patientAssurance = new PatientAssurance();
-        patientAssurance.setPk(pk);
-        patientAssurance.setDateEntree(dateEntree);
-        patientAssurance.setPatient(patient);
-        patientAssurance.setAssurance(assurance);
-
-        patient.getPatientAssurances().add(patientAssurance);
-        assurance.getPatientAssurances().add(patientAssurance);
-
-        patientRepository.save(patient);
-    }
-}
-*/
     @Override
     public PatientAssuranceResponse getPatientAssuranceById(long patientAssuranceId) {
         log.info("PatientAssuranceServiceImpl | getPatientAssuranceById is called");
