@@ -81,6 +81,14 @@ public class FactureController {
         Context context = new Context();
 
         context.setVariable("reference",factureResponse.getReference());
+        context.setVariable("total",factureResponse.getTotal());
+        context.setVariable("montant_pec",factureResponse.getMontant_pec());
+        context.setVariable("majoration",factureResponse.getMajoration());
+        context.setVariable("reduction",factureResponse.getReduction());
+        context.setVariable("a_payer",factureResponse.getA_payer());
+        context.setVariable("verse",factureResponse.getVerse());
+        context.setVariable("reliquat",factureResponse.getReliquat());
+
 
         String htmlContentToRender = templateEngine.process("invoice", context);
         String xHtml = Utils.xhtmlConvert(htmlContentToRender);

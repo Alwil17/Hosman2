@@ -33,6 +33,5 @@ public class Facture {
     private int etat_id;
     private int exporte;
     @OneToOne(mappedBy = "facture")
-    @JsonIgnore
     private Prestation prestation;
 }
