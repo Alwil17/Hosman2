@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/typeAsssurances")
+@RequestMapping("/typeAssurances")
 @RequiredArgsConstructor
 @Log4j2
 public class TypeAsssuranceController {
@@ -28,13 +28,11 @@ public class TypeAsssuranceController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addTypeAssurance(@RequestBody NameRequest typeAsssuranceRequest) {
-
+    public ResponseEntity<Long> addTypeAssurance(@RequestBody NameRequest nameRequest) {
         log.info("TypeAssuranceController | addTypeAssurance is called");
+        log.info("TypeAssuranceController | addTypeAssurance | nameRequest : " + nameRequest.toString());
 
-        log.info("TypeAssuranceController | addTypeAssurance | typeAsssuranceRequest : " + typeAsssuranceRequest.toString());
-
-        long typeAsssuranceId = typeAsssuranceService.addTypeAssurance(typeAsssuranceRequest);
+        long typeAsssuranceId = typeAsssuranceService.addTypeAssurance(nameRequest);
         return new ResponseEntity<>(typeAsssuranceId, HttpStatus.CREATED);
     }
 

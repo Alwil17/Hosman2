@@ -63,6 +63,7 @@ public class PatientServiceImpl implements PatientService {
                 .is_assure(patientRequest.getIs_assure())
                 .adresse(adresseRepository.findById(adresse_id).get())
                 .pays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get())
+                .nationalite(paysRepository.findById(patientRequest.getNationalite_id()).get())
                 .profession(professionRepository.findById(patientRequest.getProfession_id()).get())
                 .employeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get())
                 .personne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get())
@@ -124,6 +125,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setNo_piece(patientRequest.getNo_piece());
         patient.setDate_ajout(patientRequest.getDate_ajout());
         patient.setIs_assure(patientRequest.getIs_assure());
+        patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
         patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
         patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
         patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());

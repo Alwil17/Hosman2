@@ -22,6 +22,7 @@ public class PatientRequest {
     private LocalDateTime date_ajout;
     private int is_assure = 0;
     private long pays_origine_id;
+    private long nationalite_id;
     private long profession_id;
     private long employeur_id;
 

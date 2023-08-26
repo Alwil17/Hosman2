@@ -36,6 +36,9 @@ public class Patient {
     @JoinColumn(name = "pays_origine_id")
     private Pays pays_origine;
     @ManyToOne
+    @JoinColumn(name = "nationalite_id")
+    private Pays nationalite;
+    @ManyToOne
     @JoinColumn(name = "profession_id")
     private Profession profession;
     @ManyToOne

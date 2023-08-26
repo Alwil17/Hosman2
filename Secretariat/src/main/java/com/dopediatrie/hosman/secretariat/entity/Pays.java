@@ -25,5 +25,8 @@ public class Pays {
     private int indicatif;
     @OneToMany(mappedBy = "pays_origine")
     @JsonIgnore
-    private List<Patient> patients;
+    private List<Patient> patients_originaires;
+    @OneToMany(mappedBy = "nationalite")
+    @JsonIgnore
+    private List<Patient> patients_nationalites;
 }

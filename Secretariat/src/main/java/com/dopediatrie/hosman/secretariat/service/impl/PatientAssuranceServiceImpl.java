@@ -35,10 +35,15 @@ public class PatientAssuranceServiceImpl implements PatientAssuranceService {
     public PatientAssurancePK addPatientAssurance(PatientAssuranceRequest patientAssuranceRequest) {
         log.info("PatientAssuranceServiceImpl | addPatientAssurance is called");
 
+        PatientAssurancePK pk = new PatientAssurancePK();
+        pk.patient_id = patientAssuranceRequest.getPatient_id();
+        pk.assurance_id = patientAssuranceRequest.getAssurance_id();
+
         PatientAssurance patientAssurance
                 = PatientAssurance.builder()
-                .patient(patientRepository.findById(patientAssuranceRequest.getPatient_id()).get())
-                .assurance(assuranceRepository.findById(patientAssuranceRequest.getAssurance_id()).get())
+                .id(pk)
+                .patient(patientRepository.findById(patientAssuranceRequest.getPatient_id()).orElseThrow())
+                .assurance(assuranceRepository.findById(patientAssuranceRequest.getAssurance_id()).orElseThrow())
                 .date_debut(patientAssuranceRequest.getDate_debut())
                 .date_fin(patientAssuranceRequest.getDate_fin())
                 .taux(patientAssuranceRequest.getTaux())
@@ -51,6 +56,25 @@ public class PatientAssuranceServiceImpl implements PatientAssuranceService {
         return patientAssurance.getId();
     }
 
+    /*public void addPatientAssurance(Long patientId, Long assuranceId, Date dateEntree) {
+
+        PatientAssurancePK pk = new PatientAssurancePK();
+        pk.setPatientId(patientId);
+        pk.setAssuranceId(assuranceId);
+
+        PatientAssurance patientAssurance = new PatientAssurance();
+        patientAssurance.setPk(pk);
+        patientAssurance.setDateEntree(dateEntree);
+        patientAssurance.setPatient(patient);
+        patientAssurance.setAssurance(assurance);
+
+        patient.getPatientAssurances().add(patientAssurance);
+        assurance.getPatientAssurances().add(patientAssurance);
+
+        patientRepository.save(patient);
+    }
+}
+*/
     @Override
     public PatientAssuranceResponse getPatientAssuranceById(long patientAssuranceId) {
         log.info("PatientAssuranceServiceImpl | getPatientAssuranceById is called");

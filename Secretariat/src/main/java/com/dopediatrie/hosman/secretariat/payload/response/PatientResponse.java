@@ -29,6 +29,7 @@ public class PatientResponse {
     private int is_assure;
     private Adresse adresse;
     private Pays pays_origine;
+    private Pays nationalite;
     private Profession profession;
     private Employeur employeur;
     private PersonneAPrevenir personne_a_prevenir;
