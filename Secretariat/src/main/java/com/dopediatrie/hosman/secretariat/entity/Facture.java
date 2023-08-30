@@ -21,16 +21,26 @@ public class Facture {
     private String reference;
     private double total;
     private double montant_pec;
-    private double majoration;
-    private double reduction;
+    @OneToOne
+    @JoinColumn(name = "majoration_id")
+    private Majoration majoration;
+    @OneToOne
+    @JoinColumn(name = "reduction_id")
+    private Reduction reduction;
     private double a_payer;
     private double verse;
-    private double reliquat;
-    private double creance;
+    @OneToOne
+    @JoinColumn(name = "reliquat_id")
+    private Reliquat reliquat;
+    @OneToOne
+    @JoinColumn(name = "creance_id")
+    private Creance creance;
     private String mode_payement;
     private LocalDateTime date_facture;
     private LocalDateTime date_reglement;
-    private int etat_id;
+    @ManyToOne
+    @JoinColumn(name = "etat_id")
+    private Etat etat;
     private int exporte;
     @OneToOne(mappedBy = "facture")
     private Prestation prestation;

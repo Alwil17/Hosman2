@@ -5,7 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
-import com.dopediatrie.hosman.secretariat.service.FactureService;
+import com.dopediatrie.hosman.secretariat.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,16 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class FactureServiceImpl implements FactureService {
     private final FactureRepository factureRepository;
+    private final EtatRepository etatRepository;
+    private final ReductionRepository reductionRepository;
+    private final MajorationRepository majorationRepository;
+    private final CreanceRepository creanceRepository;
+    private final ReliquatRepository reliquatRepository;
+
+    private final ReductionService reductionService;
+    private final MajorationService majorationService;
+    private final CreanceService creanceService;
+    private final ReliquatService reliquatService;
     private final String NOT_FOUND = "FACTURE_NOT_FOUND";
 
     @Override
@@ -30,19 +40,25 @@ public class FactureServiceImpl implements FactureService {
     @Override
     public long addFacture(FactureRequest factureRequest) {
         log.info("FactureServiceImpl | addFacture is called");
+
+        long majorationId = majorationService.addMajoration(factureRequest.getMajorationRequest());
+        long reductionId = reductionService.addReduction(factureRequest.getReductionRequest());
+        long reliquatId = reliquatService.addReliquat(factureRequest.getReliquatRequest());
+        long creanceId = creanceService.addCreance(factureRequest.getCreanceRequest());
+
         Facture facture
                 = Facture.builder()
                 .reference(factureRequest.getReference())
                 .total(factureRequest.getTotal())
                 .montant_pec(factureRequest.getMontant_pec())
-                .majoration(factureRequest.getMajoration())
-                .reduction(factureRequest.getReduction())
+                .majoration(majorationRepository.findById(majorationId).orElseThrow())
+                .reduction(reductionRepository.findById(reductionId).orElseThrow())
                 .a_payer(factureRequest.getA_payer())
                 .verse(factureRequest.getVerse())
-                .reliquat(factureRequest.getReliquat())
-                .creance(factureRequest.getCreance())
+                .reliquat(reliquatRepository.findById(reliquatId).orElseThrow())
+                .creance(creanceRepository.findById(creanceId).orElseThrow())
                 .mode_payement(factureRequest.getMode_payement())
-                .etat_id(factureRequest.getEtat_id())
+                .etat(etatRepository.findById(factureRequest.getEtat_id()).orElseThrow())
                 .exporte(factureRequest.getExporte())
                 .date_facture(factureRequest.getDate_facture())
                 .date_reglement(factureRequest.getDate_reglement())
@@ -84,17 +100,19 @@ public class FactureServiceImpl implements FactureService {
                         "Facture with given Id not found",
                         NOT_FOUND
                 ));
+
+        majorationService.editMajoration(factureRequest.getMajorationRequest(), facture.getMajoration().getId());
+        reductionService.editReduction(factureRequest.getReductionRequest(), facture.getReduction().getId());
+        reliquatService.editReliquat(factureRequest.getReliquatRequest(), facture.getReliquat().getId());
+        creanceService.editCreance(factureRequest.getCreanceRequest(), facture.getCreance().getId());
+
         facture.setReference(factureRequest.getReference());
         facture.setTotal(factureRequest.getTotal());
         facture.setMontant_pec(factureRequest.getMontant_pec());
-        facture.setMajoration(factureRequest.getMajoration());
-        facture.setReduction(factureRequest.getReduction());
         facture.setA_payer(factureRequest.getA_payer());
         facture.setVerse(factureRequest.getVerse());
-        facture.setReliquat(factureRequest.getReliquat());
-        facture.setCreance(factureRequest.getCreance());
         facture.setMode_payement(factureRequest.getMode_payement());
-        facture.setEtat_id(factureRequest.getEtat_id());
+        facture.setEtat(etatRepository.findById(factureRequest.getEtat_id()).orElseThrow());
         facture.setExporte(factureRequest.getExporte());
         facture.setDate_facture(factureRequest.getDate_facture());
         facture.setDate_reglement(factureRequest.getDate_reglement());

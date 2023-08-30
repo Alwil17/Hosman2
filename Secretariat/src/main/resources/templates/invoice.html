@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
     <meta charset="UTF-8"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
     <title>Invoice</title>
     <style>
         @page {
             /* dimensions for the whole page */
-            /*size: A5;*/
-
+            size: A4;
             margin: 0;
         }
 
@@ -149,7 +146,7 @@
             </div>
             <div class="patient-info">
                 <p>Patient(e): <b th:text="${nom}">-</b></p>
-                <p>Sexe: <b th:text="${date_naissance}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
+                <p>Sexe: <b th:text="${sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
             </div>
         </div>
 
@@ -199,39 +196,39 @@
                 <tbody>
                 <tr>
                     <td>Montant total : </td>
-                    <td style="width: 40%; text-align: end;">3000</td>
+                    <td style="width: 40%; text-align: end;" th:text="${total}">0</td>
                 </tr>
                 <tr>
                     <td>Montant PEC :</td>
-                    <td style="width: 40%; text-align: end;">0</td>
+                    <td style="width: 40%; text-align: end;" th:text="${montant_pec}">0</td>
                 </tr>
                 <tr>
                     <td>Urgence/Major :</td>
-                    <td style="width: 40%; text-align: end;">0</td>
+                    <td style="width: 40%; text-align: end;" th:text="${majoration}">0</td>
                 </tr>
                 <tr>
                     <td>Réduction :</td>
-                    <td style="width: 40%; text-align: end;">0</td>
+                    <td style="width: 40%; text-align: end;" th:text="${reduction}">0</td>
                 </tr>
                 <tr>
                     <td>Montant à payer :</td>
-                    <td style="width: 40%; text-align: end;">3000</td>
+                    <td style="width: 40%; text-align: end;" th:text="${a_payer}">0</td>
                 </tr>
                 <tr>
                     <td>Montant versé :</td>
-                    <td style="width: 40%; text-align: end;">5000</td>
+                    <td style="width: 40%; text-align: end;" th:text="${verse}">0</td>
                 </tr>
                 <tr>
                     <td>Reliquat :</td>
-                    <td style="width: 40%; text-align: end;">2000</td>
+                    <td style="width: 40%; text-align: end;" th:text="${reliquat}">0</td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="payment-info">
+        <!--<div class="payment-info">
 
-        </div>
+        </div>-->
     </div>
 </article>
 </body>
