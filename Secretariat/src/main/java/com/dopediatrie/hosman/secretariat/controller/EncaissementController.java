@@ -1,9 +1,9 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
-import com.dopediatrie.hosman.secretariat.entity.Assurance;
-import com.dopediatrie.hosman.secretariat.payload.request.AssuranceRequest;
-import com.dopediatrie.hosman.secretariat.payload.response.AssuranceResponse;
-import com.dopediatrie.hosman.secretariat.service.AssuranceService;
+import com.dopediatrie.hosman.secretariat.entity.Encaissement;
+import com.dopediatrie.hosman.secretariat.payload.request.EncaissementRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.EncaissementResponse;
+import com.dopediatrie.hosman.secretariat.service.EncaissementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -13,58 +13,58 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/assurances")
+@RequestMapping("/encaissements")
 @RequiredArgsConstructor
 @Log4j2
-public class AssuranceController {
+public class EncaissementController {
 
-    private final AssuranceService assuranceService;
+    private final EncaissementService encaissementService;
 
     @GetMapping
-    public ResponseEntity<List<Assurance>> getAllAssurances() {
+    public ResponseEntity<List<Encaissement>> getAllEncaissements() {
 
-        log.info("AssuranceController | getAllAssurances is called");
-        return new ResponseEntity<>(assuranceService.getAllAssurances(), HttpStatus.OK);
+        log.info("EncaissementController | getAllEncaissements is called");
+        return new ResponseEntity<>(encaissementService.getAllEncaissements(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Long> addAssurance(@RequestBody AssuranceRequest assuranceRequest) {
+    public ResponseEntity<Long> addEncaissement(@RequestBody EncaissementRequest encaissementRequest) {
 
-        log.info("AssuranceController | addAssurance is called");
+        log.info("EncaissementController | addEncaissement is called");
 
-        log.info("AssuranceController | addAssurance | assuranceRequest : " + assuranceRequest.toString());
+        log.info("EncaissementController | addEncaissement | encaissementRequest : " + encaissementRequest.toString());
 
-        long assuranceId = assuranceService.addAssurance(assuranceRequest);
-        return new ResponseEntity<>(assuranceId, HttpStatus.CREATED);
+        long encaissementId = encaissementService.addEncaissement(encaissementRequest);
+        return new ResponseEntity<>(encaissementId, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AssuranceResponse> getAssuranceById(@PathVariable("id") long assuranceId) {
+    public ResponseEntity<EncaissementResponse> getEncaissementById(@PathVariable("id") long encaissementId) {
 
-        log.info("AssuranceController | getAssuranceById is called");
+        log.info("EncaissementController | getEncaissementById is called");
 
-        log.info("AssuranceController | getAssuranceById | assuranceId : " + assuranceId);
+        log.info("EncaissementController | getEncaissementById | encaissementId : " + encaissementId);
 
-        AssuranceResponse assuranceResponse
-                = assuranceService.getAssuranceById(assuranceId);
-        return new ResponseEntity<>(assuranceResponse, HttpStatus.OK);
+        EncaissementResponse encaissementResponse
+                = encaissementService.getEncaissementById(encaissementId);
+        return new ResponseEntity<>(encaissementResponse, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editAssurance(@RequestBody AssuranceRequest assuranceRequest,
-            @PathVariable("id") long assuranceId
+    public ResponseEntity<Void> editEncaissement(@RequestBody EncaissementRequest encaissementRequest,
+            @PathVariable("id") long encaissementId
     ) {
 
-        log.info("AssuranceController | editAssurance is called");
+        log.info("EncaissementController | editEncaissement is called");
 
-        log.info("AssuranceController | editAssurance | assuranceId : " + assuranceId);
+        log.info("EncaissementController | editEncaissement | encaissementId : " + encaissementId);
 
-        assuranceService.editAssurance(assuranceRequest, assuranceId);
+        encaissementService.editEncaissement(encaissementRequest, encaissementId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAssuranceById(@PathVariable("id") long assuranceId) {
-        assuranceService.deleteAssuranceById(assuranceId);
+    public void deleteEncaissementById(@PathVariable("id") long encaissementId) {
+        encaissementService.deleteEncaissementById(encaissementId);
     }
 }
