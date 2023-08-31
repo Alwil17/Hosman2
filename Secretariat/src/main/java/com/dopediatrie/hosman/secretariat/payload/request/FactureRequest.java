@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,12 +15,11 @@ public class FactureRequest {
     private MajorationRequest majorationRequest;
     private ReductionRequest reductionRequest;
     private double a_payer = 0;
-    private double verse = 0;
     private ReliquatRequest reliquatRequest;
     private CreanceRequest creanceRequest;
-    private String mode_payement = "especes";
     private LocalDateTime date_facture = LocalDateTime.now();
     private LocalDateTime date_reglement = LocalDateTime.now();
     private long etat_id;
     private int exporte = 0;
+    private List<FactureModeRequest> mode_payements;
 }

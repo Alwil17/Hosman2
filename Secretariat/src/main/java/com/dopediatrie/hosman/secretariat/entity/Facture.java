@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,14 +29,12 @@ public class Facture {
     @JoinColumn(name = "reduction_id")
     private Reduction reduction;
     private double a_payer;
-    private double verse;
     @OneToOne
     @JoinColumn(name = "reliquat_id")
     private Reliquat reliquat;
     @OneToOne
     @JoinColumn(name = "creance_id")
     private Creance creance;
-    private String mode_payement;
     private LocalDateTime date_facture;
     private LocalDateTime date_reglement;
     @ManyToOne
@@ -44,4 +43,9 @@ public class Facture {
     private int exporte;
     @OneToOne(mappedBy = "facture")
     private Prestation prestation;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "mode_facture",
+            joinColumns = @JoinColumn(name = "facture_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "mode_payement_id", referencedColumnName = "id"))
+    private List<ModePayement> mode_payements;
 }

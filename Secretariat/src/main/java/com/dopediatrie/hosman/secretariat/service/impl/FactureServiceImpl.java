@@ -1,7 +1,10 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.FactureMode;
 import com.dopediatrie.hosman.secretariat.entity.Facture;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
@@ -25,11 +28,13 @@ public class FactureServiceImpl implements FactureService {
     private final MajorationRepository majorationRepository;
     private final CreanceRepository creanceRepository;
     private final ReliquatRepository reliquatRepository;
+    private final FactureModeRepository eModeRepository;
 
     private final ReductionService reductionService;
     private final MajorationService majorationService;
     private final CreanceService creanceService;
     private final ReliquatService reliquatService;
+    private final FactureModeService factureModeService;
     private final String NOT_FOUND = "FACTURE_NOT_FOUND";
 
     @Override
@@ -54,10 +59,8 @@ public class FactureServiceImpl implements FactureService {
                 .majoration(majorationRepository.findById(majorationId).orElseThrow())
                 .reduction(reductionRepository.findById(reductionId).orElseThrow())
                 .a_payer(factureRequest.getA_payer())
-                .verse(factureRequest.getVerse())
                 .reliquat(reliquatRepository.findById(reliquatId).orElseThrow())
                 .creance(creanceRepository.findById(creanceId).orElseThrow())
-                .mode_payement(factureRequest.getMode_payement())
                 .etat(etatRepository.findById(factureRequest.getEtat_id()).orElseThrow())
                 .exporte(factureRequest.getExporte())
                 .date_facture(factureRequest.getDate_facture())
@@ -65,6 +68,11 @@ public class FactureServiceImpl implements FactureService {
                 .build();
 
         facture = factureRepository.save(facture);
+
+        for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
+            eMode.setFacture_id(facture.getId());
+            factureModeService.addFactureMode(eMode);
+        }
 
         log.info("FactureServiceImpl | addFacture | Facture Created");
         log.info("FactureServiceImpl | addFacture | Facture Id : " + facture.getId());
@@ -110,13 +118,22 @@ public class FactureServiceImpl implements FactureService {
         facture.setTotal(factureRequest.getTotal());
         facture.setMontant_pec(factureRequest.getMontant_pec());
         facture.setA_payer(factureRequest.getA_payer());
-        facture.setVerse(factureRequest.getVerse());
-        facture.setMode_payement(factureRequest.getMode_payement());
         facture.setEtat(etatRepository.findById(factureRequest.getEtat_id()).orElseThrow());
         facture.setExporte(factureRequest.getExporte());
         facture.setDate_facture(factureRequest.getDate_facture());
         facture.setDate_reglement(factureRequest.getDate_reglement());
         factureRepository.save(facture);
+
+        for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
+            if(eModeRepository.existsByFacture_IdAndMode_payement_Id(eMode.getFacture_id(), eMode.getMode_payement_id())){
+                FactureMode em = eModeRepository.findByFacture_IdAndMode_payement_Id(eMode.getFacture_id(), eMode.getMode_payement_id()).orElseThrow();
+                em.setMontant(eMode.getMontant());
+                eModeRepository.save(em);
+            }else{
+                eMode.setFacture_id(facture.getId());
+                factureModeService.addFactureMode(eMode);
+            }
+        }
 
         log.info("FactureServiceImpl | editFacture | Facture Updated");
         log.info("FactureServiceImpl | editFacture | Facture Id : " + facture.getId());
