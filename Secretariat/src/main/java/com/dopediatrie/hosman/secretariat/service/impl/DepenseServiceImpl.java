@@ -52,6 +52,7 @@ public class DepenseServiceImpl implements DepenseService {
                 .accordeur_id(depenseRequest.getAccordeur_id())
                 .caissier_id(depenseRequest.getCaissier_id())
                 .date_depense(depenseRequest.getDate_depense())
+                .recu(depenseRequest.getRecu())
                 .build();
 
         depense = depenseRepository.save(depense);
@@ -109,6 +110,7 @@ public class DepenseServiceImpl implements DepenseService {
         depense.setAccordeur_id(depenseRequest.getAccordeur_id());
         depense.setCaissier_id(depenseRequest.getCaissier_id());
         depense.setDate_depense(depenseRequest.getDate_depense());
+        depense.setRecu(depenseRequest.getRecu());
         depenseRepository.save(depense);
 
         log.info("DepenseServiceImpl | editDepense | Depense Updated");

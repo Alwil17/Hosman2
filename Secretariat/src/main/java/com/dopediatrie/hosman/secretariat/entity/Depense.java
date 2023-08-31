@@ -30,4 +30,5 @@ public class Depense {
     private LocalDateTime date_depense;
     private long accordeur_id;
     private long caissier_id;
+    private int recu;
 }

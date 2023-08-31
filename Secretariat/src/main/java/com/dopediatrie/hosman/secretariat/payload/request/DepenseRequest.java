@@ -19,4 +19,5 @@ public class DepenseRequest {
     private LocalDateTime date_depense;
     private long accordeur_id = 1;
     private long caissier_id = 1;
+    private int recu = 0;
 }
