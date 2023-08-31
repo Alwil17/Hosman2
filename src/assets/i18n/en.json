@@ -16,7 +16,7 @@
       }
     },
     "ACTIVITIES": {
-      "TEXT": "Activities",
+      "TEXT": "XF",
       "LIST": {
         "EXPENSES": "Expenses",
         "COLLECTIONS": "Collections",
@@ -30,6 +30,18 @@
         "TARIFFS": "Tariffs",
         "CIM_11": "CIM-11",
         "TELEPHONE_BOOK": "Telephone book",
+        "EXAMINATIONS": "Examinations"
+      }
+    },
+    "OTHERS": {
+      "TEXT": "Others",
+      "LIST": {}
+    },
+    "EXTERN": {
+      "TEXT": "Extern",
+      "LIST": {
+        "APPOINTMENT": "Appointment",
+        "MESSAGING": "Messaging",
         "HOSPITALIZED_PATIENTS": "Hospitalized patients"
       }
     }

@@ -16,7 +16,7 @@
       }
     },
     "ACTIVITIES": {
-      "TEXT": "Activités",
+      "TEXT": "XF",
       "LIST": {
         "EXPENSES": "Dépenses",
         "COLLECTIONS": "Encaissements",
@@ -30,6 +30,18 @@
         "TARIFFS": "Tarifs",
         "CIM_11": "CIM-11",
         "TELEPHONE_BOOK": "Annuaire",
+        "EXAMINATIONS": "Exams"
+      }
+    },
+    "OTHERS": {
+      "TEXT": "Autres",
+      "LIST": {}
+    },
+    "EXTERN": {
+      "TEXT": "Externe",
+      "LIST": {
+        "APPOINTMENT": "RDV",
+        "MESSAGING": "Messagerie",
         "HOSPITALIZED_PATIENTS": "Patients hospitalisés"
       }
     }
