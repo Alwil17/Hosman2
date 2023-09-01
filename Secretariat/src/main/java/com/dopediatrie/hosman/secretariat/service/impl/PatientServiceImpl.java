@@ -42,9 +42,9 @@ public class PatientServiceImpl implements PatientService {
     public long addPatient(PatientRequest patientRequest) {
         log.info("PatientServiceImpl | addPatient is called");
 
-        long personne_a_prevenir_id = personneAPrevenirService.addPersonneAPrevenir(patientRequest.getPersonne_a_prevenir());
+        long personne_a_prevenir_id = (patientRequest.getPersonne_a_prevenir() != null) ? personneAPrevenirService.addPersonneAPrevenir(patientRequest.getPersonne_a_prevenir()) : 0;
         long adresse_id = adresseService.addAdresse(patientRequest.getAdresse());
-        long assurance_id = assuranceService.addAssurance(patientRequest.getAssurance());
+        long assurance_id = (patientRequest.getAssurance() != null) ? assuranceService.addAssurance(patientRequest.getAssurance()) : 0;
 
         Patient patient
                 = Patient.builder()
@@ -62,21 +62,29 @@ public class PatientServiceImpl implements PatientService {
                 .date_ajout(patientRequest.getDate_ajout())
                 .is_assure(patientRequest.getIs_assure())
                 .adresse(adresseRepository.findById(adresse_id).get())
-                .pays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get())
-                .nationalite(paysRepository.findById(patientRequest.getNationalite_id()).get())
-                .profession(professionRepository.findById(patientRequest.getProfession_id()).get())
-                .employeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get())
-                .personne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get())
                 .structure_id(patientRequest.getStructure_id())
                 .build();
 
+        if(patientRequest.getPays_origine_id() != 0)
+            patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
+        if(patientRequest.getNationalite_id() != 0)
+            patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
+        if(patientRequest.getProfession_id() != 0)
+            patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
+        if(patientRequest.getEmployeur_id() != 0)
+            patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
+        if(personne_a_prevenir_id != 0)
+            patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get());
+
         patient = patientRepository.save(patient);
 
-        PatientAssuranceRequest par = patientRequest.getPatient_assurance();
-        par.setPatient_id(patient.getId());
-        par.setAssurance_id(assurance_id);
+        if(patientRequest.getPatient_assurance() != null && assurance_id != 0){
+            PatientAssuranceRequest par = patientRequest.getPatient_assurance();
+            par.setPatient_id(patient.getId());
+            par.setAssurance_id(assurance_id);
 
-        patientAssuranceService.addPatientAssurance(par);
+            patientAssuranceService.addPatientAssurance(par);
+        }
 
         log.info("PatientServiceImpl | addPatient | Patient Created");
         log.info("PatientServiceImpl | addPatient | Patient Id : " + patient.getId());

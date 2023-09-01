@@ -21,10 +21,10 @@ public class PatientRequest {
     private String no_piece;
     private LocalDateTime date_ajout;
     private int is_assure = 0;
-    private long pays_origine_id;
-    private long nationalite_id;
-    private long profession_id;
-    private long employeur_id;
+    private long pays_origine_id = 0;
+    private long nationalite_id = 0;
+    private long profession_id = 0;
+    private long employeur_id = 0;
 
     private PersonneAPrevenirRequest personne_a_prevenir;
     private AdresseRequest adresse;
