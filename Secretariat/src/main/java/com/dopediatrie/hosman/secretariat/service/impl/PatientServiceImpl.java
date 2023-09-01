@@ -50,7 +50,6 @@ public class PatientServiceImpl implements PatientService {
                 = Patient.builder()
                 .nom(patientRequest.getNom())
                 .prenoms(patientRequest.getPrenoms())
-                .reference(patientRequest.getReference())
                 .date_naissance(patientRequest.getDate_naissance())
                 .lieu_naissance(patientRequest.getLieu_naissance())
                 .sexe(patientRequest.getSexe())
@@ -76,6 +75,8 @@ public class PatientServiceImpl implements PatientService {
         if(personne_a_prevenir_id != 0)
             patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get());
 
+        patient = patientRepository.save(patient);
+        patient.setReference("PAT" + String.format("%04d", patient.getId()));
         patient = patientRepository.save(patient);
 
         if(patientRequest.getPatient_assurance() != null && assurance_id != 0){
@@ -122,7 +123,6 @@ public class PatientServiceImpl implements PatientService {
                 ));
         patient.setNom(patientRequest.getNom());
         patient.setPrenoms(patientRequest.getPrenoms());
-        patient.setReference(patientRequest.getReference());
         patient.setDate_naissance(patientRequest.getDate_naissance());
         patient.setLieu_naissance(patientRequest.getLieu_naissance());
         patient.setSexe(patientRequest.getSexe());
