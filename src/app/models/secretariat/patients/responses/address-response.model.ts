@@ -5,9 +5,8 @@ export interface AddressResponse {
   id: number;
   ville: CityResponse;
   quartier: NeighborhoodResponse;
-  details?: string;
-  // arrondissement?: string; // ???
-  // no_number?: string; // ???
-  // rue?: string; // ???
-  // bp?: string; // ???
+  rue?: string;
+  bp?: string;
+  arrondissement?: string;
+  no_maison?: string;
 }

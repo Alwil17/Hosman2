@@ -7,11 +7,10 @@ const ADDRESSES: Address[] = [
     id: 1,
     ville: CITIES[0],
     quartier: NEIGHBORHOODS[0],
-    details: "Vit à Paris",
-    //   arrondissement?: string, // ???
-    //   no_number?: string, // ???
-    //   rue?: string, // ???
-    //   bp?: string, // ???
+    rue: "Somewhere",
+    bp: "01BP01",
+    arrondissement: "5ème",
+    no_maison: "1234",
   },
 ];
 

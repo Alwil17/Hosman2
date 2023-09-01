@@ -1,0 +1,105 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="myExtraLargeModalLabel">Adresse du patient</h5>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="modal.dismiss('Close click')"
+  ></button>
+</div>
+
+<hr />
+
+<div class="modal-body">
+  <form [formGroup]="patientAddressForm">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-select
+            label="Ville"
+            [isMandatory]="true"
+            [options]="cities"
+            [control]="paCityControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          ></app-select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-select
+            label="Quartier"
+            [isMandatory]="true"
+            [options]="neighborhoods"
+            [control]="paNeighborhoodControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          ></app-select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-input
+            label="Rue"
+            placeholder="Sasir la rue"
+            [control]="paStreetControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          >
+          </app-input>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-input
+            label="BP"
+            placeholder="Saisir la boîte postale"
+            [control]="paPOBoxControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          >
+          </app-input>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-input
+            label="Arrondissement"
+            placeholder="Saisir l'arrondissement"
+            [control]="paDistrictControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          >
+          </app-input>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <app-input
+            label="Numéro maison"
+            placeholder="Saisir le numéro de maison"
+            [control]="paHomeNumberControl"
+            [isFormSubmitted]="isPatientAddressFormSubmitted"
+          >
+          </app-input>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-start gap-3 mt-4">
+      <button type="button" class="btn btn-success ms-auto" (click)="submit()">
+        Valider et fermer
+      </button>
+    </div>
+  </form>
+</div>
+
+<hr />
+
+<div class="modal-footer">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-link link-success fw-medium shadow-none"
+    data-bs-dismiss="modal"
+    (click)="modal.close('Close click')"
+    ><i class="ri-close-line me-1 align-middle"></i> Fermer</a
+  >
+</div>

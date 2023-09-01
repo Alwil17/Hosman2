@@ -26,6 +26,7 @@
             control.errors
         }"
         [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+        (click)="emitOnInputClick ? emitInputClick() : null"
       />
       <!-- [formControlName]="controlName" -->
     </div>
@@ -56,6 +57,7 @@
         control.errors
     }"
     [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+    (click)="emitOnInputClick ? emitInputClick() : null"
   />
 </ng-template>
 

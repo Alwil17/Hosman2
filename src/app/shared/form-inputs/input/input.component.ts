@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup } from "@angular/forms";
 
 @Component({
@@ -29,11 +29,21 @@ export class InputComponent implements OnInit {
 
   @Input() isLayoutHorizontal = false;
 
+  @Input()
+  emitOnInputClick = false;
+
+  @Output()
+  onInputClick = new EventEmitter();
+
   constructor() {}
 
   ngOnInit(): void {
     // if (this.controlName.trim().length !== 0 && this.group) {
     //   this.control = this.group.get(this.controlName) as FormControl;
     // }
+  }
+
+  emitInputClick() {
+    this.onInputClick.emit();
   }
 }

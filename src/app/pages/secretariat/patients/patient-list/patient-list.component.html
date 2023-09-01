@@ -85,11 +85,11 @@
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
                   <td>{{ patient.tel1 | mask : "99 99 99 99" }}</td>
-                  <td>{{ patient.date_entre | date : "dd/MM/yyyy" }}</td>
-                  <td>{{ patient.no_carte }}</td>
+                  <td>{{ patient.date_ajout | date : "dd/MM/yyyy" }}</td>
+                  <td>{{ patient.no_piece }}</td>
 
-                  <td *ngIf="patient.is_assure; else noInsurance">
-                    {{ patient.nomAssurance }}
+                  <td *ngIf="patient.hasInsurance; else noInsurance">
+                    {{ patient.assurance?.nom }}
                   </td>
                   <ng-template #noInsurance>
                     <td><em>Non assuré</em></td>

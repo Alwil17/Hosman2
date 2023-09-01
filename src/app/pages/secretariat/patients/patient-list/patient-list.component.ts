@@ -37,7 +37,7 @@ export class PatientListComponent implements OnInit {
   page = 1;
   pageSize = 10;
   collectionSize = this.allPatients.length;
-  patients: any[] = [];
+  patients: Patient[] = [];
 
   constructor(
     private secretariatRouter: SecretariatRouterService,
@@ -45,11 +45,12 @@ export class PatientListComponent implements OnInit {
   ) {
     this.allPatients =
       // ...this.allPatients,
-      this.patientService.getAllPatients().map((patient) => ({
-        ...patient,
-        age: calculateExactAge(patient.date_naissance),
-        nomAssurance: patientService.getInsurance(patient.id)?.nom,
-      }));
+      this.patientService.getAllPatients()
+      // .map((patient) => ({
+      //   ...patient,
+      //   age: calculateExactAge(patient.date_naissance),
+      //   nomAssurance: patientService.getInsurance(patient.id)?.nom,
+      // }));
 
     this.refreshPatients();
   }

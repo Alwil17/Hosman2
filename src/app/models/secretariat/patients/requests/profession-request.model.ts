@@ -1,9 +1,9 @@
 export class ProfessionRequest {
-  nom: string;
+  denomination: string;
   id?: number;
 
-  constructor(nom: string, id: number) {
-    this.nom = nom;
+  constructor(denomination: string, id: number) {
+    this.denomination = denomination;
     this.id = id;
   }
 }

@@ -4,47 +4,39 @@ import { INSURANCE_TYPES } from "./insurance-types.data";
 const INSURANCES: Insurance[] = [
   {
     id: 1,
-    reference: "INS1",
     nom: "ASCOMA",
     type_assurance: INSURANCE_TYPES[0],
-    // email: "ascoma@insurance.com",
-    // tel1: "99999999",
-    // tel2: "11111111",
-    // representant?: string;
-    // taux ?
+    email: "ascoma@insurance.com",
+    tel1: "99999999",
+    tel2: "77777777",
+    representant: "REP"
   },
   {
     id: 2,
-    reference: "INS2",
     nom: "GTA",
     type_assurance: INSURANCE_TYPES[0],
-    // email: "ascoma@insurance.com",
-    // tel1: "99999999",
-    // tel2: "11111111",
-    // representant?: string;
-    // taux ?
+    email: "gta@insurance.com",
+    tel1: "99999999",
+    tel2: "77777777",
+    representant: "REP"
   },
   {
     id: 3,
-    reference: "INS3",
-    nom: "INAM",
+    nom: "ETRA",
     type_assurance: INSURANCE_TYPES[1],
-    // email: "ascoma@insurance.com",
-    // tel1: "99999999",
-    // tel2: "11111111",
-    // representant?: string;
-    // taux ?
+    email: "etra@insurance.com",
+    tel1: "99999999",
+    tel2: "77777777",
+    representant: "REP"
   },
   {
     id: 4,
-    reference: "INS4",
     nom: "GRAS SAVOYE",
     type_assurance: INSURANCE_TYPES[1],
-    // email: "ascoma@insurance.com",
-    // tel1: "99999999",
-    // tel2: "11111111",
-    // representant?: string;
-    // taux ?
+    email: "grassavoye@insurance.com",
+    tel1: "99999999",
+    tel2: "77777777",
+    representant: "REP"
   },
 ];
 

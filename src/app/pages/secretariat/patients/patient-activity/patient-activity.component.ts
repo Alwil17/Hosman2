@@ -19,9 +19,12 @@ import { ENDOSCOPIES } from "src/app/data/secretariat/activities/endoscopies.dat
 import { HEMODIALYSES } from "src/app/data/secretariat/activities/hemodialyses.data";
 import { MRIS } from "src/app/data/secretariat/activities/mris.data";
 import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
-import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import {
+  IPatient,
+  Patient,
+} from "src/app/models/secretariat/patients/patient.model";
 import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
-import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
+// import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
 import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
 
 @Component({
@@ -75,8 +78,8 @@ export class PatientActivityComponent implements OnInit {
   activitiesSelect: IPrestationSelect[] = [];
 
   selectedPatient!: Patient;
-  selectedInsurance?: Insurance;
-  selectedPatientInsurance?: IPatientInsurance;
+  // selectedInsurance?: Insurance;
+  // selectedPatientInsurance?: IPatientInsurance;
 
   selectedPrestationIndex = 0;
 
@@ -115,15 +118,16 @@ export class PatientActivityComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.selectedPatient = patientService.getActivePatient();
-    this.selectedInsurance = patientService.getInsurance(
-      this.selectedPatient.id
-    );
-    if (this.selectedInsurance) {
-      this.selectedPatientInsurance = patientService.getPatientInsurance(
-        this.selectedPatient.id,
-        this.selectedInsurance.id
-      );
-    }
+
+    // this.selectedInsurance = patientService.getInsurance(
+    //   this.selectedPatient.id
+    // );
+    // if (this.selectedInsurance) {
+    //   this.selectedPatientInsurance = patientService.getPatientInsurance(
+    //     this.selectedPatient.id,
+    //     this.selectedInsurance.id
+    //   );
+    // }
 
     this.generateSummary();
 
@@ -412,7 +416,7 @@ export class PatientActivityComponent implements OnInit {
         ? this.patientService.getActivePatient().lieu_naissance!
         : "",
       profession: this.patientService.getActivePatient().profession
-        ? this.patientService.getActivePatient().profession!.nom
+        ? this.patientService.getActivePatient().profession!.denomination
         : "",
       // nationality: this.patientService.getActivePatient().pays_origine ? this.patientService.getActivePatient().pays_origine as string : "",
       // insuranceRate: this.patientService.getActivePatient().assurance..value
@@ -430,17 +434,18 @@ export class PatientActivityComponent implements OnInit {
         ? this.patientService.getActivePatient().tel2!
         : "",
 
-      personToContact: this.patientService.getActivePatient()
-        .personne_a_prevenir
-        ? this.patientService.getActivePatient().personne_a_prevenir
-        : "",
+      personToContact: this.patientService
+        .getActivePatient()
+        .personne_a_prevenir.toString(),
+      // ? this.patientService.getActivePatient().personne_a_prevenir
+      // : "",
     };
   }
 
   openInvoiceModal() {
     this.isActivityFormSubmitted = true;
 
-    // if (this.activityForm.valid) {
+    if (this.activityForm.valid) {
       // if (!this.invoiceModalRef) {
       const invoiceModalRef = this.modalService.open(
         PatientInvoiceFormComponent,
@@ -448,6 +453,7 @@ export class PatientActivityComponent implements OnInit {
           size: "xl",
           centered: true,
           scrollable: true,
+          backdrop: "static",
         }
       );
       // }
@@ -476,6 +482,6 @@ export class PatientActivityComponent implements OnInit {
 
       invoiceModalRef.componentInstance.patientActivities = this.table2;
       invoiceModalRef.componentInstance.patientPrestationInfo = prestation;
-    // }
+    }
   }
 }

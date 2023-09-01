@@ -4,5 +4,5 @@ export interface CountryResponse {
   // slug?: string ???
   nationalite: string;
   code?: string;
-  indicatif?: string;
+  indicatif?: number;
 }

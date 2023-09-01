@@ -488,9 +488,12 @@
                               <app-input
                                 label="Personne à prévenir"
                                 placeholder="Nom, prénom(s), contact, adresse"
+                                [readOnly]="true"
                                 [isMandatory]="true"
                                 [control]="personToContactControl"
                                 [isFormSubmitted]="isOtherInfoFormSubmitted"
+                                [emitOnInputClick]="true"
+                                (onInputClick)="onPersonToContactClick()"
                               >
                               </app-input>
                             </div>

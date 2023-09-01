@@ -2,21 +2,26 @@ import { CityRequest } from "./city-request.model";
 import { NeighborhoodRequest } from "./neighborhood-request.model";
 
 export class AddressRequest {
-  ville: CityRequest;
-  quartier: NeighborhoodRequest;
-  details?: string;
-  // arrondissement?: string; // ???
-  // no_number?: string; // ???
-  // rue?: string; // ???
-  // bp?: string; // ???
+  ville_id: number;
+  quartier_id: number;
+  rue?: string;
+  bp?: string;
+  arrondissement?: string;
+  no_maison?: string;
 
   constructor(
-    ville: CityRequest,
-    quartier: NeighborhoodRequest,
-    details?: string
+    ville_id: number,
+    quartier_id: number,
+    rue?: string,
+    bp?: string,
+    arrondissement?: string,
+    no_maison?: string
   ) {
-    this.ville = ville;
-    this.quartier = quartier;
-    this.details = details;
+    this.ville_id = ville_id;
+    this.quartier_id = quartier_id;
+    this.rue = rue;
+    this.bp = bp;
+    this.arrondissement = arrondissement;
+    this.no_maison = no_maison;
   }
 }

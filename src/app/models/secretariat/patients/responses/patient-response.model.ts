@@ -1,7 +1,9 @@
-import { HasInsurance } from "../has-insurance.model";
 import { AddressResponse } from "./address-response.model";
 import { CountryResponse } from "./country-response.model";
 import { EmployerResponse } from "./employer-response.model";
+import { InsuranceResponse } from "./insurance-response.model";
+import { PatientInsuranceResponse } from "./patient-insurance-response.model";
+import { PersonToContactResponse } from "./person-to-contact-response.model";
 import { ProfessionResponse } from "./profession-response.model";
 
 export interface PatientResponse {
@@ -12,17 +14,18 @@ export interface PatientResponse {
   date_naissance: Date;
   sexe: string;
   tel1: string;
-  is_assure: boolean;
-  personne_a_prevenir: string;
+  is_assure: number;
+  date_ajout: Date;
+  personne_a_prevenir: PersonToContactResponse;
   adresse: AddressResponse;
-  date_entre: Date;
   pays_origine: CountryResponse;
-  type_patient: HasInsurance;
+  assurance?: InsuranceResponse;
+  patient_assurance?: PatientInsuranceResponse;
+  nationalite?: CountryResponse;
   lieu_naissance?: string;
   tel2?: string;
-  type_carte?: string;
-  no_carte?: string;
+  type_piece?: string;
+  no_piece?: string;
   profession?: ProfessionResponse;
-  // assurance?: IInsurance;
   employeur?: EmployerResponse;
 }

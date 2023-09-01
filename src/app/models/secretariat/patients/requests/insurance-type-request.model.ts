@@ -1,9 +1,9 @@
 export class InsuranceTypeRequest {
   id: number;
-  libelle: string;
+  nom: string;
 
-  constructor(id: number, libelle: string) {
+  constructor(id: number, nom: string) {
     this.id = id;
-    this.libelle = libelle;
+    this.nom = nom;
   }
 }

@@ -50,7 +50,7 @@
             <h5>
               <b> Assurance : </b>
               <b class="text-secondary">{{
-                selectedInsurance ? selectedInsurance.nom : "-"
+                selectedPatient.assurance ? selectedPatient.assurance.nom : "-"
               }}</b>
             </h5>
 
@@ -62,7 +62,7 @@
             </h5>
           </div>
 
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-lg-8">
             <h5>
               <b class="ms-4"> Prénoms : </b
               ><b class="text-secondary">{{
@@ -80,17 +80,17 @@
             <h5>
               <b class="ms-4"> Taux de prise en charge : </b>
               <b class="text-secondary">{{
-                selectedPatientInsurance
-                  ? selectedPatientInsurance.taux + " %"
+                selectedPatient.patient_assurance
+                  ? selectedPatient.patient_assurance.taux + " %"
                   : "-"
               }}</b>
             </h5>
 
             <h5>
               <b class="ms-4"> Personne à prévenir : </b>
-              <b class="text-secondary">{{
-                selectedPatient.personne_a_prevenir
-              }}</b>
+              <!-- <b class="text-secondary">{{
+                selectedPatient.personne_a_prevenir.toString()
+              }}</b> -->
             </h5>
           </div>
 

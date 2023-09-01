@@ -3,22 +3,22 @@ import { Profession } from "src/app/models/secretariat/patients/profession.model
 const PROFESSIONS: Profession[] = [
   {
     id: 1,
-    nom: "Ingénieur",
+    denomination: "Ingénieur",
     // slug?: string ???
   },
   {
     id: 2,
-    nom: "Commerçant",
+    denomination: "Commerçant",
     // slug?: string ???
   },
   {
     id: 3,
-    nom: "Médecin",
+    denomination: "Médecin",
     // slug?: string ???
   },
   {
     id: 4,
-    nom: "Chômeur",
+    denomination: "Chômeur",
     // slug?: string ???
   },
 ];

@@ -1,16 +1,15 @@
 export class CountryRequest {
   nom: string;
-  // slug?: string ???
   nationalite: string;
   code?: string;
-  indicatif?: string;
+  indicatif?: number;
   id?: number;
 
   constructor(
     nom: string,
     nationalite: string,
     code?: string,
-    indicatif?: string,
+    indicatif?: number,
     id?: number
   ) {
     this.nom = nom;

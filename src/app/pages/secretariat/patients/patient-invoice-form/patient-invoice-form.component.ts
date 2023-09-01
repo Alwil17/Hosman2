@@ -383,7 +383,24 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.patientPrestationInfo.consultingDoctor ?? "",
       new Date()
     );
-    this.waitingListService.create(wlItem);
+    this.waitingListService.create(wlItem, 
+    //   {
+    //   reference: "",
+    //   total: 12000,
+    //   montant_pec: 80,
+    //   majoration: 0,
+    //   reduction: 0,
+    //   a_payer: 0,
+    //   verse: 0,
+    //   reliquat: 0,
+    //   creance: 0,
+    //   mode_payement: string,
+    //   date_facture: 2023-08-26T19:22:17.704Z,
+    //   date_reglement: 2023-08-26T19:22:17.704Z,
+    //   etat_id: 0,
+    //   exporte: 0
+    // }
+    );
   }
 
   // openInvoiceModal(invoiceModal: any) {
