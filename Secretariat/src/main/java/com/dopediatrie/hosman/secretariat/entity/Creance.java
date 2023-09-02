@@ -23,4 +23,12 @@ public class Creance {
     @ManyToOne
     @JoinColumn(name = "etat_id")
     private Etat etat;
+
+    @Override
+    public String toString() {
+        return "Creance{" +
+                "id=" + id +
+                ", montant=" + montant +
+                '}';
+    }
 }

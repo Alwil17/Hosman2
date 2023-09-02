@@ -2,10 +2,7 @@ package com.dopediatrie.hosman.secretariat.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -19,7 +16,16 @@ public class Ville {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String nom;
+    private String slug;
     @OneToMany(mappedBy = "ville")
     @JsonIgnore
     private List<Adresse> adresses;
+
+    @Override
+    public String toString() {
+        return "Ville{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
 }

@@ -25,4 +25,15 @@ public class Employeur {
     @OneToMany(mappedBy = "employeur")
     @JsonIgnore
     private List<Patient> patients;
+
+    @Override
+    public String toString() {
+        return "Employeur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -39,6 +39,8 @@ public class ReliquatServiceImpl implements ReliquatService {
                 .etat(etatRepository.findById(reliquatRequest.getEtat_id()).orElseThrow())
                 .build();
 
+        reliquat = reliquatRepository.save(reliquat);
+
         log.info("ReliquatServiceImpl | addReliquat | Reliquat Created");
         log.info("ReliquatServiceImpl | addReliquat | Reliquat Id : " + reliquat.getId());
         return reliquat.getId();

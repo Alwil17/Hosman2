@@ -25,4 +25,12 @@ public class Reliquat {
     @ManyToOne
     @JoinColumn(name = "etat_id")
     private Etat etat;
+
+    @Override
+    public String toString() {
+        return "Reliquat{" +
+                "id=" + id +
+                ", montant=" + montant +
+                '}';
+    }
 }

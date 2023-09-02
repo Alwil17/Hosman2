@@ -32,4 +32,16 @@ public class Etat {
     @JsonIgnore
     private List<Reliquat> reliquats;
     private long structure_id;
+
+    @Override
+    public String toString() {
+        return "Etat{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
+                ", couleur='" + couleur + '\'' +
+                ", indice=" + indice +
+                ", structure_id=" + structure_id +
+                '}';
+    }
 }

@@ -29,4 +29,16 @@ public class Pays {
     @OneToMany(mappedBy = "nationalite")
     @JsonIgnore
     private List<Patient> patients_nationalites;
+
+    @Override
+    public String toString() {
+        return "Pays{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
+                ", nationalite='" + nationalite + '\'' +
+                ", code='" + code + '\'' +
+                ", indicatif=" + indicatif +
+                '}';
+    }
 }

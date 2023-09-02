@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.NameResponse;
 import com.dopediatrie.hosman.secretariat.repository.QuartierRepository;
 import com.dopediatrie.hosman.secretariat.service.QuartierService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class QuartierServiceImpl implements QuartierService {
         Quartier quartier
                 = Quartier.builder()
                 .nom(quartierRequest.getNom())
+                .slug(Str.slug(quartierRequest.getNom()))
                 .build();
 
         quartier = quartierRepository.save(quartier);
@@ -72,6 +74,7 @@ public class QuartierServiceImpl implements QuartierService {
                         NOT_FOUND
                 ));
         quartier.setNom(quartierRequest.getNom());
+        quartier.setSlug(Str.slug(quartierRequest.getNom()));
         quartierRepository.save(quartier);
 
         log.info("QuartierServiceImpl | editQuartier | Quartier Updated");

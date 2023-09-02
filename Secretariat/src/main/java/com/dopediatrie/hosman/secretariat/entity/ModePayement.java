@@ -19,10 +19,20 @@ public class ModePayement {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private String nom;
+    private String slug;
     @ManyToMany(mappedBy = "mode_payements")
     @JsonIgnore
     private List<Encaissement> encaissements;
     @ManyToMany(mappedBy = "mode_payements")
     @JsonIgnore
     private List<Facture> factures;
+
+    @Override
+    public String toString() {
+        return "ModePayement{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
+                '}';
+    }
 }

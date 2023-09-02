@@ -19,7 +19,17 @@ public class Quartier {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String nom;
+    private String slug;
     @OneToMany(mappedBy = "quartier")
     @JsonIgnore
     private List<Adresse> adresses;
+
+    @Override
+    public String toString() {
+        return "Quartier{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
+                '}';
+    }
 }

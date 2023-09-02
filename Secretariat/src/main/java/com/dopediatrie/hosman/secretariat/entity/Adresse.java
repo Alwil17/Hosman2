@@ -31,4 +31,17 @@ public class Adresse {
     @OneToOne(mappedBy = "adresse")
     @JsonIgnore
     private Patient patient;
+
+    @Override
+    public String toString() {
+        return "Adresse{" +
+                "id=" + id +
+                ", arrondissement='" + arrondissement + '\'' +
+                ", no_maison='" + no_maison + '\'' +
+                ", rue='" + rue + '\'' +
+                ", bp='" + bp + '\'' +
+                ", ville=" + ville +
+                ", quartier=" + quartier +
+                '}';
+    }
 }

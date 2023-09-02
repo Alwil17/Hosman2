@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.NameResponse;
 import com.dopediatrie.hosman.secretariat.repository.ModePayementRepository;
 import com.dopediatrie.hosman.secretariat.service.ModePayementService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class ModePayementServiceImpl implements ModePayementService {
             modePayement
                     = ModePayement.builder()
                     .nom(modePayementRequest.getNom())
+                    .slug(Str.slug(modePayementRequest.getNom()))
                     .build();
 
             modePayement = modePayementRepository.save(modePayement);
@@ -77,6 +79,7 @@ public class ModePayementServiceImpl implements ModePayementService {
                         NOT_FOUND
                 ));
         modePayement.setNom(modePayementRequest.getNom());
+        modePayement.setSlug(Str.slug(modePayementRequest.getNom()));
         modePayementRepository.save(modePayement);
 
         log.info("ModePayementServiceImpl | editModePayement | ModePayement Updated");

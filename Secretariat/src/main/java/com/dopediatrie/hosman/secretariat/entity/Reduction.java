@@ -21,4 +21,13 @@ public class Reduction {
     @OneToOne(mappedBy = "reduction")
     @JsonIgnore
     private Facture facture;
+
+    @Override
+    public String toString() {
+        return "Reduction{" +
+                "id=" + id +
+                ", montant=" + montant +
+                ", motif='" + motif + '\'' +
+                '}';
+    }
 }

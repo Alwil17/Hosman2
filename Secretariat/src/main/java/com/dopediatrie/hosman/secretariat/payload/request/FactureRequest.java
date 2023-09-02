@@ -12,11 +12,11 @@ public class FactureRequest {
     private String reference = "";
     private double total = 0;
     private double montant_pec = 0;
-    private MajorationRequest majorationRequest;
-    private ReductionRequest reductionRequest;
+    private MajorationRequest majoration;
+    private ReductionRequest reduction;
     private double a_payer = 0;
-    private ReliquatRequest reliquatRequest;
-    private CreanceRequest creanceRequest;
+    private ReliquatRequest reliquat;
+    private CreanceRequest creance;
     private LocalDateTime date_facture = LocalDateTime.now();
     private LocalDateTime date_reglement = LocalDateTime.now();
     private long etat_id;

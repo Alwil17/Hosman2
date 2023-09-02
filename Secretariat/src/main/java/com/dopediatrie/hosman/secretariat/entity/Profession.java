@@ -23,4 +23,13 @@ public class Profession {
     @OneToMany(mappedBy = "profession")
     @JsonIgnore
     private List<Patient> patients;
+
+    @Override
+    public String toString() {
+        return "Profession{" +
+                "id=" + id +
+                ", denomination='" + denomination + '\'' +
+                ", slug='" + slug + '\'' +
+                '}';
+    }
 }

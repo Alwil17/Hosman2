@@ -8,9 +8,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface CreanceRepository extends JpaRepository<Creance,Long> {
-    @Query("SELECT p from Creance p where p.facture.id = :factureId")
-    Optional<Creance> findByFactureId(@Param("factureId") long factureId);
 
-    @Query("SELECT p from Creance p where p.facture.id = :factureId")
-    Boolean existsByFactureId(@Param("factureId") long factureId);
 }

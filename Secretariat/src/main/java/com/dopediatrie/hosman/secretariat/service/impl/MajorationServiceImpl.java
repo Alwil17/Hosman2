@@ -36,6 +36,8 @@ public class MajorationServiceImpl implements MajorationService {
                 .motif(majorationRequest.getMotif())
                 .build();
 
+        majoration = majorationRepository.save(majoration);
+
         log.info("MajorationServiceImpl | addMajoration | Majoration Created");
         log.info("MajorationServiceImpl | addMajoration | Majoration Id : " + majoration.getId());
         return majoration.getId();

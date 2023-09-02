@@ -36,7 +36,7 @@ public class ReductionServiceImpl implements ReductionService {
                 .montant(reductionRequest.getMontant())
                 .motif(reductionRequest.getMotif())
                 .build();
-
+        reduction = reductionRepository.save(reduction);
 
         log.info("ReductionServiceImpl | addReduction | Reduction Created");
         log.info("ReductionServiceImpl | addReduction | Reduction Id : " + reduction.getId());

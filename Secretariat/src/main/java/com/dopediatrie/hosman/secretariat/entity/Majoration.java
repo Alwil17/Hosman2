@@ -21,4 +21,13 @@ public class Majoration {
     @OneToOne(mappedBy = "majoration")
     @JsonIgnore
     private Facture facture;
+
+    @Override
+    public String toString() {
+        return "Majoration{" +
+                "id=" + id +
+                ", montant=" + montant +
+                ", motif='" + motif + '\'' +
+                '}';
+    }
 }

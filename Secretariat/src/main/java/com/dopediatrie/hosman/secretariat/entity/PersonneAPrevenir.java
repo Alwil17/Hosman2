@@ -25,4 +25,15 @@ public class PersonneAPrevenir {
     @OneToOne(mappedBy = "personne_a_prevenir")
     @JsonIgnore
     private Patient patient;
+
+    @Override
+    public String toString() {
+        return "PersonneAPrevenir{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenoms='" + prenoms + '\'' +
+                ", tel='" + tel + '\'' +
+                ", adresse='" + adresse + '\'' +
+                '}';
+    }
 }

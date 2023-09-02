@@ -17,8 +17,8 @@ public class FactureMode {
     private FactureModePK id;
 
     @ManyToOne
-    @MapsId("encaissement_id")
-    @JoinColumn(name = "encaissement_id")
+    @MapsId("facture_id")
+    @JoinColumn(name = "facture_id")
     private Facture facture;
     @ManyToOne
     @MapsId("mode_payement_id")

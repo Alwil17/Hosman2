@@ -46,10 +46,10 @@ public class FactureServiceImpl implements FactureService {
     public long addFacture(FactureRequest factureRequest) {
         log.info("FactureServiceImpl | addFacture is called");
 
-        long majorationId = majorationService.addMajoration(factureRequest.getMajorationRequest());
-        long reductionId = reductionService.addReduction(factureRequest.getReductionRequest());
-        long reliquatId = reliquatService.addReliquat(factureRequest.getReliquatRequest());
-        long creanceId = creanceService.addCreance(factureRequest.getCreanceRequest());
+        long majorationId = majorationService.addMajoration(factureRequest.getMajoration());
+        long reductionId = reductionService.addReduction(factureRequest.getReduction());
+        long reliquatId = reliquatService.addReliquat(factureRequest.getReliquat());
+        long creanceId = creanceService.addCreance(factureRequest.getCreance());
 
         Facture facture
                 = Facture.builder()
@@ -109,10 +109,10 @@ public class FactureServiceImpl implements FactureService {
                         NOT_FOUND
                 ));
 
-        majorationService.editMajoration(factureRequest.getMajorationRequest(), facture.getMajoration().getId());
-        reductionService.editReduction(factureRequest.getReductionRequest(), facture.getReduction().getId());
-        reliquatService.editReliquat(factureRequest.getReliquatRequest(), facture.getReliquat().getId());
-        creanceService.editCreance(factureRequest.getCreanceRequest(), facture.getCreance().getId());
+        majorationService.editMajoration(factureRequest.getMajoration(), facture.getMajoration().getId());
+        reductionService.editReduction(factureRequest.getReduction(), facture.getReduction().getId());
+        reliquatService.editReliquat(factureRequest.getReliquat(), facture.getReliquat().getId());
+        creanceService.editCreance(factureRequest.getCreance(), facture.getCreance().getId());
 
         facture.setReference(factureRequest.getReference());
         facture.setTotal(factureRequest.getTotal());

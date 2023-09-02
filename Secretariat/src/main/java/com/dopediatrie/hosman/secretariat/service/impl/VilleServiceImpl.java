@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.NameResponse;
 import com.dopediatrie.hosman.secretariat.repository.VilleRepository;
 import com.dopediatrie.hosman.secretariat.service.VilleService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class VilleServiceImpl implements VilleService {
         Ville ville
                 = Ville.builder()
                 .nom(villeRequest.getNom())
+                .slug(Str.slug(villeRequest.getNom()))
                 .build();
 
         ville = villeRepository.save(ville);
@@ -72,6 +74,7 @@ public class VilleServiceImpl implements VilleService {
                         NOT_FOUND
                 ));
         ville.setNom(villeRequest.getNom());
+        ville.setSlug(Str.slug(villeRequest.getNom()));
         villeRepository.save(ville);
 
         log.info("VilleServiceImpl | editVille | Ville Updated");

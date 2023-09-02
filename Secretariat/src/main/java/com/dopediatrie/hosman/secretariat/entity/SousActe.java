@@ -28,4 +28,6 @@ public class SousActe {
     @OneToMany(mappedBy = "sous_acte")
     @JsonIgnore
     private List<Tarif> tarifs;
+
+
 }

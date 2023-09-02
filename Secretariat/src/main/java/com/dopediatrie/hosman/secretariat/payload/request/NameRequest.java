@@ -13,6 +13,6 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NameRequest {
-    @JsonProperty
     private String nom;
+    private String slug;
 }

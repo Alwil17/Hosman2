@@ -36,8 +36,9 @@ public class CreanceServiceImpl implements CreanceService {
 
         Creance creance = Creance.builder()
                 .montant(creanceRequest.getMontant())
-                .etat(etatRepository.findById(creanceRequest.getEtat_id()).orElseThrow())
+                .etat(etatRepository.findById(creanceRequest.getEtat_id()).get())
                 .build();
+
         creance = creanceRepository.save(creance);
 
         log.info("CreanceServiceImpl | addCreance | Creance Created");

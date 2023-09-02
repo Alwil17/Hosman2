@@ -28,4 +28,15 @@ public class Secteur {
     @OneToMany(mappedBy = "secteur")
     @JsonIgnore
     private List<Prestation> prestations;
+
+    @Override
+    public String toString() {
+        return "Secteur{" +
+                "id=" + id +
+                ", libelle='" + libelle + '\'' +
+                ", slug='" + slug + '\'' +
+                ", couleur='" + couleur + '\'' +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }
