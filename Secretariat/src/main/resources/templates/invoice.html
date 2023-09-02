@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
     <meta charset="UTF-8"></meta>
     <title>Invoice</title>
     <style>
         @page {
             /* dimensions for the whole page */
             size: A4;
+
             margin: 0;
         }
 
@@ -18,8 +20,9 @@
 
         body {
             /* A5 dimensions */
-            height: 210mm;
-            width: 297mm;
+            width: 190mm;
+            height: 207mm;
+
 
             margin: auto;
             margin-top: 15mm;
@@ -48,11 +51,11 @@
             text-align: left;
         }
 
-        .text-center{
+        .text-center {
             text-align: center;
         }
 
-        .text-left{
+        .text-left {
             text-align: left;
         }
 
@@ -101,16 +104,20 @@
         .payment-table {
             float: right;
         }
+
         .font-bold {
             font-weight: 700;
         }
-        .mr-8{
+
+        .mr-8 {
             margin-right: 2rem
         }
+
         .text-2xl {
             font-size: 1.5rem;
             line-height: 2rem;
         }
+
         .py-2 {
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
@@ -119,118 +126,111 @@
 </head>
 
 <body>
-<header>
-    <div class="header">
-        <div class="header-top">
-            <div class="header-top-right">
-                <span>POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
-                <span class="text-center">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
-            </div>
-            <span class="text-left mr-8">Date and Time</span>
+
+<div class="header">
+    <div class="header-top">
+        <div class="header-top-right">
+            <span>POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
+            <span class="text-center">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
         </div>
+        <span class="text-left mr-8">Date and Time</span>
+    </div>
 
 
-        <div class="header-bottom">
-            <span class="text-2xl font-bold">Reçu de caisse</span>
-            <span class="mr-8">Caissière</span>
+    <div class="header-bottom">
+        <span class="text-2xl font-bold">Reçu de caisse</span>
+        <span class="mr-8">Caissière</span>
+    </div>
+</div>
+
+<div class="content">
+    <div class="content-top">
+        <div class="receipt-number">
+            <p>Reçu N°</p>
+            <p th:text="${reference}">-</p>
+        </div>
+        <div class="patient-info">
+            <p>Patient(e): <b th:text="${nom}">-</b></p>
+            <p>Sexe: <b th:text="${sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
         </div>
     </div>
-</header>
 
-<article>
-    <div class="content">
-        <div class="content-top">
-            <div class="receipt-number">
-                <p>Reçu N°</p>
-                <p th:text="${reference}">-</p>
-            </div>
-            <div class="patient-info">
-                <p>Patient(e): <b th:text="${nom}">-</b></p>
-                <p>Sexe: <b th:text="${sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
-            </div>
-        </div>
-
-        <div class="insurance-info py-2">
-            <div>
-                <span>ASSUREUR: LUI-MÊME</span>
-            </div>
-            <div>
-                <span>Taux de PEC: 0%</span>
-            </div>
-        </div>
-
-        <div class="activities">
-            <table class="activities-table" style="width: 100%;">
-                <thead>
-                <tr style="background: #eee;">
-                    <th style="width: 70%; text-align: start;">ACTIVITES</th>
-                    <th style="width: 10%; ">QTE</th>
-                    <th style="width: 20%; text-align: center;">Montants(CFA)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td colspan="3"><em><u>ANALYSE</u></em></td>
-                </tr>
-                <tr>
-                    <td style="width: 70%;">TP / INR</td>
-                    <td style="width: 10%; text-align: end;">1</td>
-                    <td style="width: 20%; text-align: end;">3000</td>
-                </tr>
-                <tr>
-                    <td style="width: 70%;">VS</td>
-                    <td style="width: 10%; text-align: end;">2</td>
-                    <td style="width: 20%; text-align: end;">10000</td>
-                </tr>
-
-                </tbody>
-            </table>
-
-            <div class="order-number">
-                <h1>
-                    ANALYSE 7
-                </h1>
-            </div>
-
-            <table class="payment-table" style="width: 50%;">
-                <tbody>
-                <tr>
-                    <td>Montant total : </td>
-                    <td style="width: 40%; text-align: end;" th:text="${total}">0</td>
-                </tr>
-                <tr>
-                    <td>Montant PEC :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${montant_pec}">0</td>
-                </tr>
-                <tr>
-                    <td>Urgence/Major :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${majoration}">0</td>
-                </tr>
-                <tr>
-                    <td>Réduction :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${reduction}">0</td>
-                </tr>
-                <tr>
-                    <td>Montant à payer :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${a_payer}">0</td>
-                </tr>
-                <tr>
-                    <td>Montant versé :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${verse}">0</td>
-                </tr>
-                <tr>
-                    <td>Reliquat :</td>
-                    <td style="width: 40%; text-align: end;" th:text="${reliquat}">0</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!--<div class="payment-info">
-
-        </div>-->
+    <div class="insurance-info py-2">
+        <span>ASSUREUR: LUI-MÊME</span>
+        <span>Taux de PEC: 0%</span>
     </div>
-</article>
+
+    <div class="activities">
+        <table class="activities-table" style="width: 100%;">
+            <thead>
+            <tr style="background: #eee;">
+                <th style="width: 70%; text-align: start;">ACTIVITES</th>
+                <th style="width: 10%; ">QTE</th>
+                <th style="width: 20%; text-align: center;">Montants(CFA)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3"><em><u>ANALYSE</u></em></td>
+            </tr>
+            <tr>
+                <td style="width: 70%;">TP / INR</td>
+                <td style="width: 10%; text-align: end;">1</td>
+                <td style="width: 20%; text-align: end;">3000</td>
+            </tr>
+            <tr>
+                <td style="width: 70%;">VS</td>
+                <td style="width: 10%; text-align: end;">2</td>
+                <td style="width: 20%; text-align: end;">10000</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <div class="order-number">
+            <h1>
+                ANALYSE 7
+            </h1>
+        </div>
+
+        <table class="payment-table" style="width: 50%;">
+            <tbody>
+            <tr>
+                <td>Montant total :</td>
+                <td style="width: 40%; text-align: end;" th:text="${total}">0</td>
+            </tr>
+            <tr>
+                <td>Montant PEC :</td>
+                <td style="width: 40%; text-align: end;" th:text="${montant_pec}">0</td>
+            </tr>
+            <tr>
+                <td>Urgence/Major :</td>
+                <td style="width: 40%; text-align: end;" th:text="${majoration.getMontant()}">0</td>
+            </tr>
+            <tr>
+                <td>Réduction :</td>
+                <td style="width: 40%; text-align: end;" th:text="${reduction.getMontant()}">0</td>
+            </tr>
+            <tr>
+                <td>Montant à payer :</td>
+                <td style="width: 40%; text-align: end;" th:text="${a_payer}">0</td>
+            </tr>
+            <tr>
+                <td>Montant versé :</td>
+                <td style="width: 40%; text-align: end;" th:text="${verse}">0</td>
+            </tr>
+            <tr>
+                <td>Reliquat :</td>
+                <td style="width: 40%; text-align: end;" th:text="${reliquat.getMontant()}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="payment-info">
+
+    </div>
+</div>
 </body>
 
 </html>
