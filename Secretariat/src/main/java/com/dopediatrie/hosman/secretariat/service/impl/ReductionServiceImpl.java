@@ -32,20 +32,11 @@ public class ReductionServiceImpl implements ReductionService {
     public long addReduction(ReductionRequest reductionRequest) {
         log.info("ReductionServiceImpl | addReduction is called");
 
-        Reduction reduction;
+        Reduction reduction = Reduction.builder()
+                .montant(reductionRequest.getMontant())
+                .motif(reductionRequest.getMotif())
+                .build();
 
-        if(!reductionRepository.existsByFactureId(reductionRequest.getFacture_id())){
-            reduction
-                    = Reduction.builder()
-                    .montant(reductionRequest.getMontant())
-                    .motif(reductionRequest.getMotif())
-                    .facture(factureRepository.findById(reductionRequest.getFacture_id()).orElseThrow())
-                    .build();
-
-            reduction = reductionRepository.save(reduction);
-        }else{
-            reduction = reductionRepository.findByFactureId(reductionRequest.getFacture_id()).orElseThrow();
-        }
 
         log.info("ReductionServiceImpl | addReduction | Reduction Created");
         log.info("ReductionServiceImpl | addReduction | Reduction Id : " + reduction.getId());

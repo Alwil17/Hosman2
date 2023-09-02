@@ -8,6 +8,6 @@ import lombok.Data;
 public class EtatRequest {
     private String nom;
     private String couleur;
-    private int indice;
+    private int indice = 0;
     private long structure_id = 1;
 }

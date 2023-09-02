@@ -8,5 +8,4 @@ import lombok.Data;
 public class MajorationRequest {
     private double montant = 0;
     private String motif = "";
-    private long facture_id;
 }

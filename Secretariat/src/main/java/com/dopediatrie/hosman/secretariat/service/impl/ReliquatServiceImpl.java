@@ -34,20 +34,10 @@ public class ReliquatServiceImpl implements ReliquatService {
     public long addReliquat(ReliquatRequest reliquatRequest) {
         log.info("ReliquatServiceImpl | addReliquat is called");
 
-        Reliquat reliquat;
-
-        if(!reliquatRepository.existsByFactureId(reliquatRequest.getFacture_id())){
-            reliquat
-                    = Reliquat.builder()
-                    .montant(reliquatRequest.getMontant())
-                    .etat(etatRepository.findById(reliquatRequest.getEtat_id()).orElseThrow())
-                    .facture(factureRepository.findById(reliquatRequest.getFacture_id()).orElseThrow())
-                    .build();
-
-            reliquat = reliquatRepository.save(reliquat);
-        }else{
-            reliquat = reliquatRepository.findByFactureId(reliquatRequest.getFacture_id()).orElseThrow();
-        }
+        Reliquat reliquat = Reliquat.builder()
+                .montant(reliquatRequest.getMontant())
+                .etat(etatRepository.findById(reliquatRequest.getEtat_id()).orElseThrow())
+                .build();
 
         log.info("ReliquatServiceImpl | addReliquat | Reliquat Created");
         log.info("ReliquatServiceImpl | addReliquat | Reliquat Id : " + reliquat.getId());

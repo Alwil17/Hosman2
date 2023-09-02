@@ -31,20 +31,10 @@ public class MajorationServiceImpl implements MajorationService {
     @Override
     public long addMajoration(MajorationRequest majorationRequest) {
         log.info("MajorationServiceImpl | addMajoration is called");
-        Majoration majoration;
-
-        if(!majorationRepository.existsByFactureId(majorationRequest.getFacture_id())){
-            majoration
-                    = Majoration.builder()
-                    .montant(majorationRequest.getMontant())
-                    .motif(majorationRequest.getMotif())
-                    .facture(factureRepository.findById(majorationRequest.getFacture_id()).orElseThrow())
-                    .build();
-
-            majoration = majorationRepository.save(majoration);
-        }else{
-            majoration = majorationRepository.findByFactureId(majorationRequest.getFacture_id()).orElseThrow();
-        }
+        Majoration majoration = Majoration.builder()
+                .montant(majorationRequest.getMontant())
+                .motif(majorationRequest.getMotif())
+                .build();
 
         log.info("MajorationServiceImpl | addMajoration | Majoration Created");
         log.info("MajorationServiceImpl | addMajoration | Majoration Id : " + majoration.getId());

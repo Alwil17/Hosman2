@@ -1,5 +1,7 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
+import com.dopediatrie.hosman.secretariat.entity.Quartier;
+import com.dopediatrie.hosman.secretariat.entity.Ville;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,6 @@ public class AdresseResponse {
     private String no_maison;
     private String rue;
     private String bp;
-    private long ville_id;
-    private long quartier_id;
+    private Ville ville;
+    private Quartier quartier;
 }

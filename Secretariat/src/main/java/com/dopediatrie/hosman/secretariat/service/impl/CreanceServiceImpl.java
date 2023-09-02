@@ -34,20 +34,11 @@ public class CreanceServiceImpl implements CreanceService {
     public long addCreance(CreanceRequest creanceRequest) {
         log.info("CreanceServiceImpl | addCreance is called");
 
-        Creance creance;
-
-        if(!creanceRepository.existsByFactureId(creanceRequest.getFacture_id())){
-            creance
-                    = Creance.builder()
-                    .montant(creanceRequest.getMontant())
-                    .etat(etatRepository.findById(creanceRequest.getEtat_id()).orElseThrow())
-                    .facture(factureRepository.findById(creanceRequest.getFacture_id()).orElseThrow())
-                    .build();
-
-            creance = creanceRepository.save(creance);
-        }else{
-            creance = creanceRepository.findByFactureId(creanceRequest.getFacture_id()).orElseThrow();
-        }
+        Creance creance = Creance.builder()
+                .montant(creanceRequest.getMontant())
+                .etat(etatRepository.findById(creanceRequest.getEtat_id()).orElseThrow())
+                .build();
+        creance = creanceRepository.save(creance);
 
         log.info("CreanceServiceImpl | addCreance | Creance Created");
         log.info("CreanceServiceImpl | addCreance | Creance Id : " + creance.getId());

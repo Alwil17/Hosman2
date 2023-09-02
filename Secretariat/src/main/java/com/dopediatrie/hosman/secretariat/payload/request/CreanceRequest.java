@@ -7,6 +7,5 @@ import lombok.Data;
 @Builder
 public class CreanceRequest {
     private double montant = 0;
-    private long facture_id;
     private long etat_id;
 }
