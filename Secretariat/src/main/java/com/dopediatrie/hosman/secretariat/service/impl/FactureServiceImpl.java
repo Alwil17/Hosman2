@@ -46,6 +46,11 @@ public class FactureServiceImpl implements FactureService {
     public long addFacture(FactureRequest factureRequest) {
         log.info("FactureServiceImpl | addFacture is called");
 
+        factureRequest.getMajoration().setDate_operation(factureRequest.getDate_facture());
+        factureRequest.getReduction().setDate_operation(factureRequest.getDate_facture());
+        factureRequest.getReliquat().setDate_operation(factureRequest.getDate_facture());
+        factureRequest.getCreance().setDate_operation(factureRequest.getDate_facture());
+
         long majorationId = majorationService.addMajoration(factureRequest.getMajoration());
         long reductionId = reductionService.addReduction(factureRequest.getReduction());
         long reliquatId = reliquatService.addReliquat(factureRequest.getReliquat());

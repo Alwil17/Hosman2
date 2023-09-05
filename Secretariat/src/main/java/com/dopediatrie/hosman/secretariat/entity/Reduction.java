@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,6 +20,7 @@ public class Reduction {
     private long id;
     private double montant;
     private String motif;
+    private LocalDateTime date_operation;
     @OneToOne(mappedBy = "reduction")
     @JsonIgnore
     private Facture facture;
@@ -27,7 +30,8 @@ public class Reduction {
         return "Reduction{" +
                 "id=" + id +
                 ", montant=" + montant +
-                ", motif='" + motif + '\'' +
+                ", motif='" + motif +
+                ", date_operation='" + date_operation + '\'' +
                 '}';
     }
 }

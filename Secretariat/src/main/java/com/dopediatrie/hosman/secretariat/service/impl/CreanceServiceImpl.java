@@ -37,6 +37,7 @@ public class CreanceServiceImpl implements CreanceService {
         Creance creance = Creance.builder()
                 .montant(creanceRequest.getMontant())
                 .etat(etatRepository.findById(creanceRequest.getEtat_id()).get())
+                .date_operation(creanceRequest.getDate_operation())
                 .build();
 
         creance = creanceRepository.save(creance);
@@ -77,6 +78,7 @@ public class CreanceServiceImpl implements CreanceService {
                 ));
         creance.setMontant(creanceRequest.getMontant());
         creance.setEtat(etatRepository.findById(creanceRequest.getEtat_id()).get());
+        creance.setDate_operation(creanceRequest.getDate_operation());
         creanceRepository.save(creance);
 
         log.info("CreanceServiceImpl | editCreance | Creance Updated");

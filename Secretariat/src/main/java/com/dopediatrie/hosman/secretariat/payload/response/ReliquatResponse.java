@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class ReliquatResponse {
     private long id;
     private double montant;
     private Etat etat;
+    private LocalDateTime date_operation;
 }

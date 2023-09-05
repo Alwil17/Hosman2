@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -17,6 +19,7 @@ public class Creance {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private double montant;
+    private LocalDateTime date_operation;
     @OneToOne(mappedBy = "creance")
     @JsonIgnore
     private Facture facture;
@@ -29,6 +32,7 @@ public class Creance {
         return "Creance{" +
                 "id=" + id +
                 ", montant=" + montant +
+                ", date_operation='" + date_operation + '\'' +
                 '}';
     }
 }

@@ -34,6 +34,7 @@ public class MajorationServiceImpl implements MajorationService {
         Majoration majoration = Majoration.builder()
                 .montant(majorationRequest.getMontant())
                 .motif(majorationRequest.getMotif())
+                .date_operation(majorationRequest.getDate_operation())
                 .build();
 
         majoration = majorationRepository.save(majoration);
@@ -74,6 +75,7 @@ public class MajorationServiceImpl implements MajorationService {
                 ));
         majoration.setMontant(majorationRequest.getMontant());
         majoration.setMotif(majorationRequest.getMotif());
+        majoration.setDate_operation(majorationRequest.getDate_operation());
         majorationRepository.save(majoration);
 
         log.info("MajorationServiceImpl | editMajoration | Majoration Updated");

@@ -37,6 +37,7 @@ public class ReliquatServiceImpl implements ReliquatService {
         Reliquat reliquat = Reliquat.builder()
                 .montant(reliquatRequest.getMontant())
                 .etat(etatRepository.findById(reliquatRequest.getEtat_id()).orElseThrow())
+                .date_operation(reliquatRequest.getDate_operation())
                 .build();
 
         reliquat = reliquatRepository.save(reliquat);
@@ -77,6 +78,7 @@ public class ReliquatServiceImpl implements ReliquatService {
                 ));
         reliquat.setMontant(reliquatRequest.getMontant());
         reliquat.setEtat(etatRepository.findById(reliquatRequest.getEtat_id()).get());
+        reliquat.setDate_operation(reliquatRequest.getDate_operation());
         reliquatRepository.save(reliquat);
 
         log.info("ReliquatServiceImpl | editReliquat | Reliquat Updated");

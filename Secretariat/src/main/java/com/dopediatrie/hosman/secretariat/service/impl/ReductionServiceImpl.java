@@ -35,6 +35,7 @@ public class ReductionServiceImpl implements ReductionService {
         Reduction reduction = Reduction.builder()
                 .montant(reductionRequest.getMontant())
                 .motif(reductionRequest.getMotif())
+                .date_operation(reductionRequest.getDate_operation())
                 .build();
         reduction = reductionRepository.save(reduction);
 
@@ -74,6 +75,7 @@ public class ReductionServiceImpl implements ReductionService {
                 ));
         reduction.setMontant(reductionRequest.getMontant());
         reduction.setMotif(reductionRequest.getMotif());
+        reduction.setDate_operation(reductionRequest.getDate_operation());
         reductionRepository.save(reduction);
 
         log.info("ReductionServiceImpl | editReduction | Reduction Updated");

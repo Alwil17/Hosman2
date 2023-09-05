@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class CreanceResponse {
     private long id;
     private double montant;
+    private LocalDateTime date_operation;
     private Facture facture;
     private Etat etat;
 }

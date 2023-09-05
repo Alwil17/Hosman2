@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,7 @@ public class Reliquat {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private double montant;
+    private LocalDateTime date_operation;
     @OneToOne(mappedBy = "reliquat")
     @JsonIgnore
     private Facture facture;
@@ -31,6 +33,7 @@ public class Reliquat {
         return "Reliquat{" +
                 "id=" + id +
                 ", montant=" + montant +
+                ", date_operation='" + date_operation + '\'' +
                 '}';
     }
 }
