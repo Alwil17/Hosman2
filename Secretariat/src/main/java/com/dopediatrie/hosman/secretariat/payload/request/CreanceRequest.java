@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class CreanceRequest {
     private double montant = 0;
     private long etat_id;
+    private long patient_id;
     private LocalDateTime date_operation;
 }

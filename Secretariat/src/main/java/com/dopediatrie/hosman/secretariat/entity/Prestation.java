@@ -40,4 +40,17 @@ public class Prestation {
     @OneToOne
     @JoinColumn(name = "facture_id")
     private Facture facture;
+
+    @Override
+    public String toString() {
+        return "Prestation{" +
+                "id=" + id +
+                ", patient=" + patient +
+                ", demandeur=" + demandeur +
+                ", consulteur=" + consulteur +
+                ", secteur=" + secteur +
+                ", date_prestation=" + date_prestation +
+                ", facture=" + facture +
+                '}';
+    }
 }

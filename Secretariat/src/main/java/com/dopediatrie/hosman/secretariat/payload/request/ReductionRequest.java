@@ -11,4 +11,5 @@ public class ReductionRequest {
     private double montant = 0;
     private String motif = "";
     private LocalDateTime date_operation;
+    private long patient_id;
 }

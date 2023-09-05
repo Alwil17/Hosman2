@@ -2,7 +2,6 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
-import com.dopediatrie.hosman.secretariat.payload.request.PatientAssuranceRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
@@ -21,6 +20,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class PatientServiceImpl implements PatientService {
     private final AdresseRepository adresseRepository;
+    private final AssuranceRepository assuranceRepository;
     private final PatientRepository patientRepository;
     private final PaysRepository paysRepository;
     private final ProfessionRepository professionRepository;
@@ -30,7 +30,6 @@ public class PatientServiceImpl implements PatientService {
     private final PersonneAPrevenirService personneAPrevenirService;
     private final AdresseService adresseService;
     private final AssuranceService assuranceService;
-    private final PatientAssuranceService patientAssuranceService;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -61,7 +60,11 @@ public class PatientServiceImpl implements PatientService {
                 .date_ajout(patientRequest.getDate_ajout())
                 .is_assure(patientRequest.getIs_assure())
                 .adresse(adresseRepository.findById(adresse_id).get())
+                .assurance(assuranceRepository.findById(assurance_id).get())
                 .structure_id(patientRequest.getStructure_id())
+                .taux(patientRequest.getTaux())
+                .date_debut(patientRequest.getDate_debut())
+                .date_fin(patientRequest.getDate_fin())
                 .build();
 
         if(patientRequest.getPays_origine_id() != 0)
@@ -79,13 +82,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setReference("PAT" + String.format("%04d", patient.getId()));
         patient = patientRepository.save(patient);
 
-        if(patientRequest.getPatient_assurance() != null && assurance_id != 0){
-            PatientAssuranceRequest par = patientRequest.getPatient_assurance();
-            par.setPatient_id(patient.getId());
-            par.setAssurance_id(assurance_id);
 
-            patientAssuranceService.addPatientAssurance(par);
-        }
 
         log.info("PatientServiceImpl | addPatient | Patient Created");
         log.info("PatientServiceImpl | addPatient | Patient Id : " + patient.getId());
@@ -133,6 +130,9 @@ public class PatientServiceImpl implements PatientService {
         patient.setNo_piece(patientRequest.getNo_piece());
         patient.setDate_ajout(patientRequest.getDate_ajout());
         patient.setIs_assure(patientRequest.getIs_assure());
+        patient.setTaux(patientRequest.getTaux());
+        patient.setDate_debut(patientRequest.getDate_debut());
+        patient.setDate_fin(patientRequest.getDate_fin());
         patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
         patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
         patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());

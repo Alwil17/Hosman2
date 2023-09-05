@@ -26,7 +26,7 @@ public class Assurance {
     @ManyToOne
     @JoinColumn(name = "type_assurance_id")
     private TypeAssurance type_assurance;
-    @ManyToMany(mappedBy = "assurances")
+    @OneToMany(mappedBy = "assurance")
     @JsonIgnore
     private List<Patient> patients;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -34,4 +34,17 @@ public class Assurance {
             joinColumns = @JoinColumn(name = "assurance_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tarif_id", referencedColumnName = "id"))
     private List<Tarif> tarifs;
+
+    @Override
+    public String toString() {
+        return "Assurance{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", representant='" + representant + '\'' +
+                ", email='" + email + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", type_assurance=" + type_assurance +
+                '}';
+    }
 }

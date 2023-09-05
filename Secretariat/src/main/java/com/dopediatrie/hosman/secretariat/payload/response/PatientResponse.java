@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -31,7 +32,11 @@ public class PatientResponse {
     private Pays pays_origine;
     private Pays nationalite;
     private Profession profession;
+    private Assurance assurance;
     private Employeur employeur;
     private PersonneAPrevenir personne_a_prevenir;
+    private double taux;
+    private Date date_debut;
+    private Date date_fin;
     private long structure_id;
 }

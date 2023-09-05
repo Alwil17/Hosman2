@@ -24,6 +24,9 @@ public class Majoration {
     @OneToOne(mappedBy = "majoration")
     @JsonIgnore
     private Facture facture;
+    @ManyToOne
+    @JoinColumn(name = "majoration_id")
+    private Patient patient;
 
     @Override
     public String toString() {

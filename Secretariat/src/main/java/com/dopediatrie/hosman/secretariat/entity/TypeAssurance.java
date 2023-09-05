@@ -22,4 +22,12 @@ public class TypeAssurance {
     @OneToMany(mappedBy = "type_assurance")
     @JsonIgnore
     private List<Assurance> assurances;
+
+    @Override
+    public String toString() {
+        return "TypeAssurance{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -54,9 +55,53 @@ public class Patient {
     @OneToOne
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "patient_assurance",
-            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "assurance_id", referencedColumnName = "id"))
-    private List<Assurance> assurances;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Creance> creances;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Majoration> majorations;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Reduction> reductions;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Reliquat> reliquats;
+    @ManyToOne
+    @JoinColumn(name = "assurance_id")
+    private Assurance assurance;
+    private double taux;
+    private Date date_debut;
+    private Date date_fin;
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenoms='" + prenoms + '\'' +
+                ", date_naissance=" + date_naissance +
+                ", sexe=" + sexe +
+                ", lieu_naissance='" + lieu_naissance + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", email='" + email + '\'' +
+                ", type_piece='" + type_piece + '\'' +
+                ", no_piece='" + no_piece + '\'' +
+                ", is_assure=" + is_assure +
+                ", date_ajout=" + date_ajout +
+                ", pays_origine=" + pays_origine +
+                ", nationalite=" + nationalite +
+                ", profession=" + profession +
+                ", employeur=" + employeur +
+                ", personne_a_prevenir=" + personne_a_prevenir +
+                ", structure_id=" + structure_id +
+                ", adresse=" + adresse +
+                ", assurance=" + assurance +
+                ", taux=" + taux +
+                ", date_debut=" + date_debut +
+                ", date_fin=" + date_fin +
+                '}';
+    }
 }

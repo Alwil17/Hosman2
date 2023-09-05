@@ -27,6 +27,9 @@ public class Reliquat {
     @ManyToOne
     @JoinColumn(name = "etat_id")
     private Etat etat;
+    @ManyToOne
+    @JoinColumn(name = "reliquat_id")
+    private Patient patient;
 
     @Override
     public String toString() {

@@ -20,6 +20,7 @@ public class FactureRequest {
     private LocalDateTime date_facture = LocalDateTime.now();
     private LocalDateTime date_reglement = LocalDateTime.now();
     private long etat_id;
+    private long patient_id;
     private int exporte = 0;
     private List<FactureModeRequest> mode_payements;
 }

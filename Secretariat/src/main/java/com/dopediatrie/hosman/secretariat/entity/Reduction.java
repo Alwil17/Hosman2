@@ -24,6 +24,9 @@ public class Reduction {
     @OneToOne(mappedBy = "reduction")
     @JsonIgnore
     private Facture facture;
+    @ManyToOne
+    @JoinColumn(name = "reduction_id")
+    private Patient patient;
 
     @Override
     public String toString() {
