@@ -69,7 +69,7 @@ public class FactureController {
     }
 
     @GetMapping("/{id}/show")
-    public ResponseEntity<FactureResponse> displayFactureById(@PathVariable("id") long factureId) throws IOException, DocumentException {
+    public ResponseEntity<Resource> displayFactureById(@PathVariable("id") long factureId) throws IOException, DocumentException {
 
         log.info("FactureController | displayFactureById is called");
 
@@ -132,7 +132,8 @@ public class FactureController {
                 .resolve("test.pdf")
                 .toUri());
 
-        return new ResponseEntity<>(factureResponse, HttpStatus.OK);
+        //return new ResponseEntity<>(factureResponse, HttpStatus.OK);
+        return new ResponseEntity<>(resource, headers,  HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
