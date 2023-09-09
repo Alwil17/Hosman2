@@ -27,7 +27,7 @@ public class CreanceServiceImpl implements CreanceService {
 
     @Override
     public List<Creance> getAllCreances() {
-        return creanceRepository.findAll();
+        return creanceRepository.findAllWithPositiveMontant();
     }
 
     @Override
