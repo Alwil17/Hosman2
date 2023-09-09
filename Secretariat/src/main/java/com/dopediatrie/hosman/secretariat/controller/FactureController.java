@@ -109,16 +109,16 @@ public class FactureController {
         renderer.setDocumentFromString(xHtml, baseUrl);
         renderer.layout();
 
-        OutputStream outputStream = new FileOutputStream("src//test.pdf");
+        /*OutputStream outputStream = new FileOutputStream("src//test.pdf");
         renderer.createPDF(outputStream);
         outputStream.close();
         factureResponse.setPath(FileSystems
                 .getDefault()
                 .getPath("src")
                 .resolve("test.pdf")
-                .toUri().toURL().toString());
+                .toUri().toURL().toString());*/
         //System.out.println(outputStream.);
-        /*HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("inline", FileSystems
                 .getDefault()
@@ -130,7 +130,7 @@ public class FactureController {
                 .getDefault()
                 .getPath("src")
                 .resolve("test.pdf")
-                .toUri());*/
+                .toUri());
 
         return new ResponseEntity<>(factureResponse, HttpStatus.OK);
     }

@@ -1,0 +1,70 @@
+package com.dopediatrie.hosman.secretariat.controller;
+
+import com.dopediatrie.hosman.secretariat.entity.Creance;
+import com.dopediatrie.hosman.secretariat.payload.request.CreanceRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.CreanceResponse;
+import com.dopediatrie.hosman.secretariat.service.CreanceService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/creances")
+@RequiredArgsConstructor
+@Log4j2
+public class CreanceController {
+
+    private final CreanceService creanceService;
+
+    @GetMapping
+    public ResponseEntity<List<Creance>> getAllCreances() {
+
+        log.info("CreanceController | getAllCreances is called");
+        return new ResponseEntity<>(creanceService.getAllCreances(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> addCreance(@RequestBody CreanceRequest creanceRequest) {
+
+        log.info("CreanceController | addCreance is called");
+
+        log.info("CreanceController | addCreance | creanceRequest : " + creanceRequest.toString());
+
+        long creanceId = creanceService.addCreance(creanceRequest);
+        return new ResponseEntity<>(creanceId, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CreanceResponse> getCreanceById(@PathVariable("id") long creanceId) {
+
+        log.info("CreanceController | getCreanceById is called");
+
+        log.info("CreanceController | getCreanceById | creanceId : " + creanceId);
+
+        CreanceResponse creanceResponse
+                = creanceService.getCreanceById(creanceId);
+        return new ResponseEntity<>(creanceResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> editCreance(@RequestBody CreanceRequest creanceRequest,
+            @PathVariable("id") long creanceId
+    ) {
+
+        log.info("CreanceController | editCreance is called");
+
+        log.info("CreanceController | editCreance | creanceId : " + creanceId);
+
+        creanceService.editCreance(creanceRequest, creanceId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCreanceById(@PathVariable("id") long creanceId) {
+        creanceService.deleteCreanceById(creanceId);
+    }
+}
