@@ -27,7 +27,7 @@ public class Creance {
     @JoinColumn(name = "etat_id")
     private Etat etat;
     @ManyToOne
-    @JoinColumn(name = "creance_id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @Override
