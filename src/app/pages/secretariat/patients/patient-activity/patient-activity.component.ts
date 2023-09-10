@@ -26,6 +26,9 @@ import {
 import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 // import { IPatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
 import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
+import { SelectOption } from "src/app/models/extras/select.model";
+import { SectorService } from "src/app/services/secretariat/shared/sector.service";
+import { DoctorService } from "src/app/services/secretariat/shared/doctor.service";
 
 @Component({
   selector: "app-patient-activity",
@@ -38,30 +41,30 @@ export class PatientActivityComponent implements OnInit {
 
   isMedicalProceduresSelected = true;
 
+  // To set date min
+  today = new Date().toLocaleDateString("fr-ca");
+
   // Activity form controls
-  sectorControl = new FormControl("", [Validators.required]);
-  consultingDoctorControl = new FormControl("", [Validators.required]);
+  sectorControl = new FormControl(null, [Validators.required]);
+  consultingDoctorControl = new FormControl(null, [Validators.required]);
 
-  doctorTypeControl = new FormControl({ value: "", disabled: true }, [
+  doctorTypeControl = new FormControl({ value: null, disabled: true }, [
     Validators.required,
   ]);
-  doctorControl = new FormControl({ value: "", disabled: true }, [
+  doctorControl = new FormControl({ value: null, disabled: true }, [
     Validators.required,
   ]);
-  performedByControl = new FormControl({ value: "", disabled: true }, [
+  performedByControl = new FormControl({ value: null, disabled: true }, [
     Validators.required,
   ]);
 
-  activityDateControl = new FormControl("", [Validators.required]);
+  activityDateControl = new FormControl(this.today, [Validators.required]);
   quantityControl = new FormControl(1, [Validators.required]);
   originControl = new FormControl("", [Validators.required]);
 
   // Activity form group
   activityForm: FormGroup = new FormGroup({});
   isActivityFormSubmitted = false;
-
-  // To set date min
-  today = new Date().toLocaleDateString("fr-ca");
 
   table1: IPrestation[] = [];
 
@@ -85,36 +88,42 @@ export class PatientActivityComponent implements OnInit {
 
   // invoiceModalRef!: NgbModalRef;
 
-  sectors = [
-    { id: 0, text: "MEDECINE INTERNE ET GENERALE" },
-    { id: 1, text: "PEDIATRIE" },
-    { id: 2, text: "CARDIOLOGIE" },
-    { id: 3, text: "NEUROLOGIE" },
-  ];
+  sectors!: SelectOption[];
+  // = [
+  // { id: 0, text: "MEDECINE INTERNE ET GENERALE" },
+  // { id: 1, text: "PEDIATRIE" },
+  // { id: 2, text: "CARDIOLOGIE" },
+  // { id: 3, text: "NEUROLOGIE" },
+  // ];
 
-  consultingDoctors = [
-    { id: 0, text: "Dr J-P" },
-    { id: 1, text: "Dr Gael" },
-  ];
+  consultingDoctors!: SelectOption[];
+  //  = [
+  //   { id: 0, text: "Dr J-P" },
+  //   { id: 1, text: "Dr Gael" },
+  // ];
 
   doctorTypes = [
-    { id: 0, text: "Interne" },
-    { id: 1, text: "Externe" },
+    { id: 1, text: "Interne" },
+    { id: 2, text: "Externe" },
   ];
 
-  doctors = [
-    { id: 0, text: "Dr J-P" },
-    { id: 1, text: "Dr Gael" },
-  ];
+  doctors!: SelectOption[];
+  //  = [
+  //   { id: 0, text: "Dr J-P" },
+  //   { id: 1, text: "Dr Gael" },
+  // ];
 
-  performedBys = [
-    { id: 0, text: "Dr J-P" },
-    { id: 1, text: "Dr Gael" },
-  ];
+  performedBys!: SelectOption[];
+  //  = [
+  //   { id: 0, text: "Dr J-P" },
+  //   { id: 1, text: "Dr Gael" },
+  // ];
 
   constructor(
     public patientService: PatientService,
     private datePipe: DatePipe,
+    private sectorService: SectorService,
+    private doctorService: DoctorService,
     private modalService: NgbModal
   ) {
     this.selectedPatient = patientService.getActivePatient();
@@ -178,6 +187,51 @@ export class PatientActivityComponent implements OnInit {
       activityDateControl: this.activityDateControl,
       quantityControl: this.quantityControl,
       originControl: this.originControl,
+    });
+
+    this.onChanges();
+
+    this.fetchSelectData();
+  }
+
+  docAddable = false;
+  onChanges() {
+    this.doctorTypeControl.valueChanges.subscribe((value) => {
+      if (value && value.text == "Externe") {
+        this.docAddable = true;
+      } else {
+        this.docAddable = false;
+      }
+    });
+  }
+
+  fetchSelectData() {
+    this.sectorService.getAll().subscribe({
+      next: (data) => {
+        this.sectors = data.map((sector) => ({
+          id: sector.id,
+          text: sector.libelle,
+        }));
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+    this.doctorService.getAll().subscribe({
+      next: (data) => {
+        const mapped = data.map((doctor) => ({
+          id: doctor.id,
+          text: doctor.fullName,
+        }));
+
+        this.consultingDoctors = mapped;
+        this.doctors = mapped;
+        this.performedBys = mapped;
+      },
+      error: (error) => {
+        console.error(error);
+      },
     });
   }
 
@@ -461,11 +515,12 @@ export class PatientActivityComponent implements OnInit {
       const prestation = new Prestation(
         1,
         this.sectorControl.value
-          ? this.sectors[parseInt(this.sectorControl.value)].text
+          ? this.sectors[parseInt(this.sectorControl.value.id)].text
           : "",
         this.consultingDoctorControl.value
-          ? this.consultingDoctors[parseInt(this.consultingDoctorControl.value)]
-              .text
+          ? this.consultingDoctors[
+              parseInt(this.consultingDoctorControl.value.id)
+            ].text
           : "",
         new Date(),
         this.originControl.value ?? "PISJO",

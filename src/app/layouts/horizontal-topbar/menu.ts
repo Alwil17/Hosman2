@@ -40,7 +40,7 @@ export const MENU: MenuItem[] = [
   {
     id: 7,
     label: "MENUITEMS.ACTIVITIES.LIST.EXPENSES",
-    link: "/secretariat/activities/expenses",
+    link: "/secretariat/expenses",
     icon: "ri-indeterminate-circle-fill",
   },
   {
@@ -64,7 +64,7 @@ export const MENU: MenuItem[] = [
   {
     id: 11,
     label: "MENUITEMS.ACTIVITIES.LIST.COLLECTIONS",
-    link: "/secretariat/activities/collections",
+    link: "/secretariat/collections",
     icon: "ri-add-circle-fill",
   },
   {

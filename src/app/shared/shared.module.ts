@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, TitleCasePipe } from "@angular/common";
 import { NgbNavModule, NgbAccordionModule } from "@ng-bootstrap/ng-bootstrap";
 
 // Swiper Slider
@@ -46,5 +46,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     InputComponent,
     SelectComponent,
   ],
+  providers:[TitleCasePipe]
 })
 export class SharedModule {}

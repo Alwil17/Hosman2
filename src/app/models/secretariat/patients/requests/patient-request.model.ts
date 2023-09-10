@@ -7,7 +7,6 @@ import { PersonToContactRequest } from "./person-to-contact-request.model";
 import { ProfessionRequest } from "./profession-request.model";
 
 export interface IPatientRequest {
-  reference: string;
   nom: string;
   prenoms: string;
   date_naissance: Date;
@@ -20,7 +19,10 @@ export interface IPatientRequest {
   // pays_origine: CountryRequest;
   pays_origine_id: number;
   assurance?: InsuranceRequest;
-  patient_assurance?: PatientInsuranceRequest;
+  taux?: number;
+  date_debut?: Date;
+  date_fin?: Date;
+  // patient_assurance?: PatientInsuranceRequest;
   // nationalite?: CountryRequest;
   nationalite_id?: number;
   lieu_naissance?: string;
@@ -33,7 +35,6 @@ export interface IPatientRequest {
   employeur_id?: number;
 }
 export class PatientRequest {
-  reference: string;
   nom: string;
   prenoms: string;
   date_naissance: Date;
@@ -46,7 +47,10 @@ export class PatientRequest {
   // pays_origine: CountryRequest;
   pays_origine_id: number;
   assurance?: InsuranceRequest;
-  patient_assurance?: PatientInsuranceRequest;
+  taux?: number;
+  date_debut?: Date;
+  date_fin?: Date;
+  // patient_assurance?: PatientInsuranceRequest;
   // nationalite?: CountryRequest;
   nationalite_id?: number;
   lieu_naissance?: string;
@@ -59,7 +63,6 @@ export class PatientRequest {
   employeur_id?: number;
 
   constructor(iPatientRequest: IPatientRequest) {
-    this.reference = iPatientRequest.reference;
     this.nom = iPatientRequest.nom;
     this.prenoms = iPatientRequest.prenoms;
     this.date_naissance = iPatientRequest.date_naissance;
@@ -71,7 +74,10 @@ export class PatientRequest {
     this.adresse = iPatientRequest.adresse;
     this.pays_origine_id = iPatientRequest.pays_origine_id;
     this.assurance = iPatientRequest.assurance;
-    this.patient_assurance = iPatientRequest.patient_assurance;
+    this.taux = iPatientRequest.taux;
+    this.date_debut = iPatientRequest.date_debut;
+    this.date_fin = iPatientRequest.date_fin;
+    // this.patient_assurance = iPatientRequest.patient_assurance;
     this.nationalite_id = iPatientRequest.nationalite_id;
     this.lieu_naissance = iPatientRequest.lieu_naissance;
     this.tel2 = iPatientRequest.tel2;

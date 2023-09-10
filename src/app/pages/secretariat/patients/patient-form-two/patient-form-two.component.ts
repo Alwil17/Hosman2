@@ -30,7 +30,7 @@ import { AddressRequest } from "src/app/models/secretariat/patients/requests/add
 import { InsuranceRequest } from "src/app/models/secretariat/patients/requests/insurance-request.model";
 import { PatientAddressFormComponent } from "./patient-address-form/patient-address-form.component";
 import { InsuranceService } from "src/app/services/secretariat/patients/insurance.service";
-import { SelectModel } from "src/app/shared/form-inputs/select/select.model";
+import { SelectOption } from "src/app/models/extras/select.model";
 import { CountryService } from "src/app/services/secretariat/patients/country.service";
 import { ProfessionService } from "src/app/services/secretariat/patients/profession.service";
 import { EmployerService } from "src/app/services/secretariat/patients/employer.service";
@@ -57,27 +57,27 @@ export class PatientFormTwoComponent implements OnInit {
 
   lastNameControl = new FormControl("", [Validators.required]);
   firstNameControl = new FormControl("", [Validators.required]);
-  genderControl = new FormControl("", [Validators.required]);
+  genderControl = new FormControl(null, [Validators.required]);
 
   dateOfBirthControl = new FormControl("", [Validators.required]);
   ageControl = new FormControl("");
-  birthPlaceControl = new FormControl("");
+  birthPlaceControl = new FormControl(null);
 
   patientTel1Control = new FormControl("", [Validators.required]);
   patientEmailControl = new FormControl("", [Validators.email]);
-  idTypeControl = new FormControl("");
+  idTypeControl = new FormControl(null);
   idNumberControl = new FormControl("");
 
-  homelandControl = new FormControl("", [Validators.required]);
-  nationalityControl = new FormControl("");
-  professionControl = new FormControl("");
-  hasInsuranceControl = new FormControl("", [Validators.required]);
+  homelandControl = new FormControl(null, [Validators.required]);
+  nationalityControl = new FormControl(null);
+  professionControl = new FormControl(null);
+  hasInsuranceControl = new FormControl(null, [Validators.required]);
 
-  insuranceControl = new FormControl({ value: "", disabled: true });
-  insuranceTypeControl = new FormControl({ value: "", disabled: true });
+  insuranceControl = new FormControl({ value: null, disabled: true });
+  insuranceTypeControl = new FormControl({ value: null, disabled: true });
   insuranceRateControl = new FormControl({ value: "", disabled: true });
 
-  patientEmployerControl = new FormControl("");
+  patientEmployerControl = new FormControl(null);
   insuranceStartControl = new FormControl("");
   insuranceEndControl = new FormControl("");
 
@@ -102,12 +102,12 @@ export class PatientFormTwoComponent implements OnInit {
   isPatientInfoFormSubmitted = false;
 
   // Form selects data
-  insurances!: SelectModel[];
-  insuranceTypes!: SelectModel[];
-  countries!: SelectModel[];
-  nationalities!: SelectModel[];
-  professions!: SelectModel[];
-  employers!: SelectModel[];
+  insurances!: SelectOption[];
+  insuranceTypes!: SelectOption[];
+  countries!: SelectOption[];
+  nationalities!: SelectOption[];
+  professions!: SelectOption[];
+  employers!: SelectOption[];
   genders = [
     { id: 1, text: "Masculin", short: "M" },
     { id: 2, text: "Féminin", short: "F" },
@@ -184,8 +184,11 @@ export class PatientFormTwoComponent implements OnInit {
     });
 
     this.onChanges();
+
+    this.fetchSelectData();
   }
 
+  isEmployerMandatory = false;
   onChanges() {
     this.dateOfBirthControl.valueChanges.subscribe((value) => {
       if (this.dateOfBirthControl.valid) {
@@ -196,18 +199,31 @@ export class PatientFormTwoComponent implements OnInit {
     });
 
     this.hasInsuranceControl.valueChanges.subscribe((value) => {
-      if (value < 2) {
+      if (!value) {
+        return;
+      }
+
+      if (value.id < 2) {
         this.insuranceControl.clearValidators();
         this.insuranceControl.updateValueAndValidity();
+        // this.insuranceControl.setValue(null);
         this.insuranceControl.disable();
 
         this.insuranceTypeControl.clearValidators();
         this.insuranceTypeControl.updateValueAndValidity();
+        // this.insuranceTypeControl.setValue(null);
         this.insuranceTypeControl.disable();
 
         this.insuranceRateControl.clearValidators();
         this.insuranceRateControl.updateValueAndValidity();
+        // this.insuranceRateControl.setValue("");
         this.insuranceRateControl.disable();
+
+        this.patientEmployerControl.clearValidators();
+        this.patientEmployerControl.updateValueAndValidity();
+        // this.patientEmployerControl.setValue("");
+        // this.patientEmployerControl.disable();
+        this.isEmployerMandatory = false;
       } else {
         this.insuranceControl.addValidators([Validators.required]);
         this.insuranceControl.updateValueAndValidity();
@@ -226,10 +242,23 @@ export class PatientFormTwoComponent implements OnInit {
         this.insuranceRateControl.enable();
 
         // this.insuranceTag.disabled
+
+        this.patientEmployerControl.addValidators([Validators.required]);
+        this.patientEmployerControl.updateValueAndValidity();
+        this.patientEmployerControl.enable();
+        this.isEmployerMandatory = true;
       }
     });
 
-    this.fetchSelectData();
+    this.homelandControl.valueChanges.subscribe((value) => {
+      if (value) {
+        this.nationalityControl.setValue(
+          this.nationalities.find((nationality) => value.id == nationality.id)
+        );
+      }
+    });
+
+    // this.fetchSelectData();
   }
 
   fetchSelectData() {
@@ -313,7 +342,7 @@ export class PatientFormTwoComponent implements OnInit {
     );
     console.log(this.patientAddressData);
 
-    patientAddressModal.componentInstance.data = this.patientAddressData;
+    patientAddressModal.componentInstance.address = this.patientAddressData;
 
     patientAddressModal.componentInstance.formData.subscribe(
       (formData: AddressRequest) => {
@@ -326,18 +355,22 @@ export class PatientFormTwoComponent implements OnInit {
           formData.no_maison
         );
 
-        this.patientAddressControl.setValue(
-          formData.ville_id +
-            ", " +
-            formData.quartier_id +
-            ", " +
-            (formData.rue ?? "--- ") +
-            ", " +
-            (formData.bp ?? "--- ") +
-            ", " +
-            (formData.arrondissement ?? "--- ") +
-            ", " +
-            (formData.no_maison ?? "--- ")
+        patientAddressModal.componentInstance.cityAndNeighborhood.subscribe(
+          (cityAndNeighborhood: any) => {
+            this.patientAddressControl.setValue(
+              cityAndNeighborhood.city +
+                ", " +
+                cityAndNeighborhood.neighborhood +
+                ", " +
+                (formData.rue ?? "--- ") +
+                ", " +
+                (formData.bp ?? "--- ") +
+                ", " +
+                (formData.arrondissement ?? "--- ") +
+                ", " +
+                (formData.no_maison ?? "--- ")
+            );
+          }
         );
 
         patientAddressModal.close();
@@ -411,25 +444,27 @@ export class PatientFormTwoComponent implements OnInit {
     // };
 
     const selectInfos = {
-      gender: this.genders[this.genderControl.value - 1].short,
-      idType: this.idTypes[this.idTypeControl.value - 1]
-        ? this.idTypes[this.idTypeControl.value - 1].text
-        : undefined,
+      gender: this.genders[this.genderControl.value.id - 1].short,
+      idType: this.idTypeControl.value
+        ? this.idTypes[this.idTypeControl.value.id - 1]
+          ? this.idTypes[this.idTypeControl.value.id - 1].text
+          : undefined
+        : "",
       // hasInsurance: this.hasInsurances[this.hasInsuranceControl.value - 1].text,
-      homeland: {
-        id: this.homelandControl.value,
-        nom: "",
-        nationalite: "",
-      },
+      // homeland: {
+      //   id: this.homelandControl.value,
+      //   nom: "",
+      //   nationalite: "",
+      // },
       // nationality: {
       //   id: this.nationalityControl.value,
       //   nom: "",
       //   nationalite: "",
       // },
-      profession: {
-        id: this.professionControl.value,
-        denomination: "",
-      },
+      // profession: {
+      //   id: this.professionControl.value,
+      //   denomination: "",
+      // },
       // insurance: {
       //   id: this.insuranceControl.value,
       //   reference: "",
@@ -439,14 +474,14 @@ export class PatientFormTwoComponent implements OnInit {
       //     libelle: "",
       //   },
       // },
-      insuranceType: {
-        id: 1, // this.insuranceTypeControl.value,
-        nom: "",
-      },
-      employer: {
-        id: this.patientEmployerControl.value,
-        nom: "",
-      },
+      // insuranceType: {
+      //   id: 1, // this.insuranceTypeControl.value,
+      //   nom: "",
+      // },
+      // employer: {
+      //   id: this.patientEmployerControl.value,
+      //   nom: "",
+      // },
       // city: {
       //   id: this.cityControl.value,
       //   nom: "",
@@ -461,35 +496,44 @@ export class PatientFormTwoComponent implements OnInit {
       // },
     };
 
-    const insurance: InsuranceRequest = {
-      id: this.insuranceControl.value,
-      nom: "",
-      type_assurance_id: 1, // this.insuranceTypeControl.value,
-    };
+    const insurance: InsuranceRequest | undefined = this.insuranceControl.value
+      ? {
+          id: this.insuranceControl.value.id,
+          nom: this.insuranceControl.value.text,
+          type_assurance_id: 1, // this.insuranceTypeControl.value,
+        }
+      : undefined;
 
     const patientInsurance = this.getPatientInsuranceFormData();
 
     const patient: IPatientRequest = {
-      reference: "",
       nom: this.lastNameControl.value,
       prenoms: this.firstNameControl.value,
       date_naissance: new Date(this.dateOfBirthControl.value),
       sexe: selectInfos.gender,
       lieu_naissance: this.birthPlaceControl.value,
-      is_assure: this.hasInsuranceControl.value,
+      is_assure: this.hasInsuranceControl.value.id,
       tel1: this.patientTel1Control.value,
       tel2: this.patientTel2Control.value,
       personne_a_prevenir: this.personToContactData,
       type_piece: selectInfos.idType,
       no_piece: this.idNumberControl.value,
       date_ajout: new Date(),
-      pays_origine_id: this.homelandControl.value,
-      profession_id: this.professionControl.value,
-      employeur_id: this.patientEmployerControl.value,
-      nationalite_id: this.nationalityControl.value,
+      pays_origine_id: this.homelandControl.value.id,
+      profession_id: this.professionControl.value
+        ? this.professionControl.value.id
+        : undefined,
+      employeur_id: this.patientEmployerControl.value
+        ? this.patientEmployerControl.value.id
+        : undefined,
+      nationalite_id: this.nationalityControl.value
+        ? this.nationalityControl.value.id
+        : undefined,
       adresse: this.patientAddressData,
       assurance: insurance,
-      patient_assurance: patientInsurance,
+      taux: patientInsurance.taux,
+      date_debut: patientInsurance.date_debut,
+      date_fin: patientInsurance.date_fin,
     };
     console.log(patient);
 
@@ -549,6 +593,8 @@ export class PatientFormTwoComponent implements OnInit {
     if (this.patientInfoForm.valid) {
       const patientData = this.getPatientFormData();
 
+      console.log(JSON.stringify(patientData));
+
       this.patientService.registerPatient(patientData).subscribe({
         next: (data) => {
           console.log(data, "\nHere");
@@ -573,7 +619,7 @@ export class PatientFormTwoComponent implements OnInit {
         error: (e) => console.error(e),
       });
 
-      // await this.secretariatRouter.navigateToPatientActivity();
+      await this.secretariatRouter.navigateToPatientActivity();
     }
   }
 }

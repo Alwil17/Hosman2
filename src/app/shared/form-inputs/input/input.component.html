@@ -27,6 +27,7 @@
         }"
         [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
         (click)="emitOnInputClick ? emitInputClick() : null"
+        (change)="onChange()"
       />
       <!-- [formControlName]="controlName" -->
     </div>
@@ -58,6 +59,7 @@
     }"
     [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
     (click)="emitOnInputClick ? emitInputClick() : null"
+    (keyup)="capitalized || titleCased ? onChange() : null"
   />
 </ng-template>
 

@@ -4,17 +4,19 @@
 
 export const environment = {
   production: false,
-  defaultauth: 'fackbackend',
+  baseUrl: "http://localhost:8081/",
+
+  defaultauth: "fackbackend",
   firebaseConfig: {
-    apiKey: '',
-    authDomain: '',
-    databaseURL: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: '',
-    measurementId: ''
-  }
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: "",
+  },
 };
 
 /*

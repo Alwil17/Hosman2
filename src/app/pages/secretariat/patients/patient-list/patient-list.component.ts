@@ -14,24 +14,9 @@ export class PatientListComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  allPatients: Patient[] = [
-    // {
-    //   age: calculateExactAge(new Date("1998-04-25")),
-    //   ...{
-    //     id: 0,
-    //     reference: "PAT1",
-    //     nom: "Catastrophe",
-    //     prenoms: "Climatique",
-    //     date_naissance: new Date("1998-04-25"),
-    //     sexe: "Masculin",
-    //     is_assure: false,
-    //     tel1: "00000000",
-    //     date_entre: new Date("2023-06-03"),
-    //     no_carte: "0003-154-1324",
-    //     assurance: "ASCOMA",
-    //   },
-    // },
-  ];
+  searchTerm = "";
+
+  allPatients: Patient[] = [];
 
   // Pagination handling variables
   page = 1;
@@ -43,16 +28,16 @@ export class PatientListComponent implements OnInit {
     private secretariatRouter: SecretariatRouterService,
     private patientService: PatientService
   ) {
-    this.allPatients =
-      // ...this.allPatients,
-      this.patientService.getAllPatients()
-      // .map((patient) => ({
-      //   ...patient,
-      //   age: calculateExactAge(patient.date_naissance),
-      //   nomAssurance: patientService.getInsurance(patient.id)?.nom,
-      // }));
+    this.patientService.getAll().subscribe({
+      next: (data) => {
+        this.allPatients = data;
 
-    this.refreshPatients();
+        // this.refreshPatients();
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   ngOnInit(): void {
@@ -65,21 +50,44 @@ export class PatientListComponent implements OnInit {
     ];
   }
 
+  filterPatients() {
+    const filteredPatients = this.searchTerm
+      ? this.allPatients.filter((patient) =>
+          (patient.nom + " " + patient.prenoms)
+            .toLowerCase()
+            .startsWith(this.searchTerm)
+        )
+      : [];
+
+    this.collectionSize = filteredPatients.length;
+
+    this.patients = filteredPatients.slice(
+      (this.page - 1) * this.pageSize,
+      (this.page - 1) * this.pageSize + this.pageSize
+    );
+  }
+
   refreshPatients() {
     this.collectionSize = this.allPatients.length;
 
-    this.patients = this.allPatients
-      // .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.page - 1) * this.pageSize,
-        (this.page - 1) * this.pageSize + this.pageSize
-      );
+    this.patients = this.allPatients.slice(
+      (this.page - 1) * this.pageSize,
+      (this.page - 1) * this.pageSize + this.pageSize
+    );
   }
 
-  async view(patient: any) {
-    this.patientService.setActivePatient(patient.id);
+  // async
+  view(patient: any) {
+    this.patientService.setActivePatient(patient.id).subscribe({
+      next: async (data) => {
+        await this.secretariatRouter.navigateToPatientActivity();
+      },
+      error: (e) => {
+        console.error(e);
+      },
+    });
 
-    await this.secretariatRouter.navigateToPatientActivity();
+    // console.log(JSON.stringify(patient, null, 2));
   }
 
   async goToPatientNew() {

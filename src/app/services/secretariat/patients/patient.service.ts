@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { delay } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
 import { CITIES } from "src/app/data/secretariat/cities.data";
 import { COUNTRIES } from "src/app/data/secretariat/countries.data";
 import { EMPLOYERS } from "src/app/data/secretariat/employers.data";
@@ -11,11 +11,20 @@ import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
 // import { PATIENT_INSURANCES } from "src/app/data/secretariat/patient-insurance.data";
 import { PATIENTS } from "src/app/data/secretariat/patients.data";
 import { PROFESSIONS } from "src/app/data/secretariat/professions.data";
+import { Address } from "src/app/models/secretariat/patients/address.model";
 import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
 import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { PersonToContact } from "src/app/models/secretariat/patients/person-to-contact.model";
 import { PatientRequest } from "src/app/models/secretariat/patients/requests/patient-request.model";
 import { PatientResponse } from "src/app/models/secretariat/patients/responses/patient-response.model";
+import { CityService } from "./city.service";
+import { CountryService } from "./country.service";
+import { EmployerService } from "./employer.service";
+import { InsuranceTypeService } from "./insurance-type.service";
+import { InsuranceService } from "./insurance.service";
+import { NeighborhoodService } from "./neighborhood.service";
+import { ProfessionService } from "./profession.service";
 
 const baseUrl = "http://localhost:8081/patients";
 
@@ -24,75 +33,67 @@ const baseUrl = "http://localhost:8081/patients";
 })
 export class PatientService {
   private activePatient: Patient = PATIENTS[0];
-  // {
-  //   id: -1,
-  //   reference: "",
-  //   nom: "",
-  //   prenoms: "",
-  //   date_naissance: new Date(),
-  //   sexe: "",
-  //   is_assure: false,
-  //   tel1: "",
-  //   personne_a_prevenir: "",
-  //   date_entre: new Date(),
-  //   adresse: {
-  //     id: -1,
-  //     ville: CITIES[0],
-  //     quartier: NEIGHBORHOODS[0],
-  //   },
-  //   pays_origine: COUNTRIES[0],
-  //   type_patient: HAS_INSURANCES[0],
-  // };
 
   allPatients: Patient[] = PATIENTS;
 
-  // private patientInsurances: IPatientInsurance[] = PATIENT_INSURANCES;
+  constructor(
+    private http: HttpClient,
 
-  constructor(private http: HttpClient) {}
+    private cityService: CityService,
+    private neighborhoodService: NeighborhoodService,
+    private insuranceService: InsuranceService,
+    private insuranceTypeService: InsuranceTypeService,
+    private countryService: CountryService,
+    private professionService: ProfessionService,
+    private employerService: EmployerService
+  ) {}
 
-  registerPatient(
-    patientRequest: PatientRequest
-    // patientRequest: Patient,
-    // insurance?: Insurance,
-    // patientInsurance?: IPatientInsurance
-  ): Observable<PatientResponse> {
+  registerPatient(patientRequest: PatientRequest): Observable<any> {
     // PATIENT
-    /*const patient = new Patient(patientRequest); // Patient.emptyPatient();
 
-    patient.id = this.allPatients.length + 1;
+    const personToContact = new PersonToContact({
+      id: Math.floor(Math.random() * 1000),
+      ...patientRequest.personne_a_prevenir,
+    });
 
-    patient.reference = "PAT" + (this.allPatients.length + 1);
-
-    patient.adresse.ville = CITIES.find(
-      (city) => patientRequest.adresse.ville.id == city.id
+    const city = this.cityService.cities.find(
+      (city) => patientRequest.adresse.ville_id == city.id
     )!;
 
-    patient.adresse.quartier = NEIGHBORHOODS.find(
-      (neighborhood) => patientRequest.adresse.quartier.id == neighborhood.id
+    const neighborhood = this.neighborhoodService.neighborhoods.find(
+      (neighborhood) => patientRequest.adresse.quartier_id == neighborhood.id
     )!;
 
-    patient.pays_origine = COUNTRIES.find(
-      (country) => patientRequest.pays_origine.id == country.id
+    const address = new Address({
+      id: Math.floor(Math.random() * 1000),
+      ville: city!,
+      quartier: neighborhood!,
+      ...patientRequest.adresse,
+    });
+
+    const homeland = this.countryService.countries.find(
+      (country) => patientRequest.pays_origine_id == country.id
     )!;
-
-    patient.profession = PROFESSIONS.find(
-      (profession) => patientRequest.profession?.id == profession.id
-    );
-
-    patient.employeur = EMPLOYERS.find(
-      (employer) => patientRequest.employeur?.id == employer.id
-    );*/
-
-    // patientRequest.type_patient = HAS_INSURANCES.find(
-    //   (hasInsurance) => patientRequest.type_patient.id == hasInsurance.id
-    // )!;
 
     //INSURANCE
-    /*if (patient.assurance) {
-      patient.assurance = INSURANCES.find(
-        (ins) => patient.assurance!.id == ins.id
+    let insurance;
+    if (patientRequest.assurance) {
+      insurance = this.insuranceService.insurances.find(
+        (ins) => patientRequest.assurance!.id == ins.id
       );
-    }*/
+    }
+
+    const nationality = this.countryService.countries.find(
+      (country) => patientRequest.nationalite_id == country.id
+    )!;
+
+    const profession = this.professionService.professions.find(
+      (profession) => patientRequest.profession_id == profession.id
+    );
+
+    const employer = this.employerService.employers.find(
+      (employer) => patientRequest.employeur_id == employer.id
+    );
 
     //PATIENT_INSURANCE
     // if (insurance && patientInsurance) {
@@ -105,16 +106,26 @@ export class PatientService {
     //   });
     // }
 
-    /*this.allPatients = [...this.allPatients, patient];
+    const patient = new Patient({
+      ...patientRequest,
+      id: this.allPatients.length + 1,
+      reference: "PAT" + (this.allPatients.length + 1),
+      personne_a_prevenir: personToContact,
+      adresse: address,
+      pays_origine: homeland,
+      assurance: insurance,
+      nationalite: nationality,
+      profession: profession,
+      employeur: employer,
+    }); // Patient.emptyPatient()
+
+    console.log("Registered patient \n" + JSON.stringify(patient, null, 2));
+
+    this.allPatients = [...this.allPatients, patient];
 
     this.activePatient = patient;
 
-    console.log(patient);*/
-    // console.log(insurance);
-
-    // return of(patient).pipe(delay(3000));
-
-    return this.http.post<PatientResponse>(baseUrl, patientRequest);
+    return this.http.post<any>(baseUrl, patientRequest);
   }
 
   getPatient(patientId: number) {
@@ -125,10 +136,29 @@ export class PatientService {
     return new Patient(this.activePatient);
   }
 
-  setActivePatient(patientId: number) {
-    this.activePatient = this.allPatients.find(
-      (patient) => patientId == patient.id
-    )!;
+  setActivePatient(patientId: number): Observable<void> {
+    return this.get(patientId).pipe(
+      map((patient) => {
+        this.activePatient = patient;
+
+        return;
+      })
+    );
+
+    // subscribe({
+    //   next: (data) => {
+
+    //     this.activePatient = data
+
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+    //   },
+    // });
+
+    // this.activePatient = this.allPatients.find(
+    //   (patient) => patientId == patient.id
+    // )!;
   }
 
   getActivePatientType() {
@@ -144,11 +174,27 @@ export class PatientService {
     //   (value) => value.patient_id == this.activePatient.id
     // );
 
-    return this.activePatient.patient_assurance?.taux ?? 0;
+    return this.activePatient?.taux ?? 0;
   }
 
-  getAllPatients() {
-    return [...this.allPatients];
+  getAll(): Observable<Patient[]> {
+    // return of([...this.allPatients]);
+
+    return this.http.get<PatientResponse[]>(baseUrl).pipe(
+      map((patients) => {
+        const mapped: Patient[] = patients.map((patient) =>
+          Patient.fromResponse(patient)
+        );
+
+        return mapped;
+      })
+    );
+  }
+
+  get(id: any): Observable<Patient> {
+    return this.http
+      .get<PatientResponse>(`${baseUrl}/${id}`)
+      .pipe(map((patient) => Patient.fromResponse(patient)));
   }
 
   // registerPatientInsurance(patientInsurance: IPatientInsurance) {
@@ -175,14 +221,6 @@ export class PatientService {
   //   );
 
   //   return insurance;
-  // }
-
-  // getAll(): Observable<Patient[]> {
-  //   return this.http.get<Patient[]>(baseUrl);
-  // }
-
-  // get(id: any): Observable<Patient> {
-  //   return this.http.get(`${baseUrl}/${id}`);
   // }
 
   // create(data: any): Observable<any> {

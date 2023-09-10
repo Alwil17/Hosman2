@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { delay } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
+import { Country } from "src/app/models/secretariat/patients/country.model";
 import { CountryResponse } from "src/app/models/secretariat/patients/responses/country-response.model";
 
 const baseUrl = "http://localhost:8081/pays";
@@ -10,9 +11,17 @@ const baseUrl = "http://localhost:8081/pays";
   providedIn: "root",
 })
 export class CountryService {
+  countries: Country[] = [];
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<CountryResponse[]> {
-    return this.http.get<CountryResponse[]>(baseUrl);
+    return this.http.get<CountryResponse[]>(baseUrl).pipe(
+      map((countries) => {
+        this.countries = countries;
+
+        return countries;
+      })
+    );
   }
 }

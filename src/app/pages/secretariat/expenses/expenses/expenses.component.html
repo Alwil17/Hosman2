@@ -1,0 +1,241 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="ACTIVITES"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">Dépenses</h4>
+      </div>
+      <!-- end card header -->
+      <div class="card-body border-bottom">
+        <div>
+          <p>
+            Veuillez fournir les informations suivantes
+            <br />
+            <em
+              >Les champs marqués par <span class="text-danger">*</span> sont
+              obligatoires</em
+            >
+          </p>
+        </div>
+
+        <hr />
+        <!-- EXPENSE FORM START -->
+
+        <form [formGroup]="expenseForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="row g-3">
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-input
+                      label="Heure de la dépense"
+                      type="time"
+                      [isMandatory]="true"
+                      [control]="timeOfExpenseControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                    >
+                      <!-- [maxDate]="today" -->
+                    </app-input>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-input
+                      label="Receveur"
+                      placeholder=""
+                      [readOnly]="true"
+                      [isMandatory]="true"
+                      [control]="receiverControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                      [emitOnInputClick]="true"
+                      (onInputClick)="onPersonClick()"
+                    >
+                    </app-input>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <app-input
+                    label="Montant"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    [control]="amountControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-input
+                      label="Désignation"
+                      placeholder=""
+                      [isMandatory]="true"
+                      [control]="designationControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                    >
+                    </app-input>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-select
+                      label="Rubrique"
+                      [isMandatory]="true"
+                      [options]="rubrics"
+                      [canAddOption]="true"
+                      [control]="rubricControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                    ></app-select>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-select
+                      label="Accordé par"
+                      [isMandatory]="true"
+                      [options]="allowedBys"
+                      [control]="allowedByControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                    ></app-select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <app-select
+                      label="Reçu de caisse"
+                      [isMandatory]="true"
+                      [options]="checkoutReceipts"
+                      [control]="checkoutReceiptControl"
+                      [isFormSubmitted]="isExpenseFormSubmitted"
+                    ></app-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="d-flex align-items-start gap-3 mt-4">
+          <button
+            type="button"
+            class="btn btn-secondary btn-label ms-auto"
+            data-nexttab="v-pills-finish-tab"
+            (click)="registerExpense()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer
+          </button>
+        </div>
+
+        <!-- EXPENSE FORM END -->
+      </div>
+      <div class="card-body">
+        <hr />
+        <!-- EXPENSE TABLE START -->
+        <div class="row">
+          <div class="col-12">
+            <div class="table-responsive table-card">
+              <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light text-muted">
+                  <tr>
+                    <th scope="col">{{ "Heure" | uppercase }}</th>
+                    <th scope="col">{{ "Motif" | uppercase }}</th>
+                    <th scope="col">{{ "Montant" | uppercase }}</th>
+                    <th scope="col">{{ "Accordé par" | uppercase }}</th>
+                    <th scope="col">{{ "Date dépense" | uppercase }}</th>
+                    <th scope="col">{{ "Receveur" | uppercase }}</th>
+                    <th scope="col">{{ "Reçu" | uppercase }}</th>
+                    <th scope="col">{{ "Rubrique" | uppercase }}</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of expenseListCut"
+                    class="user-select-none"
+                  >
+                    <td>{{ item.date_depense | date : "hh:mm" }}</td>
+                    <td>{{ item.motif }}</td>
+                    <td>{{ item.montant | mask : "separator" }}</td>
+                    <td>-</td>
+                    <td>{{ item.date_depense | date : "dd/MM/yyyy" }}</td>
+                    <td>{{ item.beneficiaire.fullName }}</td>
+
+                    <td>{{ item.recu == 0 ? "NON" : "OUI" }}</td>
+                    <td>{{ item.rubrique.nom }}</td>
+
+                    <td>
+                      <div class="d-inline-block" ngbDropdown container="body">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                          ngbDropdownToggle
+                        >
+                          <i class="ri-more-fill fs-24"></i>
+                        </button>
+                        <div ngbDropdownMenu>
+                          <button ngbDropdownItem>
+                            <i
+                              class="ri-edit-2-line label-icon align-middle fs-16 me-2 text-warning"
+                            ></i>
+                            Modifier
+                          </button>
+                          <button
+                            ngbDropdownItem
+                            (click)="deleteExpense(item.id)"
+                          >
+                            <i
+                              class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                            ></i>
+                            Supprimer
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPENSE TABLE END -->
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                (pageChange)="refreshExpenses()"
+              >
+              </ngb-pagination>
+
+              <select
+                class="form-select"
+                style="width: auto"
+                [(ngModel)]="pageSize"
+                (ngModelChange)="refreshExpenses()"
+              >
+                <option [ngValue]="10">10 éléments par page</option>
+                <option [ngValue]="15">15 éléments par page</option>
+                <option [ngValue]="20">20 éléments par page</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end -->
+  </div>
+  <!-- end col -->
+</div>

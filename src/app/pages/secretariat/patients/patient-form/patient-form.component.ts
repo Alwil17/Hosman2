@@ -444,7 +444,11 @@ export class PatientFormComponent implements OnInit {
       is_assure: this.hasInsuranceControl.value,
       tel1: this.patientTel1Control.value,
       tel2: this.patientTel2Control.value,
-      personne_a_prevenir: { id: -1, ...this.personToContactData },
+      personne_a_prevenir: {
+        id: -1,
+        ...this.personToContactData,
+        toText: () => "",
+      },
       type_piece: selectInfos.idType,
       no_piece: this.idNumberControl.value,
       date_ajout: new Date(),
@@ -457,7 +461,7 @@ export class PatientFormComponent implements OnInit {
         quartier: selectInfos.neighborhood,
       },
       assurance: insurance,
-      patient_assurance: patientInsurance,
+      // patient_assurance: patientInsurance,
     };
     console.log(patient);
 

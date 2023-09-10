@@ -26,7 +26,10 @@ export interface IPatient {
   adresse: Address;
   pays_origine: Country;
   assurance?: Insurance;
-  patient_assurance?: PatientInsurance;
+  taux?: number;
+  date_debut?: Date;
+  date_fin?: Date;
+  // patient_assurance?: PatientInsurance;
   nationalite?: Country;
   lieu_naissance?: string;
   tel2?: string;
@@ -49,7 +52,10 @@ export class Patient {
   adresse: Address;
   pays_origine: Country;
   assurance?: Insurance;
-  patient_assurance?: PatientInsurance;
+  taux?: number;
+  date_debut?: Date;
+  date_fin?: Date;
+  // patient_assurance?: PatientInsurance;
   nationalite?: Country;
   lieu_naissance?: string;
   tel2?: string;
@@ -72,7 +78,10 @@ export class Patient {
     this.adresse = iPatient.adresse;
     this.pays_origine = iPatient.pays_origine;
     this.assurance = iPatient.assurance;
-    this.patient_assurance = iPatient.patient_assurance;
+    this.taux = iPatient.taux;
+    this.date_debut = iPatient.date_debut;
+    this.date_fin = iPatient.date_fin;
+    // this.patient_assurance = iPatient.patient_assurance;
     this.nationalite = iPatient.nationalite;
     this.lieu_naissance = iPatient.lieu_naissance;
     this.tel2 = iPatient.tel2;
@@ -132,9 +141,12 @@ export class Patient {
       assurance: patient.assurance
         ? Insurance.fromResponse(patient.assurance)
         : undefined,
-      patient_assurance: patient.patient_assurance
-        ? PatientInsurance.fromResponse(patient.patient_assurance)
-        : undefined,
+      taux: patient.taux,
+      date_debut: patient.date_debut,
+      date_fin: patient.date_fin,
+      // patient_assurance: patient.patient_assurance
+      //   ? PatientInsurance.fromResponse(patient.patient_assurance)
+      //   : undefined,
       lieu_naissance: patient.lieu_naissance,
       tel2: patient.tel2,
       type_piece: patient.type_piece,
@@ -149,7 +161,7 @@ export class Patient {
   }
 
   get age() {
-    return calculateExactAge(this.date_naissance);
+    return calculateExactAge(new Date(this.date_naissance));
   }
 
   get hasInsurance() {

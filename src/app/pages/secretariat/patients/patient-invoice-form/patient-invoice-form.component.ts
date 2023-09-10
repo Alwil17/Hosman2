@@ -15,6 +15,13 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
 import { WaitingListService } from "src/app/services/secretariat/patients/waiting-list.service";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
+import { InvoiceService } from "src/app/services/secretariat/patients/invoice.service";
+import { InvoiceRequest } from "src/app/models/secretariat/patients/requests/invoice-request.model";
+import { MarkupRequest } from "src/app/models/secretariat/patients/requests/markup-request.model";
+import { RemainderRequest } from "src/app/models/secretariat/patients/requests/remainder-request.model";
+import { DiscountRequest } from "src/app/models/secretariat/patients/requests/discount-request.model";
+import { DebtRequest } from "src/app/models/secretariat/patients/requests/debt-request.model";
+import { parseIntOrZero } from "src/app/helpers/parsers";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -47,7 +54,9 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   patientGivenAmount!: number;
 
-  restAmount!: number;
+  debtAmount!: number;
+
+  remainderAmount!: number;
 
   totalAmountControl = new FormControl("0");
   insuranceRateControl = new FormControl("0");
@@ -68,7 +77,12 @@ export class PatientInvoiceFormComponent implements OnInit {
   markupValueControl = new FormControl({ value: "0", disabled: true });
   markupPercentControl = new FormControl({ value: "0", disabled: true });
 
-  paymentRadioControl = new FormControl("");
+  // paymentRadioControl = new FormControl("");
+
+  paymentCheckCashControl = new FormControl(false);
+  paymentCheckCardControl = new FormControl(false);
+  paymentCheckChequeControl = new FormControl(false);
+
   paymentCashControl = new FormControl({ value: "0", disabled: true });
   paymentCardControl = new FormControl({ value: "0", disabled: true });
   paymentChequeControl = new FormControl({ value: "0", disabled: true });
@@ -80,7 +94,8 @@ export class PatientInvoiceFormComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     public patientService: PatientService,
-    private waitingListService: WaitingListService
+    private waitingListService: WaitingListService,
+    private invoiceService: InvoiceService
   ) {}
 
   ngOnInit(): void {
@@ -104,7 +119,11 @@ export class PatientInvoiceFormComponent implements OnInit {
       markupValueControl: this.markupValueControl,
       markupPercentControl: this.markupPercentControl,
 
-      paymentRadioControl: this.paymentRadioControl,
+      // paymentRadioControl: this.paymentRadioControl,
+      paymentCheckCashControl: this.paymentCheckCashControl,
+      paymentCheckCardControl: this.paymentCheckCashControl,
+      paymentCheckChequeControl: this.paymentCheckCashControl,
+
       paymentCashControl: this.paymentCashControl,
       paymentCardControl: this.paymentCardControl,
       paymentChequeControl: this.paymentChequeControl,
@@ -139,7 +158,9 @@ export class PatientInvoiceFormComponent implements OnInit {
 
     this.patientGivenAmount = 0;
 
-    this.restAmount = 0;
+    this.debtAmount = 0;
+
+    this.remainderAmount = 0;
 
     this.patientActivities.forEach(
       (pActivity) => (this.totalAmount += pActivity.total_price)
@@ -159,10 +180,8 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   onFormInputsChanges() {
     this.rptpRadioControl.valueChanges.subscribe((value) => {
-      const totalAmount = this.parseIntOrZero(this.totalAmountControl.value);
-      const insuranceRate = this.parseIntOrZero(
-        this.insuranceRateControl.value
-      );
+      const totalAmount = parseIntOrZero(this.totalAmountControl.value);
+      const insuranceRate = parseIntOrZero(this.insuranceRateControl.value);
 
       if (value === "rp") {
         this.initialPatientShareAmount =
@@ -183,7 +202,8 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.markupValueControl.setValue("0");
       this.markupPercentControl.setValue("0");
 
-      this.calculateRest();
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.discountRadioControl.valueChanges.subscribe((value) => {
@@ -217,18 +237,19 @@ export class PatientInvoiceFormComponent implements OnInit {
     });
 
     this.discountValueControl.valueChanges.subscribe((value) => {
-      this.discountValue = this.parseIntOrZero(value);
+      this.discountValue = parseIntOrZero(value);
 
       const discountedAmount =
         this.initialPatientShareAmount - this.discountValue;
 
       this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
 
-      this.calculateRest();
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.discountPercentControl.valueChanges.subscribe((value) => {
-      const discountPercentage = this.parseIntOrZero(value);
+      const discountPercentage = parseIntOrZero(value);
 
       this.discountValue =
         (this.initialPatientShareAmount * discountPercentage) / 100;
@@ -238,7 +259,8 @@ export class PatientInvoiceFormComponent implements OnInit {
 
       this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
 
-      this.calculateRest();
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.markupRadioControl.valueChanges.subscribe((value) => {
@@ -270,17 +292,18 @@ export class PatientInvoiceFormComponent implements OnInit {
     });
 
     this.markupValueControl.valueChanges.subscribe((value) => {
-      this.markupValue = this.parseIntOrZero(value);
+      this.markupValue = parseIntOrZero(value);
 
       const markupAmount = this.initialPatientShareAmount + this.markupValue;
 
       this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
 
-      this.calculateRest();
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.markupPercentControl.valueChanges.subscribe((value) => {
-      const markupPercentage = this.parseIntOrZero(value);
+      const markupPercentage = parseIntOrZero(value);
 
       this.markupValue =
         (this.initialPatientShareAmount * markupPercentage) / 100;
@@ -289,53 +312,88 @@ export class PatientInvoiceFormComponent implements OnInit {
 
       this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
 
-      this.calculateRest();
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
-    this.paymentRadioControl.valueChanges.subscribe((value) => {
-      if (value === "cash") {
+    this.paymentCheckCashControl.valueChanges.subscribe((value) => {
+      if (value == true) {
         this.paymentCashControl.enable();
         this.paymentCashControl.setValue("");
-
-        this.paymentCardControl.disable();
-        this.paymentCardControl.setValue("0");
-
-        this.paymentChequeControl.disable();
-        this.paymentChequeControl.setValue("0");
-      } else if (value === "card") {
+      } else {
         this.paymentCashControl.disable();
         this.paymentCashControl.setValue("0");
-
+      }
+    });
+    this.paymentCheckCardControl.valueChanges.subscribe((value) => {
+      if (value == true) {
         this.paymentCardControl.enable();
         this.paymentCardControl.setValue("");
-
-        this.paymentChequeControl.disable();
-        this.paymentChequeControl.setValue("0");
-      } else if (value === "cheque") {
-        this.paymentCashControl.disable();
-        this.paymentCashControl.setValue("0");
-
+      } else {
         this.paymentCardControl.disable();
         this.paymentCardControl.setValue("0");
-
+      }
+    });
+    this.paymentCheckChequeControl.valueChanges.subscribe((value) => {
+      if (value == true) {
         this.paymentChequeControl.enable();
         this.paymentChequeControl.setValue("");
+      } else {
+        this.paymentChequeControl.disable();
+        this.paymentChequeControl.setValue("0");
       }
     });
 
+    // this.paymentRadioControl.valueChanges.subscribe((value) => {
+    //   if (value === "cash") {
+    //     this.paymentCashControl.enable();
+    //     this.paymentCashControl.setValue("");
+
+    //     this.paymentCardControl.disable();
+    //     this.paymentCardControl.setValue("0");
+
+    //     this.paymentChequeControl.disable();
+    //     this.paymentChequeControl.setValue("0");
+    //   } else if (value === "card") {
+    //     this.paymentCashControl.disable();
+    //     this.paymentCashControl.setValue("0");
+
+    //     this.paymentCardControl.enable();
+    //     this.paymentCardControl.setValue("");
+
+    //     this.paymentChequeControl.disable();
+    //     this.paymentChequeControl.setValue("0");
+    //   } else if (value === "cheque") {
+    //     this.paymentCashControl.disable();
+    //     this.paymentCashControl.setValue("0");
+
+    //     this.paymentCardControl.disable();
+    //     this.paymentCardControl.setValue("0");
+
+    //     this.paymentChequeControl.enable();
+    //     this.paymentChequeControl.setValue("");
+    //   }
+    // });
+
     this.paymentCashControl.valueChanges.subscribe((value) => {
-      this.patientGivenAmount = this.parseIntOrZero(value);
-      this.calculateRest();
+      this.calculatePatientGivenAmount();
+      // this.patientGivenAmount = parseIntOrZero(value);
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.paymentCardControl.valueChanges.subscribe((value) => {
-      this.patientGivenAmount = this.parseIntOrZero(value);
-      this.calculateRest();
+      this.calculatePatientGivenAmount();
+      // this.patientGivenAmount = parseIntOrZero(value);
+      this.calculateRemainder();
+      this.calculateDebt();
     });
 
     this.paymentChequeControl.valueChanges.subscribe((value) => {
-      this.patientGivenAmount = this.parseIntOrZero(value);
-      this.calculateRest();
+      this.calculatePatientGivenAmount();
+      // this.patientGivenAmount = parseIntOrZero(value);
+      this.calculateRemainder();
+      this.calculateDebt();
     });
   }
 
@@ -344,14 +402,29 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.patientShareAmount = this.initialPatientShareAmount;
   }
 
-  parseIntOrZero(value: any) {
-    return Number.isNaN(parseInt(value)) ? 0 : parseInt(value);
+  // parseIntOrZero(value: any) {
+  //   return Number.isNaN(parseInt(value)) ? 0 : parseInt(value);
+  // }
+
+  calculatePatientGivenAmount() {
+    const total =
+      parseIntOrZero(this.paymentCashControl.value) +
+      parseIntOrZero(this.paymentCardControl.value) +
+      parseIntOrZero(this.paymentChequeControl.value);
+
+    this.patientGivenAmount = total;
   }
 
-  calculateRest() {
-    const rest = this.patientGivenAmount - this.patientShareAmount;
+  calculateDebt() {
+    const debt = this.patientShareAmount - this.patientGivenAmount;
 
-    this.restAmount = rest < 0 ? 0 : rest;
+    this.debtAmount = debt < 0 ? 0 : debt;
+  }
+
+  calculateRemainder() {
+    const remainder = this.patientGivenAmount - this.patientShareAmount;
+
+    this.remainderAmount = remainder < 0 ? 0 : remainder;
   }
 
   beforePanelChange($event: NgbPanelChangeEvent) {
@@ -383,24 +456,119 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.patientPrestationInfo.consultingDoctor ?? "",
       new Date()
     );
-    this.waitingListService.create(wlItem, 
-    //   {
-    //   reference: "",
-    //   total: 12000,
-    //   montant_pec: 80,
-    //   majoration: 0,
-    //   reduction: 0,
-    //   a_payer: 0,
-    //   verse: 0,
-    //   reliquat: 0,
-    //   creance: 0,
-    //   mode_payement: string,
-    //   date_facture: 2023-08-26T19:22:17.704Z,
-    //   date_reglement: 2023-08-26T19:22:17.704Z,
-    //   etat_id: 0,
-    //   exporte: 0
-    // }
-    );
+    this.waitingListService.create(wlItem).subscribe({
+      next: (data) => {
+        console.log(data, "\nHere");
+        // window.open("http://localhost:8081/src/test.pdf", "_blank");
+      },
+      error: (e) => console.error(e),
+    });
+
+    // const paymentModes = [
+    //   this.paymentCheckCashControl.value
+    //     ? {
+    //         mode_payement_id: 2,
+    //         montant: parseIntOrZero(this.paymentCashControl.value),
+    //       }
+    //     : {},
+    //   this.paymentCheckCardControl.value
+    //     ? {
+    //         mode_payement_id: 3,
+    //         montant: parseIntOrZero(this.paymentCardControl.value),
+    //       }
+    //     : {},
+    //   this.paymentCheckChequeControl.value
+    //     ? {
+    //         mode_payement_id: 4,
+    //         montant: parseIntOrZero(this.paymentChequeControl.value),
+    //       }
+    //     : {},
+    // ];
+
+    const cashAmount = parseIntOrZero(this.paymentCashControl.value);
+    const cardAmount = parseIntOrZero(this.paymentCardControl.value);
+    const chequeAmount = parseIntOrZero(this.paymentChequeControl.value);
+
+    const paymentModes = [];
+
+    if (cashAmount !== 0) {
+      paymentModes.push({
+        mode_payement_id: 2,
+        montant: cashAmount,
+      });
+    }
+    if (cardAmount !== 0) {
+      paymentModes.push({
+        mode_payement_id: 3,
+        montant: cardAmount,
+      });
+    }
+    if (chequeAmount !== 0) {
+      paymentModes.push({
+        mode_payement_id: 4,
+        montant: chequeAmount,
+      });
+    }
+
+    const invoice = new InvoiceRequest({
+      // reference: "FAC1",
+      total: this.totalAmount,
+      montant_pec: this.patientService.getActivePatientRate(),
+      reduction: new DiscountRequest({
+        montant: this.discountValue,
+        motif: "",
+        date_operation: new Date(),
+        patient_id: this.patientService.getActivePatient().id,
+      }),
+      majoration: new MarkupRequest({
+        montant: this.markupValue,
+        motif: "",
+        date_operation: new Date(),
+        patient_id: this.patientService.getActivePatient().id,
+      }),
+
+      a_payer: this.patientShareAmount,
+      creance: new DebtRequest({
+        montant: this.debtAmount,
+        etat_id: this.debtAmount > 0 ? 1 : 2,
+        date_operation: new Date(),
+        patient_id: this.patientService.getActivePatient().id,
+      }),
+      reliquat: new RemainderRequest({
+        montant: this.remainderAmount,
+        etat_id: this.remainderAmount > 0 ? 1 : 2,
+        date_operation: new Date(),
+        patient_id: this.patientService.getActivePatient().id,
+      }),
+
+      date_facture: new Date(),
+      date_reglement: new Date(),
+      patient_id: this.patientService.getActivePatient().id,
+      etat_id: this.debtAmount > 0 ? 1 : 2,
+      // exporte: 0,
+      //paymentModes,
+      mode_payements: paymentModes,
+      // [
+      //   {
+      //     mode_payement_id: 2,
+      //     montant: 0,
+      //   },
+      // ],
+    });
+
+    this.invoiceService.create(invoice).subscribe({
+      next: (data) => {
+        console.log(data);
+
+        this.invoiceService.get(data).subscribe({
+          next: (data) => console.log(JSON.stringify(data, null, 2)),
+          error: (e) => console.error(e),
+        });
+      },
+      error: (e) => {
+        console.error(e);
+      },
+    });
   }
 
   // openInvoiceModal(invoiceModal: any) {

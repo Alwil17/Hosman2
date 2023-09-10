@@ -33,7 +33,7 @@ export class PersonToContact {
     });
   }
 
-  toString() {
+  toText() {
     return (
       this.nom + ", " + this.prenoms + ", " + this.tel + ", " + this.adresse
     );

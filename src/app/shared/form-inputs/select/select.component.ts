@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { SelectModel } from "./select.model";
+import { SelectOption } from "../../../models/extras/select.model";
 
 @Component({
   selector: "app-select",
@@ -11,11 +11,29 @@ export class SelectComponent implements OnInit {
   @Input() label = "";
   @Input() isMandatory = false;
   @Input() isFormSubmitted = false;
-  @Input() defaultOption = "Sélectionner...";
-  @Input() options: SelectModel[] = [];
+  @Input() placeholder = "Sélectionner...";
+  @Input() options: SelectOption[] = [];
   @Input() control = new FormControl();
+  @Input() canAddOption = false;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  addTagFn(value: string) {
+    return { id: -1, text: value, new: true };
+  }
+
+  // OLD
+
+  // @Input() label = "";
+  // @Input() isMandatory = false;
+  // @Input() isFormSubmitted = false;
+  // @Input() defaultOption = "Sélectionner...";
+  // @Input() options: SelectModel[] = [];
+  // @Input() control = new FormControl();
+
+  // constructor() {}
+
+  // ngOnInit(): void {}
 }

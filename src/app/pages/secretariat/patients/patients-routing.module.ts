@@ -4,6 +4,7 @@ import { PatientCreateComponent } from "./patient-create/patient-create.componen
 import { PatientListComponent } from "./patient-list/patient-list.component";
 import { PatientActivityComponent } from "./patient-activity/patient-activity.component";
 import { PatientWaitingListComponent } from "./patient-waiting-list/patient-waiting-list.component";
+import { DebtsComponent } from "./debts/debts.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "patient-list", pathMatch: "full" },
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: "patient-list", component: PatientListComponent },
   { path: "patient-activity", component: PatientActivityComponent },
   { path: "patient-waiting-list", component: PatientWaitingListComponent },
+  { path: "patient-debts", component: DebtsComponent },
 ];
 
 @NgModule({

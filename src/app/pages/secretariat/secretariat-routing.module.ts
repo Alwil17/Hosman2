@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { ExpensesComponent } from "./expenses/expenses/expenses.component";
+import { CollectionsComponent } from "./collections/collections/collections.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "patients", pathMatch: "full" },
@@ -9,6 +11,8 @@ const routes: Routes = [
     loadChildren: () =>
       import("./patients/patients.module").then((m) => m.PatientsModule),
   },
+  { path: "expenses", component: ExpensesComponent },
+  { path: "collections", component: CollectionsComponent },
 ];
 
 @NgModule({

@@ -80,17 +80,15 @@
             <h5>
               <b class="ms-4"> Taux de prise en charge : </b>
               <b class="text-secondary">{{
-                selectedPatient.patient_assurance
-                  ? selectedPatient.patient_assurance.taux + " %"
-                  : "-"
+                selectedPatient.taux ? selectedPatient.taux + " %" : "-"
               }}</b>
             </h5>
 
             <h5>
               <b class="ms-4"> Personne à prévenir : </b>
-              <!-- <b class="text-secondary">{{
-                selectedPatient.personne_a_prevenir.toString()
-              }}</b> -->
+              <b class="text-secondary">{{
+                selectedPatient.personne_a_prevenir.toText()
+              }}</b>
             </h5>
           </div>
 
@@ -256,6 +254,7 @@
                     label="Médecin"
                     [isMandatory]="true"
                     [options]="doctors"
+                    [canAddOption]="docAddable"
                     [control]="doctorControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-select>

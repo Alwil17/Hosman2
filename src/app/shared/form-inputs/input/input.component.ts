@@ -1,3 +1,4 @@
+import { TitleCasePipe } from "@angular/common";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup } from "@angular/forms";
 
@@ -35,7 +36,10 @@ export class InputComponent implements OnInit {
   @Output()
   onInputClick = new EventEmitter();
 
-  constructor() {}
+  @Input() capitalized = false;
+  @Input() titleCased = false;
+
+  constructor(private titleCase: TitleCasePipe) {}
 
   ngOnInit(): void {
     // if (this.controlName.trim().length !== 0 && this.group) {
@@ -45,5 +49,14 @@ export class InputComponent implements OnInit {
 
   emitInputClick() {
     this.onInputClick.emit();
+  }
+
+  onChange() {
+    console.log("Key up");
+    if (this.capitalized) {
+      this.control.setValue((this.control.value as string).toUpperCase());
+    } else if (this.titleCased) {
+      this.control.setValue(this.titleCase.transform(this.control.value));
+    }
   }
 }

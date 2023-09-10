@@ -6,7 +6,7 @@ import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
 import { AddressRequest } from "src/app/models/secretariat/patients/requests/address-request.model";
 import { CityService } from "src/app/services/secretariat/patients/city.service";
 import { NeighborhoodService } from "src/app/services/secretariat/patients/neighborhood.service";
-import { SelectModel } from "src/app/shared/form-inputs/select/select.model";
+import { SelectOption } from "src/app/models/extras/select.model";
 
 @Component({
   selector: "app-patient-address-form",
@@ -15,18 +15,24 @@ import { SelectModel } from "src/app/shared/form-inputs/select/select.model";
 })
 export class PatientAddressFormComponent implements OnInit {
   @Input()
-  data!: AddressRequest;
+  address!: AddressRequest;
 
   @Output()
   formData = new EventEmitter<AddressRequest>();
+
+  @Output()
+  cityAndNeighborhood = new EventEmitter<{
+    city: string;
+    neighborhood: string;
+  }>();
 
   patientAddressForm = new FormGroup({});
 
   isPatientAddressFormSubmitted = false;
 
   // Patient address controls
-  paCityControl = new FormControl("", [Validators.required]);
-  paNeighborhoodControl = new FormControl("", [Validators.required]);
+  paCityControl = new FormControl(null, [Validators.required]);
+  paNeighborhoodControl = new FormControl(null, [Validators.required]);
   paStreetControl = new FormControl("");
   paPOBoxControl = new FormControl("");
   paDistrictControl = new FormControl("");
@@ -34,8 +40,8 @@ export class PatientAddressFormComponent implements OnInit {
 
   //Form selects data
 
-  cities!: SelectModel[];
-  neighborhoods!: SelectModel[];
+  cities!: SelectOption[];
+  neighborhoods!: SelectOption[];
 
   constructor(
     public modal: NgbActiveModal,
@@ -53,16 +59,16 @@ export class PatientAddressFormComponent implements OnInit {
       paHomeNumberControl: this.paHomeNumberControl,
     });
 
-    this.paCityControl.setValue(
-      this.data.ville_id < 0 ? "" : this.data.ville_id
-    );
-    this.paNeighborhoodControl.setValue(
-      this.data.quartier_id < 0 ? "" : this.data.quartier_id
-    );
-    this.paStreetControl.setValue(this.data.rue);
-    this.paPOBoxControl.setValue(this.data.bp);
-    this.paDistrictControl.setValue(this.data.arrondissement);
-    this.paHomeNumberControl.setValue(this.data.no_maison);
+    // this.paCityControl.setValue(
+    //   this.address.ville_id < 0 ? null : this.address.ville_id
+    // );
+    // this.paNeighborhoodControl.setValue(
+    //   this.address.quartier_id < 0 ? null : this.address.quartier_id
+    // );
+    this.paStreetControl.setValue(this.address.rue);
+    this.paPOBoxControl.setValue(this.address.bp);
+    this.paDistrictControl.setValue(this.address.arrondissement);
+    this.paHomeNumberControl.setValue(this.address.no_maison);
 
     this.fetchSelectData();
   }
@@ -74,6 +80,12 @@ export class PatientAddressFormComponent implements OnInit {
           id: city.id,
           text: city.nom,
         }));
+
+        const selectedCity =
+          this.address.ville_id < 0
+            ? null
+            : this.cities.find((value) => this.address.ville_id == value.id);
+        this.paCityControl.setValue(selectedCity);
       },
       error: (error) => {
         console.log(error);
@@ -86,6 +98,14 @@ export class PatientAddressFormComponent implements OnInit {
           id: neighborhood.id,
           text: neighborhood.nom,
         }));
+
+        const selectedNeighborhood =
+          this.address.quartier_id < 0
+            ? null
+            : this.neighborhoods.find(
+                (value) => this.address.quartier_id == value.id
+              );
+        this.paNeighborhoodControl.setValue(selectedNeighborhood);
       },
       error: (error) => {
         console.log(error);
@@ -99,14 +119,19 @@ export class PatientAddressFormComponent implements OnInit {
     if (this.patientAddressForm.valid) {
       this.formData.emit(
         new AddressRequest(
-          this.paCityControl.value,
-          this.paNeighborhoodControl.value,
+          this.paCityControl.value.id,
+          this.paNeighborhoodControl.value.id,
           this.paStreetControl.value,
           this.paPOBoxControl.value,
           this.paDistrictControl.value,
           this.paHomeNumberControl.value
         )
       );
+
+      this.cityAndNeighborhood.emit({
+        city: this.paCityControl.value.text,
+        neighborhood: this.paNeighborhoodControl.value.text,
+      });
     }
   }
 }

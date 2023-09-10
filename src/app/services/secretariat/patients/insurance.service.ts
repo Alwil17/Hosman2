@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { delay } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { InsuranceResponse } from "src/app/models/secretariat/patients/responses/insurance-response.model";
 
 const baseUrl = "http://localhost:8081/assurances";
@@ -10,10 +11,18 @@ const baseUrl = "http://localhost:8081/assurances";
   providedIn: "root",
 })
 export class InsuranceService {
+  insurances: Insurance[] = [];
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<InsuranceResponse[]> {
-    return this.http.get<InsuranceResponse[]>(baseUrl);
+    return this.http.get<InsuranceResponse[]>(baseUrl).pipe(
+      map((insurances) => {
+        this.insurances = insurances;
+
+        return insurances;
+      })
+    );
   }
 
   // get(id: any): Observable<Patient> {
