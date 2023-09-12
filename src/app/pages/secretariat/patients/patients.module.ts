@@ -22,7 +22,8 @@ import { PatientWaitingListComponent } from "./patient-waiting-list/patient-wait
 import { PersonToContactFormComponent } from "./patient-form-two/person-to-contact-form/person-to-contact-form.component";
 import { PatientFormTwoComponent } from "./patient-form-two/patient-form-two.component";
 import { PatientAddressFormComponent } from "./patient-form-two/patient-address-form/patient-address-form.component";
-import { DebtsComponent } from './debts/debts.component';
+import { DebtsComponent } from "./debts/debts.component";
+import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { DebtsComponent } from './debts/debts.component';
     NgbDropdownModule,
     NgxMaskModule,
     NgbAccordionModule,
+    NgxExtendedPdfViewerModule,
     // NgbTypeaheadModule,
   ],
   exports: [],

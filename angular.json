@@ -31,7 +31,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/styles.scss",
@@ -40,9 +45,7 @@
               "src/assets/scss/icons.scss",
               "node_modules/shepherd.js/dist/css/shepherd.css"
             ],
-            "scripts":
-            [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
