@@ -4,8 +4,9 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Neighborhood } from "src/app/models/secretariat/patients/neighborhood.model";
 import { NeighborhoodResponse } from "src/app/models/secretariat/patients/responses/neighborhood-response.model";
+import { environment } from "src/environments/environment";
 
-const baseUrl = "http://localhost:8081/quartiers";
+const apiEndpoint = environment.baseUrl + "quartiers";
 
 @Injectable({
   providedIn: "root",
@@ -15,7 +16,7 @@ export class NeighborhoodService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<NeighborhoodResponse[]> {
-    return this.http.get<NeighborhoodResponse[]>(baseUrl).pipe(
+    return this.http.get<NeighborhoodResponse[]>(apiEndpoint).pipe(
       map((neighborhoods) => {
         this.neighborhoods = neighborhoods;
 

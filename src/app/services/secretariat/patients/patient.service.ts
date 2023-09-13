@@ -25,8 +25,9 @@ import { InsuranceTypeService } from "./insurance-type.service";
 import { InsuranceService } from "./insurance.service";
 import { NeighborhoodService } from "./neighborhood.service";
 import { ProfessionService } from "./profession.service";
+import { environment } from "src/environments/environment";
 
-const baseUrl = "http://localhost:8081/patients";
+const apiEndpoint = environment.baseUrl + "patients";
 
 @Injectable({
   providedIn: "root",
@@ -125,7 +126,7 @@ export class PatientService {
 
     this.activePatient = patient;
 
-    return this.http.post<any>(baseUrl, patientRequest);
+    return this.http.post<any>(apiEndpoint, patientRequest);
   }
 
   getPatient(patientId: number) {
@@ -180,7 +181,7 @@ export class PatientService {
   getAll(): Observable<Patient[]> {
     // return of([...this.allPatients]);
 
-    return this.http.get<PatientResponse[]>(baseUrl).pipe(
+    return this.http.get<PatientResponse[]>(apiEndpoint).pipe(
       map((patients) => {
         const mapped: Patient[] = patients.map((patient) =>
           Patient.fromResponse(patient)
@@ -193,7 +194,7 @@ export class PatientService {
 
   get(id: any): Observable<Patient> {
     return this.http
-      .get<PatientResponse>(`${baseUrl}/${id}`)
+      .get<PatientResponse>(`${apiEndpoint}/${id}`)
       .pipe(map((patient) => Patient.fromResponse(patient)));
   }
 
@@ -224,10 +225,10 @@ export class PatientService {
   // }
 
   // create(data: any): Observable<any> {
-  //   return this.http.post(baseUrl, data);
+  //   return this.http.post(apiEndpoint, data);
   // }
 
   // update(id: any, data: any): Observable<any> {
-  //   return this.http.put(`${baseUrl}/${id}`, data);
+  //   return this.http.put(`${apiEndpoint}/${id}`, data);
   // }
 }

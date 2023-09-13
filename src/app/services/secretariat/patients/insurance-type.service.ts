@@ -4,8 +4,9 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { InsuranceType } from "src/app/models/secretariat/patients/insurance-type.model";
 import { InsuranceTypeResponse } from "src/app/models/secretariat/patients/responses/insurance-type-response.model";
+import { environment } from "src/environments/environment";
 
-const baseUrl = "http://localhost:8081/typeAssurances";
+const apiEndpoint = environment.baseUrl + "typeAssurances";
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +17,7 @@ export class InsuranceTypeService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<InsuranceTypeResponse[]> {
-    return this.http.get<InsuranceTypeResponse[]>(baseUrl).pipe(
+    return this.http.get<InsuranceTypeResponse[]>(apiEndpoint).pipe(
       map((insuranceTypes) => {
         this.insuranceTypes = insuranceTypes;
 

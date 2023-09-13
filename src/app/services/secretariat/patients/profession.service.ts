@@ -4,8 +4,9 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Profession } from "src/app/models/secretariat/patients/profession.model";
 import { ProfessionResponse } from "src/app/models/secretariat/patients/responses/profession-response.model";
+import { environment } from "src/environments/environment";
 
-const baseUrl = "http://localhost:8081/professions";
+const apiEndpoint = environment.baseUrl + "professions";
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +17,7 @@ export class ProfessionService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ProfessionResponse[]> {
-    return this.http.get<ProfessionResponse[]>(baseUrl).pipe(
+    return this.http.get<ProfessionResponse[]>(apiEndpoint).pipe(
       map((professions) => {
         this.professions = professions;
 

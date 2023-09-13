@@ -3,8 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
+import { environment } from "src/environments/environment";
 
-
+const apiEndpoint = environment.baseUrl + "";
 
 @Injectable({
   providedIn: "root",

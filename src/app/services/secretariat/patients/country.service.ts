@@ -4,8 +4,9 @@ import { Observable } from "rxjs";
 import { delay, map } from "rxjs/operators";
 import { Country } from "src/app/models/secretariat/patients/country.model";
 import { CountryResponse } from "src/app/models/secretariat/patients/responses/country-response.model";
+import { environment } from "src/environments/environment";
 
-const baseUrl = "http://localhost:8081/pays";
+const apiEndpoint = environment.baseUrl + "pays";
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +17,7 @@ export class CountryService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<CountryResponse[]> {
-    return this.http.get<CountryResponse[]>(baseUrl).pipe(
+    return this.http.get<CountryResponse[]>(apiEndpoint).pipe(
       map((countries) => {
         this.countries = countries;
 

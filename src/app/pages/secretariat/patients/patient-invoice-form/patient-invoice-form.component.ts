@@ -568,7 +568,6 @@ export class PatientInvoiceFormComponent implements OnInit {
 
         this.invoiceService.loadPdf(data).subscribe({
           next: (data) => {
-            console.log(JSON.stringify(data, null, 2));
             const pdfModalRef = this.modalService.open(PdfModalComponent, {
               size: "xl",
               centered: true,
