@@ -17,6 +17,10 @@ import { SelectComponent } from "./form-inputs/select/select.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskModule } from "ngx-mask";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { SimpleModalComponent } from "./modals/simple-modal/simple-modal.component";
+import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
+import { PdfModalComponent } from './modals/pdf-modal/pdf-modal.component';
+import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -29,6 +33,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ScrollspyDirective, // Used ???
     InputComponent,
     SelectComponent,
+    SimpleModalComponent,
+    PdfModalComponent,
+    PdfViewerComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +46,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ReactiveFormsModule,
     NgxMaskModule,
     NgSelectModule,
+    NgxExtendedPdfViewerModule,
   ],
   exports: [
     BreadcrumbsComponent,
@@ -46,6 +54,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     InputComponent,
     SelectComponent,
   ],
-  providers:[TitleCasePipe]
+  providers: [TitleCasePipe],
 })
 export class SharedModule {}

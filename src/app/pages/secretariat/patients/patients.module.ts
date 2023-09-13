@@ -23,7 +23,6 @@ import { PersonToContactFormComponent } from "./patient-form-two/person-to-conta
 import { PatientFormTwoComponent } from "./patient-form-two/patient-form-two.component";
 import { PatientAddressFormComponent } from "./patient-form-two/patient-address-form/patient-address-form.component";
 import { DebtsComponent } from "./debts/debts.component";
-import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 
 @NgModule({
   declarations: [
@@ -50,7 +49,6 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
     NgbDropdownModule,
     NgxMaskModule,
     NgbAccordionModule,
-    NgxExtendedPdfViewerModule,
     // NgbTypeaheadModule,
   ],
   exports: [],

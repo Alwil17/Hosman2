@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -32,7 +32,17 @@ export class InvoiceService {
   }
 
   get(id: any): Observable<Invoice> {
-    return this.http.get<Invoice>(`${apiEndpoint}/${id}/show`);
+    return this.http.get<Invoice>(`${apiEndpoint}/${id}`);
+  }
+
+  loadPdf(id: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+
+    return this.http.get(`${apiEndpoint}/${id}/show`, {
+      headers: headers,
+      responseType: "blob",
+    });
   }
 
   // update(id: any, data: any): Observable<any> {

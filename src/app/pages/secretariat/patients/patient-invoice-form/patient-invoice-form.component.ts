@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import {
   NgbActiveModal,
+  NgbModal,
   NgbPanelChangeEvent,
 } from "@ng-bootstrap/ng-bootstrap";
 import { IPrestationSelect } from "../patient-activity/activity.models";
@@ -22,6 +23,8 @@ import { RemainderRequest } from "src/app/models/secretariat/patients/requests/r
 import { DiscountRequest } from "src/app/models/secretariat/patients/requests/discount-request.model";
 import { DebtRequest } from "src/app/models/secretariat/patients/requests/debt-request.model";
 import { parseIntOrZero } from "src/app/helpers/parsers";
+import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-modal.component";
+import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -95,7 +98,8 @@ export class PatientInvoiceFormComponent implements OnInit {
     public modal: NgbActiveModal,
     public patientService: PatientService,
     private waitingListService: WaitingListService,
-    private invoiceService: InvoiceService
+    private invoiceService: InvoiceService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -456,13 +460,6 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.patientPrestationInfo.consultingDoctor ?? "",
       new Date()
     );
-    this.waitingListService.create(wlItem).subscribe({
-      next: (data) => {
-        console.log(data, "\nHere");
-        // window.open("http://localhost:8081/src/test.pdf", "_blank");
-      },
-      error: (e) => console.error(e),
-    });
 
     // const paymentModes = [
     //   this.paymentCheckCashControl.value
@@ -556,12 +553,32 @@ export class PatientInvoiceFormComponent implements OnInit {
       // ],
     });
 
+    console.log(paymentModes);
+
     this.invoiceService.create(invoice).subscribe({
       next: (data) => {
         console.log(data);
 
-        this.invoiceService.get(data).subscribe({
-          next: (data) => console.log(JSON.stringify(data, null, 2)),
+        this.waitingListService.create(wlItem).subscribe({
+          next: (data) => {
+            console.log(data, "\nHere");
+          },
+          error: (e) => console.error(e),
+        });
+
+        this.invoiceService.loadPdf(data).subscribe({
+          next: (data) => {
+            console.log(JSON.stringify(data, null, 2));
+            const pdfModalRef = this.modalService.open(PdfModalComponent, {
+              size: "xl",
+              centered: true,
+              // scrollable: true,
+              backdrop: "static",
+            });
+
+            pdfModalRef.componentInstance.title = "Reçu";
+            pdfModalRef.componentInstance.pdfSrc = data;
+          },
           error: (e) => console.error(e),
         });
       },
