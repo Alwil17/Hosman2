@@ -7,12 +7,12 @@ import {
   NgbModalModule,
   NgbPaginationModule,
 } from "@ng-bootstrap/ng-bootstrap";
-import { ExpensesComponent } from "./expenses/expenses/expenses.component";
+import { ExpensesComponent } from "./expenses/expenses.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskModule } from "ngx-mask";
-import { CollectionsComponent } from "./collections/collections/collections.component";
-import { PersonFormComponent } from "./expenses/expenses/person-form/person-form.component";
+import { CollectionsComponent } from "./collections/collections.component";
+import { PersonFormComponent } from "./expenses/person-form/person-form.component";
 
 @NgModule({
   declarations: [ExpensesComponent, CollectionsComponent, PersonFormComponent],
