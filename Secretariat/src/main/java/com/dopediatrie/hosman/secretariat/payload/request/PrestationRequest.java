@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Builder
 public class PrestationRequest {
+    private String provenance;
     private long patient_id;
     private long demandeur_id;
     private long consulteur_id;

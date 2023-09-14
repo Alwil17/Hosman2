@@ -36,6 +36,7 @@ public class PrestationServiceImpl implements PrestationService {
         log.info("PrestationServiceImpl | addPrestation is called");
         Prestation prestation
                 = Prestation.builder()
+                .provenance(prestationRequest.getProvenance())
                 .patient(patientRepository.findById(prestationRequest.getPatient_id()).get())
                 .consulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get())
                 .demandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get())
@@ -79,6 +80,7 @@ public class PrestationServiceImpl implements PrestationService {
                         "Prestation with given Id not found",
                         NOT_FOUND
                 ));
+        prestation.setProvenance(prestationRequest.getProvenance());
         prestation.setPatient(patientRepository.findById(prestationRequest.getPatient_id()).get());
         prestation.setConsulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get());
         prestation.setDemandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get());

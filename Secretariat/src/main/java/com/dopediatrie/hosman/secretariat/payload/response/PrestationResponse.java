@@ -17,6 +17,7 @@ import java.util.List;
 public class PrestationResponse {
     private long id;
     private Patient patient;
+    private String provenance;
     private Medecin demandeur;
     private Medecin consulteur;
     private Secteur secteur;

@@ -22,6 +22,7 @@ public class Prestation {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+    private String provenance;
     @ManyToOne
     @JoinColumn(name = "demandeur_id")
     private Medecin demandeur;
@@ -49,6 +50,7 @@ public class Prestation {
                 ", demandeur=" + demandeur +
                 ", consulteur=" + consulteur +
                 ", secteur=" + secteur +
+                ", provenance=" + provenance +
                 ", date_prestation=" + date_prestation +
                 ", facture=" + facture +
                 '}';
