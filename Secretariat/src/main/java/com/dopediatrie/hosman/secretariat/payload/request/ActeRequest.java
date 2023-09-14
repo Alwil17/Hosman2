@@ -7,5 +7,9 @@ import lombok.Data;
 @Builder
 public class ActeRequest {
     private String libelle;
+    private String code;
+    private int position = 0;
+    private String couleur = "white";
+    private boolean show_acte = true;
     private long structure_id = 1;
 }

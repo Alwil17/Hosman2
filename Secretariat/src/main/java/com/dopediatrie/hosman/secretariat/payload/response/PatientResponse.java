@@ -35,8 +35,8 @@ public class PatientResponse {
     private Assurance assurance;
     private Employeur employeur;
     private PersonneAPrevenir personne_a_prevenir;
-    private double taux;
-    private Date date_debut;
-    private Date date_fin;
+    private double taux_assurance;
+    private Date date_debut_assurance;
+    private Date date_fin_assurance;
     private long structure_id;
 }

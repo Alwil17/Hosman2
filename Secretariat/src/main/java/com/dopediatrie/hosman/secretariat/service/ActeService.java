@@ -11,6 +11,8 @@ public interface ActeService {
 
     long addActe(ActeRequest acteRequest);
 
+    void addActe(List<ActeRequest> acteRequests);
+
     ActeResponse getActeById(long acteId);
 
     void editActe(ActeRequest acteRequest, long acteId);

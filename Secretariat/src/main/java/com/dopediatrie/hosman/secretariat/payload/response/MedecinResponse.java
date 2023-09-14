@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MedecinResponse {
     private long id;
-    private String reference;
     private String nom;
     private String prenoms;
     private LocalDateTime date_naissance;

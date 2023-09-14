@@ -8,5 +8,6 @@ import lombok.Data;
 public class SousActeRequest {
     private String libelle;
     private String code;
-    private Long acte_id;
+    private String description;
+    private long acte_id;
 }

@@ -36,7 +36,6 @@ public class MedecinServiceImpl implements MedecinService {
                 = Medecin.builder()
                 .nom(medecinRequest.getNom())
                 .prenoms(medecinRequest.getPrenoms())
-                .reference(medecinRequest.getReference())
                 .date_naissance(medecinRequest.getDate_naissance())
                 .lieu_naissance(medecinRequest.getLieu_naissance())
                 .sexe(medecinRequest.getSexe())
@@ -107,7 +106,6 @@ public class MedecinServiceImpl implements MedecinService {
                 ));
         medecin.setNom(medecinRequest.getNom());
         medecin.setPrenoms(medecinRequest.getPrenoms());
-        medecin.setReference(medecinRequest.getReference());
         medecin.setDate_naissance(medecinRequest.getDate_naissance());
         medecin.setLieu_naissance(medecinRequest.getLieu_naissance());
         medecin.setSexe(medecinRequest.getSexe());

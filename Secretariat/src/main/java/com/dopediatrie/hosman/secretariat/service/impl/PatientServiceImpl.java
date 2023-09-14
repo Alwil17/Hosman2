@@ -62,9 +62,9 @@ public class PatientServiceImpl implements PatientService {
                 .adresse(adresseRepository.findById(adresse_id).get())
                 .assurance(assuranceRepository.findById(assurance_id).get())
                 .structure_id(patientRequest.getStructure_id())
-                .taux(patientRequest.getTaux())
-                .date_debut(patientRequest.getDate_debut())
-                .date_fin(patientRequest.getDate_fin())
+                .taux_assurance(patientRequest.getTaux_assurance())
+                .date_debut_assurance(patientRequest.getDate_debut_assurance())
+                .date_fin_assurance(patientRequest.getDate_fin_assurance())
                 .build();
 
         if(patientRequest.getPays_origine_id() != 0)
@@ -130,9 +130,9 @@ public class PatientServiceImpl implements PatientService {
         patient.setNo_piece(patientRequest.getNo_piece());
         patient.setDate_ajout(patientRequest.getDate_ajout());
         patient.setIs_assure(patientRequest.getIs_assure());
-        patient.setTaux(patientRequest.getTaux());
-        patient.setDate_debut(patientRequest.getDate_debut());
-        patient.setDate_fin(patientRequest.getDate_fin());
+        patient.setTaux_assurance(patientRequest.getTaux_assurance());
+        patient.setDate_debut_assurance(patientRequest.getDate_debut_assurance());
+        patient.setDate_fin_assurance(patientRequest.getDate_fin_assurance());
         patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
         patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
         patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());

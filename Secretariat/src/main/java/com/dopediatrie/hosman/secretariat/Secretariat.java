@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
 public class Secretariat extends SpringBootServletInitializer {
@@ -41,7 +42,7 @@ public class Secretariat extends SpringBootServletInitializer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        config.setAllowedOrigins(List.of("http://localhost:4200", "http://hosman-apps.com", "https://hosman-apps.com"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         source.registerCorsConfiguration("/**", config);

@@ -46,6 +46,25 @@ public class ActeServiceImpl implements ActeService {
     }
 
     @Override
+    public void addActe(List<ActeRequest> acteRequests) {
+        log.info("ActeServiceImpl | addActe is called");
+
+        for (ActeRequest acteRequest: acteRequests) {
+            Acte acte
+                    = Acte.builder()
+                    .libelle(acteRequest.getLibelle())
+                    .slug(Str.slug(acteRequest.getLibelle()))
+                    .code(acteRequest.getCode())
+                    .position(acteRequest.getPosition())
+                    .structure_id(acteRequest.getStructure_id())
+                    .build();
+            acteRepository.save(acte);
+        }
+
+        log.info("ActeServiceImpl | addActe | Actes Created");
+    }
+
+    @Override
     public ActeResponse getActeById(long acteId) {
         log.info("ActeServiceImpl | getActeById is called");
         log.info("ActeServiceImpl | getActeById | Get the acte for acteId: {}", acteId);
@@ -76,6 +95,10 @@ public class ActeServiceImpl implements ActeService {
                 ));
         acte.setLibelle(acteRequest.getLibelle());
         acte.setSlug(Str.slug(acteRequest.getLibelle()));
+        acte.setCode(acteRequest.getCode());
+        acte.setCouleur(acteRequest.getCouleur());
+        acte.setPosition(acteRequest.getPosition());
+        acte.setShow_acte(acteRequest.isShow_acte());
         acte.setStructure_id(acteRequest.getStructure_id());
         acteRepository.save(acte);
 

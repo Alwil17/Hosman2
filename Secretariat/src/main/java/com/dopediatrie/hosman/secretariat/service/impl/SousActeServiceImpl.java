@@ -7,6 +7,7 @@ import com.dopediatrie.hosman.secretariat.payload.response.SousActeResponse;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.SousActeRepository;
 import com.dopediatrie.hosman.secretariat.service.SousActeService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,9 @@ public class SousActeServiceImpl implements SousActeService {
         SousActe sousActe
                 = SousActe.builder()
                 .libelle(sousActeRequest.getLibelle())
+                .slug(Str.slug(sousActeRequest.getLibelle()))
                 .code(sousActeRequest.getCode())
+                .description(sousActeRequest.getDescription())
                 .acte(acteRepository.findById(sousActeRequest.getActe_id()).get())
                 .build();
 
@@ -44,6 +47,23 @@ public class SousActeServiceImpl implements SousActeService {
         log.info("SousActeServiceImpl | addSousActe | SousActe Created");
         log.info("SousActeServiceImpl | addSousActe | SousActe Id : " + sousActe.getId());
         return sousActe.getId();
+    }
+
+    @Override
+    public void addSousActe(List<SousActeRequest> sousActeRequests) {
+        log.info("SousActeServiceImpl | addSousActes is called");
+        for (SousActeRequest sousActeRequest : sousActeRequests) {
+            SousActe sousActe
+                    = SousActe.builder()
+                    .libelle(sousActeRequest.getLibelle())
+                    .slug(Str.slug(sousActeRequest.getLibelle()))
+                    .code(sousActeRequest.getCode())
+                    .description(sousActeRequest.getDescription())
+                    .acte(acteRepository.findById(sousActeRequest.getActe_id()).get())
+                    .build();
+            sousActeRepository.save(sousActe);
+        }
+        log.info("SousActeServiceImpl | addSousActes | SousActe Created");
     }
 
     @Override
@@ -76,7 +96,9 @@ public class SousActeServiceImpl implements SousActeService {
                         NOT_FOUND
                 ));
         sousActe.setLibelle(sousActeRequest.getLibelle());
+        sousActe.setSlug(Str.slug(sousActeRequest.getLibelle()));
         sousActe.setCode(sousActeRequest.getCode());
+        sousActe.setDescription(sousActeRequest.getDescription());
         sousActe.setActe(acteRepository.findById(sousActeRequest.getActe_id()).get());
         sousActeRepository.save(sousActe);
 

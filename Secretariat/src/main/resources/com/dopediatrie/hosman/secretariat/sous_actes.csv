@@ -1,0 +1,637 @@
+ACT001;C;Consultation généraliste  de jour;1
+ACT002;CS;Consultation spécialisée de jour;1
+ACT003;Cnuit;Consultation généraliste de nuit ;1
+ACT004;Csnuit;Consultation spécialisée de nuit;1
+ACT005;Cgr;Consultation gratuite;1
+ACT006;Csgr;Consultation spécialisée gratuite;1
+ACT007;Cper;Consultation du personnel;1
+ACT008;CSper;Consultation spécialisée du personnel;1
+ACT009;IDR;Intra Dermo Réaction (IDR);10
+ACT011;IM;IM (Intramusculaire);11
+ACT012;IV;IV (Intraveineuse);11
+ACT013;P sang;Prise de sang;8
+ACT014;Kit de pansement (Sans bandes);Kit de pansement (Sans bandes);23
+ACT015;Pansement;Pansement;6
+ACT016;Pansement type 2;Pansement type 3;6
+ACT017;PV;Prélévement Vaginal;9
+ACT018;SO;Soins d'oreilles;11
+ACT019;V;Visite généraliste de jour ;24
+ACT020;VN;Visite généraliste de nuit;24
+ACT021;CS-F;Consultation sage-femme;1
+ACT022;Ctle;Contréle;3
+ACT024;DRP;Désobstruction rhino pharyngé;11
+ACT026;K10;Acte en K * 10 fois sa valeur;2
+ACT027;K15;Acte en K * 15 fois sa valeur;2
+ACT028;K20;Acte en K * 20 fois sa valeur;2
+ACT029;Vaccination;Vaccination(Vaccins);4
+ACT031;Cjf;Consultation de Jour Férié;1
+ACT032;Csjf;Consultation spécialisée de Jour Férié;1
+ACT033;K5;Acte en K * 5 fois sa valeur;2
+ACT034;RL;Retour labo(RL);24
+ACT035;Auto refractométrie;Auto refractometrie;1
+ACT036;Tono Automatisée;Tonométrie automatisé;1
+ACT037;CVA;Champ visuel automatisé;1
+ACT038;Pachymétrie;Pachymétrie;1
+ACT039;Métinographie;Métinographie;1
+ACT040;Fond d'oeil;Fond d'oeil;11
+ACT041;Infiltration (K10);Infiltration (K10);2
+ACT043;Lavage gastrique (K15);Lavage gastrique (K15);2
+ACT044;Réanimation (K30);Réanimation (K30);2
+ACT045;K30;Acte en K * 30 fois sa valeur;2
+ACT046;Ponction du genou (K10);Ponction du genou (K10);2
+ACT047;Certificat Médical;Certificat Médical;2
+ACT048;Circ;Circoncision;2
+ACT049;Pose de stérilet;Pose de stérilet;2
+ACT050;Pose de Laminaire;Pose de Laminaire;2
+ACT052;BOTTE PLATREE (K10);BOTTE PLATREE (K10);2
+ACT053;Cfper;Consultation Famille du personnel;2
+ACT054;Pose laminaire ;Pose laminaire ;2
+ACT055;CS Type 2;Pour les medecins qui viennent sous rendez - vous;1
+ACT056;Vaccination gratuite;Vaccination gratuite;1
+ACT057;Trainning Respiratoire;Trainning Respiratoire;2
+ACT058;Ctlegr;Contréle Gratuit;3
+ACT059;Ponction lombaire (K15);Ponction lombaire (K15);2
+ACT060;Drainage Hémato (Drain + Acte);Drainage Hémato (Drain + Acte);2
+ACT061;K6;Acte en K*6 fois sa valeur;2
+ACT062;Audiogramme ;Audiogramme;2
+ACT063;Révision ultérine (K50);Révision ultérine(K50);2
+ACT064;Contréle pacemaker;Contréle pacemaker;2
+ACT072;CSProf;Consultation spécialisée (Médecin Externe);2
+ACT073;Photothérapie/Heure;Photothérapie/Heure;2
+ACT074;Vaccination BCG;Photothérapie/Heure;2
+ACT075;Lecture IDR;Lecture Intra Dermo Réaction (IDR);1
+ACT076;K50;Acte en K * 50 fois sa valeur;2
+ACT077;Vaccination 3PR;Vaccination 3PR;4
+ACT078;Prise de tension;Prise de tension;1
+ACT079;ACTE PERIDURAL;ACTE PERIDURAL;24
+ACT080;CURETAGE BE.ENDOMETRE;CURETAGE BE.ENDOMETRE;24
+ACT081;Soins Infirmiers Médecine;Soins Infirmiers Médecine;24
+ACT082;Soins Infirmiers Chirurgie;Soins Infirmiers Chirurgie;24
+ACT085;Acuité Auditive (K15);Acuité Auditive;24
+ACT086;Acuité Visuelle ;Acuité Visuelle ;24
+ACT087;Monitoring;Monitoring;24
+ACT120;VS;Visite spécialiste de jour ;24
+ACT121;VSN;Visite spécialiste de nuit;24
+ACT122;Consultation Orthopédie;Consultation Orthopédique;24
+ACT123;Consultation Traumatologie;Consultation Traumatologie;24
+ACT124;Consultation Médécine du sport;Consultation Médécine du sport;24
+ACT126;Visite Professeur;Visite Professeur;24
+ACT127;BILAN 1 (ORTHOPHONIE);BILAN ET EVALUATION DE LA DEGLUTITION ET DES FONCTIONS VELO-TUBO TYMPANIQUES;24
+ACT128;BILAN DE RENOUVELLEMENT 1 (ORTHOPHONIE);BILAN DE RENOUVELLEMENT 1 (ORTHOPHONIE);24
+ACT129;BILAN DE RENOUVELLEMENT 2 (ORTHOPHONIE);BILAN DE RENOUVELLEMENT 2 (ORTHOPHONIE);24
+ACT130;BILAN DE RENOUVELLEMENT 3 (ORTHOPHONIE);BILAN DE RENOUVELLEMENT 3 (ORTHOPHONIE);24
+ACT131;BILAN ET EVALUATION DE LA PHONATION ;BILAN ET EVALUATION DE LA PHONATION;24
+ACT132;BILAN 2  (ORTHOPHONIE);BILAN ET EVALUATION DE LA COMMUNICATION ET DU LANGAGE ORAL ET/OU D'APTITUDES A L'ACQUISITION DE LA COMMUNICATION ET DU LANGAGE ECRIT;24
+ACT133;BILAN 3  (ORTHOPHONIE);BILAN ET EVALUATION DE LA DYSCALCULIE ET DES TROUBLES DE LA COGNITION MATHEMATIQUE;24
+ACT134;BILAN 4  (ORTHOPHONIE);BILAN DES FONCTIONS ORO-MYO-FACIALES ET DE L'ORALITE;24
+ACT135;BILAN 5  (ORTHOPHONIE);BILAN ET EVALUATION DES TROUBLES D'ORIGINE NEUROLOGIQUE;24
+ACT136;BILAN 6  (ORTHOPHONIE);BILAN ET EVALUATION DES BEGAIEMENTS ET DES AUTRES TROUBLES DE LA FLUENCE;24
+ACT137;K40;Acte en K * 40 fois sa valeur;2
+ACT138;K80;Acte en K * 80 fois sa valeur;2
+ANA001;Vitesse de sédimentation (VS);;18
+ANA002;NB (GB) Numération blanche;;18
+ANA003;GE (Goutte Epaisse);;18
+ANA004;HB (taux d'hémoglobine);;18
+ANA005;NFS/Plaquettes;;18
+ANA006;Taux de réticulocytes;;18
+ANA007;Myélogramme;;18
+ANA008;Groupe Sanguin+Rhésus (GS);;18
+ANA009;Test de compatibilité;;18
+ANA010;TS (Temps de Saignement);;18
+ANA011;TP (Taux de prothrombine) / INR;;18
+ANA012;TCK (TCA);;18
+ANA013;TT (Temps de thrombine);;18
+ANA014;Hémoglobine Glycosylée (Hémoglobine glyquée);;18
+ANA015;Fibrinogéne;;18
+ANA016;Electrophorése de l'hémoglobine;;18
+ANA017;Lithuim (Li);;18
+ANA018;Hémogramme;;18
+ANA019;Glycémie é jeun;;18
+ANA020;Glycémie post prandiale;;18
+ANA021;HGPO;;18
+ANA022;Urémie = Azotémie (Urée);;18
+ANA023;Créatininémie (créatinine);;18
+ANA024;Acide urique (uricémie);;18
+ANA025;Cholestérol total;;18
+ANA026;HDL cholestérol;;18
+ANA027;LDL cholestérol;;18
+ANA028;Triglycérides;;18
+ANA029;Test covid19;;18
+ANA030;LDH;;18
+ANA031;ASAT / GOT;;18
+ANA032;ALAT / GPT;;18
+ANA033;Transaminases (ASAT+ALAT) GOT+GPT;;18
+ANA034;Gamma GT ;;18
+ANA035;PAL (Phosphatases alcalines);;18
+ANA036;Phosphatases acides;;18
+ANA037;Phosphatases prostatiques;;18
+ANA038;Bilirubinémie totale;;18
+ANA039;Bilirubinémie directe;;18
+ANA040;CK (créatine kinase);;18
+ANA041;CK-MB;;18
+ANA042;Amylasémie;;18
+ANA043;Lipases;;18
+ANA044;Protidémie (protéines totales);;18
+ANA045;Protidogramme (électrophorése des protides);;18
+ANA046;Mycoplasme;;18
+ANA047;Troponine;;18
+ANA048;Natriémié (Sodium:Na+);;18
+ANA049;Kaliémie (Potassium:K+);;18
+ANA050;Chlorémie (Chlore:Cl- );;18
+ANA051;Calciurie;;18
+ANA052;Calcémie (Calcium: Ca++ );;18
+ANA053;Phosphorémie (Phosphore:PO3-);;18
+ANA054;Magnésémie (Magnésium:Mg++ );;18
+ANA055;Fer sérique  + CTS+CS;;18
+ANA056;Fer sérique (sidérémie);;18
+ANA057;CO2 (gaz du sang);;18
+ANA058;Ferritinémie (Ferritine );;18
+ANA059;Albuminurie;;18
+ANA060;Glucosurie;;18
+ANA061;Glucosurie des 24h;;18
+ANA062;Albuminurie   ;;18
+ANA063;Albuminurie des 24h/protéinurie;;18
+ANA064;Combur 9 (10 paramétres);;18
+ANA065;Corps cétonique;;18
+ANA066;Amylasurie;;18
+ANA067;Créatinemie ;;18
+ANA068;BNP;;18
+ANA069;Phosphore urinaire;;18
+ANA070;HLM (Hematies- Leucocytes - Minutes);;18
+ANA071;Sédiments urinaires;;18
+ANA072;Cytologie urine;;18
+ANA073;Protéine C-Réactive (CRP);;18
+ANA074;Facteur Rhumatoéde (FR) (Water Rose);;18
+ANA075;Antistreptoloysine O (ASLO);;18
+ANA076;Sérologie de Widal&Félix (fiévre typhoéde);;18
+ANA077;VDRL (Syphilis);;18
+ANA078;TPHA (Syphilis);;18
+ANA079;sérologie de la toxoplasmose (IgG/IgM) (Dye test);;18
+ANA080;Sérologie de rubéole IgG/IgM;;18
+ANA081;Sérologie amibienne;;18
+ANA082;Hépatite A/ IgM;;18
+ANA083;Antigéne Hbe;;18
+ANA084;Anticorps Hbe;;18
+ANA085;Anticorps Hbs;;18
+ANA086;Anticorps Hbc total;;18
+ANA087;Hépatite B AgHBs (Antigéne Australia);;18
+ANA088;Sérologie HCV;;18
+ANA089;Hépatite C;;18
+ANA090;Sérologie retrovirale VIH;;18
+ANA091;HIV;;18
+ANA092;Sérologie chlamidienne;;18
+ANA093;Albumine;;18
+ANA094;Amylasémie_cspt;;18
+ANA095;Sérologie HCV_cspt;;18
+ANA096;BHCG (test grossesse sang)_cspt;;18
+ANA097;Bilirubinémie totale_cspt;;18
+ANA098;Bilirubinémie directe_cspt;;18
+ANA099;CK-MB_cspt;;18
+ANA100;Combur 9 (10 paramétres)_cspt;;18
+ANA101;Coproculture_cspt;;18
+ANA102;Chlamidyae (IgA,IgG);;18
+ANA103;CPK_cspt;;18
+ANA104;D-Diméres_cspt;;18
+ANA105;ECBU + ATB_cspt;;18
+ANA106;Ionogramme sanguin (Na+,K+,Cl-)_cspt;;18
+ANA107;LDH_cspt;;18
+ANA108;Lipases_cspt;;18
+ANA109;Phosphorémie (Phosphore:PO3-)_cspt;;18
+ANA110;Protidémie (protéines totales)_cspt;;18
+ANA111;PSA total_cspt;;18
+ANA112;Sérologie de rubéole IgG/IgM_cspt;;18
+ANA113;IgE sérique;;18
+ANA114;sérologie de la toxoplasmose (IgG/IgM) (Dye test)_cspt;;18
+ANA115;FT3_cspt;;18
+ANA116;FT4_cspt;;18
+ANA117;TCK (TCA)_cspt;;18
+ANA118;VDRL (Syphilis)_cspt;;18
+ANA119;TPHA (Syphilis)_cspt;;18
+ANA120;Troponine_cspt;;18
+ANA121;TSHus_cspt;;18
+ANA122;IgE totales;;18
+ANA123;Test de grossesse (Urine);;18
+ANA124;MNI test;;18
+ANA125;Sérologie TB (tuberculose);;18
+ANA126;Alpha foeto protéine (AFP);;18
+ANA127;ACE;;18
+ANA128;BHCG (test grossesse sang);;18
+ANA129;FSH;;18
+ANA130;LH;;18
+ANA131;Oestradiol;;18
+ANA132;Prolactine;;18
+ANA133;Progestérone;;18
+ANA134;TSHus;;18
+ANA135;FT3;;18
+ANA136;FT4;;18
+ANA137;Cortisolémie;;18
+ANA138;Créatinurie des 24 h;;18
+ANA139;PSA total;;18
+ANA140;CA 19-9;;18
+ANA141;CA 72-4;;18
+ANA142;CA 15-3;;18
+ANA143;CA 125;;18
+ANA144;Selles KOP;;18
+ANA145;Recherche d'oxyure;;18
+ANA146;Recherche de schistosome dans les urines;;18
+ANA147;GE + Frottis;;18
+ANA148;BCE (Biopsie cutanée exsangue);;18
+ANA149;Coproculture;;18
+ANA150;ECBU + ATB;;18
+ANA151;Pus + autres sérosités ;;18
+ANA152;PV (Prélévement Vaginal);;18
+ANA153;PU (Prélévement / curétage Urétral) ;;18
+ANA154;Spermoculture ;;18
+ANA155;Hémoculture;;18
+ANA156;LCR cyto-chimie;;18
+ANA157;LCR cytologie;;18
+ANA158;ECBC (crachats);;18
+ANA159;Recherche BK recherche BAAR;;18
+ANA160;PL + LCR (cyto+chimie+culture);;18
+ANA161;Recherche d'Ag solubles (LCR);;18
+ANA162;Spermogramme;;18
+ANA163;Frottis vaginal / cervical;;18
+ANA164;Urine (cytologie);;18
+ANA165;CD8;;18
+ANA166;CD4;;18
+ANA167;Testostérone;;18
+ANA168;Homocystéine;;18
+ANA169;Antigénemie P24;;18
+ANA170;RAI (Recherche Agglo irr);;18
+ANA171;Ionogramme sanguin (Na+,K+,Cl-);;18
+ANA172;Hemofec;;18
+ANA173;Recherche de drogue;;18
+ANA174;Culot Urinaire;;18
+ANA175;D-Diméres;;18
+ANA176;Anticorps- Anti  nucléaire;;18
+ANA177;Sérologie Chikungunya (IgM IgG);;18
+ANA178;Sérologie Dengue (IgM IgG);;18
+ANA179;Sérologie Herpes Simplex Virus 1 et 2  (IgM IgG);;18
+ANA180;Sérologie Arbo Virus (Dengue Acephalite é tiques , chikungunya);;18
+ANA181;Sérologie Rickettsioges;;18
+ANA182;Facteur IX;;18
+ANA183;Facteur V (Dosage de l'activité);;18
+ANA184;Facteur VIII ;;18
+ANA185;Facteur Willebrand (Antigéne);;18
+ANA186;Facteur X;;18
+ANA187;Facteur XI;;18
+ANA188;Facteur XII;;18
+ANA189;Facteur XIII;;18
+ANA190;Recherche ADN parental (Ambassade d'Allemagne);;18
+ANA191;Recherche ADN parental (justice);;18
+ANA192;Recherche ADN parental (CANADA);;18
+ANA193;Hépatite C (ARN virale quantification);;18
+ANA194;Haemoglucotest;;18
+ANA195;ECB de Pus;;18
+ANA196;Anticorps Anti BHC IgG IgM;;18
+ANA197;ANAPATH EUROPE;;18
+ANA198;PIECES OPERATOIRES;;18
+ANA199;Benzéne;;18
+ANA200;Diurése;;18
+ANA201;PACK;;18
+ANA202;GE Accouchement (Goutte Epaisse);;18
+ANA203;G6PD (dosage);;18
+ANA204;Anticorps- Anti antigéne nucléaire soluble recheche ;;18
+ANA205;Anticorps- Anti antigéne nucléaire soluble dosage;;18
+ANA206;Transferrine;;18
+ANA207;Ac. Antinucléaire;;18
+ANA208;Ac. Anti DNA Natif;;18
+ANA209;Ac. Anti U1RNP;;18
+ANA210;Ac. Anti Histones;;18
+ANA211;Dosage Pondéral Immunoglobulines;;18
+ANA212;Typage HLA Classe 1 Locus A et B;;18
+ANA213;Typage HLA Classe 1 Locus B;;18
+ANA214;Typage HLA Classe 2 (Génotypage);;18
+ANA215;CPK;;18
+ANA216;Vitamine D;;18
+ANA217;Vitamine B12;;18
+ANA218;Bilirubinémie indirecte;;18
+ANA219;AgHBe ;;18
+ANA220;Anticorps anti HBe;;18
+ANA221;Anticorps anti HBC totaux (Europe) ;;18
+ANA222;Alpha 2 macroglobuline ;;18
+ANA223;Haptoglobine;;18
+ANA224;EBV (EPSTEIN-BARR VIRUS) AC anti VCA IgM/IgG;;18
+ANA225;Cytomégolovirus (IgG +IgM);;18
+ANA226;Crachats-Bar Biologie Moléculaire ;;18
+ANA227;PSA total + PSA libre;;18
+ANA228;Bilharziose (Recherche des oeufs dans l'urine );;18
+ANA229;AgHBe (Europe);;18
+ANA230;Anticorps anti HBe (Europe);;18
+ANA231;Anticorps Hbs (Europe);;18
+ANA232;Anticorps anti HBC totaux;;18
+ANA233;Fibrotest / Actitest;;18
+ANA234;Charge virale VHB ( ADN viral Hépatite B);;18
+ANA235;Hépatite virale C (GENOTIPAGE);;18
+ANA236;Test de coombes direct;;18
+ANA237;Test de coombes indirect;;18
+ANA238;Charge virale HIV;;18
+ANA239;Crachats-Bar ;;18
+ANA240;Recherche de filaire dans le sang;;18
+ANA241;Chromatographie des acides aminés urinaires;;18
+ANA242;Dosage Complement C3;;18
+ANA243;Dosage Complement C4;;18
+ANA244;Fibrotest-Actitest;;18
+ANA245;Prélévement EDPA pour HLA;;18
+ANA246;Parathormone / PTH intacte;;18
+ANA247;Herpés Simplex Virus (1 et 2) /PCR;;18
+ANA248;Herpés Simplex Virus (1 et 2) /IGN;;18
+ANA249;Recherche BK Biologie moléculaire (CERBA);;18
+ANA250;Recherche de Hélicobater pylori;;18
+ANA251;Vitamine B9;;18
+ANA252;Génotype de résistance HIV;;18
+ANA253;PSA libre;;18
+ANA254;Test d'alcool (Alcoolemie-Ethanol);;18
+ANA255;Vitamine B3;;18
+ANA256;Vitamine B6;;18
+ANA257;Vitamine C;;18
+ANA258;Vitamine E;;18
+ANA259;Vitamine D3;;18
+ANA260;PROCALCITONINE;;18
+ANA261;Sérologie amibienne (Cerba);;18
+ANA262;Légionellose (Dépistage) CERBA;;18
+ANA263;Légionellose (Titrage) CERBA;;18
+ANA264;Recherche de Hélicobater pylorin (selle);;18
+ANA265;PHADIATOP (CERBA);;18
+ANA266;ALDOSTERONE (CERBA);;18
+ANA267;RENINE (CERBA);;18
+ANA268;Ionogramme urinaire;;18
+ANA269;Lactatémie;;18
+ANA270;Antigéne Dengue NS1;;18
+ANA271;INHIBINE B CERBA;;18
+ANA272;sérologie bilharzienne CERBA ;;18
+ANA273;Haptoglobine;;18
+ANA274;ACTH (hormone de croissance);;18
+ANA275;GH (hormone de croissance);;18
+ANA276;ERYTHROPOIETINE (CERBA);;18
+ANA277;Légionellose (Antigéne soluble Urine) CERBA;;18
+ANA278;Cortisolémie (Cerba);;18
+ANA279;Phénobarbitémie (Phénobarbital);;18
+ANA280;PARAHORMONE 1-84;;18
+ANA281;TDR Malaria Quick (QBC);;18
+ANA282;CBE (Curétage Biopsie de l'Endométre);;18
+ANA283;ANAPATH BIOPSIES CHU;;18
+ANA284;Identification et dosage d' Amphétamines dans le sang;;18
+ANA285;Recherche de drogue dans l'urine;;18
+ANA286;ANATOMO-CYPATHOLOGIE (CERBA);;18
+ANA287;Anticorps anti-recepteurs de l'acetylcholine (anti-RACH);;18
+ANA288;Test multi-drogue;;18
+ANA289;Recherche BK Biologie moléculaire;;18
+ANA290;Protééne S (Activité);;18
+ANA291;Protééne S (Antigéne);;18
+ANA292;Protééne C (Antigéne);;18
+ANA293;Facteur II;;18
+ANA294;Protééne C (Activité);;18
+ANA295;PROGRAF - TACROLIMUS;;18
+ANA296;25 Hydroxycalciférol (Vitamine D);;18
+ANA297;1.25 DisHydroxycalciférol (Vitamine D);;18
+ANA298;AMH Hormono anti-mullérienne CERBA;;18
+ANA299;HILV I+II;;18
+ANA300;Anticorps Anti HBC  IgM;;18
+ANA301;Sérologie de la rage (Cerba);;18
+ANA302;Hémoglobine é reflotron;;18
+ANA303;ECB de liquide de ponction de genou;;18
+ANA304;ECB de liquide pleurral;;18
+DIA001;HEMODIALYSE 1e séance ;HEMODIALYSE 1e séance;20
+DIA0010;HEMODIALYSE 10 séances;HEMODIALYSE 10 séances;20
+DIA002;HEMODIALYSE  2 séances;HEMODIALYSE 2 séances;20
+DIA003;HEMODIALYSE 3 séances;HEMODIALYSE 3 séances;20
+DIA004;HEMODIALYSE 4 séances;HEMODIALYSE 4 séances;20
+DIA005;HEMODIALYSE 5 séances;HEMODIALYSE 5 séances;20
+DIA006;HEMODIALYSE 6 séances;HEMODIALYSE 6 séances;20
+DIA007;HEMODIALYSE 7 séances;HEMODIALYSE 7 séances;20
+DIA008;HEMODIALYSE 8 séances;HEMODIALYSE 8 séances;20
+DIA009;HEMODIALYSE 9 séances;HEMODIALYSE 9 séances;20
+DIA010;Dialyse;Dialyse;20
+ECH026;Echographie abdominale;Echographie abdominale;13
+ECH027;Echographie pelvienne;Echographie pelvienne;13
+ECH028;Echographie tyroédienne;Echographie tyroédienne;13
+ECH029;Echographie obstétricale;Echographie obstétricale;13
+ECH031;Doppler  gynécologique;Doppler  gynécologique;13
+ECH032;Doppler  utéro-ovarien;Doppler  utéro-ovarien;13
+ECH033;Echographie abdomino-pelvienne;Echographie abdomino-pelvienne;13
+ECH037;Echographie VSM (Velocimetrie sanguine matréno-foetale);Echographie VSM (Velocimetrie sanguine matréno-foetale);13
+ECH039;Echographie cardiaque;Echographie cardiaque;13
+ECH040;Doppler  cardiaque;Doppler  cardiaque;13
+ECH041;Echographie Doppler MI ;Echographie Doppler MI ;13
+ECH042;Echographie Doppler Carotodes;Echographie Doppler Carotodes;13
+ECH043;Echographie Mammaire;Echographie Mammaire;13
+ECH044;Amnioscopie;Amnioscopie;13
+ECH045;Echographie testiculaire;Echographie testiculaire;13
+ECH046;Echographie +  Doppler;Echographie +  Doppler;13
+ECH047;Echographie Prostatique;EchographieProstatique;13
+ECH048;Echographie de la Main;Echograpgir de la Main;13
+ECH049;Echographie des parties molles;Echographie des parties molles;13
+ECH050;Echographie plurale;Echographie plurale;13
+ECH051;Echographie Morphologique;Echographie Morphologique;13
+ECH052;Echographie Doppler des vaisseaux du cou;Echographie Doppler des vaisseaux du cou;13
+ECH053;Echographie du menton ;Echographie du menton ;13
+ECH054;Echographie de la cuisse;Echographie de la cuisse;13
+ECH055;Echographie Rénale;Echographie rénale;13
+ECH056;Echographie pleurale;Echographie pleurale;13
+ECH057;Echographie;Echographie;13
+ECH058;Echographie des membres inférieurs;Echographie des membres inférieurs;13
+ECH059;Echographie des TSA;Echographie des TSA;13
+END001;Rectoscopie;Rectoscopie;19
+END002;Fibroscopie (endoscopie);Fibroscopie (endoscopie);19
+END003;Cystoscopie;Cystoscopie;19
+END004;Cytologie;Cytologie;19
+END005;Coloscopie;Coloscopie;19
+END006;Gastroscopie;Gastroscopie;19
+END007;Endoscopie (Dr GABA);Endoscopie;19
+IRM001;IRM UN ORGANE;IRM DE L'EPAULE;17
+IRM002;IRM (DEUX ORGANES);DEUX ORGANES;17
+IRM003;IRM (TROIS ORGANES);TROIS ORGANES;17
+IRM004;IRM ABDOMINO-PELVIENNE;IRM ABDOMINO-PELVIENNE;17
+IRM005;IRM CEREBRALE;IRM CELEBRAL;17
+IRM006;IRM LOMBAIRE;IRM LOMBAIRE;17
+IRM007;IRM DORSALE;IRM DORSALE;17
+IRM008;ANGIO IRM CEREBRALE;ANGIO IRM CEREBRALE;17
+IRM009;IRM CERVICALE;IRM CERVICALE;17
+IRM010;IRM DU GENOU;IRM DU GENOU;17
+IRM011;IRM DE LA CUISSE;IIRM DE LA CUISSE;17
+IRM012;INJECTION 1 DOSE;INJECTION 1 DOSE;17
+IRM013;IIRM PAN MEDULLAIRE;IRM PAN MEDULLAIRE;17
+KIN001;Rééducation fonctionnelle;reéducation fonctionnelle;7
+KIN002;Séance de kinésithérapie ( une séance);reéducation fonctionnelle;7
+KIN003;kinésithérapie (2 séances);Massage (2 séances);7
+KIN004;kinésithérapie (3 séances);Massage (3 séances);7
+KIN005;kinésithérapie (4 séances);Massage (4 séances);7
+KIN006;kinésithérapie (5 séances);Massage (5 séances);7
+KIN007;kinésithérapie (6 séances);Massage (6 séances);7
+KIN008;kinésithérapie (7 séances);Massage (7 séances);7
+KIN009;kinésithérapie (8 séances);Massage (8 séances);7
+KIN010;kinésithérapie (9 séances);Massage (9 séances);7
+KIN011;kinésithérapie (10 séances);Massage (10 séances);7
+KIN012;kinésithérapie (20 séances);Massage (10 séances);7
+PAN002;Pansement type 1;Pansement type 1;6
+PAN006;Pansement type 2;Pansement type 2;6
+PAN011;Pansement type 3;Pansement type 3;6
+PAN012;Soin en urgence type 1;Soin en urgence type 1;6
+PAN013;Soin en urgence type 2;Soin en urgence type 2;6
+PAN014;Soin en urgence type 3;Soin en urgence type 3;6
+PAN015;Soin en urgence type 4;Soin en urgence type 4;6
+PAN016;Soin en urgence type 5;Soin en urgence type 5;6
+PAN017;Soin en urgence type 6;Soin en urgence type 6;6
+PAN018;Sejours & Soins pre-Scanner type 1;;6
+PAN019;Sejours & Soins pre-Scanner type 2;;6
+PAN020;Sejours & Soins pre-Scanner type 3;;6
+PAN021;Sejours & Soins pre-Scanner type 4;;6
+PAN022;Sejours & Soins pre - IRM type 1;;6
+PAN023;Sejours & Soins pre - IRM type 2;;6
+PAN024;Sejours & Soins pre - IRM type 3;;6
+PAN025;Sejours & Soins pre - IRM type 4;;6
+PAN026;Lavage Nasal type 1;;6
+PAN027;Lavage Nasal type 2 ;;6
+PAN028;Lavage Nasal type 3 ;;6
+PAN029;Lavage Nasal type 4;;6
+PAN030;Kit de pansement (Sans bandes);Kit de pansement (Sans bandes);6
+PAN031;Pansement type 4;Pansement type 4;6
+RAD001;Doigt (face);;12
+RAD002;Doigt face et profil;;12
+RAD003;Doigt profil;;12
+RAD004;Main;;12
+RAD005;Main Face et 3/4;;12
+RAD006;Main 3/4;;12
+RAD007;Scaphoédeum (face);;12
+RAD008;Poignet (face);;12
+RAD009;Poignet Profil;;12
+RAD010;Poignet Face et Profil;;12
+RAD011;Avant-bras (Face);;12
+RAD012;Avant-bras Profil;;12
+RAD013;Avant-bras Face et profil;;12
+RAD014;Coude (Face);;12
+RAD015;Coude Profil;;12
+RAD016;Coude Face et profil;;12
+RAD017;Bras (Face);;12
+RAD018;Bras Profil;;12
+RAD019;Bras Face et Profil;;12
+RAD020;Epaule(Face);;12
+RAD021;Epaule Profil;;12
+RAD022;Epaule Face et profil;;12
+RAD023;Clavicule (Face);;12
+RAD024;Scapula (Face);;12
+RAD025;Scapula Profil;;12
+RAD026;Scapula Face et profil;;12
+RAD027;Pied gauche;;12
+RAD028;Pied droit;;12
+RAD029;Pied 3/4;;12
+RAD030;Pied face et 3/4;;12
+RAD031;Pied Face et Profil;;12
+RAD032;Talon (Face) ;;12
+RAD033;Talon Profil;;12
+RAD034;Talon Face et Profil;;12
+RAD035;Cheville (Face);;12
+RAD036;Cheville Profil;;12
+RAD037;Cheville face et Profil;;12
+RAD038;Jambe (tibia) face et profil;;12
+RAD039;Genou (face);;12
+RAD040;Genou (Profil);;12
+RAD041;Genou face et profil;;12
+RAD042;Interligne fémoro-patellaire;;12
+RAD043;Fémur (cuisse) (Face);;12
+RAD044;Fémur (cuisse) Profil;;12
+RAD045;Fémur (cuisse) face et profil;;12
+RAD046;Hanche (face);;12
+RAD047;Hanche profil;;12
+RAD048;Hanche face et profil;;12
+RAD049;Bassin (face);;12
+RAD050;Profil chirurgical de la hanche ;;12
+RAD051;Articulation sacro-illiaque (face);;12
+RAD052;Rachis lombaires (face et profil);;12
+RAD053;Rachis lombaires face + profil + 3/4;;12
+RAD054;Rachis  thoracales (dorsal) face;;12
+RAD055;Rachis thoracales (dorsal) profil;;12
+RAD056;Rachis cervicales (cou) (face + profil);;12
+RAD057;Rachis cervicales (coup) (face + profil + 3/4 );;12
+RAD058;Grill costal (face);;12
+RAD059;Grill costal Deroule 3/4;;12
+RAD060;Sternum profil;;12
+RAD061;Articulation sterno-claviculaire;;12
+RAD062;Crane face;;12
+RAD063;Crane profil;;12
+RAD064;Projection spéciale  ;;12
+RAD065;Sinus blondeau (face);;12
+RAD066;Cavum Profil;;12
+RAD067;Os propre du Nez (OPN) Profil;;12
+RAD068;m;;12
+RAD069;Articulation temporo-maxillaire (Profil);;12
+RAD070;Larynx sans contraste;;12
+RAD071;Larynx avec contraste;;12
+RAD072;Thorax face ;;12
+RAD073;Thorax Profil;;12
+RAD074;Abdomen sans préparation / ASP (face);;12
+RAD075;Fistulographie ;;12
+RAD076;Mammographie + Echographie sénologique ;;12
+RAD077;Colongraphie (lavement baryté);;12
+RAD078;TOGD;;12
+RAD079;HSG (Hystérosalpingographie );;12
+RAD080;UIV urographie (+ produit);;12
+RAD081;Myélographie;;12
+RAD082;Laryngographie;;12
+RAD083;Céur radio simple;;12
+RAD084;Urethrocystographie retrograde (URC);;12
+RAD085;Pangonogramme;;12
+RAD086;Saccoradiculographie;;12
+RAD087;Poumon (Pulmonaire) face;;12
+RAD088;Thorax Face et Profil;;12
+RAD089;Poumon (Pulmonaire) profil;;12
+RAD090;Poumon (Pulmonaire) Face et Profil;;12
+RAD091;Crane  face et profil;;12
+RAD092;Sinus blondeau (profil);;12
+RAD093;Sinus blondeau (face et profil);;12
+RAD094;Os propre du Nez (OPN) Face;;12
+RAD095;Os propre du Nez (OPN) Face et profil;;12
+RAD096;Articulation temporo-maxillaire (Face et  Profil);;12
+RAD097;Abdomen sans préparation / ASP (profil);;12
+RAD098;Cervico-Lombaire;;12
+RAD099;Mammographie + Echographie mammaire;;12
+RAD100;Cervico-Dorsal;;12
+RAD101;2 genoux (face et profil);;12
+RAD102;2 bras;;12
+RAD103;2 chevilles ;;12
+RAD104;2 avant-bras;;12
+RAD105;Sel turcique;;12
+RAD106;2 Doigts (face + profil );;12
+RAD107;Bassin face et profil;;12
+RAD108;Dorso-Lombaire;;12
+RAD109;Lombaire F +P + 3/4 * 2 (Radio dynamique du Rachis Lombaire);;12
+RAD110;Dorsal (Face et profil);;12
+RAD111;Orteil (face);;12
+RAD112;Orteil (profil);;12
+RAD113;Orteil ( face et profil );;12
+RAD114;Maxillaire  mendibule (Face et  Profil);;12
+RAD115;Main Face et Profil;;12
+SCA001;SCANNER CEREBRAL;SCANNER CEREBRAL;16
+SCA002;SCANNER LOMBAIRE;SCANNER LOMBAIRE;16
+SCA003;SCANNER  DORSAL;SCANNER  DORSAL;16
+SCA004;SCANNER CERVICAL;SCANNER CERVICAL;16
+SCA005;SCANNER 2 org (céré + rachis);SCANNER 2 org (céré + rachis);16
+SCA006;SCANNER 2 org ( 2 rachis);SCANNER 2 org ( 2 rachis);16
+SCA007;SCANNER CORPS ENTIER;SCANNER CORPS ENTIER;16
+SCA008;ANGIO SCANNER;ANGIO SCANNER;16
+SCA009;MYELOSCANNER;MYELOSCANNER;16
+SCA010;PELVISCAN;PELVISCAN;16
+SCA012;SCANNER (Genou, hanches);SCANNER (Genou, hanches ,,,);16
+SCA013;SCANNER 3 org (céré + 2rachis);SCANNER 3 org (céré + 2rachis);16
+SCA014;SCANNER 3 org ( 3 rachis);SCANNER 3 org ( 3 rachis);16
+SCA015;SCANNER THORACIQUE;SCANNER THORACIQUE;16
+SCA016;SCANNER ABDOMINAL;SCANNER ABDOMINALE;16
+SCA017;SCANNER EPAULE;SCANNER EPAULE;16
+SCA018;SCANNER POIGNET;SCANNER POIGNET;16
+SCA019;SCANNER MAIN;SCANNER MAIN;16
+SCA020;SCANNER BRAS;SCANNER BRAS;16
+SCA021;SCANNER AVANT-BRAS;SCANNER AVANT-BRAS;16
+SCA022;SCANNER CUISSE;SCANNER CUISSE;16
+SCA023;SCANNER JAMBE;SCANNER JAMBE;16
+SCA024;SCANNER PIED;SCANNER PIED;16
+SCA025;SCANNER CHEVILLE;SCANNER CHEVILLE;16
+SCA026;SCANNER COUDE;SCANNER COUDE;16
+SCA027;SCANNER Cervico-Dorsale;SCANNER Cervico-Dorsale;16
+SCA028;SCANNER Dorso-lombaire;SCANNER Dorso-lombaire;16
+SCA029;SCANNER Cervico-Lombaire;SCANNER Cervico-Lombaire;16
+SCA030;SCANNER du Bassin;SCANNER du Bassin;16
+SCA031;SCANNER Abdomino-pelvienne ;SCANNER Abdomino-pelvienne ;16
+SCA034;SCANNER thoraco-abdominal;SCANNER Abdomino-pelvienne ;16
+SCA035;PRODUIT DE CONTRASTE;SCANNER CEREBRAL;16
+SCA036;SCANNER PELVIENNE;SCANNER PELVIENNE;16

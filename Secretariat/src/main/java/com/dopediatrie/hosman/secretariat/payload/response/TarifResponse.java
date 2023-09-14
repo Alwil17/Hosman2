@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TarifResponse {
     private long id;
-    private String designation;
     private double tarif_non_assure;
     private double tarif_etr_non_assure;
     private double tarif_assur_locale;
@@ -19,5 +18,4 @@ public class TarifResponse {
     private double tarif_assur_hors_zone;
     private long structure_id;
     private long sous_acte_id;
-    private String description;
 }

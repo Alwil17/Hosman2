@@ -13,5 +13,9 @@ public class ActeResponse {
     private long id;
     private String libelle;
     private String slug;
+    private String code;
+    private int position;
+    private String couleur;
+    private boolean show_acte;
     private long structure_id;
 }

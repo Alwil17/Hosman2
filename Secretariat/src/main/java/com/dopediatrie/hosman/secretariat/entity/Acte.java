@@ -20,6 +20,10 @@ public class Acte {
     private long id;
     private String libelle;
     private String slug;
+    private String code;
+    private int position = 0;
+    private String couleur = "white";
+    private boolean show_acte = true;
     private long structure_id;
     @OneToMany(mappedBy = "acte")
     @JsonIgnore

@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
+import com.dopediatrie.hosman.secretariat.entity.Acte;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class SousActeResponse {
     private String libelle;
     private String slug;
     private String code;
-    private Long acte_id;
+    private String description;
+    private Acte acte;
 }

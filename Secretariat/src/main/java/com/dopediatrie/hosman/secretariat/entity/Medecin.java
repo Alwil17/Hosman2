@@ -19,7 +19,6 @@ public class Medecin {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-    private String reference;
     private String nom;
     private String prenoms;
     private LocalDateTime date_naissance;

@@ -30,9 +30,9 @@ public class PatientRequest {
     private AdresseRequest adresse;
     private AssuranceRequest assurance;
 
-    private double taux = 0;
-    private Date date_debut;
-    private Date date_fin;
+    private double taux_assurance = 0;
+    private Date date_debut_assurance;
+    private Date date_fin_assurance;
 
     private long structure_id = 1;
 }

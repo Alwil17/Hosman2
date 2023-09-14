@@ -11,6 +11,8 @@ public interface SousActeService {
 
     long addSousActe(SousActeRequest sousActeRequest);
 
+    void addSousActe(List<SousActeRequest> sousActeRequests);
+
     SousActeResponse getSousActeById(long sousActeId);
 
     void editSousActe(SousActeRequest sousActeRequest, long sousActeId);

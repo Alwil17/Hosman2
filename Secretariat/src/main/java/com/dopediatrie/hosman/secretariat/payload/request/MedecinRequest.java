@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class MedecinRequest {
-    private String reference = "";
     private String nom;
     private String prenoms;
     private LocalDateTime date_naissance = LocalDateTime.now();

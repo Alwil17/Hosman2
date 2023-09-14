@@ -22,6 +22,7 @@ public class SousActe {
     private String libelle;
     private String slug;
     private String code;
+    private String description;
     @ManyToOne
     @JoinColumn(name = "acte_id")
     private Acte acte;

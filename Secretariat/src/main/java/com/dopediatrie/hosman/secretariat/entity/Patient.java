@@ -70,9 +70,9 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "assurance_id")
     private Assurance assurance;
-    private double taux;
-    private Date date_debut;
-    private Date date_fin;
+    private double taux_assurance;
+    private Date date_debut_assurance;
+    private Date date_fin_assurance;
 
     @Override
     public String toString() {
@@ -99,9 +99,9 @@ public class Patient {
                 ", structure_id=" + structure_id +
                 ", adresse=" + adresse +
                 ", assurance=" + assurance +
-                ", taux=" + taux +
-                ", date_debut=" + date_debut +
-                ", date_fin=" + date_fin +
+                ", taux_assurance=" + taux_assurance +
+                ", date_debut_assurance=" + date_debut_assurance +
+                ", date_fin_assurance=" + date_fin_assurance +
                 '}';
     }
 }

@@ -34,7 +34,6 @@ public class TarifServiceImpl implements TarifService {
 
         Tarif tarif
                 = Tarif.builder()
-                .designation(tarifRequest.getDesignation())
                 .tarif_non_assure(tarifRequest.getTarif_non_assure())
                 .tarif_etr_non_assure(tarifRequest.getTarif_etr_non_assure())
                 .tarif_assur_locale(tarifRequest.getTarif_assur_locale())
@@ -42,7 +41,6 @@ public class TarifServiceImpl implements TarifService {
                 .tarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone())
                 .structure_id(tarifRequest.getStructure_id())
                 .sous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get())
-                .description(tarifRequest.getDescription())
                 .build();
 
         tarif = tarifRepository.save(tarif);
@@ -81,7 +79,6 @@ public class TarifServiceImpl implements TarifService {
                         "Tarif with given Id not found",
                         NOT_FOUND
                 ));
-        tarif.setDesignation(tarifRequest.getDesignation());
         tarif.setTarif_non_assure(tarifRequest.getTarif_non_assure());
         tarif.setTarif_etr_non_assure(tarifRequest.getTarif_etr_non_assure());
         tarif.setTarif_assur_locale(tarifRequest.getTarif_assur_locale());
@@ -89,7 +86,6 @@ public class TarifServiceImpl implements TarifService {
         tarif.setTarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone());
         tarif.setStructure_id(tarifRequest.getStructure_id());
         tarif.setSous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get());
-        tarif.setDescription(tarifRequest.getDescription());
         tarifRepository.save(tarif);
 
         log.info("TarifServiceImpl | editTarif | Tarif Updated");
