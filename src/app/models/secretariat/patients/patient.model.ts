@@ -26,9 +26,9 @@ export interface IPatient {
   adresse: Address;
   pays_origine: Country;
   assurance?: Insurance;
-  taux?: number;
-  date_debut?: Date;
-  date_fin?: Date;
+  taux_assurance?: number;
+  date_debut_assurance?: Date;
+  date_fin_assurance?: Date;
   // patient_assurance?: PatientInsurance;
   nationalite?: Country;
   lieu_naissance?: string;
@@ -52,9 +52,9 @@ export class Patient {
   adresse: Address;
   pays_origine: Country;
   assurance?: Insurance;
-  taux?: number;
-  date_debut?: Date;
-  date_fin?: Date;
+  taux_assurance?: number;
+  date_debut_assurance?: Date;
+  date_fin_assurance?: Date;
   // patient_assurance?: PatientInsurance;
   nationalite?: Country;
   lieu_naissance?: string;
@@ -78,9 +78,9 @@ export class Patient {
     this.adresse = iPatient.adresse;
     this.pays_origine = iPatient.pays_origine;
     this.assurance = iPatient.assurance;
-    this.taux = iPatient.taux;
-    this.date_debut = iPatient.date_debut;
-    this.date_fin = iPatient.date_fin;
+    this.taux_assurance = iPatient.taux_assurance;
+    this.date_debut_assurance = iPatient.date_debut_assurance;
+    this.date_fin_assurance = iPatient.date_fin_assurance;
     // this.patient_assurance = iPatient.patient_assurance;
     this.nationalite = iPatient.nationalite;
     this.lieu_naissance = iPatient.lieu_naissance;
@@ -141,9 +141,9 @@ export class Patient {
       assurance: patient.assurance
         ? Insurance.fromResponse(patient.assurance)
         : undefined,
-      taux: patient.taux,
-      date_debut: patient.date_debut,
-      date_fin: patient.date_fin,
+      taux_assurance: patient.taux_assurance,
+      date_debut_assurance: patient.date_debut_assurance,
+      date_fin_assurance: patient.date_fin_assurance,
       // patient_assurance: patient.patient_assurance
       //   ? PatientInsurance.fromResponse(patient.patient_assurance)
       //   : undefined,

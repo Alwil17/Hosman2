@@ -81,7 +81,9 @@
             <h5>
               <b class="ms-4"> Taux de prise en charge : </b>
               <b class="text-secondary">{{
-                selectedPatient.taux ? selectedPatient.taux + " %" : "-"
+                selectedPatient.taux_assurance
+                  ? selectedPatient.taux_assurance + " %"
+                  : "-"
               }}</b>
             </h5>
 

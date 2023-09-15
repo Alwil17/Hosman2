@@ -20,9 +20,9 @@ export interface PatientResponse {
   adresse: AddressResponse;
   pays_origine: CountryResponse;
   assurance?: InsuranceResponse;
-  taux?: number;
-  date_debut?: Date;
-  date_fin?: Date;
+  taux_assurance?: number;
+  date_debut_assurance?: Date;
+  date_fin_assurance?: Date;
   // patient_assurance?: PatientInsuranceResponse;
   nationalite?: CountryResponse;
   lieu_naissance?: string;

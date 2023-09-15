@@ -175,7 +175,7 @@ export class PatientService {
     //   (value) => value.patient_id == this.activePatient.id
     // );
 
-    return this.activePatient?.taux ?? 0;
+    return this.activePatient?.taux_assurance ?? 0;
   }
 
   getAll(): Observable<Patient[]> {

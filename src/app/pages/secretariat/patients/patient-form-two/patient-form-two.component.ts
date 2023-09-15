@@ -531,9 +531,9 @@ export class PatientFormTwoComponent implements OnInit {
         : undefined,
       adresse: this.patientAddressData,
       assurance: insurance,
-      taux: patientInsurance.taux,
-      date_debut: patientInsurance.date_debut,
-      date_fin: patientInsurance.date_fin,
+      taux_assurance: patientInsurance.taux,
+      date_debut_assurance: patientInsurance.date_debut,
+      date_fin_assurance: patientInsurance.date_fin,
     };
     console.log(patient);
 

@@ -19,9 +19,9 @@ export interface IPatientRequest {
   // pays_origine: CountryRequest;
   pays_origine_id: number;
   assurance?: InsuranceRequest;
-  taux?: number;
-  date_debut?: Date;
-  date_fin?: Date;
+  taux_assurance?: number;
+  date_debut_assurance?: Date;
+  date_fin_assurance?: Date;
   // patient_assurance?: PatientInsuranceRequest;
   // nationalite?: CountryRequest;
   nationalite_id?: number;
@@ -47,9 +47,9 @@ export class PatientRequest {
   // pays_origine: CountryRequest;
   pays_origine_id: number;
   assurance?: InsuranceRequest;
-  taux?: number;
-  date_debut?: Date;
-  date_fin?: Date;
+  taux_assurance?: number;
+  date_debut_assurance?: Date;
+  date_fin_assurance?: Date;
   // patient_assurance?: PatientInsuranceRequest;
   // nationalite?: CountryRequest;
   nationalite_id?: number;
@@ -74,9 +74,9 @@ export class PatientRequest {
     this.adresse = iPatientRequest.adresse;
     this.pays_origine_id = iPatientRequest.pays_origine_id;
     this.assurance = iPatientRequest.assurance;
-    this.taux = iPatientRequest.taux;
-    this.date_debut = iPatientRequest.date_debut;
-    this.date_fin = iPatientRequest.date_fin;
+    this.taux_assurance = iPatientRequest.taux_assurance;
+    this.date_debut_assurance = iPatientRequest.date_debut_assurance;
+    this.date_fin_assurance = iPatientRequest.date_fin_assurance;
     // this.patient_assurance = iPatientRequest.patient_assurance;
     this.nationalite_id = iPatientRequest.nationalite_id;
     this.lieu_naissance = iPatientRequest.lieu_naissance;
