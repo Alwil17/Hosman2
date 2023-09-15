@@ -20,7 +20,6 @@
           <button
             type="button"
             class="btn btn-warning btn-label waves-effect waves-light"
-            (click)="showToast()"
           >
             <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
             Modifier
@@ -142,7 +141,10 @@
         </div>
 
         <ng-template #infoUnavailable>
-          <h4>Informations patient indisponibles</h4>
+          <h4>
+            Informations patient indisponibles. Veuillez retourner à la liste
+            des anciens patients.
+          </h4>
         </ng-template>
       </div>
       <!-- end card-body -->

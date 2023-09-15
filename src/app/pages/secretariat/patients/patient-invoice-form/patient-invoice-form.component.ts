@@ -25,6 +25,8 @@ import { DebtRequest } from "src/app/models/secretariat/patients/requests/debt-r
 import { parseIntOrZero } from "src/app/helpers/parsers";
 import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-modal.component";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -90,7 +92,7 @@ export class PatientInvoiceFormComponent implements OnInit {
   paymentCardControl = new FormControl({ value: "0", disabled: true });
   paymentChequeControl = new FormControl({ value: "0", disabled: true });
 
-  invoiceForm?: FormGroup;
+  invoiceForm!: FormGroup;
 
   isInvoiceFormSubmitted = false;
 
@@ -99,7 +101,8 @@ export class PatientInvoiceFormComponent implements OnInit {
     public patientService: PatientService,
     private waitingListService: WaitingListService,
     private invoiceService: InvoiceService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -439,6 +442,16 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   validatePayment() {
     this.isInvoiceFormSubmitted = true;
+
+    if (!this.invoiceForm?.valid) {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
     console.log("Validate payment");
 
     const wlItem = new WaitingListItem(
@@ -559,15 +572,37 @@ export class PatientInvoiceFormComponent implements OnInit {
       next: (data) => {
         console.log(data);
 
+        this.toastService.show({
+          message: "Paiement enregistré.",
+          type: ToastType.Success,
+        });
+
         this.waitingListService.create(wlItem).subscribe({
           next: (data) => {
             console.log(data, "\nHere");
+
+            this.toastService.show({
+              message: "Patient envoyé en liste d'attente.",
+              type: ToastType.Success,
+            });
           },
-          error: (e) => console.error(e),
+          error: (e) => {console.error(e)
+          
+            this.toastService.show({
+              message: "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
         });
 
         this.invoiceService.loadPdf(data).subscribe({
           next: (data) => {
+            this.toastService.show({
+              message: "Génération du reçu.",
+              type: ToastType.Success,
+            });
+
             const pdfModalRef = this.modalService.open(PdfModalComponent, {
               size: "xl",
               centered: true,
@@ -578,11 +613,24 @@ export class PatientInvoiceFormComponent implements OnInit {
             pdfModalRef.componentInstance.title = "Reçu";
             pdfModalRef.componentInstance.pdfSrc = data;
           },
-          error: (e) => console.error(e),
+          error: (e) => {console.error(e)
+          
+            this.toastService.show({
+              message: "Echec de la génération du reçu.",
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
         });
       },
       error: (e) => {
         console.error(e);
+
+        this.toastService.show({
+          message: "Paiement non enregistré.",
+          delay: 10000,
+          type: ToastType.Error,
+        });
       },
     });
   }

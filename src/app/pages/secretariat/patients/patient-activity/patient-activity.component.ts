@@ -168,10 +168,6 @@ export class PatientActivityComponent implements OnInit {
     this.refreshActivities();
   }
 
-  showToast() {
-    this.toastService.show({title: 'Titre', message: 'Message', type: ToastType.Warning})
-  }
-
   ngOnInit(): void {
     /**
      * BreadCrumb
@@ -506,44 +502,61 @@ export class PatientActivityComponent implements OnInit {
   openInvoiceModal() {
     this.isActivityFormSubmitted = true;
 
-    if (this.activityForm.valid) {
-      // if (!this.invoiceModalRef) {
-      const invoiceModalRef = this.modalService.open(
-        PatientInvoiceFormComponent,
-        {
-          size: "xl",
-          centered: true,
-          scrollable: true,
-          backdrop: "static",
-        }
-      );
-      // }
+    if (!this.activityForm.valid) {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
 
-      const prestation = new Prestation(
-        1,
-        this.sectorControl.value
-          ? this.sectors[parseInt(this.sectorControl.value.id)].text
-          : "",
-        this.consultingDoctorControl.value
-          ? this.consultingDoctors[
-              parseInt(this.consultingDoctorControl.value.id)
-            ].text
-          : "",
-        new Date(),
-        this.originControl.value ?? "PISJO",
-        this.doctorTypeControl.value
-          ? this.doctorTypes[parseInt(this.doctorTypeControl.value)].text
-          : "",
-        this.doctorControl.value
-          ? this.doctors[parseInt(this.doctorControl.value)].text
-          : "",
-        this.performedByControl.value
-          ? this.performedBys[parseInt(this.performedByControl.value)].text
-          : ""
-      );
-
-      invoiceModalRef.componentInstance.patientActivities = this.table2;
-      invoiceModalRef.componentInstance.patientPrestationInfo = prestation;
+      return;
     }
+
+    if (this.table2.length === 0) {
+      this.toastService.show({
+        message:
+          "Veuillez choisir au moins un élément dans le tableau de gauche.",
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
+    // if (!this.invoiceModalRef) {
+    const invoiceModalRef = this.modalService.open(
+      PatientInvoiceFormComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+    // }
+
+    const prestation = new Prestation(
+      1,
+      this.sectorControl.value
+        ? this.sectors[parseInt(this.sectorControl.value.id)].text
+        : "",
+      this.consultingDoctorControl.value
+        ? this.consultingDoctors[
+            parseInt(this.consultingDoctorControl.value.id)
+          ].text
+        : "",
+      new Date(),
+      this.originControl.value ?? "PISJO",
+      this.doctorTypeControl.value
+        ? this.doctorTypes[parseInt(this.doctorTypeControl.value)].text
+        : "",
+      this.doctorControl.value
+        ? this.doctors[parseInt(this.doctorControl.value)].text
+        : "",
+      this.performedByControl.value
+        ? this.performedBys[parseInt(this.performedByControl.value)].text
+        : ""
+    );
+
+    invoiceModalRef.componentInstance.patientActivities = this.table2;
+    invoiceModalRef.componentInstance.patientPrestationInfo = prestation;
   }
 }

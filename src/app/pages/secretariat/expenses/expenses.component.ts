@@ -9,6 +9,8 @@ import { PersonFormComponent } from "./person-form/person-form.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { parseIntOrZero } from "src/app/helpers/parsers";
 import { ExpenseRubricRequest } from "src/app/models/secretariat/activities/requests/expense-rubric-request.model";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 
 @Component({
   selector: "app-expenses",
@@ -89,7 +91,8 @@ export class ExpensesComponent implements OnInit {
 
   constructor(
     private expenseService: ExpenseService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -174,10 +177,22 @@ export class ExpensesComponent implements OnInit {
       next: (data) => {
         this.expenseList = data;
 
+        this.toastService.show({
+          message: "Rafraîchissement de la liste.",
+          type: ToastType.Success,
+        });
+
         this.refreshExpenses();
       },
       error: (error) => {
         console.error(error);
+
+        this.toastService.show({
+          message:
+            "Une erreur s'est produite lors du rafraîchissment de la liste.",
+          delay: 10000,
+          type: ToastType.Error,
+        });
       },
     });
   }
@@ -196,6 +211,15 @@ export class ExpensesComponent implements OnInit {
   registerExpense() {
     this.isExpenseFormSubmitted = true;
 
+    if (!this.expenseForm.valid) {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
     console.log(JSON.stringify(this.expenseForm.value, null, 2));
     const date = new Date();
     const time = (this.timeOfExpenseControl.value as string).split(":");
@@ -203,27 +227,37 @@ export class ExpensesComponent implements OnInit {
     date.setMinutes(parseInt(time[1]));
     console.log(date);
 
-    if (this.expenseForm.valid) {
-      const expense = new ExpenseRequest({
-        date_depense: date,
-        beneficiaire: this.personToContactData,
-        montant: parseIntOrZero(this.amountControl.value),
-        motif: this.designationControl.value,
-        rubrique: new ExpenseRubricRequest({
-          nom: this.rubricControl.value.text,
-        }),
-        recu: parseIntOrZero(this.checkoutReceiptControl.value.id) == 1 ? 0 : 1,
-      });
+    const expense = new ExpenseRequest({
+      date_depense: date,
+      beneficiaire: this.personToContactData,
+      montant: parseIntOrZero(this.amountControl.value),
+      motif: this.designationControl.value,
+      rubrique: new ExpenseRubricRequest({
+        nom: this.rubricControl.value.text,
+      }),
+      recu: parseIntOrZero(this.checkoutReceiptControl.value.id) == 1 ? 0 : 1,
+    });
 
-      this.expenseService.create(expense).subscribe({
-        next: (data) => {
-          console.log(data);
+    this.expenseService.create(expense).subscribe({
+      next: (data) => {
+        console.log(data);
 
-          this.refreshExpenseList();
-        },
-        error: (e) => console.error(e),
-      });
-    }
+        this.toastService.show({
+          message: "Dépense enregistrée avec succès.",
+          type: ToastType.Success,
+        });
+
+        this.refreshExpenseList();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 
   deleteExpense(id: any) {
@@ -231,9 +265,21 @@ export class ExpensesComponent implements OnInit {
       next: (data) => {
         console.log("Deleted expense");
 
+        this.toastService.show({
+          message: "Dépense supprimée.",
+          type: ToastType.Success,
+        });
+
         this.refreshExpenseList();
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
     });
   }
 }

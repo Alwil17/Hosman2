@@ -35,6 +35,8 @@ import { CountryService } from "src/app/services/secretariat/patients/country.se
 import { ProfessionService } from "src/app/services/secretariat/patients/profession.service";
 import { EmployerService } from "src/app/services/secretariat/patients/employer.service";
 import { InsuranceTypeService } from "src/app/services/secretariat/patients/insurance-type.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 
 @Component({
   selector: "app-patient-form-two",
@@ -140,7 +142,8 @@ export class PatientFormTwoComponent implements OnInit {
     private insuranceTypeService: InsuranceTypeService,
     private countryService: CountryService,
     private professionService: ProfessionService,
-    private employerService: EmployerService
+    private employerService: EmployerService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -587,7 +590,7 @@ export class PatientFormTwoComponent implements OnInit {
   //   };
   // }
 
-  async registerPatientAndLeave() {
+  registerPatientAndLeave() {
     this.isPatientInfoFormSubmitted = true;
 
     if (this.patientInfoForm.valid) {
@@ -596,30 +599,64 @@ export class PatientFormTwoComponent implements OnInit {
       console.log(JSON.stringify(patientData));
 
       this.patientService.registerPatient(patientData).subscribe({
-        next: (data) => {
+        next: async (data) => {
           console.log(data, "\nHere");
-        },
-        error: (e) => console.error(e),
-      });
 
-      // await this.secretariatRouter.navigateToPatientList();
+          this.toastService.show({
+            message: "Le patient a été enregistré avec succès.",
+            type: ToastType.Success,
+          });
+
+          await this.secretariatRouter.navigateToPatientList();
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
+    } else {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
     }
   }
 
-  async registerPatientAndContinue() {
+  registerPatientAndContinue() {
     this.isPatientInfoFormSubmitted = true;
 
     if (this.patientInfoForm.valid) {
       const patientData = this.getPatientFormData();
 
       this.patientService.registerPatient(patientData).subscribe({
-        next: (data) => {
+        next: async (data) => {
           console.log(data, "\nHere");
-        },
-        error: (e) => console.error(e),
-      });
 
-      await this.secretariatRouter.navigateToPatientActivity();
+          this.toastService.show({
+            message: "Le patient a été enregistré avec succès.",
+            type: ToastType.Success,
+          });
+
+          await this.secretariatRouter.navigateToPatientActivity();
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
+    } else {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
     }
   }
 }

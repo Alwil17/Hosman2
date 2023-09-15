@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { parseIntOrZero } from "src/app/helpers/parsers";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 import { CollectionRequest } from "src/app/models/secretariat/activities/requests/collection-request.model";
 import { CollectionService } from "src/app/services/secretariat/activities/collection.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 @Component({
   selector: "app-collections",
@@ -30,7 +32,10 @@ export class CollectionsComponent implements OnInit {
   paymentCardControl = new FormControl({ value: "0", disabled: true });
   paymentChequeControl = new FormControl({ value: "0", disabled: true });
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(
+    private collectionService: CollectionService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -87,6 +92,17 @@ export class CollectionsComponent implements OnInit {
   }
 
   registerCollection() {
+    this.isCollectionFormSubmitted = true;
+
+    if (!this.collectionForm.valid) {
+      this.toastService.show({
+        message: "Veuillez renseigner tous les champs obligatoires.",
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
     const cashAmount = parseIntOrZero(this.paymentCashControl.value);
     const cardAmount = parseIntOrZero(this.paymentCardControl.value);
     const chequeAmount = parseIntOrZero(this.paymentChequeControl.value);
@@ -115,7 +131,7 @@ export class CollectionsComponent implements OnInit {
     const collection = new CollectionRequest({
       provenance: "Hospitalisation Comptabilité",
       date_encaissement: new Date(this.dateOfCollectionControl.value),
-      mode_payements: paymentModes
+      mode_payements: paymentModes,
       // [
       //   {
       //     mode_payement_id: 2,
@@ -135,8 +151,20 @@ export class CollectionsComponent implements OnInit {
     this.collectionService.create(collection).subscribe({
       next: (data) => {
         console.log(data);
+
+        this.toastService.show({
+          message: "Encaissement enregistré.",
+          type: ToastType.Success,
+        });
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
     });
   }
 }
