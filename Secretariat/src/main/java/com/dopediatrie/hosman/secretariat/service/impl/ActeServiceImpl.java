@@ -5,6 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.ActeRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.ActeResponse;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
+import com.dopediatrie.hosman.secretariat.repository.GroupeRepository;
 import com.dopediatrie.hosman.secretariat.service.ActeService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class ActeServiceImpl implements ActeService {
     private final ActeRepository acteRepository;
+    private final GroupeRepository groupeRepository;
     private final String NOT_FOUND = "ACTE_NOT_FOUND";
 
     @Override
@@ -35,6 +37,7 @@ public class ActeServiceImpl implements ActeService {
                 = Acte.builder()
                 .libelle(acteRequest.getLibelle())
                 .slug(Str.slug(acteRequest.getLibelle()))
+                .groupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow())
                 .structure_id(acteRequest.getStructure_id())
                 .build();
 
@@ -55,7 +58,7 @@ public class ActeServiceImpl implements ActeService {
                     .libelle(acteRequest.getLibelle())
                     .slug(Str.slug(acteRequest.getLibelle()))
                     .code(acteRequest.getCode())
-                    .position(acteRequest.getPosition())
+                    .groupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow())
                     .structure_id(acteRequest.getStructure_id())
                     .build();
             acteRepository.save(acte);
@@ -96,9 +99,7 @@ public class ActeServiceImpl implements ActeService {
         acte.setLibelle(acteRequest.getLibelle());
         acte.setSlug(Str.slug(acteRequest.getLibelle()));
         acte.setCode(acteRequest.getCode());
-        acte.setCouleur(acteRequest.getCouleur());
-        acte.setPosition(acteRequest.getPosition());
-        acte.setShow_acte(acteRequest.isShow_acte());
+        acte.setGroupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow());
         acte.setStructure_id(acteRequest.getStructure_id());
         acteRepository.save(acte);
 

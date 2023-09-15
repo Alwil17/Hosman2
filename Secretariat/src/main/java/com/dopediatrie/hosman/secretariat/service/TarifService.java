@@ -11,6 +11,8 @@ public interface TarifService {
 
     long addTarif(TarifRequest tarifRequest);
 
+    void addTarif(List<TarifRequest> tarifRequest);
+
     TarifResponse getTarifById(long tarifId);
 
     void editTarif(TarifRequest tarifRequest, long tarifId);

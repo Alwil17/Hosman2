@@ -14,21 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SousActe {
-
+public class Groupe {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private long id;
     private String libelle;
     private String slug;
-    private String code;
-    private String description;
-    @ManyToOne
-    @JoinColumn(name = "acte_id")
-    private Acte acte;
-    @OneToMany(mappedBy = "sous_acte")
-    @JsonIgnore
-    private List<Tarif> tarifs;
-
-
+    private int position = 0;
+    private String couleur = "white";
+    private long structure_id;
+    @OneToMany(mappedBy = "groupe")
+    private List<Acte> actes;
 }

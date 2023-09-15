@@ -4,9 +4,10 @@ import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
-import com.dopediatrie.hosman.secretariat.repository.SousActeRepository;
+import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
 import com.dopediatrie.hosman.secretariat.service.TarifService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class TarifServiceImpl implements TarifService {
     private final TarifRepository tarifRepository;
-    private final SousActeRepository sousActeRepository;
+    private final ActeRepository acteRepository;
     private final String NOT_FOUND = "ACTE_NOT_FOUND";
 
     @Override
@@ -34,13 +35,17 @@ public class TarifServiceImpl implements TarifService {
 
         Tarif tarif
                 = Tarif.builder()
+                .libelle(tarifRequest.getLibelle())
+                .slug(Str.slug(tarifRequest.getLibelle()))
+                .code(tarifRequest.getCode())
+                .description(tarifRequest.getDescription())
                 .tarif_non_assure(tarifRequest.getTarif_non_assure())
                 .tarif_etr_non_assure(tarifRequest.getTarif_etr_non_assure())
                 .tarif_assur_locale(tarifRequest.getTarif_assur_locale())
                 .tarif_assur_etr(tarifRequest.getTarif_assur_etr())
                 .tarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone())
                 .structure_id(tarifRequest.getStructure_id())
-                .sous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get())
+                .acte(acteRepository.findById(tarifRequest.getActe_id()).get())
                 .build();
 
         tarif = tarifRepository.save(tarif);
@@ -48,6 +53,32 @@ public class TarifServiceImpl implements TarifService {
         log.info("TarifServiceImpl | addTarif | Tarif Created");
         log.info("TarifServiceImpl | addTarif | Tarif Id : " + tarif.getId());
         return tarif.getId();
+    }
+
+    @Override
+    public void addTarif(List<TarifRequest> tarifRequests) {
+        log.info("TarifServiceImpl | addTarifs is called");
+
+        for (TarifRequest tarifRequest : tarifRequests) {
+            Tarif tarif
+                    = Tarif.builder()
+                    .libelle(tarifRequest.getLibelle())
+                    .slug(Str.slug(tarifRequest.getLibelle()))
+                    .code(tarifRequest.getCode())
+                    .description(tarifRequest.getDescription())
+                    .tarif_non_assure(tarifRequest.getTarif_non_assure())
+                    .tarif_etr_non_assure(tarifRequest.getTarif_etr_non_assure())
+                    .tarif_assur_locale(tarifRequest.getTarif_assur_locale())
+                    .tarif_assur_etr(tarifRequest.getTarif_assur_etr())
+                    .tarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone())
+                    .structure_id(tarifRequest.getStructure_id())
+                    .acte(acteRepository.findById(tarifRequest.getActe_id()).get())
+                    .build();
+
+            tarifRepository.save(tarif);
+        }
+
+        log.info("TarifServiceImpl | addTarifs | Tarifs Created");
     }
 
     @Override
@@ -79,13 +110,17 @@ public class TarifServiceImpl implements TarifService {
                         "Tarif with given Id not found",
                         NOT_FOUND
                 ));
+        tarif.setLibelle(tarifRequest.getLibelle());
+        tarif.setSlug(Str.slug(tarifRequest.getLibelle()));
+        tarif.setCode(tarifRequest.getCode());
+        tarif.setDescription(tarifRequest.getDescription());
         tarif.setTarif_non_assure(tarifRequest.getTarif_non_assure());
         tarif.setTarif_etr_non_assure(tarifRequest.getTarif_etr_non_assure());
         tarif.setTarif_assur_locale(tarifRequest.getTarif_assur_locale());
         tarif.setTarif_assur_etr(tarifRequest.getTarif_assur_etr());
         tarif.setTarif_assur_hors_zone(tarifRequest.getTarif_assur_hors_zone());
         tarif.setStructure_id(tarifRequest.getStructure_id());
-        tarif.setSous_acte(sousActeRepository.findById(tarifRequest.getSous_acte_id()).get());
+        tarif.setActe(acteRepository.findById(tarifRequest.getActe_id()).get());
         tarifRepository.save(tarif);
 
         log.info("TarifServiceImpl | editTarif | Tarif Updated");

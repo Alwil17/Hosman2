@@ -6,11 +6,15 @@ import lombok.Data;
 @Data
 @Builder
 public class TarifRequest {
+    private String libelle;
+    private String slug;
+    private String code;
+    private String description;
     private double tarif_non_assure = 0;
     private double tarif_etr_non_assure = 0;
     private double tarif_assur_locale = 0;
     private double tarif_assur_etr = 0;
     private double tarif_assur_hors_zone = 0;
     private long structure_id = 1;
-    private long sous_acte_id;
+    private long acte_id;
 }

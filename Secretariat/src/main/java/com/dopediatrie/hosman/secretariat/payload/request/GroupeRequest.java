@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class SousActeRequest {
+public class GroupeRequest {
     private String libelle;
-    private String code;
-    private String description;
-    private long acte_id;
+    private int position = 0;
+    private String couleur = "white";
+    private long structure_id = 1;
 }

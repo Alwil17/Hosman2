@@ -1,10 +1,15 @@
 package com.dopediatrie.hosman.secretariat.seeders;
 
 import com.dopediatrie.hosman.secretariat.entity.Acte;
+import com.dopediatrie.hosman.secretariat.entity.Groupe;
 import com.dopediatrie.hosman.secretariat.payload.request.ActeRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.SousActeRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.GroupeRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
+import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.service.ActeService;
-import com.dopediatrie.hosman.secretariat.service.SousActeService;
+import com.dopediatrie.hosman.secretariat.service.GroupeService;
+import com.dopediatrie.hosman.secretariat.service.TarifService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,49 +35,54 @@ public class DatabaseSeeder {
     private JdbcTemplate jdbcTemplate;
 
     private final ActeService acteService;
-    private final SousActeService sousActeService;
+    private final GroupeService groupeService;
+    private final TarifService tarifService;
+    private final ActeRepository acteRepository;
 
     @Autowired
-    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, SousActeService sousActeService) {
+    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, TarifService tarifService, ActeRepository acteRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
-        this.sousActeService = sousActeService;
+        this.groupeService = groupeService;
+        this.tarifService = tarifService;
+        this.acteRepository = acteRepository;
     }
 
     @EventListener
     public void seed(ContextRefreshedEvent event) {
+        seedGroupeTable();
         seedActeTable();
-        seedSousActeTable();
+        seedTarifTable();
     }
 
     private void seedActeTable() {
         String sql = "SELECT c.libelle FROM acte c";
         List<Acte> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
-            ActeRequest ar1 = ActeRequest.builder().libelle("Consultations").code("cons").position(0).structure_id(1).build();
-            ActeRequest ar2 = ActeRequest.builder().libelle("Actes en K").code("ActeK").position(1).structure_id(1).build();
-            ActeRequest ar3 = ActeRequest.builder().libelle("Contrôle").code("Cont").position(2).structure_id(1).build();
-            ActeRequest ar4 = ActeRequest.builder().libelle("Vaccinations").code("Vacc").position(3).structure_id(1).build();
-            ActeRequest ar5 = ActeRequest.builder().libelle("Injections").code("Vacc").position(4).structure_id(1).build();
-            ActeRequest ar6 = ActeRequest.builder().libelle("Pansements").code("Pans").position(5).structure_id(1).build();
-            ActeRequest ar7 = ActeRequest.builder().libelle("Kinésithérapie").code("kine").position(6).structure_id(1).build();
-            ActeRequest ar8 = ActeRequest.builder().libelle("Prise de sang").code("Ps").position(7).structure_id(1).build();
-            ActeRequest ar9 = ActeRequest.builder().libelle("Prélèvement Vaginal").code("PV").position(8).structure_id(1).build();
-            ActeRequest ar10 = ActeRequest.builder().libelle("IDR").code("idr").position(9).structure_id(1).build();
-            ActeRequest ar11 = ActeRequest.builder().libelle("Soins").code("Soin").position(10).structure_id(1).build();
-            ActeRequest ar12 = ActeRequest.builder().libelle("Radiographie").code("radio").position(11).structure_id(1).build();
-            ActeRequest ar13 = ActeRequest.builder().libelle("Echographie").code("echo").position(12).structure_id(1).build();
-            ActeRequest ar14 = ActeRequest.builder().libelle("ECG").code("ecg").position(13).structure_id(1).build();
-            ActeRequest ar15 = ActeRequest.builder().libelle("EEG").code("eeg").position(14).structure_id(1).build();
-            ActeRequest ar16 = ActeRequest.builder().libelle("Scanners").code("scan").position(15).structure_id(1).build();
-            ActeRequest ar17 = ActeRequest.builder().libelle("IRM").code("irm").position(16).structure_id(1).build();
-            ActeRequest ar18 = ActeRequest.builder().libelle("Laboratoire & Analyses").code("ana").position(17).structure_id(1).build();
-            ActeRequest ar19 = ActeRequest.builder().libelle("Endoscopie").code("endo").position(18).structure_id(1).build();
-            ActeRequest ar20 = ActeRequest.builder().libelle("Hémodialyse").code("hemo").position(19).structure_id(1).build();
-            ActeRequest ar21 = ActeRequest.builder().libelle("Médicaments").code("medic").position(20).structure_id(1).build();
-            ActeRequest ar22 = ActeRequest.builder().libelle("Consommables").code("conso").position(21).structure_id(1).build();
-            ActeRequest ar23 = ActeRequest.builder().libelle("Kits").code("kit").position(22).structure_id(1).build();
-            ActeRequest ar24 = ActeRequest.builder().libelle("Autres").code("Autres").position(23).structure_id(1).build();
+            ActeRequest ar1 = ActeRequest.builder().libelle("Consultations").code("cons").groupe_id(1).structure_id(1).build();
+            ActeRequest ar2 = ActeRequest.builder().libelle("Actes en K").code("ActeK").groupe_id(1).structure_id(1).build();
+            ActeRequest ar3 = ActeRequest.builder().libelle("Contrôle").code("Cont").groupe_id(1).structure_id(1).build();
+            ActeRequest ar4 = ActeRequest.builder().libelle("Vaccinations").code("Vacc").groupe_id(1).structure_id(1).build();
+            ActeRequest ar5 = ActeRequest.builder().libelle("Injections").code("Vacc").groupe_id(1).structure_id(1).build();
+            ActeRequest ar6 = ActeRequest.builder().libelle("Pansements").code("Pans").groupe_id(4).structure_id(1).build();
+            ActeRequest ar7 = ActeRequest.builder().libelle("Kinésithérapie").code("kine").groupe_id(5).structure_id(1).build();
+            ActeRequest ar8 = ActeRequest.builder().libelle("Prise de sang").code("Ps").groupe_id(1).structure_id(1).build();
+            ActeRequest ar9 = ActeRequest.builder().libelle("Prélèvement Vaginal").code("PV").groupe_id(1).structure_id(1).build();
+            ActeRequest ar10 = ActeRequest.builder().libelle("IDR").code("idr").groupe_id(1).structure_id(1).build();
+            ActeRequest ar11 = ActeRequest.builder().libelle("Soins").code("Soin").groupe_id(1).structure_id(1).build();
+            ActeRequest ar12 = ActeRequest.builder().libelle("Radiographie").code("radio").groupe_id(8).structure_id(1).build();
+            ActeRequest ar13 = ActeRequest.builder().libelle("Echographie").code("echo").groupe_id(9).structure_id(1).build();
+            ActeRequest ar14 = ActeRequest.builder().libelle("ECG").code("ecg").groupe_id(10).structure_id(1).build();
+            ActeRequest ar15 = ActeRequest.builder().libelle("EEG").code("eeg").groupe_id(11).structure_id(1).build();
+            ActeRequest ar16 = ActeRequest.builder().libelle("Scanners").code("scan").groupe_id(2).structure_id(1).build();
+            ActeRequest ar17 = ActeRequest.builder().libelle("IRM").code("irm").groupe_id(3).structure_id(1).build();
+            ActeRequest ar18 = ActeRequest.builder().libelle("Laboratoire & Analyses").code("ana").groupe_id(12).structure_id(1).build();
+            ActeRequest ar19 = ActeRequest.builder().libelle("Endoscopie").code("endo").groupe_id(13).structure_id(1).build();
+            ActeRequest ar20 = ActeRequest.builder().libelle("Hémodialyse").code("hemo").groupe_id(14).structure_id(1).build();
+            ActeRequest ar21 = ActeRequest.builder().libelle("Médicaments").code("medic").groupe_id(16).structure_id(1).build();
+            ActeRequest ar22 = ActeRequest.builder().libelle("Consommables").code("conso").groupe_id(16).structure_id(1).build();
+            ActeRequest ar23 = ActeRequest.builder().libelle("Kits").code("kit").groupe_id(16).structure_id(1).build();
+            ActeRequest ar24 = ActeRequest.builder().libelle("Autres").code("Autres").groupe_id(16).structure_id(1).build();
 
             acteService.addActe(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8, ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16, ar17, ar18, ar19, ar20, ar21, ar22, ar23, ar24));
 
@@ -82,13 +92,41 @@ public class DatabaseSeeder {
         }
     }
 
+    private void seedGroupeTable() {
+        String sql = "SELECT c.libelle FROM groupe c";
+        List<Groupe> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            GroupeRequest ar1 = GroupeRequest.builder().libelle("Actes Médicaux").position(1).couleur("white").structure_id(1).build();
+            GroupeRequest ar4 = GroupeRequest.builder().libelle("Scanners").position(4).couleur("white").structure_id(1).build();
+            GroupeRequest ar5 = GroupeRequest.builder().libelle("IRM").position(5).couleur("white").structure_id(1).build();
+            GroupeRequest ar6 = GroupeRequest.builder().libelle("Pansements").position(10).couleur("white").structure_id(1).build();
+            GroupeRequest ar7 = GroupeRequest.builder().libelle("Kinésithérapie").position(9).couleur("white").structure_id(1).build();
+            GroupeRequest ar8 = GroupeRequest.builder().libelle("Injections").position(11).couleur("white").structure_id(1).build();
+            GroupeRequest ar10 = GroupeRequest.builder().libelle("IDR").position(9).couleur("white").structure_id(1).build();
+            GroupeRequest ar12 = GroupeRequest.builder().libelle("Radiographie").position(3).couleur("white").structure_id(1).build();
+            GroupeRequest ar13 = GroupeRequest.builder().libelle("Echographie").position(6).couleur("white").structure_id(1).build();
+            GroupeRequest ar14 = GroupeRequest.builder().libelle("ECG").position(7).couleur("white").structure_id(1).build();
+            GroupeRequest ar15 = GroupeRequest.builder().libelle("EEG").position(8).couleur("white").structure_id(1).build();
+            GroupeRequest ar18 = GroupeRequest.builder().libelle("Analyses").position(2).couleur("white").structure_id(1).build();
+            GroupeRequest ar19 = GroupeRequest.builder().libelle("Endoscopie").position(12).couleur("white").structure_id(1).build();
+            GroupeRequest ar20 = GroupeRequest.builder().libelle("Hémodialyse").position(13).couleur("white").structure_id(1).build();
+            GroupeRequest ar23 = GroupeRequest.builder().libelle("Kits").position(16).couleur("white").structure_id(1).build();
+            GroupeRequest ar24 = GroupeRequest.builder().libelle("Autres").position(17).couleur("white").structure_id(1).build();
 
-    private void seedSousActeTable() {
-        String sql = "SELECT c.libelle FROM sous_acte c";
+            groupeService.addGroupe(Arrays.asList(ar1, ar4, ar5, ar6, ar7, ar8, ar10, ar12, ar13, ar14, ar15, ar18, ar19, ar20, ar23, ar24));
+
+            log.info("Groupe table seeded");
+        }else {
+            log.info("Groupe Seeding Not Required");
+        }
+    }
+
+    private void seedTarifTable() {
+        String sql = "SELECT structure_id FROM tarif";
         List<Acte> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
-            List<SousActeRequest> sousActeRequests = new ArrayList<SousActeRequest>();
-            InputStream in = getClass().getResourceAsStream("/com/dopediatrie/hosman/secretariat/sous_actes.csv");
+            List<TarifRequest> tarifRequests = new ArrayList<TarifRequest>();
+            InputStream in = getClass().getResourceAsStream("/com/dopediatrie/hosman/secretariat/tarifs.csv");
 
             assert in != null;
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -96,20 +134,26 @@ public class DatabaseSeeder {
             Stream<String> lines = bufferedReader.lines();
             lines.forEach(s -> {
                 String[] cols = s.split(";");
-                SousActeRequest sar = SousActeRequest.builder()
+                TarifRequest sar = TarifRequest.builder()
+                        .libelle(cols[5])
+                        .slug(Str.slug(cols[5]))
                         .code(cols[0])
-                        .libelle(cols[1])
-                        .description(cols[2])
-                        .acte_id(Integer.parseInt(cols[3]))
+                        .description(cols[6])
+                        .tarif_non_assure(Double.parseDouble(cols[1]))
+                        .tarif_assur_locale(Double.parseDouble(cols[2]))
+                        .tarif_etr_non_assure(Double.parseDouble(cols[3]))
+                        .tarif_assur_hors_zone(Double.parseDouble(cols[4]))
+                        .acte_id(acteRepository.findById(Long.parseLong(cols[7])).orElseThrow().getId())
+                        .structure_id(1)
                         .build();
-                sousActeRequests.add(sar);
+                tarifRequests.add(sar);
             });
 
-            sousActeService.addSousActe(sousActeRequests);
+            tarifService.addTarif(tarifRequests);
 
-            log.info("SousActe table seeded");
+            log.info("Tarif table seeded");
         }else {
-            log.info("SousActe Seeding Not Required");
+            log.info("Tarif Seeding Not Required");
         }
     }
 }

@@ -21,11 +21,12 @@ public class Acte {
     private String libelle;
     private String slug;
     private String code;
-    private int position = 0;
-    private String couleur = "white";
-    private boolean show_acte = true;
     private long structure_id;
+    @ManyToOne
+    @JoinColumn(name = "groupe_id")
+    @JsonIgnore
+    private Groupe groupe;
     @OneToMany(mappedBy = "acte")
     @JsonIgnore
-    private List<SousActe> sous_actes;
+    private List<Tarif> tarifs;
 }
