@@ -24,6 +24,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { NgxMaskModule } from "ngx-mask";
 import { SharedModule } from "./shared/shared.module";
+import { LoadingSpinnerHttpInterceptor } from "./helpers/loading-spinner-http-interceptor";
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -61,6 +62,11 @@ if (environment.defaultauth === "firebase") {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FakeBackendInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingSpinnerHttpInterceptor,
       multi: true,
     },
   ],
