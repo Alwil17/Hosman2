@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -98,6 +99,22 @@ public class TarifServiceImpl implements TarifService {
         log.info("TarifServiceImpl | getTarifById | tarifResponse :" + tarifResponse.toString());
 
         return tarifResponse;
+    }
+
+    @Override
+    public List<Tarif> getTarifForGroupe(String groupeCode) {
+        log.info("TarifServiceImpl | getTarifForGroupe is called");
+        log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeCode: {}", groupeCode);
+
+        return tarifRepository.findTarifsByGroupeCode(groupeCode);
+    }
+
+    @Override
+    public List<Tarif> getTarifForGroupeId(long groupeId) {
+        log.info("TarifServiceImpl | getTarifForGroupe is called");
+        log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeId: {}", groupeId);
+
+        return  tarifRepository.findTarifsByGroupeId(groupeId);
     }
 
     @Override

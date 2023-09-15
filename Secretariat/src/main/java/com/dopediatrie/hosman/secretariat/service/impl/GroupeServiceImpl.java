@@ -35,6 +35,7 @@ public class GroupeServiceImpl implements GroupeService {
                 = Groupe.builder()
                 .libelle(groupeRequest.getLibelle())
                 .slug(Str.slug(groupeRequest.getLibelle()))
+                .code(groupeRequest.getCode())
                 .position(groupeRequest.getPosition())
                 .couleur(groupeRequest.getCouleur())
                 .structure_id(groupeRequest.getStructure_id())
@@ -56,6 +57,7 @@ public class GroupeServiceImpl implements GroupeService {
                     = Groupe.builder()
                     .libelle(groupeRequest.getLibelle())
                     .slug(Str.slug(groupeRequest.getLibelle()))
+                    .code(groupeRequest.getCode())
                     .position(groupeRequest.getPosition())
                     .couleur(groupeRequest.getCouleur())
                     .structure_id(groupeRequest.getStructure_id())
@@ -97,6 +99,7 @@ public class GroupeServiceImpl implements GroupeService {
                 ));
         groupe.setLibelle(groupeRequest.getLibelle());
         groupe.setSlug(Str.slug(groupeRequest.getLibelle()));
+        groupe.setCode(groupeRequest.getCode());
         groupe.setCouleur(groupeRequest.getCouleur());
         groupe.setPosition(groupeRequest.getPosition());
         groupe.setStructure_id(groupeRequest.getStructure_id());

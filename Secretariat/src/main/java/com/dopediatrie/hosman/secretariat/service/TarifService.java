@@ -15,6 +15,10 @@ public interface TarifService {
 
     TarifResponse getTarifById(long tarifId);
 
+    List<Tarif> getTarifForGroupe(String groupeCode);
+
+    List<Tarif> getTarifForGroupeId(long groupeId);
+
     void editTarif(TarifRequest tarifRequest, long tarifId);
 
     public void deleteTarifById(long tarifId);

@@ -37,7 +37,7 @@ public class ActeServiceImpl implements ActeService {
                 = Acte.builder()
                 .libelle(acteRequest.getLibelle())
                 .slug(Str.slug(acteRequest.getLibelle()))
-                .groupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow())
+                .groupe(groupeRepository.findByCodeEquals(acteRequest.getGroupe_code()).orElseThrow())
                 .structure_id(acteRequest.getStructure_id())
                 .build();
 
@@ -58,7 +58,7 @@ public class ActeServiceImpl implements ActeService {
                     .libelle(acteRequest.getLibelle())
                     .slug(Str.slug(acteRequest.getLibelle()))
                     .code(acteRequest.getCode())
-                    .groupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow())
+                    .groupe(groupeRepository.findByCodeEquals(acteRequest.getGroupe_code()).orElseThrow())
                     .structure_id(acteRequest.getStructure_id())
                     .build();
             acteRepository.save(acte);
@@ -99,7 +99,7 @@ public class ActeServiceImpl implements ActeService {
         acte.setLibelle(acteRequest.getLibelle());
         acte.setSlug(Str.slug(acteRequest.getLibelle()));
         acte.setCode(acteRequest.getCode());
-        acte.setGroupe(groupeRepository.findById(acteRequest.getStructure_id()).orElseThrow());
+        acte.setGroupe(groupeRepository.findByCodeEquals(acteRequest.getGroupe_code()).orElseThrow());
         acte.setStructure_id(acteRequest.getStructure_id());
         acteRepository.save(acte);
 

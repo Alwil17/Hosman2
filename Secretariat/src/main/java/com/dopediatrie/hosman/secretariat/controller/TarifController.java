@@ -50,6 +50,26 @@ public class TarifController {
         return new ResponseEntity<>(tarifResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/groupe/{code}/all")
+    public ResponseEntity<List<Tarif>> getTarifForGroupe(@PathVariable("code") String groupeCode) {
+        log.info("TarifController | getTarifForGroupe is called");
+        log.info("TarifController | getTarifForGroupe | groupeCode : " + groupeCode);
+
+        List<Tarif> tarifResponses = tarifService.getTarifForGroupe(groupeCode);
+
+        return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
+    }
+
+    @GetMapping("/groupe/{id}")
+    public ResponseEntity<List<Tarif>> getTarifForGroupeId(@PathVariable("id") long groupeId) {
+        log.info("TarifController | getTarifForGroupe is called");
+        log.info("TarifController | getTarifForGroupe | groupeId : " + groupeId);
+
+        List<Tarif> tarifResponses = tarifService.getTarifForGroupeId(groupeId);
+
+        return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> editTarif(@RequestBody TarifRequest tarifRequest,
             @PathVariable("id") long tarifId

@@ -13,6 +13,7 @@ public class GroupeResponse {
     private long id;
     private String libelle;
     private String slug;
+    private String code;
     private int position;
     private String couleur;
     private long structure_id;

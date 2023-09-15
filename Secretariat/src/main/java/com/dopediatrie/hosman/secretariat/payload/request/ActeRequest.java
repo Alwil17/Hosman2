@@ -8,6 +8,6 @@ import lombok.Data;
 public class ActeRequest {
     private String libelle;
     private String code;
-    private long groupe_id;
+    private String groupe_code;
     private long structure_id = 1;
 }
