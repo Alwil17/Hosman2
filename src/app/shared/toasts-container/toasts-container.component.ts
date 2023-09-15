@@ -45,7 +45,7 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
     </ngb-toast>
   `,
   host: {
-    class: "toast-container position-fixed top-0 end-0 p-3",
+    class: "toast-container position-fixed top-25 end-0 p-3",
     style: "z-index: 1200",
   },
   styles: [],
