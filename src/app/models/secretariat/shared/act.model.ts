@@ -4,6 +4,7 @@ export interface IAct {
   id: number;
   libelle: string;
   code: string;
+  // groupe_id: number
 }
 
 export class Act {

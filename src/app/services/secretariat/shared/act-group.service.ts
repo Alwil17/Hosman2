@@ -1,22 +1,24 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
-import { Act } from "src/app/models/secretariat/shared/act.model";
-import { ActResponse } from "src/app/models/secretariat/shared/responses/act-response.model";
+import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
+import { ActGroupResponse } from "src/app/models/secretariat/shared/responses/act-group-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "actes";
+const apiEndpoint = environment.baseUrl + "groupes";
 
 @Injectable({
   providedIn: "root",
 })
-export class ActService {
+export class ActGroupService {
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Act[]> {
-    return this.http.get<ActResponse[]>(apiEndpoint).pipe(
-      map((acts) => {
-        const mapped: Act[] = acts.map((act) => Act.fromResponse(act));
+  getAll(): Observable<ActGroup[]> {
+    return this.http.get<ActGroupResponse[]>(apiEndpoint).pipe(
+      map((actGroups) => {
+        const mapped: ActGroup[] = actGroups.map((actGroup) =>
+          ActGroup.fromResponse(actGroup)
+        );
 
         return mapped;
       })
