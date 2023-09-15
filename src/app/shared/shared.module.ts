@@ -1,6 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule, TitleCasePipe } from "@angular/common";
-import { NgbNavModule, NgbAccordionModule } from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbNavModule,
+  NgbAccordionModule,
+  NgbToastModule,
+} from "@ng-bootstrap/ng-bootstrap";
 
 // Swiper Slider
 import { SwiperModule } from "ngx-swiper-wrapper";
@@ -19,8 +23,9 @@ import { NgxMaskModule } from "ngx-mask";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { SimpleModalComponent } from "./modals/simple-modal/simple-modal.component";
 import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
-import { PdfModalComponent } from './modals/pdf-modal/pdf-modal.component';
-import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
+import { PdfModalComponent } from "./modals/pdf-modal/pdf-modal.component";
+import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
+import { ToastsContainerComponent } from "./toasts-container/toasts-container.component";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -36,6 +41,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SimpleModalComponent,
     PdfModalComponent,
     PdfViewerComponent,
+    ToastsContainerComponent,
   ],
   imports: [
     CommonModule,
@@ -47,12 +53,14 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgxMaskModule,
     NgSelectModule,
     NgxExtendedPdfViewerModule,
+    NgbToastModule,
   ],
   exports: [
     BreadcrumbsComponent,
     ScrollspyDirective, // Used ??
     InputComponent,
     SelectComponent,
+    ToastsContainerComponent,
   ],
   providers: [TitleCasePipe],
 })

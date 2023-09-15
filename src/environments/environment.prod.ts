@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseUrl: "http://localhost:8081/",
+  baseUrl: "http://hosman-apps.com:81/",
 
   defaultauth: "fackbackend",
   firebaseConfig: {

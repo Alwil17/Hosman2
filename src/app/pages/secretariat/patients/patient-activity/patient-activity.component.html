@@ -20,6 +20,7 @@
           <button
             type="button"
             class="btn btn-warning btn-label waves-effect waves-light"
+            (click)="showToast()"
           >
             <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
             Modifier
@@ -315,7 +316,7 @@
           </form>
         </div>
 
-        <div class="col-3">
+        <div class="col-3 border-dark border-start">
           <div class="row">
             <div class="col-5">
               <b>Dernier consulteur : </b>

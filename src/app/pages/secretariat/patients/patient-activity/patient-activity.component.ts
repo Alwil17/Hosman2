@@ -29,6 +29,8 @@ import { Prestation } from "src/app/models/secretariat/patients/prestation.model
 import { SelectOption } from "src/app/models/extras/select.model";
 import { SectorService } from "src/app/services/secretariat/shared/sector.service";
 import { DoctorService } from "src/app/services/secretariat/shared/doctor.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -124,7 +126,8 @@ export class PatientActivityComponent implements OnInit {
     private datePipe: DatePipe,
     private sectorService: SectorService,
     private doctorService: DoctorService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {
     this.selectedPatient = patientService.getActivePatient();
 
@@ -163,6 +166,10 @@ export class PatientActivityComponent implements OnInit {
     this.table1CollectionSize = this.table1.length;
 
     this.refreshActivities();
+  }
+
+  showToast() {
+    this.toastService.show({title: 'Titre', message: 'Message', type: ToastType.Warning})
   }
 
   ngOnInit(): void {

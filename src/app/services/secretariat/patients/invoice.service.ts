@@ -28,6 +28,8 @@ export class InvoiceService {
   // }
 
   create(data: InvoiceRequest): Observable<any> {
+    console.log(JSON.stringify(data, null, 2));
+    
     return this.http.post(apiEndpoint, data);
   }
 
