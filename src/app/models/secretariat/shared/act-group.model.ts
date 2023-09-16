@@ -4,6 +4,7 @@ import { ActGroupResponse } from "./responses/act-group-response.model";
 export interface IActGroup {
   id: number;
   libelle: string;
+  code: string;
   position: number;
   couleur: string;
   actes: Act[];
@@ -12,6 +13,7 @@ export interface IActGroup {
 export class ActGroup {
   id: number;
   libelle: string;
+  code: string;
   position: number;
   couleur: string;
   actes: Act[];
@@ -19,6 +21,7 @@ export class ActGroup {
   constructor(iActGroup: IActGroup) {
     this.id = iActGroup.id;
     this.libelle = iActGroup.libelle;
+    this.code = iActGroup.code;
     this.position = iActGroup.position;
     this.couleur = iActGroup.couleur;
     this.actes = iActGroup.actes;
@@ -28,6 +31,7 @@ export class ActGroup {
     return new ActGroup({
       id: actGroup.id,
       libelle: actGroup.libelle,
+      code: actGroup.code,
       position: actGroup.position,
       couleur: actGroup.couleur,
       actes: actGroup.actes,

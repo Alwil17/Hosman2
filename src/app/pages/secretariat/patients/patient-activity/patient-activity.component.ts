@@ -31,6 +31,12 @@ import { SectorService } from "src/app/services/secretariat/shared/sector.servic
 import { DoctorService } from "src/app/services/secretariat/shared/doctor.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { ActGroupService } from "src/app/services/secretariat/shared/act-group.service";
+import {
+  ActGroup,
+} from "src/app/models/secretariat/shared/act-group.model";
+import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
+import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -127,43 +133,59 @@ export class PatientActivityComponent implements OnInit {
     private sectorService: SectorService,
     private doctorService: DoctorService,
     private modalService: NgbModal,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private actGorupService: ActGroupService,
+    private tariffService: TariffService
   ) {
     this.selectedPatient = patientService.getActivePatient();
 
-    // this.selectedInsurance = patientService.getInsurance(
-    //   this.selectedPatient.id
-    // );
-    // if (this.selectedInsurance) {
-    //   this.selectedPatientInsurance = patientService.getPatientInsurance(
-    //     this.selectedPatient.id,
-    //     this.selectedInsurance.id
-    //   );
-    // }
+    this.actGorupService.getAll().subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data, null, 2));
+
+        this.actGroups = data;
+
+        this.selectedPrestationIndex = data[0].id
+        this.tariffService.getByGroupId(data[0].id).subscribe({
+          next: (data) => {
+            this.selectedGroupTariffs = data;
+
+
+            this.refreshTable1();
+          },
+          error: (e) => {
+            console.log(e);
+          },
+        });
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
 
     this.generateSummary();
 
-    this.table1 = (this.prestations[0].items as IActivity[]).map((item) => {
-      let patientPrice = 0;
-      if (this.patientService.getActivePatientType() == 1) {
-        patientPrice = item.NA;
-      } else if (this.patientService.getActivePatientType() == 2) {
-        patientPrice = item.ENA;
-      } else if (this.patientService.getActivePatientType() == 3) {
-        patientPrice = item.AL_S;
-      } else {
-        patientPrice = item.AHZ;
-      }
+    // this.table1 = (this.actGroups[0].items as IActivity[]).map((item) => {
+    //   let patientPrice = 0;
+    //   if (this.patientService.getActivePatientType() == 1) {
+    //     patientPrice = item.NA;
+    //   } else if (this.patientService.getActivePatientType() == 2) {
+    //     patientPrice = item.ENA;
+    //   } else if (this.patientService.getActivePatientType() == 3) {
+    //     patientPrice = item.AL_S;
+    //   } else {
+    //     patientPrice = item.AHZ;
+    //   }
 
-      return {
-        id: item.id,
-        designation: item.designation,
-        price: patientPrice,
-        description: item.description,
-      };
-    }) as IPrestation[];
+    //   return {
+    //     id: item.id,
+    //     designation: item.designation,
+    //     price: patientPrice,
+    //     description: item.description,
+    //   };
+    // }) as IPrestation[];
 
-    this.table1CollectionSize = this.table1.length;
+    // this.table1CollectionSize = this.table1.length;
 
     this.refreshActivities();
   }
@@ -238,10 +260,10 @@ export class PatientActivityComponent implements OnInit {
     });
   }
 
-  updateTable(selectedPrestationType: number) {
-    this.selectedPrestationIndex = selectedPrestationType;
+  updateTable(id: number) {
+    this.selectedPrestationIndex = id;
 
-    if (selectedPrestationType == 0) {
+    if (id == 0) {
       this.isMedicalProceduresSelected = true;
 
       // Enabling medical procedures controls
@@ -291,23 +313,61 @@ export class PatientActivityComponent implements OnInit {
       this.performedByControl.enable();
     }
 
-    this.table1 = (
-      this.prestations[selectedPrestationType].items as IActivity[]
-    ).map((item) => {
+    this.tariffService.getByGroupId(id).subscribe({
+      next: (data) => {
+        this.selectedGroupTariffs = data;
+
+        this.refreshTable1();
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+
+    // this.table1 = (
+    //   this.actGroups[selectedPrestationType].items as IActivity[]
+    // ).map((item) => {
+    //   let patientPrice = 0;
+    //   if (this.patientService.getActivePatientType() == 1) {
+    //     patientPrice = item.NA;
+    //   } else if (this.patientService.getActivePatientType() == 2) {
+    //     patientPrice = item.ENA;
+    //   } else if (this.patientService.getActivePatientType() == 3) {
+    //     patientPrice = item.AL_S;
+    //   } else {
+    //     patientPrice = item.AHZ;
+    //   }
+
+    //   return {
+    //     id: item.id,
+    //     designation: item.designation,
+    //     price: patientPrice,
+    //     description: item.description,
+    //   };
+    // }) as IPrestation[];
+
+    // this.table1Page = 1;
+    // this.table1CollectionSize = this.table1.length;
+
+    // this.refreshActivities();
+  }
+
+  refreshTable1() {
+    this.table1 = this.selectedGroupTariffs.map((item) => {
       let patientPrice = 0;
       if (this.patientService.getActivePatientType() == 1) {
-        patientPrice = item.NA;
+        patientPrice = item.tarif_non_assure;
       } else if (this.patientService.getActivePatientType() == 2) {
-        patientPrice = item.ENA;
+        patientPrice = item.tarif_etr_non_assure;
       } else if (this.patientService.getActivePatientType() == 3) {
-        patientPrice = item.AL_S;
+        patientPrice = item.tarif_assur_locale;
       } else {
-        patientPrice = item.AHZ;
+        patientPrice = item.tarif_assur_hors_zone;
       }
 
       return {
         id: item.id,
-        designation: item.designation,
+        designation: item.libelle,
         price: patientPrice,
         description: item.description,
       };
@@ -342,7 +402,7 @@ export class PatientActivityComponent implements OnInit {
 
     const item2: IPrestationSelect = {
       id: item.id,
-      rubrique: this.prestations[this.selectedPrestationIndex].name,
+      rubrique: this.actGroups.find((value) => this.selectedPrestationIndex == value.id)!.libelle, //this.selectedGroupTariffs.find((value) => item.id == value.id)!.description,
       prestation: item.designation,
       price: item.price,
       quantity: this.quantityControl.value,
@@ -404,38 +464,40 @@ export class PatientActivityComponent implements OnInit {
     "Déplacements",
   ];
 
-  prestations = [
-    {
-      name: "Actes médicaux",
-      items: ACTS,
-    },
-    {
-      name: "Analyses",
-      items: ANALYSIS.map((anal, index) => ({
-        id: index,
-        ...anal,
-      })),
-    },
-    {
-      name: "Echograpies",
-      items: ECHOGRAPHIES,
-    },
-    {
-      name: "Endoscopies",
-      items: ENDOSCOPIES,
-    },
-    {
-      name: "Hémodialyses",
-      items: HEMODIALYSES,
-    },
-    {
-      name: "IRM",
-      items: MRIS,
-    },
-    {
-      name: "Scanners",
-      items: SCANNERS,
-    },
+  selectedGroupTariffs: Tariff[] = [];
+
+  actGroups: ActGroup[] = [
+    // {
+    //   name: "Actes médicaux",
+    //   items: ACTS,
+    // },
+    // {
+    //   name: "Analyses",
+    //   items: ANALYSIS.map((anal, index) => ({
+    //     id: index,
+    //     ...anal,
+    //   })),
+    // },
+    // {
+    //   name: "Echograpies",
+    //   items: ECHOGRAPHIES,
+    // },
+    // {
+    //   name: "Endoscopies",
+    //   items: ENDOSCOPIES,
+    // },
+    // {
+    //   name: "Hémodialyses",
+    //   items: HEMODIALYSES,
+    // },
+    // {
+    //   name: "IRM",
+    //   items: MRIS,
+    // },
+    // {
+    //   name: "Scanners",
+    //   items: SCANNERS,
+    // },
   ];
 
   summary = {
@@ -546,13 +608,13 @@ export class PatientActivityComponent implements OnInit {
       new Date(),
       this.originControl.value ?? "PISJO",
       this.doctorTypeControl.value
-        ? this.doctorTypes[parseInt(this.doctorTypeControl.value)].text
+        ? this.doctorTypes[parseInt(this.doctorTypeControl.value.id)].text
         : "",
       this.doctorControl.value
-        ? this.doctors[parseInt(this.doctorControl.value)].text
+        ? this.doctors[parseInt(this.doctorControl.value.id)].text
         : "",
       this.performedByControl.value
-        ? this.performedBys[parseInt(this.performedByControl.value)].text
+        ? this.performedBys[parseInt(this.performedByControl.value.id)].text
         : ""
     );
 

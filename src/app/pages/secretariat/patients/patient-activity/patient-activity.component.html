@@ -170,7 +170,7 @@
       </div>
       <div class="card-body">
         <div class="d-flex flex-wrap">
-          <ng-container *ngFor="let prestation of prestations; index as i">
+          <ng-container *ngFor="let actGroup of actGroups; index as i">
             <div class="col-12 col-md-3 col-xl-2">
               <input
                 type="radio"
@@ -182,8 +182,8 @@
               <label
                 class="btn btn-outline-secondary me-2 d-block"
                 [for]="'pType-' + i"
-                (click)="updateTable(i)"
-                ><b>{{ prestation.name | uppercase }}</b></label
+                (click)="updateTable(actGroup.id)"
+                ><b>{{ actGroup.libelle | uppercase }}</b></label
               >
             </div>
           </ng-container>

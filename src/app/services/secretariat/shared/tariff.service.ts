@@ -25,6 +25,18 @@ export class TariffService {
     );
   }
 
+  getByGroupId(id: any): Observable<Tariff[]> {
+    return this.http.get<TariffResponse[]>(`${apiEndpoint}/groupe/${id}`).pipe(
+      map((tariffs) => {
+        const mapped: Tariff[] = tariffs.map((tariff) =>
+          Tariff.fromResponse(tariff)
+        );
+
+        return mapped;
+      })
+    );
+  }
+
   // create(data: DoctorRequest): Observable<any> {
   //   return this.http.post(apiEndpoint, data);
   // }
