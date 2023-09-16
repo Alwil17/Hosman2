@@ -48,6 +48,26 @@ public class EtatServiceImpl implements EtatService {
     }
 
     @Override
+    public void addEtat(List<EtatRequest> etatRequests) {
+        log.info("EtatServiceImpl | addEtat is called");
+
+        for (EtatRequest etatRequest : etatRequests) {
+            Etat etat
+                    = Etat.builder()
+                    .nom(etatRequest.getNom())
+                    .slug(Str.slug(etatRequest.getNom()))
+                    .couleur(etatRequest.getCouleur())
+                    .indice(etatRequest.getIndice())
+                    .structure_id(etatRequest.getStructure_id())
+                    .build();
+
+            etatRepository.save(etat);
+        }
+
+        log.info("EtatServiceImpl | addEtat | Etat Created");
+    }
+
+    @Override
     public EtatResponse getEtatById(long etatId) {
         log.info("EtatServiceImpl | getEtatById is called");
         log.info("EtatServiceImpl | getEtatById | Get the etat for etatId: {}", etatId);

@@ -51,15 +51,14 @@ public class MedecinController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<MedecinResponse> getMedecinByType(@PathVariable("type") String typeMedecin) {
+    public ResponseEntity<List<Medecin>> getMedecinByType(@PathVariable("type") String typeMedecin) {
 
         log.info("MedecinController | getMedecinByType is called");
+        log.info("MedecinController | getMedecinBytype | medecinType : " + typeMedecin);
 
-        log.info("MedecinController | getMedecinBytype | medecinId : " + typeMedecin);
+        List<Medecin> medecins = medecinService.getMedecinByType(typeMedecin);
 
-        MedecinResponse medecinResponse
-                = medecinService.getMedecinByType(typeMedecin);
-        return new ResponseEntity<>(medecinResponse, HttpStatus.OK);
+        return new ResponseEntity<>(medecins, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

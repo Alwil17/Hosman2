@@ -9,11 +9,13 @@ import java.util.List;
 public interface DeviseService {
     List<Devise> getAllDevises();
 
-    long addDevise(DeviseRequest etatRequest);
+    long addDevise(DeviseRequest deviseRequest);
 
-    DeviseResponse getDeviseById(long etatId);
+    void addDevise(List<DeviseRequest> deviseRequests);
 
-    void editDevise(DeviseRequest etatRequest, long etatId);
+    DeviseResponse getDeviseById(long deviseId);
 
-    public void deleteDeviseById(long etatId);
+    void editDevise(DeviseRequest deviseRequest, long deviseId);
+
+    public void deleteDeviseById(long deviseId);
 }

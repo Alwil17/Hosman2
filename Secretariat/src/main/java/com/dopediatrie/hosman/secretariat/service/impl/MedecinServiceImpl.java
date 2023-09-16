@@ -57,6 +57,34 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
+    public void addMedecin(List<MedecinRequest> medecinRequests) {
+        log.info("MedecinServiceImpl | addMedecin is called");
+
+        for (MedecinRequest medecinRequest : medecinRequests) {
+            Medecin medecin
+                    = Medecin.builder()
+                    .nom(medecinRequest.getNom())
+                    .prenoms(medecinRequest.getPrenoms())
+                    .date_naissance(medecinRequest.getDate_naissance())
+                    .lieu_naissance(medecinRequest.getLieu_naissance())
+                    .sexe(medecinRequest.getSexe())
+                    .tel1(medecinRequest.getTel1())
+                    .tel2(medecinRequest.getTel2())
+                    .email(medecinRequest.getEmail())
+                    .type_piece(medecinRequest.getType_piece())
+                    .no_piece(medecinRequest.getNo_piece())
+                    .type(medecinRequest.getType())
+                    .employeur(employeurRepository.findById(medecinRequest.getEmployeur_id()).get())
+                    .secteur(secteurRepository.findById(medecinRequest.getSecteur_id()).get())
+                    .build();
+
+            medecinRepository.save(medecin);
+        }
+
+        log.info("MedecinServiceImpl | addMedecin | Medecin Created");
+    }
+
+    @Override
     public MedecinResponse getMedecinById(long medecinId) {
         log.info("MedecinServiceImpl | getMedecinById is called");
         log.info("MedecinServiceImpl | getMedecinById | Get the medecin for medecinId: {}", medecinId);
@@ -76,22 +104,13 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
-    public MedecinResponse getMedecinByType(String typeMedecin) {
+    public List<Medecin> getMedecinByType(String typeMedecin) {
         log.info("MedecinServiceImpl | getMedecinByType is called");
         log.info("MedecinServiceImpl | getMedecinByType | Get the medecin for typeMedecin: {}", typeMedecin);
 
-        Medecin medecin
-                = medecinRepository.findByType(typeMedecin)
-                .orElseThrow(
-                        () -> new SecretariatCustomException("Medecin with given type not found", NOT_FOUND));
+        List<Medecin> medecins = medecinRepository.findByType(typeMedecin);
 
-        MedecinResponse medecinResponse = new MedecinResponse();
-
-        copyProperties(medecin, medecinResponse);
-
-        log.info("MedecinServiceImpl | getMedecinByType | medecinResponse :" + medecinResponse.toString());
-
-        return medecinResponse;
+        return medecins;
     }
 
     @Override

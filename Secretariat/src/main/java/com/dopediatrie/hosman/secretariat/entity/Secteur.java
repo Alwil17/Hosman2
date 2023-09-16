@@ -21,7 +21,7 @@ public class Secteur {
     private String libelle;
     private String slug;
     private String couleur;
-    private String code; //lettre dans le diagramme
+    private String code; //correspond au champ lettre dans le diagramme
     @OneToMany(mappedBy = "secteur")
     @JsonIgnore
     private List<Medecin> medecins;

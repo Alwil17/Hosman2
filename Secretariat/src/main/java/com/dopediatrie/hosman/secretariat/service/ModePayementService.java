@@ -9,11 +9,13 @@ import java.util.List;
 public interface ModePayementService {
     List<ModePayement> getAllModePayements();
 
-    long addModePayement(NameRequest villeRequest);
+    long addModePayement(NameRequest modePayementRequest);
 
-    NameResponse getModePayementById(long villeId);
+    void addModePayement(List<NameRequest> modePayementRequests);
 
-    void editModePayement(NameRequest villeRequest, long villeId);
+    NameResponse getModePayementById(long modePayementId);
 
-    public void deleteModePayementById(long villeId);
+    void editModePayement(NameRequest modePayementRequest, long modePayementId);
+
+    public void deleteModePayementById(long modePayementId);
 }

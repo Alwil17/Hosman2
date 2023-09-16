@@ -11,6 +11,8 @@ public interface EtatService {
 
     long addEtat(EtatRequest etatRequest);
 
+    void addEtat(List<EtatRequest> etatRequests);
+
     EtatResponse getEtatById(long etatId);
 
     void editEtat(EtatRequest etatRequest, long etatId);

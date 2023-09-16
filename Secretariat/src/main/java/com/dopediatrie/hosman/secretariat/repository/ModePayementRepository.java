@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface ModePayementRepository extends JpaRepository<ModePayement,Long> {
     Optional<ModePayement> findByNom(String nom);
-
     boolean existsByNom(String nom);
 }

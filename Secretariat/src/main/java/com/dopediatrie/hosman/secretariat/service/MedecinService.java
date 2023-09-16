@@ -11,9 +11,11 @@ public interface MedecinService {
 
     long addMedecin(MedecinRequest medecinRequest);
 
+    void addMedecin(List<MedecinRequest> medecinRequests);
+
     MedecinResponse getMedecinById(long medecinId);
 
-    MedecinResponse getMedecinByType(String typeMedecin);
+    List<Medecin> getMedecinByType(String typeMedecin);
 
     void editMedecin(MedecinRequest medecinRequest, long medecinId);
 

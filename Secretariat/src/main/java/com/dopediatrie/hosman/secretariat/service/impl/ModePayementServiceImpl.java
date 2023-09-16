@@ -50,6 +50,26 @@ public class ModePayementServiceImpl implements ModePayementService {
     }
 
     @Override
+    public void addModePayement(List<NameRequest> modePayementRequests) {
+        log.info("ModePayementServiceImpl | addModePayement is called");
+
+        for (NameRequest modePayementRequest : modePayementRequests) {
+            ModePayement modePayement;
+            if(!modePayementRepository.existsByNom(modePayementRequest.getNom())){
+                modePayement
+                        = ModePayement.builder()
+                        .nom(modePayementRequest.getNom())
+                        .slug(Str.slug(modePayementRequest.getNom()))
+                        .build();
+
+                modePayementRepository.save(modePayement);
+            }
+        }
+
+        log.info("ModePayementServiceImpl | addModePayement | ModePayement Created");
+    }
+
+    @Override
     public NameResponse getModePayementById(long modePayementId) {
         log.info("ModePayementServiceImpl | getModePayementById is called");
         log.info("ModePayementServiceImpl | getModePayementById | Get the modePayement for modePayementId: {}", modePayementId);

@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,22 +41,31 @@ public class DatabaseSeeder {
     private final ProfessionService professionService;
     private final EmployeurService employeurService;
     private final TypeAssuranceService typeAssuranceService;
+    private final ModePayementService modePayementService;
+    private final SecteurService secteurService;
+    private final EtatService etatService;
+    private final MedecinService medecinService;
 
     @Autowired
-    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, TarifService tarifService, ActeRepository acteRepository,
+    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, ActeRepository acteRepository, TarifService tarifService,
                           PaysService paysService, VilleService villeService, QuartierService quartierService, ProfessionService professionService,
-                          EmployeurService employeurService, TypeAssuranceService typeAssuranceService) {
+                          EmployeurService employeurService, TypeAssuranceService typeAssuranceService, ModePayementService modePayementService, SecteurService secteurService,
+                          EtatService etatService, MedecinService medecinService) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
+        this.acteRepository = acteRepository;
         this.groupeService = groupeService;
         this.tarifService = tarifService;
-        this.acteRepository = acteRepository;
         this.paysService = paysService;
         this.villeService = villeService;
         this.quartierService = quartierService;
         this.professionService = professionService;
         this.employeurService = employeurService;
         this.typeAssuranceService = typeAssuranceService;
+        this.modePayementService = modePayementService;
+        this.secteurService = secteurService;
+        this.etatService = etatService;
+        this.medecinService = medecinService;
     }
 
     @EventListener
@@ -67,6 +78,11 @@ public class DatabaseSeeder {
         seedQuartierTable();
         seedProfessionTable();
         seedEmployeurTable();
+        seedTypeAssuranceTable();
+        seedModePayementTable();
+        seedSecteurTable();
+        seedEtatTable();
+        seedMedecinTable();
     }
 
     private void seedActeTable() {
@@ -241,11 +257,12 @@ public class DatabaseSeeder {
         String sql = "SELECT c.nom FROM employeur c";
         List<Employeur> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
+            EmployeurRequest ar0 = EmployeurRequest.builder().nom("PISJO").email("pisjo@email.net").tel1("99999000").build();
             EmployeurRequest ar1 = EmployeurRequest.builder().nom("BIDC").email("bidc@email.net").tel1("99999999").build();
             EmployeurRequest ar2 = EmployeurRequest.builder().nom("TOGOCOM").email("tgcom@email.net").tel1("98989898").build();
             EmployeurRequest ar3 = EmployeurRequest.builder().nom("ARCEP").email("arcep@email.net").tel1("99989754").build();
 
-            employeurService.addEmployeur(Arrays.asList(ar1, ar2, ar3));
+            employeurService.addEmployeur(Arrays.asList(ar0, ar1, ar2, ar3));
 
             log.info("Employeur table seeded");
         }else {
@@ -255,7 +272,7 @@ public class DatabaseSeeder {
 
     private void seedTypeAssuranceTable() {
         String sql = "SELECT c.nom FROM type_assurance c";
-        List<Quartier> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        List<TypeAssurance> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
             NameRequest ar1 = NameRequest.builder().nom("Locale").build();
             NameRequest ar2 = NameRequest.builder().nom("Etrangère").build();
@@ -265,6 +282,78 @@ public class DatabaseSeeder {
             log.info("TypeAssurance table seeded");
         }else {
             log.info("TypeAssurance Seeding Not Required");
+        }
+    }
+
+    private void seedModePayementTable() {
+        String sql = "SELECT c.nom FROM mode_payement c";
+        List<ModePayement> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            NameRequest ar1 = NameRequest.builder().nom("Espèces").build();
+            NameRequest ar2 = NameRequest.builder().nom("Chèque").build();
+            NameRequest ar3 = NameRequest.builder().nom("Visa").build();
+
+            modePayementService.addModePayement(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("ModePayement table seeded");
+        }else {
+            log.info("ModePayement Seeding Not Required");
+        }
+    }
+
+    private void seedSecteurTable() {
+        String sql = "SELECT c.libelle FROM secteur c";
+        List<Secteur> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            SecteurRequest ar1 = SecteurRequest.builder().libelle("Pédiatrie").couleur("pink").code("P").build();
+            SecteurRequest ar2 = SecteurRequest.builder().libelle("Médecine interne").couleur("pink").code("MI").build();
+            SecteurRequest ar3 = SecteurRequest.builder().libelle("Cardiologie").couleur("pink").code("C").build();
+            SecteurRequest ar4 = SecteurRequest.builder().libelle("Neurologie").couleur("pink").code("N").build();
+            SecteurRequest ar5 = SecteurRequest.builder().libelle("Ophtalmologie").couleur("pink").code("O").build();
+            SecteurRequest ar6 = SecteurRequest.builder().libelle("Laboratoire").couleur("pink").code("L").build();
+
+            secteurService.addSecteur(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6));
+
+            log.info("Secteur table seeded");
+        }else {
+            log.info("Secteur Seeding Not Required");
+        }
+    }
+
+    private void seedEtatTable() {
+        String sql = "SELECT c.nom FROM etat c";
+        List<Etat> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            EtatRequest ar1 = EtatRequest.builder().nom("Attente chèque").couleur("blue").indice(1).build();
+            EtatRequest ar2 = EtatRequest.builder().nom("Attente virement").couleur("blue").indice(1).build();
+            EtatRequest ar3 = EtatRequest.builder().nom("Attente de payement").couleur("blue").indice(1).build();
+            EtatRequest ar4 = EtatRequest.builder().nom("Erreur de paiement").couleur("red").indice(0).build();
+            EtatRequest ar5 = EtatRequest.builder().nom("Annulée").couleur("red").indice(2).build();
+            EtatRequest ar6 = EtatRequest.builder().nom("Payée").couleur("green").indice(3).build();
+            EtatRequest ar7 = EtatRequest.builder().nom("Remboursée").couleur("red").indice(4).build();
+
+            etatService.addEtat(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6, ar7));
+
+            log.info("Etat table seeded");
+        }else {
+            log.info("Etat Seeding Not Required");
+        }
+    }
+
+    private void seedMedecinTable() {
+        String sql = "SELECT c.nom FROM medecin c";
+        List<Medecin> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            MedecinRequest ar1 = MedecinRequest.builder().nom("DOVI-AKUE").prenoms("Jean-Pierre").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90909090").email("adjp@email.net").type_piece("CNI").no_piece("0000-000-0000").employeur_id(1).secteur_id(1).build();
+            MedecinRequest ar2 = MedecinRequest.builder().nom("ABALO").prenoms("Serein").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90907878").email("aserein@email.net").type_piece("CNI").no_piece("0000-000-0021").employeur_id(1).secteur_id(1).build();
+
+            medecinService.addMedecin(Arrays.asList(ar1, ar2));
+
+            log.info("Medecin table seeded");
+        }else {
+            log.info("Medecin Seeding Not Required");
         }
     }
 

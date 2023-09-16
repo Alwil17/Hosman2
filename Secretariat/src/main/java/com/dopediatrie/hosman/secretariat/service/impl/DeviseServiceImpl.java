@@ -47,6 +47,25 @@ public class DeviseServiceImpl implements DeviseService {
     }
 
     @Override
+    public void addDevise(List<DeviseRequest> deviseRequests) {
+        log.info("DeviseServiceImpl | addDevise is called");
+
+        for (DeviseRequest deviseRequest: deviseRequests) {
+            Devise devise
+                    = Devise.builder()
+                    .nom(deviseRequest.getNom())
+                    .code(Str.slug(deviseRequest.getCode()))
+                    .symbol(deviseRequest.getSymbol())
+                    .taux(deviseRequest.getTaux())
+                    .build();
+
+            deviseRepository.save(devise);
+        }
+
+        log.info("DeviseServiceImpl | addDevise | Devise Created");
+    }
+
+    @Override
     public DeviseResponse getDeviseById(long deviseId) {
         log.info("DeviseServiceImpl | getDeviseById is called");
         log.info("DeviseServiceImpl | getDeviseById | Get the devise for deviseId: {}", deviseId);
