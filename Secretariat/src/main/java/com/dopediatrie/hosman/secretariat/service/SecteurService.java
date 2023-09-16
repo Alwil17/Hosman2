@@ -9,11 +9,13 @@ import java.util.List;
 public interface SecteurService {
     List<Secteur> getAllSecteurs();
 
-    long addSecteur(SecteurRequest acteRequest);
+    long addSecteur(SecteurRequest secteurRequest);
 
-    SecteurResponse getSecteurById(long acteId);
+    void addSecteur(List<SecteurRequest> secteurRequests);
 
-    void editSecteur(SecteurRequest acteRequest, long acteId);
+    SecteurResponse getSecteurById(long secteurId);
 
-    public void deleteSecteurById(long acteId);
+    void editSecteur(SecteurRequest secteurRequest, long secteurId);
+
+    public void deleteSecteurById(long secteurId);
 }

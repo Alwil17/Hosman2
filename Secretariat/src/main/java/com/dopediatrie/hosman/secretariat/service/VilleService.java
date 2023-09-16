@@ -11,6 +11,8 @@ public interface VilleService {
 
     long addVille(NameRequest villeRequest);
 
+    void addVille(List<NameRequest> villeRequest);
+
     NameResponse getVilleById(long villeId);
 
     void editVille(NameRequest villeRequest, long villeId);

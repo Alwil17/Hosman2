@@ -47,6 +47,25 @@ public class SecteurServiceImpl implements SecteurService {
     }
 
     @Override
+    public void addSecteur(List<SecteurRequest> secteurRequests) {
+        log.info("SecteurServiceImpl | addSecteur is called");
+
+        for (SecteurRequest secteurRequest : secteurRequests) {
+            Secteur secteur
+                    = Secteur.builder()
+                    .libelle(secteurRequest.getLibelle())
+                    .slug(Str.slug(secteurRequest.getLibelle()))
+                    .couleur(secteurRequest.getCouleur())
+                    .code(secteurRequest.getCode())
+                    .build();
+
+            secteurRepository.save(secteur);
+        }
+
+        log.info("SecteurServiceImpl | addSecteur | Secteur Created");
+    }
+
+    @Override
     public SecteurResponse getSecteurById(long secteurId) {
         log.info("SecteurServiceImpl | getSecteurById is called");
         log.info("SecteurServiceImpl | getSecteurById | Get the secteur for secteurId: {}", secteurId);

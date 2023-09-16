@@ -23,9 +23,9 @@ public class PatientRequest {
     private int is_assure = 0;
     private long pays_origine_id = 0;
     private long nationalite_id = 0;
-    private long profession_id = 0;
-    private long employeur_id = 0;
 
+    private ProfessionRequest profession;
+    private EmployeurRequest employeur;
     private PersonneAPrevenirRequest personne_a_prevenir;
     private AdresseRequest adresse;
     private AssuranceRequest assurance;

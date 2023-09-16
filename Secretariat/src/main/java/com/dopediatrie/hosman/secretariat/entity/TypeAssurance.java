@@ -19,6 +19,7 @@ public class TypeAssurance {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String nom;
+    private String slug;
     @OneToMany(mappedBy = "type_assurance")
     @JsonIgnore
     private List<Assurance> assurances;
@@ -28,6 +29,7 @@ public class TypeAssurance {
         return "TypeAssurance{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
                 '}';
     }
 }

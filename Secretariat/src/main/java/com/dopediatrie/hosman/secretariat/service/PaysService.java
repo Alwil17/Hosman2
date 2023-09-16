@@ -11,6 +11,8 @@ public interface PaysService {
 
     long addPays(PaysRequest patientRequest);
 
+    void addPays(List<PaysRequest> patientRequests);
+
     PaysResponse getPaysById(long patientId);
 
     void editPays(PaysRequest patientRequest, long patientId);

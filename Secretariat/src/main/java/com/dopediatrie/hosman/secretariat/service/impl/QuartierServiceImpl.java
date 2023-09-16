@@ -31,17 +31,39 @@ public class QuartierServiceImpl implements QuartierService {
     public long addQuartier(NameRequest quartierRequest) {
         log.info("QuartierServiceImpl | addQuartier is called");
 
-        Quartier quartier
-                = Quartier.builder()
-                .nom(quartierRequest.getNom())
-                .slug(Str.slug(quartierRequest.getNom()))
-                .build();
-
-        quartier = quartierRepository.save(quartier);
+        Quartier quartier;
+        if(quartierRepository.existsByNom(quartierRequest.getNom()) == null || !quartierRepository.existsByNom(quartierRequest.getNom())){
+            quartier = Quartier.builder()
+                    .nom(quartierRequest.getNom())
+                    .slug(Str.slug(quartierRequest.getNom()))
+                    .build();
+            quartier = quartierRepository.save(quartier);
+        }else{
+            quartier = quartierRepository.findByNom(quartierRequest.getNom()).orElseThrow();
+        }
 
         log.info("QuartierServiceImpl | addQuartier | Quartier Created");
         log.info("QuartierServiceImpl | addQuartier | Quartier Id : " + quartier.getId());
         return quartier.getId();
+    }
+
+    @Override
+    public void addQuartier(List<NameRequest> quartierRequests) {
+        log.info("QuartierServiceImpl | addQuartier is called");
+
+        for (NameRequest quartierRequest : quartierRequests
+             ) {
+            Quartier quartier;
+            if(quartierRepository.existsByNom(quartierRequest.getNom()) == null || !quartierRepository.existsByNom(quartierRequest.getNom())){
+                quartier = Quartier.builder()
+                        .nom(quartierRequest.getNom())
+                        .slug(Str.slug(quartierRequest.getNom()))
+                        .build();
+               quartierRepository.save(quartier);
+            }
+        }
+
+        log.info("QuartierServiceImpl | addQuartier | Quartier Created");
     }
 
     @Override

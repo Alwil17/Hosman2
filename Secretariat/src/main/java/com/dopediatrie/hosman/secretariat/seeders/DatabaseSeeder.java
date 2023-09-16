@@ -1,14 +1,9 @@
 package com.dopediatrie.hosman.secretariat.seeders;
 
-import com.dopediatrie.hosman.secretariat.entity.Acte;
-import com.dopediatrie.hosman.secretariat.entity.Groupe;
-import com.dopediatrie.hosman.secretariat.payload.request.ActeRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.GroupeRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
+import com.dopediatrie.hosman.secretariat.entity.*;
+import com.dopediatrie.hosman.secretariat.payload.request.*;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
-import com.dopediatrie.hosman.secretariat.service.ActeService;
-import com.dopediatrie.hosman.secretariat.service.GroupeService;
-import com.dopediatrie.hosman.secretariat.service.TarifService;
+import com.dopediatrie.hosman.secretariat.service.*;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -38,14 +33,28 @@ public class DatabaseSeeder {
     private final GroupeService groupeService;
     private final TarifService tarifService;
     private final ActeRepository acteRepository;
+    private final PaysService paysService;
+    private final VilleService villeService;
+    private final QuartierService quartierService;
+    private final ProfessionService professionService;
+    private final EmployeurService employeurService;
+    private final TypeAssuranceService typeAssuranceService;
 
     @Autowired
-    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, TarifService tarifService, ActeRepository acteRepository) {
+    public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, TarifService tarifService, ActeRepository acteRepository,
+                          PaysService paysService, VilleService villeService, QuartierService quartierService, ProfessionService professionService,
+                          EmployeurService employeurService, TypeAssuranceService typeAssuranceService) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
         this.groupeService = groupeService;
         this.tarifService = tarifService;
         this.acteRepository = acteRepository;
+        this.paysService = paysService;
+        this.villeService = villeService;
+        this.quartierService = quartierService;
+        this.professionService = professionService;
+        this.employeurService = employeurService;
+        this.typeAssuranceService = typeAssuranceService;
     }
 
     @EventListener
@@ -53,6 +62,11 @@ public class DatabaseSeeder {
         seedGroupeTable();
         seedActeTable();
         seedTarifTable();
+        seedPaysTable();
+        seedVilleTable();
+        seedQuartierTable();
+        seedProfessionTable();
+        seedEmployeurTable();
     }
 
     private void seedActeTable() {
@@ -157,4 +171,101 @@ public class DatabaseSeeder {
             log.info("Tarif Seeding Not Required");
         }
     }
+
+    private void seedPaysTable() {
+        String sql = "SELECT c.nom FROM pays c";
+        List<Pays> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            PaysRequest ar1 = PaysRequest.builder().code("TG").indicatif(228).nationalite("Togolaise").nom("TOGO").build();
+            PaysRequest ar2 = PaysRequest.builder().code("BN").indicatif(229).nationalite("Béninoise").nom("BENIN").build();
+            PaysRequest ar3 = PaysRequest.builder().code("GH").indicatif(233).nationalite("Ghanéenne").nom("GHANA").build();
+
+
+            paysService.addPays(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("Pays table seeded");
+        }else {
+            log.info("Pays Seeding Not Required");
+        }
+    }
+
+    private void seedVilleTable() {
+        String sql = "SELECT c.nom FROM ville c";
+        List<Ville> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            NameRequest ar1 = NameRequest.builder().nom("Lomé").build();
+            NameRequest ar2 = NameRequest.builder().nom("Aného").build();
+            NameRequest ar3 = NameRequest.builder().nom("Kpalimé").build();
+
+            villeService.addVille(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("Ville table seeded");
+        }else {
+            log.info("Ville Seeding Not Required");
+        }
+    }
+
+    private void seedQuartierTable() {
+        String sql = "SELECT c.nom FROM quartier c";
+        List<Quartier> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            NameRequest ar1 = NameRequest.builder().nom("Hédzranawoe").build();
+            NameRequest ar2 = NameRequest.builder().nom("Gbossimé").build();
+            NameRequest ar3 = NameRequest.builder().nom("Avé Maria").build();
+
+            quartierService.addQuartier(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("Quartier table seeded");
+        }else {
+            log.info("Quartier Seeding Not Required");
+        }
+    }
+
+    private void seedProfessionTable() {
+        String sql = "SELECT c.denomination FROM profession c";
+        List<Profession> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            ProfessionRequest ar1 = ProfessionRequest.builder().denomination("Ingénieur").build();
+            ProfessionRequest ar2 = ProfessionRequest.builder().denomination("Agriculteur").build();
+            ProfessionRequest ar3 = ProfessionRequest.builder().denomination("Zedman").build();
+
+            professionService.addProfession(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("Profession table seeded");
+        }else {
+            log.info("Profession Seeding Not Required");
+        }
+    }
+
+    private void seedEmployeurTable() {
+        String sql = "SELECT c.nom FROM employeur c";
+        List<Employeur> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            EmployeurRequest ar1 = EmployeurRequest.builder().nom("BIDC").email("bidc@email.net").tel1("99999999").build();
+            EmployeurRequest ar2 = EmployeurRequest.builder().nom("TOGOCOM").email("tgcom@email.net").tel1("98989898").build();
+            EmployeurRequest ar3 = EmployeurRequest.builder().nom("ARCEP").email("arcep@email.net").tel1("99989754").build();
+
+            employeurService.addEmployeur(Arrays.asList(ar1, ar2, ar3));
+
+            log.info("Employeur table seeded");
+        }else {
+            log.info("Employeur Seeding Not Required");
+        }
+    }
+
+    private void seedTypeAssuranceTable() {
+        String sql = "SELECT c.nom FROM type_assurance c";
+        List<Quartier> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            NameRequest ar1 = NameRequest.builder().nom("Locale").build();
+            NameRequest ar2 = NameRequest.builder().nom("Etrangère").build();
+
+            typeAssuranceService.addTypeAssurance(Arrays.asList(ar1, ar2));
+
+            log.info("TypeAssurance table seeded");
+        }else {
+            log.info("TypeAssurance Seeding Not Required");
+        }
+    }
+
 }

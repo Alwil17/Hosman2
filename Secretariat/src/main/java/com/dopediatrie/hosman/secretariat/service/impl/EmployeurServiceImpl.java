@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.EmployeurRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.EmployeurResponse;
 import com.dopediatrie.hosman.secretariat.repository.EmployeurRepository;
 import com.dopediatrie.hosman.secretariat.service.EmployeurService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -30,19 +31,43 @@ public class EmployeurServiceImpl implements EmployeurService {
     public long addEmployeur(EmployeurRequest employeurRequest) {
         log.info("EmployeurServiceImpl | addEmployeur is called");
 
-        Employeur employeur
-                = Employeur.builder()
-                .nom(employeurRequest.getNom())
-                .email(employeurRequest.getEmail())
-                .tel1(employeurRequest.getTel1())
-                .tel2(employeurRequest.getTel2())
-                .build();
-
-        employeur = employeurRepository.save(employeur);
+        Employeur employeur;
+        if(employeurRepository.existsByNom(employeurRequest.getNom()) == null || !employeurRepository.existsByNom(employeurRequest.getNom())){
+            employeur = Employeur.builder()
+                    .nom(employeurRequest.getNom())
+                    .email(employeurRequest.getEmail())
+                    .tel1(employeurRequest.getTel1())
+                    .tel2(employeurRequest.getTel2())
+                    .build();
+            employeur = employeurRepository.save(employeur);
+        }else{
+            employeur = employeurRepository.findByNom(employeurRequest.getNom()).orElseThrow();
+        }
 
         log.info("EmployeurServiceImpl | addEmployeur | Employeur Created");
         log.info("EmployeurServiceImpl | addEmployeur | Employeur Id : " + employeur.getId());
         return employeur.getId();
+    }
+
+    @Override
+    public void addEmployeur(List<EmployeurRequest> employeurRequests) {
+        log.info("EmployeurServiceImpl | addEmployeur is called");
+
+        for (EmployeurRequest employeurRequest : employeurRequests
+             ) {
+            Employeur employeur;
+            if(employeurRepository.existsByNom(employeurRequest.getNom()) == null || !employeurRepository.existsByNom(employeurRequest.getNom())){
+                employeur = Employeur.builder()
+                        .nom(employeurRequest.getNom())
+                        .email(employeurRequest.getEmail())
+                        .tel1(employeurRequest.getTel1())
+                        .tel2(employeurRequest.getTel2())
+                        .build();
+                employeurRepository.save(employeur);
+            }
+        }
+
+        log.info("EmployeurServiceImpl | addEmployeur | Employeur Created");
     }
 
     @Override

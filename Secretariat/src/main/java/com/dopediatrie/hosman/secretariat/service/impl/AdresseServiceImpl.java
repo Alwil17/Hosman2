@@ -8,6 +8,8 @@ import com.dopediatrie.hosman.secretariat.repository.AdresseRepository;
 import com.dopediatrie.hosman.secretariat.repository.QuartierRepository;
 import com.dopediatrie.hosman.secretariat.repository.VilleRepository;
 import com.dopediatrie.hosman.secretariat.service.AdresseService;
+import com.dopediatrie.hosman.secretariat.service.QuartierService;
+import com.dopediatrie.hosman.secretariat.service.VilleService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +26,10 @@ public class AdresseServiceImpl implements AdresseService {
     private final AdresseRepository adresseRepository;
     private final VilleRepository villeRepository;
     private final QuartierRepository quartierRepository;
+
+    private final VilleService villeService;
+    private final QuartierService quartierService;
+
     private final String NOT_FOUND = "ADRESSE_NOT_FOUND";
 
     @Override
@@ -35,15 +41,21 @@ public class AdresseServiceImpl implements AdresseService {
     public long addAdresse(AdresseRequest adresseRequest) {
         log.info("AdresseServiceImpl | addAdresse is called");
 
+        long ville_id = (adresseRequest.getVille() != null) ? villeService.addVille(adresseRequest.getVille()) : 0;
+        long quartier_id = (adresseRequest.getQuartier() != null) ? quartierService.addQuartier(adresseRequest.getQuartier()) : 0;
+
         Adresse adresse
                 = Adresse.builder()
                 .bp(adresseRequest.getBp())
                 .arrondissement(adresseRequest.getArrondissement())
                 .no_maison(adresseRequest.getNo_maison())
                 .rue(adresseRequest.getRue())
-                .ville(villeRepository.findById(adresseRequest.getVille_id()).get())
-                .quartier(quartierRepository.findById(adresseRequest.getQuartier_id()).get())
                 .build();
+
+        if(ville_id != 0)
+            adresse.setVille(villeRepository.findById(ville_id).orElseThrow());
+        if(quartier_id != 0)
+            adresse.setQuartier(quartierRepository.findById(quartier_id).orElseThrow());
 
         adresse = adresseRepository.save(adresse);
 
@@ -75,6 +87,9 @@ public class AdresseServiceImpl implements AdresseService {
     public void editAdresse(AdresseRequest adresseRequest, long adresseId) {
         log.info("AdresseServiceImpl | editAdresse is called");
 
+        long ville_id = (adresseRequest.getVille() != null) ? villeService.addVille(adresseRequest.getVille()) : 0;
+        long quartier_id = (adresseRequest.getQuartier() != null) ? quartierService.addQuartier(adresseRequest.getQuartier()) : 0;
+
         Adresse adresse
                 = adresseRepository.findById(adresseId)
                 .orElseThrow(() -> new SecretariatCustomException(
@@ -85,8 +100,8 @@ public class AdresseServiceImpl implements AdresseService {
         adresse.setArrondissement(adresseRequest.getArrondissement());
         adresse.setNo_maison(adresseRequest.getNo_maison());
         adresse.setRue(adresseRequest.getRue());
-        adresse.setVille(villeRepository.findById(adresseRequest.getVille_id()).get());
-        adresse.setQuartier(quartierRepository.findById(adresseRequest.getQuartier_id()).get());
+        adresse.setVille(villeRepository.findById(ville_id).orElseThrow());
+        adresse.setQuartier(quartierRepository.findById(quartier_id).orElseThrow());
         adresseRepository.save(adresse);
 
         log.info("AdresseServiceImpl | editAdresse | Adresse Updated");

@@ -30,6 +30,8 @@ public class PatientServiceImpl implements PatientService {
     private final PersonneAPrevenirService personneAPrevenirService;
     private final AdresseService adresseService;
     private final AssuranceService assuranceService;
+    private final ProfessionService professionService;
+    private final EmployeurService employeurService;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -44,6 +46,8 @@ public class PatientServiceImpl implements PatientService {
         long personne_a_prevenir_id = (patientRequest.getPersonne_a_prevenir() != null) ? personneAPrevenirService.addPersonneAPrevenir(patientRequest.getPersonne_a_prevenir()) : 0;
         long adresse_id = adresseService.addAdresse(patientRequest.getAdresse());
         long assurance_id = (patientRequest.getAssurance() != null) ? assuranceService.addAssurance(patientRequest.getAssurance()) : 0;
+        long profession_id = (patientRequest.getProfession() != null) ? professionService.addProfession(patientRequest.getProfession()) : 0;
+        long employeur_id = (patientRequest.getEmployeur() != null) ? employeurService.addEmployeur(patientRequest.getEmployeur()) : 0;
 
         Patient patient
                 = Patient.builder()
@@ -59,8 +63,7 @@ public class PatientServiceImpl implements PatientService {
                 .no_piece(patientRequest.getNo_piece())
                 .date_ajout(patientRequest.getDate_ajout())
                 .is_assure(patientRequest.getIs_assure())
-                .adresse(adresseRepository.findById(adresse_id).get())
-                .assurance(assuranceRepository.findById(assurance_id).get())
+                .adresse(adresseRepository.findById(adresse_id).orElseThrow())
                 .structure_id(patientRequest.getStructure_id())
                 .taux_assurance(patientRequest.getTaux_assurance())
                 .date_debut_assurance(patientRequest.getDate_debut_assurance())
@@ -68,17 +71,19 @@ public class PatientServiceImpl implements PatientService {
                 .build();
 
         if(patientRequest.getPays_origine_id() != 0)
-            patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
+            patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).orElseThrow());
+        if(assurance_id != 0)
+            patient.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
         if(patientRequest.getNationalite_id() != 0)
-            patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
-        if(patientRequest.getProfession_id() != 0)
-            patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
-        if(patientRequest.getEmployeur_id() != 0)
-            patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
+            patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).orElseThrow());
+        if(profession_id != 0)
+            patient.setProfession(professionRepository.findById(profession_id).orElseThrow());
+        if(employeur_id != 0)
+            patient.setEmployeur(employeurRepository.findById(employeur_id).orElseThrow());
         if(personne_a_prevenir_id != 0)
-            patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).get());
+            patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).orElseThrow());
 
-        patient = patientRepository.save(patient);
+        //patient = patientRepository.save(patient);
         patient.setReference("PAT" + String.format("%04d", patient.getId()));
         patient = patientRepository.save(patient);
 
@@ -133,10 +138,6 @@ public class PatientServiceImpl implements PatientService {
         patient.setTaux_assurance(patientRequest.getTaux_assurance());
         patient.setDate_debut_assurance(patientRequest.getDate_debut_assurance());
         patient.setDate_fin_assurance(patientRequest.getDate_fin_assurance());
-        patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).get());
-        patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).get());
-        patient.setProfession(professionRepository.findById(patientRequest.getProfession_id()).get());
-        patient.setEmployeur(employeurRepository.findById(patientRequest.getEmployeur_id()).get());
         patient.setStructure_id(patientRequest.getStructure_id());
         patientRepository.save(patient);
 

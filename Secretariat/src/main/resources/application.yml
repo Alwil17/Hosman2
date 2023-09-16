@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/projet_hosman
     username: root
-    password: 
+    password:
   profiles:
     active: debug
   jpa:

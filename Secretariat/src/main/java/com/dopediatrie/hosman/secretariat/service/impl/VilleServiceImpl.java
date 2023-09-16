@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.PersonneAPrevenir;
 import com.dopediatrie.hosman.secretariat.entity.Ville;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
@@ -30,18 +31,39 @@ public class VilleServiceImpl implements VilleService {
     @Override
     public long addVille(NameRequest villeRequest) {
         log.info("VilleServiceImpl | addVille is called");
-
-        Ville ville
-                = Ville.builder()
-                .nom(villeRequest.getNom())
-                .slug(Str.slug(villeRequest.getNom()))
-                .build();
-
-        ville = villeRepository.save(ville);
+        Ville ville;
+        if(villeRepository.existsByNom(villeRequest.getNom()) == null || !villeRepository.existsByNom(villeRequest.getNom())){
+            ville = Ville.builder()
+                    .nom(villeRequest.getNom())
+                    .slug(Str.slug(villeRequest.getNom()))
+                    .build();
+            ville = villeRepository.save(ville);
+        }else{
+            ville = villeRepository.findByNom(villeRequest.getNom()).orElseThrow();
+        }
 
         log.info("VilleServiceImpl | addVille | Ville Created");
         log.info("VilleServiceImpl | addVille | Ville Id : " + ville.getId());
         return ville.getId();
+    }
+
+    @Override
+    public void addVille(List<NameRequest> villeRequests) {
+        log.info("VilleServiceImpl | addVille is called");
+
+        for (NameRequest villeRequest : villeRequests
+             ) {
+            Ville ville;
+            if(villeRepository.existsByNom(villeRequest.getNom()) == null || !villeRepository.existsByNom(villeRequest.getNom())){
+                ville = Ville.builder()
+                        .nom(villeRequest.getNom())
+                        .slug(Str.slug(villeRequest.getNom()))
+                        .build();
+                villeRepository.save(ville);
+            }
+        }
+
+        log.info("VilleServiceImpl | addVille | Ville Created");
     }
 
     @Override

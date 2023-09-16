@@ -11,6 +11,8 @@ public interface EmployeurService {
 
     long addEmployeur(EmployeurRequest assuranceRequest);
 
+    void addEmployeur(List<EmployeurRequest> employeurRequests);
+
     EmployeurResponse getEmployeurById(long assuranceId);
 
     void editEmployeur(EmployeurRequest assuranceRequest, long assuranceId);

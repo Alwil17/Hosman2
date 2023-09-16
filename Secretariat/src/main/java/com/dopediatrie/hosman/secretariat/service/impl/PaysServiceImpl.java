@@ -48,6 +48,26 @@ public class PaysServiceImpl implements PaysService {
     }
 
     @Override
+    public void addPays(List<PaysRequest> patientRequests) {
+        log.info("PaysServiceImpl | addPays is called");
+
+        for (PaysRequest paysRequest : patientRequests) {
+            Pays pays
+                    = Pays.builder()
+                    .nom(paysRequest.getNom())
+                    .slug(Str.slug(paysRequest.getNom()))
+                    .code(paysRequest.getCode())
+                    .indicatif(paysRequest.getIndicatif())
+                    .nationalite(paysRequest.getNationalite())
+                    .build();
+
+            paysRepository.save(pays);
+        }
+
+        log.info("PaysServiceImpl | addPays | Pays Created");
+    }
+
+    @Override
     public PaysResponse getPaysById(long paysId) {
         log.info("PaysServiceImpl | getPaysById is called");
         log.info("PaysServiceImpl | getPaysById | Get the pays for paysId: {}", paysId);

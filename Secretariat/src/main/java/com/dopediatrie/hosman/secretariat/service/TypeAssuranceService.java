@@ -11,6 +11,8 @@ public interface TypeAssuranceService {
 
     long addTypeAssurance(NameRequest typeAssuranceRequest);
 
+    void addTypeAssurance(List<NameRequest> typeAssuranceRequests);
+
     NameResponse getTypeAssuranceById(long typeAssuranceId);
 
     void editTypeAssurance(NameRequest typeAssuranceRequest, long typeAssuranceId);

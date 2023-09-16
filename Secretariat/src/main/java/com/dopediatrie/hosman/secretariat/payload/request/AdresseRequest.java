@@ -10,6 +10,6 @@ public class AdresseRequest {
     private String no_maison = "";
     private String rue = "";
     private String bp = "";
-    private long ville_id;
-    private long quartier_id;
+    private NameRequest ville;
+    private NameRequest quartier;
 }

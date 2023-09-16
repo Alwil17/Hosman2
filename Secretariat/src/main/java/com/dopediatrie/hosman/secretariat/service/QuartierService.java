@@ -11,6 +11,8 @@ public interface QuartierService {
 
     long addQuartier(NameRequest quartierRequest);
 
+    void addQuartier(List<NameRequest> quartierRequests);
+
     NameResponse getQuartierById(long quartierId);
 
     void editQuartier(NameRequest quartierRequest, long quartierId);

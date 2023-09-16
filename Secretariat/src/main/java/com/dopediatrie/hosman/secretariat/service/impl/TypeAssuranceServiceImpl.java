@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.NameResponse;
 import com.dopediatrie.hosman.secretariat.repository.TypeAssuranceRepository;
 import com.dopediatrie.hosman.secretariat.service.TypeAssuranceService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class TypeAssuranceServiceImpl implements TypeAssuranceService {
         TypeAssurance typeAssurance
                 = TypeAssurance.builder()
                 .nom(typeAssuranceRequest.getNom())
+                .slug(Str.slug(typeAssuranceRequest.getNom()))
                 .build();
 
         typeAssurance = typeAssuranceRepository.save(typeAssurance);
@@ -40,6 +42,23 @@ public class TypeAssuranceServiceImpl implements TypeAssuranceService {
         log.info("TypeAssuranceServiceImpl | addTypeAssurance | TypeAssurance Created");
         log.info("TypeAssuranceServiceImpl | addTypeAssurance | TypeAssurance Id : " + typeAssurance.getId());
         return typeAssurance.getId();
+    }
+
+    @Override
+    public void addTypeAssurance(List<NameRequest> typeAssuranceRequests) {
+        log.info("TypeAssuranceServiceImpl | addTypeAssurance is called");
+
+        for (NameRequest typeAssuranceRequest : typeAssuranceRequests) {
+            TypeAssurance typeAssurance
+                    = TypeAssurance.builder()
+                    .nom(typeAssuranceRequest.getNom())
+                    .slug(Str.slug(typeAssuranceRequest.getNom()))
+                    .build();
+
+            typeAssuranceRepository.save(typeAssurance);
+        }
+
+        log.info("TypeAssuranceServiceImpl | addTypeAssurance | TypeAssurance Created");
     }
 
     @Override
@@ -72,6 +91,7 @@ public class TypeAssuranceServiceImpl implements TypeAssuranceService {
                         NOT_FOUND
                 ));
         typeAssurance.setNom(typeAssuranceRequest.getNom());
+        typeAssurance.setSlug(Str.slug(typeAssuranceRequest.getNom()));
         typeAssuranceRepository.save(typeAssurance);
 
         log.info("TypeAssuranceServiceImpl | editTypeAssurance | TypeAssurance Updated");

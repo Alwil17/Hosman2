@@ -11,6 +11,8 @@ public interface ProfessionService {
 
     long addProfession(ProfessionRequest patientRequest);
 
+    void addProfession(List<ProfessionRequest> patientRequests);
+
     ProfessionResponse getProfessionById(long patientId);
 
     void editProfession(ProfessionRequest patientRequest, long patientId);

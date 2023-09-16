@@ -31,17 +31,39 @@ public class ProfessionServiceImpl implements ProfessionService {
     public long addProfession(ProfessionRequest professionRequest) {
         log.info("ProfessionServiceImpl | addProfession is called");
 
-        Profession profession
-                = Profession.builder()
-                .denomination(professionRequest.getDenomination())
-                .slug(Str.slug(professionRequest.getDenomination()))
-                .build();
-
-        profession = professionRepository.save(profession);
+        Profession profession;
+        if(professionRepository.existsByDenomination(professionRequest.getDenomination()) == null || !professionRepository.existsByDenomination(professionRequest.getDenomination())){
+            profession = Profession.builder()
+                    .denomination(professionRequest.getDenomination())
+                    .slug(Str.slug(professionRequest.getDenomination()))
+                    .build();
+            profession = professionRepository.save(profession);
+        }else{
+            profession = professionRepository.findByDenomination(professionRequest.getDenomination()).orElseThrow();
+        }
 
         log.info("ProfessionServiceImpl | addProfession | Profession Created");
         log.info("ProfessionServiceImpl | addProfession | Profession Id : " + profession.getId());
         return profession.getId();
+    }
+
+    @Override
+    public void addProfession(List<ProfessionRequest> professionRequests) {
+        log.info("ProfessionServiceImpl | addProfession is called");
+
+        for (ProfessionRequest professionRequest : professionRequests
+             ) {
+            Profession profession;
+            if(professionRepository.existsByDenomination(professionRequest.getDenomination()) == null || !professionRepository.existsByDenomination(professionRequest.getDenomination())){
+                profession = Profession.builder()
+                        .denomination(professionRequest.getDenomination())
+                        .slug(Str.slug(professionRequest.getDenomination()))
+                        .build();
+                professionRepository.save(profession);
+            }
+        }
+
+        log.info("ProfessionServiceImpl | addProfession | Profession Created");
     }
 
     @Override
