@@ -17,5 +17,6 @@ public class PrestationRequest {
     private long consulteur_id;
     private long secteur_id;
     private LocalDateTime date_prestation = LocalDateTime.now();
-    private long facture_id = 0;
+
+
 }

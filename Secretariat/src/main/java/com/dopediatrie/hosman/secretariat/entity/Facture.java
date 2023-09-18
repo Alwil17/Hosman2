@@ -41,7 +41,8 @@ public class Facture {
     @JoinColumn(name = "etat_id")
     private Etat etat;
     private int exporte;
-    @OneToOne(mappedBy = "facture")
+    @OneToOne
+    @JoinColumn(name = "prestation_id")
     private Prestation prestation;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mode_facture",

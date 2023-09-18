@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,23 @@ public class PatientController {
                 = patientService.getPatientById(patientId);
         return new ResponseEntity<>(patientResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Patient>> getPatientBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "prenoms", required = false) String prenoms, @RequestParam(value = "reference", required = false) String reference) {
+
+        log.info("PatientController | getPatientBySearch is called");
+        List<Patient> patientResponse = Collections.emptyList();
+
+        if(nom != null && !nom.isBlank())
+            patientResponse = patientService.getPatientByNomAndPrenoms(nom);
+        if(prenoms != null && !prenoms.isBlank())
+            patientResponse = patientService.getPatientByPrenoms(prenoms);
+        if(reference != null && !reference.isBlank())
+            patientResponse = patientService.getPatientByReference(reference);
+
+        return new ResponseEntity<>(patientResponse, HttpStatus.OK);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> editPatient(@RequestBody PatientRequest patientRequest,

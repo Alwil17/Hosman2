@@ -13,6 +13,12 @@ public interface PatientService {
 
     PatientResponse getPatientById(long patientId);
 
+    List<Patient> getPatientByNomAndPrenoms(String nom);
+
+    List<Patient> getPatientByReference(String reference);
+
+    List<Patient> getPatientByPrenoms(String prenoms);
+
     void editPatient(PatientRequest patientRequest, long patientId);
 
     public void deletePatientById(long patientId);

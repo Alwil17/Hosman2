@@ -45,12 +45,13 @@ public class DatabaseSeeder {
     private final SecteurService secteurService;
     private final EtatService etatService;
     private final MedecinService medecinService;
+    private final DeviseService deviseService;
 
     @Autowired
     public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, ActeRepository acteRepository, TarifService tarifService,
                           PaysService paysService, VilleService villeService, QuartierService quartierService, ProfessionService professionService,
                           EmployeurService employeurService, TypeAssuranceService typeAssuranceService, ModePayementService modePayementService, SecteurService secteurService,
-                          EtatService etatService, MedecinService medecinService) {
+                          EtatService etatService, MedecinService medecinService, DeviseService deviseService) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
         this.acteRepository = acteRepository;
@@ -66,6 +67,7 @@ public class DatabaseSeeder {
         this.secteurService = secteurService;
         this.etatService = etatService;
         this.medecinService = medecinService;
+        this.deviseService = deviseService;
     }
 
     @EventListener
@@ -83,6 +85,7 @@ public class DatabaseSeeder {
         seedSecteurTable();
         seedEtatTable();
         seedMedecinTable();
+        seedDeviseTable();
     }
 
     private void seedActeTable() {
@@ -345,9 +348,9 @@ public class DatabaseSeeder {
         List<Medecin> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
             MedecinRequest ar1 = MedecinRequest.builder().nom("DOVI-AKUE").prenoms("Jean-Pierre").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
-                    .sexe('M').lieu_naissance("Quelque part").tel1("90909090").email("adjp@email.net").type_piece("CNI").no_piece("0000-000-0000").employeur_id(1).secteur_id(1).build();
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90909090").email("adjp@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0000").employeur_id(1).secteur_id(1).build();
             MedecinRequest ar2 = MedecinRequest.builder().nom("ABALO").prenoms("Serein").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
-                    .sexe('M').lieu_naissance("Quelque part").tel1("90907878").email("aserein@email.net").type_piece("CNI").no_piece("0000-000-0021").employeur_id(1).secteur_id(1).build();
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90907878").email("aserein@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0021").employeur_id(1).secteur_id(1).build();
 
             medecinService.addMedecin(Arrays.asList(ar1, ar2));
 
@@ -357,4 +360,20 @@ public class DatabaseSeeder {
         }
     }
 
+    private void seedDeviseTable() {
+        String sql = "SELECT c.nom FROM devise c";
+        List<Devise> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            DeviseRequest ar1 = DeviseRequest.builder().nom("Franc CFA").code("CFA").symbol("XOF").taux(1).build();
+            DeviseRequest ar2 = DeviseRequest.builder().nom("EURO").code("EUR").symbol("£").taux(700).build();
+            DeviseRequest ar3 = DeviseRequest.builder().nom("Dollar").code("USD").symbol("$").taux(550).build();
+
+            deviseService.addDevise(Arrays.asList(ar1, ar2, ar3 ));
+
+            log.info("Devise table seeded");
+        }else {
+            log.info("Devise Seeding Not Required");
+
+        }
+    }
 }

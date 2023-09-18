@@ -38,8 +38,7 @@ public class Prestation {
             joinColumns = @JoinColumn(name = "prestation_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tarif_id", referencedColumnName = "id"))
     private List<Tarif> tarifs;
-    @OneToOne
-    @JoinColumn(name = "facture_id")
+    @OneToOne(mappedBy = "prestation")
     private Facture facture;
 
     @Override

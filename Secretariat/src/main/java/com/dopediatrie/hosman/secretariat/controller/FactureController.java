@@ -81,13 +81,14 @@ public class FactureController {
         Context context = new Context();
 
         context.setVariable("reference",factureResponse.getReference());
+        context.setVariable("patient",factureResponse.getReference());
         context.setVariable("total",factureResponse.getTotal());
         context.setVariable("montant_pec",factureResponse.getMontant_pec());
-        context.setVariable("majoration",factureResponse.getMajoration());
-        context.setVariable("reduction",factureResponse.getReduction());
+        context.setVariable("majoration",factureResponse.getMajoration().getMontant());
+        context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
         context.setVariable("verse",factureResponse.getVerse());
-        context.setVariable("reliquat",factureResponse.getReliquat());
+        context.setVariable("reliquat",factureResponse.getReliquat().getMontant());
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);

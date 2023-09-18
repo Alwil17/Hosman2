@@ -15,6 +15,7 @@ public interface TarifRepository extends JpaRepository<Tarif,Long> {
     @Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.id = :gid")
     List<Tarif> findTarifsByGroupeId(@Param("gid") long groupeId);
 
-    @Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.code = ':gcode'")
-    List<Tarif> findTarifsByGroupeCode(@Param("gcode") String groupeCode);
+//    @Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.code = ':gcode'")
+@Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.code = :gcode")
+    List<Tarif> findTarifsByGroupe(@Param("gcode") String groupeCode);
 }

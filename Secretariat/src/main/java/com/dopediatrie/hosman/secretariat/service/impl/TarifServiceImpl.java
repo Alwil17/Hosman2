@@ -106,7 +106,7 @@ public class TarifServiceImpl implements TarifService {
         log.info("TarifServiceImpl | getTarifForGroupe is called");
         log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeCode: {}", groupeCode);
 
-        return tarifRepository.findTarifsByGroupeCode(groupeCode);
+        return tarifRepository.findTarifsByGroupe(groupeCode);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class MedecinController {
         return new ResponseEntity<>(medecinResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<Medecin>> getMedecinByType(@PathVariable("type") String typeMedecin) {
 
         log.info("MedecinController | getMedecinByType is called");

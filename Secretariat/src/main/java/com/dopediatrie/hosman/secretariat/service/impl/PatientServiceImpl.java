@@ -84,10 +84,8 @@ public class PatientServiceImpl implements PatientService {
             patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).orElseThrow());
 
         //patient = patientRepository.save(patient);
-        patient.setReference("PAT" + String.format("%04d", patient.getId()));
+        patient.setReference(String.format("%06d", patient.getId()));
         patient = patientRepository.save(patient);
-
-
 
         log.info("PatientServiceImpl | addPatient | Patient Created");
         log.info("PatientServiceImpl | addPatient | Patient Id : " + patient.getId());
@@ -111,6 +109,27 @@ public class PatientServiceImpl implements PatientService {
         log.info("PatientServiceImpl | getPatientById | patientResponse :" + patientResponse.toString());
 
         return patientResponse;
+    }
+
+    @Override
+    public List<Patient> getPatientByNomAndPrenoms(String nom) {
+        log.info("PatientServiceImpl | getPatientByNomAndPrenoms is called");
+
+        return patientRepository.findByNomAndPrenomsLike(nom);
+    }
+
+    @Override
+    public List<Patient> getPatientByReference(String reference) {
+        log.info("PatientServiceImpl | getPatientByReference is called");
+
+        return patientRepository.findByReferenceLike(reference);
+    }
+
+    @Override
+    public List<Patient> getPatientByPrenoms(String prenoms) {
+        log.info("PatientServiceImpl | getPatientByPrenoms is called");
+
+        return patientRepository.findByPrenomsLike(prenoms);
     }
 
     @Override
