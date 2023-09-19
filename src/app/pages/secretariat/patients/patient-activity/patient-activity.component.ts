@@ -32,9 +32,7 @@ import { DoctorService } from "src/app/services/secretariat/shared/doctor.servic
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { ActGroupService } from "src/app/services/secretariat/shared/act-group.service";
-import {
-  ActGroup,
-} from "src/app/models/secretariat/shared/act-group.model";
+import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
 import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 
@@ -68,7 +66,7 @@ export class PatientActivityComponent implements OnInit {
 
   activityDateControl = new FormControl(this.today, [Validators.required]);
   quantityControl = new FormControl(1, [Validators.required]);
-  originControl = new FormControl("", [Validators.required]);
+  originControl = new FormControl({ value: "PISJO", disabled: true });
 
   // Activity form group
   activityForm: FormGroup = new FormGroup({});
@@ -134,22 +132,21 @@ export class PatientActivityComponent implements OnInit {
     private doctorService: DoctorService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private actGorupService: ActGroupService,
+    private actGroupService: ActGroupService,
     private tariffService: TariffService
   ) {
     this.selectedPatient = patientService.getActivePatient();
 
-    this.actGorupService.getAll().subscribe({
-      next: (data) => {
-        // console.log(JSON.stringify(data, null, 2));
+    this.generateSummary();
 
+    this.actGroupService.getAll().subscribe({
+      next: (data) => {
         this.actGroups = data;
 
-        this.selectedPrestationIndex = data[0].id
+        this.selectedPrestationIndex = data[0].id;
         this.tariffService.getByGroupId(data[0].id).subscribe({
           next: (data) => {
             this.selectedGroupTariffs = data;
-
 
             this.refreshTable1();
           },
@@ -162,8 +159,6 @@ export class PatientActivityComponent implements OnInit {
         console.log(e);
       },
     });
-
-    this.generateSummary();
 
     // this.table1 = (this.actGroups[0].items as IActivity[]).map((item) => {
     //   let patientPrice = 0;
@@ -261,7 +256,7 @@ export class PatientActivityComponent implements OnInit {
   }
 
   updateTable(actGroup: ActGroup) {
-    const id = actGroup.id
+    const id = actGroup.id;
 
     this.selectedPrestationIndex = id;
 
@@ -289,6 +284,12 @@ export class PatientActivityComponent implements OnInit {
       this.performedByControl.clearValidators();
       this.performedByControl.updateValueAndValidity();
       this.performedByControl.disable();
+
+      // Disabling origin control
+      this.originControl.clearValidators();
+      this.originControl.updateValueAndValidity();
+      this.originControl.setValue("PISJO");
+      this.originControl.disable();
     } else {
       this.isMedicalProceduresSelected = false;
 
@@ -313,6 +314,12 @@ export class PatientActivityComponent implements OnInit {
       this.performedByControl.addValidators([Validators.required]);
       this.performedByControl.updateValueAndValidity();
       this.performedByControl.enable();
+
+      // Enabling origin control
+      this.originControl.addValidators([Validators.required]);
+      this.originControl.updateValueAndValidity();
+      this.originControl.setValue(null);
+      this.originControl.enable();
     }
 
     this.tariffService.getByGroupId(id).subscribe({
@@ -404,7 +411,9 @@ export class PatientActivityComponent implements OnInit {
 
     const item2: IPrestationSelect = {
       id: item.id,
-      rubrique: this.actGroups.find((value) => this.selectedPrestationIndex == value.id)!.libelle, //this.selectedGroupTariffs.find((value) => item.id == value.id)!.description,
+      rubrique: this.actGroups.find(
+        (value) => this.selectedPrestationIndex == value.id
+      )!.libelle, //this.selectedGroupTariffs.find((value) => item.id == value.id)!.description,
       prestation: item.designation,
       price: item.price,
       quantity: this.quantityControl.value,

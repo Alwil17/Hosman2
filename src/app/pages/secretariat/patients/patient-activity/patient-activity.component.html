@@ -93,51 +93,6 @@
               }}</b>
             </h5>
           </div>
-
-          <!-- <h5>
-            <b> Nom : </b>
-            <b class="text-secondary">{{ selectedPatient.nom | uppercase }}</b>
-
-            <b class="ms-4"> Prénoms : </b
-            ><b class="text-secondary">{{
-              selectedPatient.prenoms | titlecase
-            }}</b>
-          </h5>
-          <h5>
-            <b> Né(e) le : </b>
-            <b class="text-secondary">{{
-              selectedPatient.date_naissance | date : "dd/MM/yyyy"
-            }}</b>
-
-            <b class="ms-4"> Lieu de naissance : </b>
-            <b class="text-secondary">{{
-              selectedPatient.lieu_naissance ?? "-"
-            }}</b>
-          </h5>
-          <h5>
-            <b> Assurance : </b>
-            <b class="text-secondary">{{
-              selectedInsurance ? selectedInsurance.nom : "-"
-            }}</b>
-
-            <b class="ms-4"> Taux de prise en charge : </b>
-            <b class="text-secondary">{{
-              selectedPatientInsurance
-                ? selectedPatientInsurance.taux + " %"
-                : "-"
-            }}</b>
-          </h5>
-          <h5>
-            <b> Contact(s) : </b>
-            <b class="text-secondary">{{
-              selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
-            }}</b>
-
-            <b class="ms-4"> Personne à prévenir : </b>
-            <b class="text-secondary">{{
-              selectedPatient.personne_a_prevenir
-            }}</b>
-          </h5> -->
         </div>
 
         <ng-template #infoUnavailable>
@@ -252,7 +207,6 @@
                   ></app-select>
                 </div>
               </div>
-
               <div class="col-md-4">
                 <div class="mb-3">
                   <app-select
@@ -291,7 +245,6 @@
                   ></app-input>
                 </div>
               </div>
-
               <div class="col-md-4">
                 <div class="mb-3">
                   <app-input
@@ -309,7 +262,7 @@
                 <div class="mb-3">
                   <app-input
                     label="Provenance"
-                    placeholder=""
+                    placeholder="Clinique/Hôpital de provenance du patient"
                     [isMandatory]="true"
                     [control]="originControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
@@ -337,14 +290,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="hstack gap-2">
-            <div class="d-inline-block">
-              <div class="h-100">
-              <div class="vr"></div>
-
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -358,7 +303,7 @@
               type="text"
               name="searchTerm"
               class="form-control"
-              placeholder="Rechercher prestation, prix, etc."
+              placeholder="Rechercher par prestation"
             />
             <i class="ri-search-line search-icon"></i>
           </div>
@@ -400,7 +345,7 @@
               <tbody>
                 <tr *ngFor="let item of activities" (dblclick)="add(item)">
                   <td>{{ item.designation }}</td>
-                  <td>{{ item.price }}</td>
+                  <td class="text-end">{{ item.price | mask: "separator" }}</td>
                   <td>{{ item.description }}</td>
                 </tr>
               </tbody>

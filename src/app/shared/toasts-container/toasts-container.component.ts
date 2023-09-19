@@ -11,7 +11,9 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
       [delay]="toast.delay || 7500"
       (hidden)="toastService.remove(toast)"
     >
+      <!-- Header of the toast -->
       <ng-template ngbToastHeader>
+        <!-- TITLE. Change depending on the type of the toast -->
         <ng-container *ngIf="toast.type == 1">
           <i
             class="ri-check-double-fill align-middle fs-20 me-2 text-success"
@@ -37,11 +39,14 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
         <!-- <small>06 mins ago</small> -->
       </ng-template>
 
-      {{
-        toast.type == 3 && !toast.message
-          ? "Désolé, une erreur s'est produite."
-          : toast.message
-      }}
+      <!-- CONTENT/DESCRIPTION.  -->
+      <b>
+        {{
+          toast.type == 3 && !toast.message
+            ? "Désolé, une erreur s'est produite."
+            : toast.message
+        }}
+      </b>
     </ngb-toast>
   `,
   host: {
