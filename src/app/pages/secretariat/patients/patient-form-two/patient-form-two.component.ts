@@ -394,7 +394,9 @@ export class PatientFormTwoComponent implements OnInit {
                 ", " +
                 (formData.arrondissement ?? "--- ") +
                 ", " +
-                (formData.no_maison ?? "--- ")
+                (formData.no_maison
+                  ? "Maison n° " + formData.no_maison
+                  : "--- ")
             );
           }
         );
