@@ -20,6 +20,7 @@
             label="Nom"
             placeholder="Sasir le nom"
             [isMandatory]="true"
+            [capitalized]="true"
             [control]="ptcLastnameControl"
             [isFormSubmitted]="isPersonToContactFormSubmitted"
           >
@@ -32,6 +33,7 @@
             label="Prénom(s)"
             placeholder="Saisir le(s) prénom(s)"
             [isMandatory]="true"
+            [titleCased]="true"
             [control]="ptcFirstnameControl"
             [isFormSubmitted]="isPersonToContactFormSubmitted"
           >
@@ -47,8 +49,8 @@
             [isMandatory]="true"
             [control]="ptcTelControl"
             [isFormSubmitted]="isPersonToContactFormSubmitted"
+            maskFormat="09 09 09 09 09 09 09 09 09 09"
             >
-            <!-- maskFormat="00 00 00 00" -->
           </app-input>
         </div>
       </div>

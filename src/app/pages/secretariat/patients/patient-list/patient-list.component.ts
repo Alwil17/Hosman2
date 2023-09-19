@@ -55,7 +55,7 @@ export class PatientListComponent implements OnInit {
       ? this.allPatients.filter((patient) =>
           (patient.nom + " " + patient.prenoms)
             .toLowerCase()
-            .startsWith(this.searchTerm)
+            .startsWith(this.searchTerm.toLowerCase())
         )
       : [];
 

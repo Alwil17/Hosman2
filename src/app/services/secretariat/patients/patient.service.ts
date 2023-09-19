@@ -52,79 +52,79 @@ export class PatientService {
   registerPatient(patientRequest: PatientRequest): Observable<any> {
     // PATIENT
 
-    const personToContact = new PersonToContact({
-      id: Math.floor(Math.random() * 1000),
-      ...patientRequest.personne_a_prevenir,
-    });
+    // const personToContact = new PersonToContact({
+    //   id: Math.floor(Math.random() * 1000),
+    //   ...patientRequest.personne_a_prevenir,
+    // });
 
-    const city = this.cityService.cities.find(
-      (city) => patientRequest.adresse.ville_id == city.id
-    )!;
+    // const city = this.cityService.cities.find(
+    //   (city) => patientRequest.adresse.ville_id == city.id
+    // )!;
 
-    const neighborhood = this.neighborhoodService.neighborhoods.find(
-      (neighborhood) => patientRequest.adresse.quartier_id == neighborhood.id
-    )!;
+    // const neighborhood = this.neighborhoodService.neighborhoods.find(
+    //   (neighborhood) => patientRequest.adresse.quartier_id == neighborhood.id
+    // )!;
 
-    const address = new Address({
-      id: Math.floor(Math.random() * 1000),
-      ville: city!,
-      quartier: neighborhood!,
-      ...patientRequest.adresse,
-    });
+    // const address = new Address({
+    //   id: Math.floor(Math.random() * 1000),
+    //   ville: city!,
+    //   quartier: neighborhood!,
+    //   ...patientRequest.adresse,
+    // });
 
-    const homeland = this.countryService.countries.find(
-      (country) => patientRequest.pays_origine_id == country.id
-    )!;
+    // const homeland = this.countryService.countries.find(
+    //   (country) => patientRequest.pays_origine_id == country.id
+    // )!;
 
-    //INSURANCE
-    let insurance;
-    if (patientRequest.assurance) {
-      insurance = this.insuranceService.insurances.find(
-        (ins) => patientRequest.assurance!.id == ins.id
-      );
-    }
-
-    const nationality = this.countryService.countries.find(
-      (country) => patientRequest.nationalite_id == country.id
-    )!;
-
-    const profession = this.professionService.professions.find(
-      (profession) => patientRequest.profession_id == profession.id
-    );
-
-    const employer = this.employerService.employers.find(
-      (employer) => patientRequest.employeur_id == employer.id
-    );
-
-    //PATIENT_INSURANCE
-    // if (insurance && patientInsurance) {
-    //   this.registerPatientInsurance({
-    //     id: -1,
-    //     patient_id: patientRequest.id,
-    //     assurance_id: insurance!.id,
-    //     taux: patientInsurance.taux,
-    //     date_expiration: patientInsurance.date_expiration,
-    //   });
+    // //INSURANCE
+    // let insurance;
+    // if (patientRequest.assurance) {
+    //   insurance = this.insuranceService.insurances.find(
+    //     (ins) => patientRequest.assurance!.id == ins.id
+    //   );
     // }
 
-    const patient = new Patient({
-      ...patientRequest,
-      id: this.allPatients.length + 1,
-      reference: "PAT" + (this.allPatients.length + 1),
-      personne_a_prevenir: personToContact,
-      adresse: address,
-      pays_origine: homeland,
-      assurance: insurance,
-      nationalite: nationality,
-      profession: profession,
-      employeur: employer,
-    }); // Patient.emptyPatient()
+    // const nationality = this.countryService.countries.find(
+    //   (country) => patientRequest.nationalite_id == country.id
+    // )!;
 
-    console.log("Registered patient \n" + JSON.stringify(patient, null, 2));
+    // const profession = this.professionService.professions.find(
+    //   (profession) => patientRequest.profession_id == profession.id
+    // );
 
-    this.allPatients = [...this.allPatients, patient];
+    // const employer = this.employerService.employers.find(
+    //   (employer) => patientRequest.employeur_id == employer.id
+    // );
 
-    this.activePatient = patient;
+    // //PATIENT_INSURANCE
+    // // if (insurance && patientInsurance) {
+    // //   this.registerPatientInsurance({
+    // //     id: -1,
+    // //     patient_id: patientRequest.id,
+    // //     assurance_id: insurance!.id,
+    // //     taux: patientInsurance.taux,
+    // //     date_expiration: patientInsurance.date_expiration,
+    // //   });
+    // // }
+
+    // const patient = new Patient({
+    //   ...patientRequest,
+    //   id: this.allPatients.length + 1,
+    //   reference: "PAT" + (this.allPatients.length + 1),
+    //   personne_a_prevenir: personToContact,
+    //   adresse: address,
+    //   pays_origine: homeland,
+    //   assurance: insurance,
+    //   nationalite: nationality,
+    //   profession: profession,
+    //   employeur: employer,
+    // }); // Patient.emptyPatient()
+
+    // console.log("Registered patient \n" + JSON.stringify(patient, null, 2));
+
+    // this.allPatients = [...this.allPatients, patient];
+
+    // this.activePatient = patient;
 
     return this.http.post<any>(apiEndpoint, patientRequest);
   }

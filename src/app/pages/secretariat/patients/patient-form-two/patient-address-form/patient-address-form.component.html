@@ -20,6 +20,7 @@
             label="Ville"
             [isMandatory]="true"
             [options]="cities"
+            [canAddOption]="true"
             [control]="paCityControl"
             [isFormSubmitted]="isPatientAddressFormSubmitted"
           ></app-select>
@@ -31,6 +32,7 @@
             label="Quartier"
             [isMandatory]="true"
             [options]="neighborhoods"
+            [canAddOption]="true"
             [control]="paNeighborhoodControl"
             [isFormSubmitted]="isPatientAddressFormSubmitted"
           ></app-select>

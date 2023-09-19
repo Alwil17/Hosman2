@@ -31,8 +31,8 @@ export interface IPatientRequest {
   no_piece?: string;
   // profession?: ProfessionRequest;
   // employeur?: EmployerRequest;
-  profession_id?: number;
-  employeur_id?: number;
+  profession?: ProfessionRequest;
+  employeur?: EmployerRequest;
 }
 export class PatientRequest {
   nom: string;
@@ -59,8 +59,8 @@ export class PatientRequest {
   no_piece?: string;
   // profession?: ProfessionRequest;
   // employeur?: EmployerRequest;
-  profession_id?: number;
-  employeur_id?: number;
+  profession?: ProfessionRequest;
+  employeur?: EmployerRequest;
 
   constructor(iPatientRequest: IPatientRequest) {
     this.nom = iPatientRequest.nom;
@@ -83,49 +83,7 @@ export class PatientRequest {
     this.tel2 = iPatientRequest.tel2;
     this.type_piece = iPatientRequest.type_piece;
     this.no_piece = iPatientRequest.no_piece;
-    this.profession_id = iPatientRequest.profession_id;
-    this.employeur_id = iPatientRequest.employeur_id;
+    this.profession = iPatientRequest.profession;
+    this.employeur = iPatientRequest.employeur;
   }
-
-  // constructor(
-  //   reference: string,
-  //   nom: string,
-  //   prenoms: string,
-  //   date_naissance: Date,
-  //   sexe: string,
-  //   tel1: string,
-  //   is_assure: number,
-  //   date_ajout: Date,
-  //   personne_a_prevenir: PersonToContactRequest,
-  //   adresse: AddressRequest,
-  //   pays_origine: CountryRequest,
-  //   assurance: InsuranceRequest,
-  //   patient_assurance: PatientInsuranceRequest,
-  //   lieu_naissance?: string,
-  //   tel2?: string,
-  //   type_piece?: string,
-  //   no_piece?: string,
-  //   profession?: ProfessionRequest,
-  //   employeur?: EmployerRequest
-  // ) {
-  //   this.reference = reference;
-  //   this.nom = nom;
-  //   this.prenoms = prenoms;
-  //   this.date_naissance = date_naissance;
-  //   this.sexe = sexe;
-  //   this.tel1 = tel1;
-  //   this.is_assure = is_assure;
-  //   this.date_ajout = date_ajout;
-  //   this.personne_a_prevenir = personne_a_prevenir;
-  //   this.adresse = adresse;
-  //   this.pays_origine = pays_origine;
-  //   this.assurance = assurance;
-  //   this.patient_assurance = patient_assurance;
-  //   this.lieu_naissance = lieu_naissance;
-  //   this.tel2 = tel2;
-  //   this.type_piece = type_piece;
-  //   this.no_piece = no_piece;
-  //   this.profession = profession;
-  //   this.employeur = employeur;
-  // }
 }

@@ -37,6 +37,10 @@ import { EmployerService } from "src/app/services/secretariat/patients/employer.
 import { InsuranceTypeService } from "src/app/services/secretariat/patients/insurance-type.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { ProfessionRequest } from "src/app/models/secretariat/patients/requests/profession-request.model";
+import { EmployerRequest } from "src/app/models/secretariat/patients/requests/employer-request.model";
+import { CityRequest } from "src/app/models/secretariat/patients/requests/city-request.model";
+import { NeighborhoodRequest } from "src/app/models/secretariat/patients/requests/neighborhood-request.model";
 
 @Component({
   selector: "app-patient-form-two",
@@ -62,7 +66,7 @@ export class PatientFormTwoComponent implements OnInit {
   genderControl = new FormControl(null, [Validators.required]);
 
   dateOfBirthControl = new FormControl("", [Validators.required]);
-  ageControl = new FormControl("");
+  ageControl = new FormControl({ value: "", disabled: true });
   birthPlaceControl = new FormControl(null);
 
   patientTel1Control = new FormControl("", [Validators.required]);
@@ -134,7 +138,7 @@ export class PatientFormTwoComponent implements OnInit {
   // }));
 
   constructor(
-    private datePipe: DatePipe,
+    // private datePipe: DatePipe,
     private patientService: PatientService,
     private secretariatRouter: SecretariatRouterService,
     private modalService: NgbModal,
@@ -232,9 +236,9 @@ export class PatientFormTwoComponent implements OnInit {
         this.insuranceControl.updateValueAndValidity();
         this.insuranceControl.enable();
 
-        // this.insuranceTypeControl.addValidators([Validators.required]);
-        // this.insuranceTypeControl.updateValueAndValidity();
-        // this.insuranceTypeControl.enable();
+        this.insuranceTypeControl.addValidators([Validators.required]);
+        this.insuranceTypeControl.updateValueAndValidity();
+        this.insuranceTypeControl.enable();
 
         this.insuranceRateControl.addValidators([
           Validators.required,
@@ -251,6 +255,22 @@ export class PatientFormTwoComponent implements OnInit {
         this.patientEmployerControl.enable();
         this.isEmployerMandatory = true;
       }
+    });
+
+    this.insuranceControl.valueChanges.subscribe((value) => {
+      if (!value) {
+        return;
+      }
+
+      const selectedIns = this.insuranceService.insurances.find(
+        (insurance) => value.id == insurance.id
+      );
+
+      const selectedInsuranceType = this.insuranceTypes.find(
+        (insuranceType) => selectedIns?.type_assurance.id == insuranceType.id
+      );
+
+      this.insuranceTypeControl.setValue(selectedInsuranceType);
     });
 
     this.homelandControl.valueChanges.subscribe((value) => {
@@ -331,7 +351,10 @@ export class PatientFormTwoComponent implements OnInit {
     });
   }
 
-  patientAddressData = new AddressRequest(-1, -1);
+  patientAddressData = new AddressRequest(
+    new CityRequest(""),
+    new NeighborhoodRequest("")
+  );
 
   onPatientAddressClick() {
     const patientAddressModal = this.modalService.open(
@@ -350,8 +373,8 @@ export class PatientFormTwoComponent implements OnInit {
     patientAddressModal.componentInstance.formData.subscribe(
       (formData: AddressRequest) => {
         this.patientAddressData = new AddressRequest(
-          formData.ville_id,
-          formData.quartier_id,
+          formData.ville,
+          formData.quartier,
           formData.rue,
           formData.bp,
           formData.arrondissement,
@@ -499,11 +522,27 @@ export class PatientFormTwoComponent implements OnInit {
       // },
     };
 
+    const profession: ProfessionRequest | undefined = this.professionControl
+      .value
+      ? {
+          id: this.professionControl.value.id,
+          denomination: this.professionControl.value.text,
+        }
+      : undefined;
+
+    const employer: EmployerRequest | undefined = this.patientEmployerControl
+      .value
+      ? {
+          id: this.patientEmployerControl.value.id,
+          nom: this.patientEmployerControl.value.text,
+        }
+      : undefined;
+
     const insurance: InsuranceRequest | undefined = this.insuranceControl.value
       ? {
           id: this.insuranceControl.value.id,
           nom: this.insuranceControl.value.text,
-          type_assurance_id: 1, // this.insuranceTypeControl.value,
+          type_assurance_id: this.insuranceTypeControl.value.id, // this.insuranceTypeControl.value,
         }
       : undefined;
 
@@ -523,12 +562,8 @@ export class PatientFormTwoComponent implements OnInit {
       no_piece: this.idNumberControl.value,
       date_ajout: new Date(),
       pays_origine_id: this.homelandControl.value.id,
-      profession_id: this.professionControl.value
-        ? this.professionControl.value.id
-        : undefined,
-      employeur_id: this.patientEmployerControl.value
-        ? this.patientEmployerControl.value.id
-        : undefined,
+      profession: profession,
+      employeur: employer,
       nationalite_id: this.nationalityControl.value
         ? this.nationalityControl.value.id
         : undefined,
@@ -545,9 +580,6 @@ export class PatientFormTwoComponent implements OnInit {
 
   getPatientInsuranceFormData() {
     const patientInsurance: PatientInsurance = {
-      // id: -1,
-      // patient_id: -1,
-      // assurance_id: -1,
       taux: this.insuranceRateControl.value,
       date_debut: this.insuranceStartControl.value
         ? this.insuranceStartControl.value
@@ -633,7 +665,7 @@ export class PatientFormTwoComponent implements OnInit {
       const patientData = this.getPatientFormData();
 
       this.patientService.registerPatient(patientData).subscribe({
-        next: async (data) => {
+        next: (data) => {
           console.log(data, "\nHere");
 
           this.toastService.show({
@@ -641,7 +673,14 @@ export class PatientFormTwoComponent implements OnInit {
             type: ToastType.Success,
           });
 
-          await this.secretariatRouter.navigateToPatientActivity();
+          this.patientService.setActivePatient(data).subscribe({
+            next: async (data) => {
+              await this.secretariatRouter.navigateToPatientActivity();
+            },
+            error: (e) => {
+              console.error(e);
+            },
+          });
         },
         error: (e) => {
           console.error(e);

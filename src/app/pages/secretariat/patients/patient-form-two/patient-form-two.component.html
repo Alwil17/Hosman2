@@ -51,7 +51,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="mb-3">
                     <app-input
                       label="Né(e) le"
@@ -64,7 +64,19 @@
                     </app-input>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <app-input
+                      label="Âge"
+                      [control]="ageControl"
+                      [isFormSubmitted]="isPatientInfoFormSubmitted"
+                      >
+                      <!-- [readOnly]="true" -->
+                    </app-input>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
                   <div class="mb-3">
                     <app-select
                       label="Sexe"
@@ -87,25 +99,25 @@
                   </div>
                 </div>
 
-                <!-- <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Âge"
-                      [readOnly]="true"
-                      [control]="ageControl"
-                      [isFormSubmitted]="isPatientInfoFormSubmitted"
-                    >
-                    </app-input>
-                  </div>
-                </div> -->
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="mb-3">
                     <app-select
                       label="Assuré(e)"
                       [isMandatory]="true"
                       [options]="hasInsurances"
                       [control]="hasInsuranceControl"
+                      [isFormSubmitted]="isPatientInfoFormSubmitted"
+                    ></app-select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <app-select
+                      label="Assureur"
+                      [isMandatory]="true"
+                      [options]="insurances"
+                      [canAddOption]="true"
+                      [control]="insuranceControl"
                       [isFormSubmitted]="isPatientInfoFormSubmitted"
                     ></app-select>
                   </div>
@@ -124,20 +136,11 @@
                     </app-input>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <app-select
-                      label="Assureur"
-                      [isMandatory]="true"
-                      [options]="insurances"
-                      [canAddOption]="true"
-                      [control]="insuranceControl"
-                      [isFormSubmitted]="isPatientInfoFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div>
 
-                <!-- <div class="col-md-4">
+                <div
+                  class="col-md-6"
+                  *ngIf="hasInsuranceControl.value?.id >= 2"
+                >
                   <div class="mb-3">
                     <app-select
                       label="Type de l'assurance"
@@ -148,7 +151,7 @@
                     ></app-select>
                   </div>
                 </div>
-                 -->
+                <!-- <div class="col-md-6"></div> -->
 
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -171,12 +174,20 @@
                     ></app-select>
                   </div>
                 </div>
+              </div>
 
+              <!-- END FIRST COLUMN -->
+            </div>
+
+            <!-- SECOND COLUMN -->
+            <div class="col-12 col-lg-6 border-dark border-start">
+              <div class="row g-3">
                 <div class="col-md-6">
                   <div class="mb-3">
                     <app-select
                       label="Profession"
                       [options]="professions"
+                      [canAddOption]="true"
                       [control]="professionControl"
                       [isFormSubmitted]="isPatientInfoFormSubmitted"
                     ></app-select>
@@ -188,39 +199,12 @@
                       label="Employeur de l'assuré"
                       [isMandatory]="isEmployerMandatory"
                       [options]="employers"
+                      [canAddOption]="true"
                       [control]="patientEmployerControl"
                       [isFormSubmitted]="isPatientInfoFormSubmitted"
                     ></app-select>
                   </div>
                 </div>
-              </div>
-
-              <!-- END FIRST COLUMN -->
-            </div>
-
-            <!-- SECOND COLUMN -->
-            <div class="col-12 col-lg-6 border-dark border-start">
-              <div class="row g-3">
-                <!-- <div class="col-md-6">
-                  <div class="mb-3">
-                    <app-select
-                      label="Ville"
-                      [options]="cities"
-                      [control]="cityControl"
-                      [isFormSubmitted]="isPatientInfoFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <app-select
-                      label="Quartier"
-                      [options]="neighborhoods"
-                      [control]="neighborhoodControl"
-                      [isFormSubmitted]="isPatientInfoFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div> -->
 
                 <div class="col-md-12">
                   <div class="mb-3">
@@ -248,26 +232,14 @@
                 <div class="col-md-4">
                   <div class="mb-3">
                     <app-input
-                      label="Téléphone 1"
-                      type="tel"
-                      placeholder="XX XX XX XX"
-                      [isFormSubmitted]="isPatientInfoFormSubmitted"
-                      >
-                      <!-- maskFormat="00 00 00 00" -->
-                    </app-input>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-input
                       label="Cellulaire 1"
                       type="tel"
                       placeholder="XX XX XX XX"
                       [isMandatory]="true"
                       [control]="patientTel1Control"
                       [isFormSubmitted]="isPatientInfoFormSubmitted"
-                      >
-                      <!-- maskFormat="00 00 00 00" -->
+                      maskFormat="09 09 09 09 09 09 09 09 09 09"
+                    >
                     </app-input>
                   </div>
                 </div>
@@ -279,8 +251,20 @@
                       placeholder="XX XX XX XX"
                       [control]="patientTel2Control"
                       [isFormSubmitted]="isPatientInfoFormSubmitted"
-                      >
-                      <!-- maskFormat="00 00 00 00" -->
+                      maskFormat="09 09 09 09 09 09 09 09 09 09"
+                    >
+                    </app-input>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <app-input
+                      label="Téléphone 1"
+                      type="tel"
+                      placeholder="XX XX XX XX"
+                      [isFormSubmitted]="isPatientInfoFormSubmitted"
+                      maskFormat="09 09 09 09 09 09 09 09 09 09"
+                    >
                     </app-input>
                   </div>
                 </div>

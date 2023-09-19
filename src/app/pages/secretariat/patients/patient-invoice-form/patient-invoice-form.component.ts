@@ -528,13 +528,13 @@ export class PatientInvoiceFormComponent implements OnInit {
         montant: this.discountValue,
         motif: "",
         date_operation: new Date(),
-        patient_id: this.patientService.getActivePatient().id,
+        // patient_id: this.patientService.getActivePatient().id,
       }),
       majoration: new MarkupRequest({
         montant: this.markupValue,
         motif: "",
         date_operation: new Date(),
-        patient_id: this.patientService.getActivePatient().id,
+        // patient_id: this.patientService.getActivePatient().id,
       }),
 
       a_payer: this.patientShareAmount,
@@ -542,13 +542,13 @@ export class PatientInvoiceFormComponent implements OnInit {
         montant: this.debtAmount,
         etat_id: this.debtAmount > 0 ? 1 : 2,
         date_operation: new Date(),
-        patient_id: this.patientService.getActivePatient().id,
+        // patient_id: this.patientService.getActivePatient().id,
       }),
       reliquat: new RemainderRequest({
         montant: this.remainderAmount,
         etat_id: this.remainderAmount > 0 ? 1 : 2,
         date_operation: new Date(),
-        patient_id: this.patientService.getActivePatient().id,
+        // patient_id: this.patientService.getActivePatient().id,
       }),
 
       date_facture: new Date(),
@@ -586,10 +586,12 @@ export class PatientInvoiceFormComponent implements OnInit {
               type: ToastType.Success,
             });
           },
-          error: (e) => {console.error(e)
-          
+          error: (e) => {
+            console.error(e);
+
             this.toastService.show({
-              message: "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
+              message:
+                "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
               delay: 10000,
               type: ToastType.Error,
             });
@@ -613,8 +615,9 @@ export class PatientInvoiceFormComponent implements OnInit {
             pdfModalRef.componentInstance.title = "Reçu";
             pdfModalRef.componentInstance.pdfSrc = data;
           },
-          error: (e) => {console.error(e)
-          
+          error: (e) => {
+            console.error(e);
+
             this.toastService.show({
               message: "Echec de la génération du reçu.",
               delay: 10000,

@@ -141,7 +141,7 @@ export class PatientActivityComponent implements OnInit {
 
     this.actGorupService.getAll().subscribe({
       next: (data) => {
-        console.log(JSON.stringify(data, null, 2));
+        // console.log(JSON.stringify(data, null, 2));
 
         this.actGroups = data;
 
@@ -260,10 +260,12 @@ export class PatientActivityComponent implements OnInit {
     });
   }
 
-  updateTable(id: number) {
+  updateTable(actGroup: ActGroup) {
+    const id = actGroup.id
+
     this.selectedPrestationIndex = id;
 
-    if (id == 0) {
+    if (actGroup.code == "GRP001") {
       this.isMedicalProceduresSelected = true;
 
       // Enabling medical procedures controls

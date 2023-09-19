@@ -7,6 +7,8 @@ import { AddressRequest } from "src/app/models/secretariat/patients/requests/add
 import { CityService } from "src/app/services/secretariat/patients/city.service";
 import { NeighborhoodService } from "src/app/services/secretariat/patients/neighborhood.service";
 import { SelectOption } from "src/app/models/extras/select.model";
+import { CityRequest } from "src/app/models/secretariat/patients/requests/city-request.model";
+import { NeighborhoodRequest } from "src/app/models/secretariat/patients/requests/neighborhood-request.model";
 
 @Component({
   selector: "app-patient-address-form",
@@ -82,9 +84,9 @@ export class PatientAddressFormComponent implements OnInit {
         }));
 
         const selectedCity =
-          this.address.ville_id < 0
+          this.address.ville.nom == ""
             ? null
-            : this.cities.find((value) => this.address.ville_id == value.id);
+            : this.cities.find((value) => this.address.ville.nom == value.text);
         this.paCityControl.setValue(selectedCity);
       },
       error: (error) => {
@@ -100,10 +102,10 @@ export class PatientAddressFormComponent implements OnInit {
         }));
 
         const selectedNeighborhood =
-          this.address.quartier_id < 0
+          this.address.quartier.nom == ""
             ? null
             : this.neighborhoods.find(
-                (value) => this.address.quartier_id == value.id
+                (value) => this.address.quartier.nom == value.text
               );
         this.paNeighborhoodControl.setValue(selectedNeighborhood);
       },
@@ -117,10 +119,20 @@ export class PatientAddressFormComponent implements OnInit {
     this.isPatientAddressFormSubmitted = true;
 
     if (this.patientAddressForm.valid) {
+      const city: CityRequest = {
+        // id: this.paCityControl.value.id,
+        nom: this.paCityControl.value.text,
+      };
+
+      const neighborhood: NeighborhoodRequest = {
+        // id: this.paNeighborhoodControl.value.id,
+        nom: this.paNeighborhoodControl.value.text,
+      };
+
       this.formData.emit(
         new AddressRequest(
-          this.paCityControl.value.id,
-          this.paNeighborhoodControl.value.id,
+          city,
+          neighborhood,
           this.paStreetControl.value,
           this.paPOBoxControl.value,
           this.paDistrictControl.value,

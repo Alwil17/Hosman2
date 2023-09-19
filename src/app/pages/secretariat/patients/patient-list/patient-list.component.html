@@ -85,9 +85,8 @@
                   <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
-                  <td>{{ patient.tel1 
-                  }}</td>
-                  <!-- | mask : "99 99 99 99" -->
+                  <td>{{ patient.tel1 | mask : "09 09 09 09 09 09 09 09 09 09" }}</td>
+
                   <td>{{ patient.date_ajout | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.no_piece }}</td>
 

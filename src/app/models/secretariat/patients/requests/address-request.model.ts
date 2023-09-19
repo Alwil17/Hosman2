@@ -2,23 +2,23 @@ import { CityRequest } from "./city-request.model";
 import { NeighborhoodRequest } from "./neighborhood-request.model";
 
 export class AddressRequest {
-  ville_id: number;
-  quartier_id: number;
+  ville: CityRequest;
+  quartier: NeighborhoodRequest;
   rue?: string;
   bp?: string;
   arrondissement?: string;
   no_maison?: string;
 
   constructor(
-    ville_id: number,
-    quartier_id: number,
+    ville: CityRequest,
+    quartier: NeighborhoodRequest,
     rue?: string,
     bp?: string,
     arrondissement?: string,
     no_maison?: string
   ) {
-    this.ville_id = ville_id;
-    this.quartier_id = quartier_id;
+    this.ville = ville;
+    this.quartier = quartier;
     this.rue = rue;
     this.bp = bp;
     this.arrondissement = arrondissement;
