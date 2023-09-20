@@ -13,6 +13,7 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
 import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
+import { WarningMessages } from "src/app/helpers/messages";
 
 @Component({
   selector: "app-expenses",
@@ -232,28 +233,39 @@ export class ExpensesComponent implements OnInit {
       }
     });
 
-    return { invalidInputs, invalidSelects };
+    let notificationMessages: string[] = [];
+    if (invalidInputs.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_INPUT_FIELDS,
+        ...invalidInputs
+      );
+    }
+
+    if (notificationMessages.length !== 0) {
+      notificationMessages.push("");
+    }
+
+    if (invalidSelects.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_SELECT_FIELDS,
+        ...invalidSelects
+      );
+    }
+
+    return notificationMessages;
   }
 
   registerExpense() {
     this.isExpenseFormSubmitted = true;
 
     if (this.expenseForm.invalid) {
-      const invalidFieldsData = this.getInvalidFields();
+      const notificationMessages = this.getInvalidFields();
 
       this.toastService.show({
-        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
-          invalidFieldsData.invalidInputs,
-          ["Et faire un choix dans les champs suivants."],
-          invalidFieldsData.invalidSelects
-        ),
+        messages: notificationMessages,
         type: ToastType.Warning,
       });
 
-      // this.toastService.show({
-      // messages: ["Veuillez renseigner tous les champs obligatoires."],
-      // type: ToastType.Warning,
-      // });
 
       return;
     }

@@ -443,7 +443,7 @@ export class PatientInvoiceFormComponent implements OnInit {
   validatePayment() {
     this.isInvoiceFormSubmitted = true;
 
-    if (!this.invoiceForm?.valid) {
+    if (this.invoiceForm?.invalid) {
       const invalidFieldsData = this.rptpRadioControl.invalid
         ? ["Veuillez faire un choix entre RP et TP"]
         : [""];
@@ -454,10 +454,6 @@ export class PatientInvoiceFormComponent implements OnInit {
         type: ToastType.Warning,
       });
 
-      // this.toastService.show({
-      //   messages: ["Veuillez renseigner tous les champs obligatoires."],
-      //   type: ToastType.Warning,
-      // });
 
       return;
     }

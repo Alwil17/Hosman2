@@ -37,6 +37,7 @@ import { TariffService } from "src/app/services/secretariat/shared/tariff.servic
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
 import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
+import { WarningMessages } from "src/app/helpers/messages";
 
 @Component({
   selector: "app-patient-activity",
@@ -530,29 +531,38 @@ export class PatientActivityComponent implements OnInit {
       }
     });
 
-    return { invalidInputs, invalidSelects };
+    let notificationMessages: string[] = [];
+    if (invalidInputs.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_INPUT_FIELDS,
+        ...invalidInputs
+      );
+    }
+
+    if (notificationMessages.length !== 0) {
+      notificationMessages.push("");
+    }
+
+    if (invalidSelects.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_SELECT_FIELDS,
+        ...invalidSelects
+      );
+    }
+
+    return notificationMessages;
   }
 
   openInvoiceModal() {
     this.isActivityFormSubmitted = true;
 
     if (this.activityForm.invalid) {
-
-      const invalidFieldsData = this.getInvalidFields();
+      const notificationMessages = this.getInvalidFields();
 
       this.toastService.show({
-        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
-          invalidFieldsData.invalidInputs,
-          ["Et faire un choix dans les champs suivants."],
-          invalidFieldsData.invalidSelects
-        ),
+        messages: notificationMessages,
         type: ToastType.Warning,
       });
-
-      // this.toastService.show({
-      //   messages: ["Veuillez renseigner tous les champs obligatoires."],
-      //   type: ToastType.Warning,
-      // });
 
       return;
     }
