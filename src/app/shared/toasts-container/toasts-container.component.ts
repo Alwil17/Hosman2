@@ -7,7 +7,9 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
     <ngb-toast
       *ngFor="let toast of toastService.toasts"
       [class]="toast.classname"
-      [autohide]="true"
+      [autohide]="autohide"
+      (mouseenter)="autohide = false"
+      (mouseleave)="autohide = true"
       [delay]="toast.delay || 7500"
       (hidden)="toastService.remove(toast)"
     >
@@ -71,6 +73,8 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
   // host: { "[class.ngb-toasts]": "true" },
 })
 export class ToastsContainerComponent implements OnInit {
+  autohide = true;
+
   constructor(public toastService: ToastService) {}
 
   ngOnInit(): void {}
