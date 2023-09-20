@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
+import { ErrorMessages } from "src/app/helpers/messages";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 @Component({
@@ -46,7 +47,7 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
         <ng-template
           *ngIf="toast.type == 3 && !toast.messages; else contentMessage"
         >
-          "Désolé, une erreur s'est produite."
+          {{ defaultErrorMessage }}
         </ng-template>
 
         <ng-template #contentMessage>
@@ -74,6 +75,8 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 })
 export class ToastsContainerComponent implements OnInit {
   autohide = true;
+
+  defaultErrorMessage = ErrorMessages.ERROR_OCCURED;
 
   constructor(public toastService: ToastService) {}
 
