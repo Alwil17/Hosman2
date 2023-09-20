@@ -17,7 +17,7 @@ export class ToastService {
         break;
 
       case ToastType.Warning:
-        toast.classname = "bg-warning text-light";
+        toast.classname = "bg-warning text-secondary";
         break;
 
       case ToastType.Error:

@@ -41,12 +41,26 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 
       <!-- CONTENT/DESCRIPTION.  -->
       <b>
+        <ng-template
+          *ngIf="toast.type == 3 && !toast.messages; else contentMessage"
+        >
+          "Désolé, une erreur s'est produite."
+        </ng-template>
+
+        <ng-template #contentMessage>
+          <ng-container *ngFor="let message of toast.messages; index as i">
+            <br *ngIf="i !== 0" />
+            {{ message }}
+          </ng-container>
+        </ng-template>
+      </b>
+      <!-- <b>
         {{
           toast.type == 3 && !toast.message
             ? "Désolé, une erreur s'est produite."
             : toast.message
         }}
-      </b>
+      </b> -->
     </ngb-toast>
   `,
   host: {

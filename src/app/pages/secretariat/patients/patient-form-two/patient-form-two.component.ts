@@ -1,5 +1,11 @@
 import { DatePipe } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbModal, NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
@@ -41,6 +47,8 @@ import { ProfessionRequest } from "src/app/models/secretariat/patients/requests/
 import { EmployerRequest } from "src/app/models/secretariat/patients/requests/employer-request.model";
 import { CityRequest } from "src/app/models/secretariat/patients/requests/city-request.model";
 import { NeighborhoodRequest } from "src/app/models/secretariat/patients/requests/neighborhood-request.model";
+import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
+import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 
 @Component({
   selector: "app-patient-form-two",
@@ -128,17 +136,13 @@ export class PatientFormTwoComponent implements OnInit {
     text: hasInsurance.text,
   }));
 
-  // cities = CITIES.map((city) => ({
-  //   id: city.id,
-  //   text: city.nom,
-  // }));
-  // neighborhoods = NEIGHBORHOODS.map((neighborhood) => ({
-  //   id: neighborhood.id,
-  //   text: neighborhood.nom,
-  // }));
+  @ViewChildren(InputComponent)
+  inputFields!: QueryList<InputComponent>;
+
+  @ViewChildren(SelectComponent)
+  selectFields!: QueryList<SelectComponent>;
 
   constructor(
-    // private datePipe: DatePipe,
     private patientService: PatientService,
     private secretariatRouter: SecretariatRouterService,
     private modalService: NgbModal,
@@ -594,110 +598,114 @@ export class PatientFormTwoComponent implements OnInit {
     return patientInsurance;
   }
 
-  // generateSummary() {
-  //   const patient = this.getPatientFormData();
+  getInvalidFields() {
+    const invalidInputs: string[] = [];
+    this.inputFields.forEach((input) => {
+      if (input.control.invalid) {
+        invalidInputs.push("- " + input.label);
+      }
+    });
 
-  //   const selectedInsurance = this.insurances.find(
-  //     (insurance) => this.insuranceControl.value == insurance.id
-  //   );
+    const invalidSelects: string[] = [];
+    this.selectFields.forEach((select) => {
+      if (select.control.invalid) {
+        invalidSelects.push("- " + select.label);
+      }
+    });
 
-  //   this.summary = {
-  //     title: patient.sexe === "Masculin" ? "Monsieur" : "Mademoiselle",
-  //     fullName: patient.nom + " " + patient.prenoms,
-  //     birth: this.datePipe.transform(patient.date_naissance, "dd/MM/yyyy")!,
-  //     age: this.ageControl.value as string,
-  //     birthPlace: patient.lieu_naissance ? patient.lieu_naissance : "",
-  //     profession: patient.profession ? patient.profession.denomination : "",
-  //     nationality: patient.pays_origine ? patient.pays_origine.nationalite : "",
-  //     insuranceRate: this.insuranceRateControl.value
-  //       ? this.insuranceRateControl.value
-  //       : "",
-  //     insurance: selectedInsurance != null ? selectedInsurance!.text : "",
-  //     insuranceEnd: this.insuranceEndControl.value
-  //       ? this.datePipe.transform(this.insuranceEndControl.value, "dd/MM/yyyy")!
-  //       : "",
-
-  //     tel1: patient.tel1 ? patient.tel1 : "",
-  //     tel2: patient.tel2 ? patient.tel2 : "",
-
-  //     personToContact: this.personToContactControl.value, // patient.personne_a_prevenir.toString(),
-  //   };
-  // }
+    return { invalidInputs, invalidSelects };
+  }
 
   registerPatientAndLeave() {
     this.isPatientInfoFormSubmitted = true;
 
-    if (this.patientInfoForm.valid) {
-      const patientData = this.getPatientFormData();
+    if (this.patientInfoForm.invalid) {
+      const invalidFieldsData = this.getInvalidFields();
 
-      console.log(JSON.stringify(patientData));
-
-      this.patientService.registerPatient(patientData).subscribe({
-        next: async (data) => {
-          console.log(data, "\nHere");
-
-          this.toastService.show({
-            message: "Le patient a été enregistré avec succès.",
-            type: ToastType.Success,
-          });
-
-          await this.secretariatRouter.navigateToPatientList();
-        },
-        error: (e) => {
-          console.error(e);
-
-          this.toastService.show({
-            delay: 10000,
-            type: ToastType.Error,
-          });
-        },
-      });
-    } else {
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
+          invalidFieldsData.invalidInputs,
+          ["Et faire un choix dans les champs suivants."],
+          invalidFieldsData.invalidSelects
+        ),
         type: ToastType.Warning,
       });
+
+      return;
     }
+
+    const patientData = this.getPatientFormData();
+
+    console.log(JSON.stringify(patientData));
+
+    this.patientService.registerPatient(patientData).subscribe({
+      next: async (data) => {
+        console.log(data, "\nHere");
+
+        this.toastService.show({
+          messages: ["Le patient a été enregistré avec succès."],
+          type: ToastType.Success,
+        });
+
+        await this.secretariatRouter.navigateToPatientList();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 
   registerPatientAndContinue() {
     this.isPatientInfoFormSubmitted = true;
 
-    if (this.patientInfoForm.valid) {
-      const patientData = this.getPatientFormData();
+    if (this.patientInfoForm.invalid) {
+      const invalidFieldsData = this.getInvalidFields();
 
-      this.patientService.registerPatient(patientData).subscribe({
-        next: (data) => {
-          console.log(data, "\nHere");
-
-          this.toastService.show({
-            message: "Le patient a été enregistré avec succès.",
-            type: ToastType.Success,
-          });
-
-          this.patientService.setActivePatient(data).subscribe({
-            next: async (data) => {
-              await this.secretariatRouter.navigateToPatientActivity();
-            },
-            error: (e) => {
-              console.error(e);
-            },
-          });
-        },
-        error: (e) => {
-          console.error(e);
-
-          this.toastService.show({
-            delay: 10000,
-            type: ToastType.Error,
-          });
-        },
-      });
-    } else {
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
+          invalidFieldsData.invalidInputs,
+          ["Et faire un choix dans les champs suivants."],
+          invalidFieldsData.invalidSelects
+        ),
         type: ToastType.Warning,
       });
+
+      return;
     }
+
+    const patientData = this.getPatientFormData();
+
+    this.patientService.registerPatient(patientData).subscribe({
+      next: (data) => {
+        console.log(data, "\nHere");
+
+        this.toastService.show({
+          messages: ["Le patient a été enregistré avec succès."],
+          type: ToastType.Success,
+        });
+
+        this.patientService.setActivePatient(data).subscribe({
+          next: async (data) => {
+            await this.secretariatRouter.navigateToPatientActivity();
+          },
+          error: (e) => {
+            console.error(e);
+          },
+        });
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 }

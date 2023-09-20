@@ -96,7 +96,7 @@ export class CollectionsComponent implements OnInit {
 
     if (!this.collectionForm.valid) {
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: ["Veuillez renseigner tous les champs obligatoires."],
         type: ToastType.Warning,
       });
 
@@ -153,7 +153,7 @@ export class CollectionsComponent implements OnInit {
         console.log(data);
 
         this.toastService.show({
-          message: "Encaissement enregistré.",
+          messages: ["Encaissement enregistré."],
           type: ToastType.Success,
         });
       },

@@ -444,10 +444,20 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.isInvoiceFormSubmitted = true;
 
     if (!this.invoiceForm?.valid) {
+      const invalidFieldsData = this.rptpRadioControl.invalid
+        ? ["Veuillez faire un choix entre RP et TP"]
+        : [""];
+
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: invalidFieldsData,
+
         type: ToastType.Warning,
       });
+
+      // this.toastService.show({
+      //   messages: ["Veuillez renseigner tous les champs obligatoires."],
+      //   type: ToastType.Warning,
+      // });
 
       return;
     }
@@ -573,7 +583,7 @@ export class PatientInvoiceFormComponent implements OnInit {
         console.log(data);
 
         this.toastService.show({
-          message: "Paiement enregistré.",
+          messages: ["Paiement enregistré."],
           type: ToastType.Success,
         });
 
@@ -582,7 +592,7 @@ export class PatientInvoiceFormComponent implements OnInit {
             console.log(data, "\nHere");
 
             this.toastService.show({
-              message: "Patient envoyé en liste d'attente.",
+              messages: ["Patient envoyé en liste d'attente."],
               type: ToastType.Success,
             });
           },
@@ -590,8 +600,9 @@ export class PatientInvoiceFormComponent implements OnInit {
             console.error(e);
 
             this.toastService.show({
-              message:
+              messages: [
                 "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
+              ],
               delay: 10000,
               type: ToastType.Error,
             });
@@ -601,7 +612,7 @@ export class PatientInvoiceFormComponent implements OnInit {
         this.invoiceService.loadPdf(data).subscribe({
           next: (data) => {
             this.toastService.show({
-              message: "Génération du reçu.",
+              messages: ["Génération du reçu."],
               type: ToastType.Success,
             });
 
@@ -619,7 +630,7 @@ export class PatientInvoiceFormComponent implements OnInit {
             console.error(e);
 
             this.toastService.show({
-              message: "Echec de la génération du reçu.",
+              messages: ["Echec de la génération du reçu."],
               delay: 10000,
               type: ToastType.Error,
             });
@@ -630,7 +641,7 @@ export class PatientInvoiceFormComponent implements OnInit {
         console.error(e);
 
         this.toastService.show({
-          message: "Paiement non enregistré.",
+          messages: ["Paiement non enregistré."],
           delay: 10000,
           type: ToastType.Error,
         });

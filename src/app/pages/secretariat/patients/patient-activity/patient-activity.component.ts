@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { IActivity, IPrestation, IPrestationSelect } from "./activity.models";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
@@ -35,6 +35,8 @@ import { ActGroupService } from "src/app/services/secretariat/shared/act-group.s
 import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
 import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
+import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
+import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 
 @Component({
   selector: "app-patient-activity",
@@ -124,6 +126,12 @@ export class PatientActivityComponent implements OnInit {
   //   { id: 0, text: "Dr J-P" },
   //   { id: 1, text: "Dr Gael" },
   // ];
+
+  @ViewChildren(InputComponent)
+  inputFields!: QueryList<InputComponent>;
+
+  @ViewChildren(SelectComponent)
+  selectFields!: QueryList<SelectComponent>;
 
   constructor(
     public patientService: PatientService,
@@ -442,74 +450,9 @@ export class PatientActivityComponent implements OnInit {
     this.refreshActivitiesSelect();
   }
 
-  // medicalProcedures = ["Actes médicaux"];
-  // examinations = ["Analyses", "Hémodialyses"];
-  // medicalImaging = ["Radio", "Scanners", "IRM", "Echographie", "ECG", "EEG"];
-  // meds = ["Médicaments", "Solutés", "Consommables"];
-  // others = [
-  //   "Kinésithérapie",
-  //   "Pansement",
-  //   "Injections",
-  //   "Endoscopie",
-  //   "Déplacements",
-  // ];
-
-  prestationTypes: string[] = [
-    "Bilan",
-    "Actes médicaux",
-    "Analyses",
-    "Hémodialyses",
-    "Radio",
-    "Scanners",
-    "IRM",
-    "Echographie",
-    "ECG",
-    "EEG",
-    "Médicaments",
-    "Solutés",
-    "Consommables",
-    "Kinésithérapie",
-    "Pansement",
-    "Injections",
-    "Endoscopie",
-    "Déplacements",
-  ];
-
   selectedGroupTariffs: Tariff[] = [];
 
-  actGroups: ActGroup[] = [
-    // {
-    //   name: "Actes médicaux",
-    //   items: ACTS,
-    // },
-    // {
-    //   name: "Analyses",
-    //   items: ANALYSIS.map((anal, index) => ({
-    //     id: index,
-    //     ...anal,
-    //   })),
-    // },
-    // {
-    //   name: "Echograpies",
-    //   items: ECHOGRAPHIES,
-    // },
-    // {
-    //   name: "Endoscopies",
-    //   items: ENDOSCOPIES,
-    // },
-    // {
-    //   name: "Hémodialyses",
-    //   items: HEMODIALYSES,
-    // },
-    // {
-    //   name: "IRM",
-    //   items: MRIS,
-    // },
-    // {
-    //   name: "Scanners",
-    //   items: SCANNERS,
-    // },
-  ];
+  actGroups: ActGroup[] = [];
 
   summary = {
     title: "",
@@ -572,22 +515,53 @@ export class PatientActivityComponent implements OnInit {
     };
   }
 
+  getInvalidFields() {
+    const invalidInputs: string[] = [];
+    this.inputFields.forEach((input) => {
+      if (input.control.invalid) {
+        invalidInputs.push("- " + input.label);
+      }
+    });
+
+    const invalidSelects: string[] = [];
+    this.selectFields.forEach((select) => {
+      if (select.control.invalid) {
+        invalidSelects.push("- " + select.label);
+      }
+    });
+
+    return { invalidInputs, invalidSelects };
+  }
+
   openInvoiceModal() {
     this.isActivityFormSubmitted = true;
 
-    if (!this.activityForm.valid) {
+    if (this.activityForm.invalid) {
+
+      const invalidFieldsData = this.getInvalidFields();
+
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
+          invalidFieldsData.invalidInputs,
+          ["Et faire un choix dans les champs suivants."],
+          invalidFieldsData.invalidSelects
+        ),
         type: ToastType.Warning,
       });
+
+      // this.toastService.show({
+      //   messages: ["Veuillez renseigner tous les champs obligatoires."],
+      //   type: ToastType.Warning,
+      // });
 
       return;
     }
 
     if (this.table2.length === 0) {
       this.toastService.show({
-        message:
+        messages: [
           "Veuillez choisir au moins un élément dans le tableau de gauche.",
+        ],
         type: ToastType.Warning,
       });
 

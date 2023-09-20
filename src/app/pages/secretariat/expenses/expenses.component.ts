@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Expense } from "src/app/models/secretariat/activities/expense.model";
 import { ExpenseRequest } from "src/app/models/secretariat/activities/requests/expense-request.model";
@@ -11,6 +11,8 @@ import { parseIntOrZero } from "src/app/helpers/parsers";
 import { ExpenseRubricRequest } from "src/app/models/secretariat/activities/requests/expense-rubric-request.model";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
+import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 
 @Component({
   selector: "app-expenses",
@@ -88,6 +90,12 @@ export class ExpensesComponent implements OnInit {
   pageSize = 10;
   collectionSize = this.expenseList.length;
   expenseListCut: Expense[] = [];
+
+  @ViewChildren(InputComponent)
+  inputFields!: QueryList<InputComponent>;
+
+  @ViewChildren(SelectComponent)
+  selectFields!: QueryList<SelectComponent>;
 
   constructor(
     private expenseService: ExpenseService,
@@ -178,7 +186,7 @@ export class ExpensesComponent implements OnInit {
         this.expenseList = data;
 
         this.toastService.show({
-          message: "Rafraîchissement de la liste.",
+          messages: ["Rafraîchissement de la liste."],
           type: ToastType.Success,
         });
 
@@ -188,8 +196,9 @@ export class ExpensesComponent implements OnInit {
         console.error(error);
 
         this.toastService.show({
-          message:
+          messages: [
             "Une erreur s'est produite lors du rafraîchissment de la liste.",
+          ],
           delay: 10000,
           type: ToastType.Error,
         });
@@ -208,14 +217,43 @@ export class ExpensesComponent implements OnInit {
       );
   }
 
+  getInvalidFields() {
+    const invalidInputs: string[] = [];
+    this.inputFields.forEach((input) => {
+      if (input.control.invalid) {
+        invalidInputs.push("- " + input.label);
+      }
+    });
+
+    const invalidSelects: string[] = [];
+    this.selectFields.forEach((select) => {
+      if (select.control.invalid) {
+        invalidSelects.push("- " + select.label);
+      }
+    });
+
+    return { invalidInputs, invalidSelects };
+  }
+
   registerExpense() {
     this.isExpenseFormSubmitted = true;
 
-    if (!this.expenseForm.valid) {
+    if (this.expenseForm.invalid) {
+      const invalidFieldsData = this.getInvalidFields();
+
       this.toastService.show({
-        message: "Veuillez renseigner tous les champs obligatoires.",
+        messages: ["Veuillez renseigner tous les champs obligatoires."].concat(
+          invalidFieldsData.invalidInputs,
+          ["Et faire un choix dans les champs suivants."],
+          invalidFieldsData.invalidSelects
+        ),
         type: ToastType.Warning,
       });
+
+      // this.toastService.show({
+      // messages: ["Veuillez renseigner tous les champs obligatoires."],
+      // type: ToastType.Warning,
+      // });
 
       return;
     }
@@ -243,7 +281,7 @@ export class ExpensesComponent implements OnInit {
         console.log(data);
 
         this.toastService.show({
-          message: "Dépense enregistrée avec succès.",
+          messages: ["Dépense enregistrée avec succès."],
           type: ToastType.Success,
         });
 
@@ -266,7 +304,7 @@ export class ExpensesComponent implements OnInit {
         console.log("Deleted expense");
 
         this.toastService.show({
-          message: "Dépense supprimée.",
+          messages: ["Dépense supprimée."],
           type: ToastType.Success,
         });
 
