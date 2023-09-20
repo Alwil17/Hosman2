@@ -36,8 +36,9 @@ export class InputComponent implements OnInit {
   @Output()
   onInputClick = new EventEmitter();
 
-  @Input() capitalized = false;
-  @Input() titleCased = false;
+  @Input() uppercased = false;
+  @Input() titlecased = false;
+  @Input() firstLetterUppercased = true;
 
   constructor(private titleCase: TitleCasePipe) {}
 
@@ -52,11 +53,14 @@ export class InputComponent implements OnInit {
   }
 
   onChange() {
-    console.log("Key up");
-    if (this.capitalized) {
+    if (this.uppercased) {
       this.control.setValue((this.control.value as string).toUpperCase());
-    } else if (this.titleCased) {
+    } else if (this.titlecased) {
       this.control.setValue(this.titleCase.transform(this.control.value));
+    } else if (this.firstLetterUppercased) {
+      const value = this.control.value as string;
+      const transformed = value.charAt(0).toUpperCase() + value.substring(1);
+      this.control.setValue(transformed);
     }
   }
 }
