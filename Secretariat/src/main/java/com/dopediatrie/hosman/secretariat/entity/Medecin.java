@@ -42,4 +42,10 @@ public class Medecin {
     @OneToMany(mappedBy = "consulteur")
     @JsonIgnore
     private List<Prestation> prestations_consulteur;
+    @OneToMany(mappedBy = "demandeur")
+    @JsonIgnore
+    private List<PrestationTemp> temp_prestations_demandeur;
+    @OneToMany(mappedBy = "consulteur")
+    @JsonIgnore
+    private List<PrestationTemp> temp_prestations_consulteur;
 }

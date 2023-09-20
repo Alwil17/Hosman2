@@ -26,6 +26,7 @@ public class Majoration {
     private Facture facture;
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 
     @Override

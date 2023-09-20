@@ -1,11 +1,9 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
-import com.dopediatrie.hosman.secretariat.entity.FactureMode;
-import com.dopediatrie.hosman.secretariat.entity.Facture;
+import com.dopediatrie.hosman.secretariat.entity.*;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.*;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.*;
@@ -22,6 +20,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @RequiredArgsConstructor
 @Log4j2
 public class FactureServiceImpl implements FactureService {
+    private final String NOT_FOUND = "FACTURE_NOT_FOUND";
+
     private final FactureRepository factureRepository;
     private final EtatRepository etatRepository;
     private final ReductionRepository reductionRepository;
@@ -29,13 +29,18 @@ public class FactureServiceImpl implements FactureService {
     private final CreanceRepository creanceRepository;
     private final ReliquatRepository reliquatRepository;
     private final FactureModeRepository eModeRepository;
+    private final PrestationRepository prestationRepository;
+    private final PrestationTempRepository prestationTempRepository;
+    private final PrestationTarifTempRepository prestationTarifTempRepository;
 
     private final ReductionService reductionService;
     private final MajorationService majorationService;
     private final CreanceService creanceService;
     private final ReliquatService reliquatService;
     private final FactureModeService factureModeService;
-    private final String NOT_FOUND = "FACTURE_NOT_FOUND";
+    private final PrestationService prestationService;
+    private final PrestationTarifService prestationTarifService;
+
 
     @Override
     public List<Facture> getAllFactures() {
@@ -46,19 +51,27 @@ public class FactureServiceImpl implements FactureService {
     public long addFacture(FactureRequest factureRequest) {
         log.info("FactureServiceImpl | addFacture is called");
 
-        factureRequest.getMajoration().setDate_operation(factureRequest.getDate_facture());
-        factureRequest.getMajoration().setPatient_id(factureRequest.getPatient_id());
-        factureRequest.getReduction().setDate_operation(factureRequest.getDate_facture());
-        factureRequest.getReduction().setPatient_id(factureRequest.getPatient_id());
-        factureRequest.getReliquat().setDate_operation(factureRequest.getDate_facture());
-        factureRequest.getReliquat().setPatient_id(factureRequest.getPatient_id());
-        factureRequest.getCreance().setDate_operation(factureRequest.getDate_facture());
-        factureRequest.getCreance().setPatient_id(factureRequest.getPatient_id());
+        //majoration request
+        MajorationRequest majorationRequest = factureRequest.getMajoration();
+        majorationRequest.setDate_operation(factureRequest.getDate_facture());
+        majorationRequest.setPatient_id(factureRequest.getPatient_id());
+        //reduction request
+        ReductionRequest reductionRequest = factureRequest.getReduction();
+        reductionRequest.setDate_operation(factureRequest.getDate_facture());
+        reductionRequest.setPatient_id(factureRequest.getPatient_id());
+        //reliquat request
+        ReliquatRequest reliquatRequest = factureRequest.getReliquat();
+        reliquatRequest.setDate_operation(factureRequest.getDate_facture());
+        reliquatRequest.setPatient_id(factureRequest.getPatient_id());
+        //creance request
+        CreanceRequest creanceRequest = factureRequest.getCreance();
+        creanceRequest.setDate_operation(factureRequest.getDate_facture());
+        creanceRequest.setPatient_id(factureRequest.getPatient_id());
 
-        long majorationId = majorationService.addMajoration(factureRequest.getMajoration());
-        long reductionId = reductionService.addReduction(factureRequest.getReduction());
-        long reliquatId = reliquatService.addReliquat(factureRequest.getReliquat());
-        long creanceId = creanceService.addCreance(factureRequest.getCreance());
+        long majorationId = majorationService.addMajoration(majorationRequest);
+        long reductionId = reductionService.addReduction(reductionRequest);
+        long reliquatId = reliquatService.addReliquat(reliquatRequest);
+        long creanceId = creanceService.addCreance(creanceRequest);
 
         Facture facture
                 = Facture.builder()
@@ -76,12 +89,46 @@ public class FactureServiceImpl implements FactureService {
                 .date_reglement(factureRequest.getDate_reglement())
                 .build();
 
+        // commit prestationTemp to prestation
+        PrestationTemp prestationTemp = prestationTempRepository.findById(factureRequest.getPrestation_id()).orElseThrow();
+        //copyProperties(prestationTemp, prestationRequest);
+        PrestationRequest prestationRequest = PrestationRequest.builder()
+                .provenance(prestationTemp.getProvenance())
+                .date_prestation(prestationTemp.getDate_prestation())
+                .consulteur_id(prestationTemp.getConsulteur().getId())
+                .demandeur_id(prestationTemp.getDemandeur().getId())
+                .secteur_id(prestationTemp.getSecteur().getId())
+                .patient_id(prestationTemp.getPatient().getId())
+                .build();
+        log.info(prestationRequest);
+
+        long prestationId =  prestationService.addPrestation(prestationRequest);
+
+        // push facture to db
+        facture.setPrestation(prestationRepository.findById(prestationId).orElseThrow());
         facture = factureRepository.save(facture);
 
+        // add payement modes
         for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
             eMode.setFacture_id(facture.getId());
             factureModeService.addFactureMode(eMode);
         }
+
+        // commit PrestationTarifTemp to PrestationTarif
+        List<PrestationTarifTemp> ptts = prestationTarifTempRepository.findByPrestation_tempId(factureRequest.getPrestation_id());
+        for (PrestationTarifTemp ptt : ptts) {
+            PrestationTarifRequest ptr = PrestationTarifRequest.builder()
+                    .quantite(ptt.getQuantite())
+                    .total_price_gros(ptt.getTotal_price_gros())
+                    .prestation_id(prestationId)
+                    .tarif_id(ptt.getTarif().getId())
+                    .build();
+            //copyProperties(ptt, ptr);
+            prestationTarifService.addPrestationTarif(ptr);
+            prestationTarifTempRepository.deleteByPrestationIdAndTarifId(ptt.getId().prestation_temp_id, ptt.getId().tarif_id);
+        }
+        // delete prestationTemp
+        prestationTempRepository.deleteById(factureRequest.getPrestation_id());
 
         log.info("FactureServiceImpl | addFacture | Facture Created");
         log.info("FactureServiceImpl | addFacture | Facture Id : " + facture.getId());

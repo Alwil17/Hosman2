@@ -25,5 +25,6 @@ public class Groupe {
     private String couleur = "white";
     private long structure_id;
     @OneToMany(mappedBy = "groupe")
+    @JsonIgnore
     private List<Acte> actes;
 }

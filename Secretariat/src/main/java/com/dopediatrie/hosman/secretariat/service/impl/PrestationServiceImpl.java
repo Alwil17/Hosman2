@@ -1,11 +1,17 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.entity.Prestation;
+import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PrestationRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.PrestationTarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PrestationResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
+import com.dopediatrie.hosman.secretariat.service.FactureService;
 import com.dopediatrie.hosman.secretariat.service.PrestationService;
+import com.dopediatrie.hosman.secretariat.service.PrestationTarifService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -23,7 +29,9 @@ public class PrestationServiceImpl implements PrestationService {
     private final PatientRepository patientRepository;
     private final MedecinRepository medecinRepository;
     private final SecteurRepository secteurRepository;
-    private final FactureRepository factureRepository;
+    private final TarifRepository tarifRepository;
+
+    private final PrestationTarifService prestationTarifService;
     private final String NOT_FOUND = "PRESTATION_NOT_FOUND";
 
     @Override
@@ -34,10 +42,12 @@ public class PrestationServiceImpl implements PrestationService {
     @Override
     public long addPrestation(PrestationRequest prestationRequest) {
         log.info("PrestationServiceImpl | addPrestation is called");
+        Patient patient = patientRepository.findById(prestationRequest.getPatient_id()).orElseThrow();
+
         Prestation prestation
                 = Prestation.builder()
                 .provenance(prestationRequest.getProvenance())
-                .patient(patientRepository.findById(prestationRequest.getPatient_id()).get())
+                .patient(patient)
                 .consulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get())
                 .demandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get())
                 .secteur(secteurRepository.findById(prestationRequest.getSecteur_id()).get())
@@ -45,6 +55,37 @@ public class PrestationServiceImpl implements PrestationService {
                 .build();
 
         prestation = prestationRepository.save(prestation);
+
+        // add data to intermediate table
+        /*for (PrestationTarifRequest prestationTarifRequest : prestationRequest.getTarifs()) {
+            Tarif tarif = tarifRepository.findById(prestationTarifRequest.getTarif_id()).orElseThrow();
+            double total_prix = 0;
+            switch (patient.getIs_assure()){
+                case 0:
+                    total_prix = tarif.getTarif_non_assure();
+                    break;
+                case 1:
+                    total_prix = tarif.getTarif_etr_non_assure();
+                    break;
+                case 2:
+                    total_prix = tarif.getTarif_assur_locale();
+                    break;
+                case 3:
+                    total_prix = tarif.getTarif_assur_hors_zone();
+                    break;
+                default:
+                    total_prix = tarif.getTarif_non_assure();
+                    break;
+            }
+            prestationTarifRequest.setPrestation_id(prestation.getId());
+            prestationTarifRequest.setTotal_price_gros(total_prix);
+            prestationTarifService.addPrestationTarif(prestationTarifRequest);
+        }*/
+
+        //add facture
+        //FactureRequest fr =  prestationRequest.getFactureRequest();
+        //fr.setPatient_id(patient.getId());
+        //factureService.addFacture(fr);
 
         log.info("PrestationServiceImpl | addPrestation | Prestation Created");
         log.info("PrestationServiceImpl | addPrestation | Prestation Id : " + prestation.getId());
@@ -86,7 +127,6 @@ public class PrestationServiceImpl implements PrestationService {
         prestation.setDemandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get());
         prestation.setSecteur(secteurRepository.findById(prestationRequest.getSecteur_id()).get());
         prestation.setDate_prestation(prestationRequest.getDate_prestation());
-        prestation.setFacture(factureRepository.findById(prestationRequest.getFacture_id()).get());
         prestationRepository.save(prestation);
 
         log.info("PrestationServiceImpl | editPrestation | Prestation Updated");

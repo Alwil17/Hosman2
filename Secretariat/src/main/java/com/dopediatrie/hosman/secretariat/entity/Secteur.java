@@ -28,6 +28,9 @@ public class Secteur {
     @OneToMany(mappedBy = "secteur")
     @JsonIgnore
     private List<Prestation> prestations;
+    @OneToMany(mappedBy = "secteur")
+    @JsonIgnore
+    private List<PrestationTemp> temp_prestations;
 
     @Override
     public String toString() {

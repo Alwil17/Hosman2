@@ -52,6 +52,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Prestation> prestations;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<PrestationTemp> temp_prestations;
     @OneToOne
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;

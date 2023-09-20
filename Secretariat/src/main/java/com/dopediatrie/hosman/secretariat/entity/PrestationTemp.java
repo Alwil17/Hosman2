@@ -1,6 +1,5 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Prestation {
+public class PrestationTemp {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    @JsonIgnore
     private Patient patient;
     private String provenance;
     @ManyToOne
@@ -35,18 +33,19 @@ public class Prestation {
     private Secteur secteur;
     private LocalDateTime date_prestation;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "prestation_tarif",
-            joinColumns = @JoinColumn(name = "prestation_id", referencedColumnName = "id"),
+    @JoinTable(name = "prestation_tarif_temp",
+            joinColumns = @JoinColumn(name = "prestation_temp_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tarif_id", referencedColumnName = "id"))
     private List<Tarif> tarifs;
-    @OneToOne(mappedBy = "prestation")
-    @JsonIgnore
-    private Facture facture;
 
     @Override
     public String toString() {
-        return "Prestation{" +
+        return "PrestationTemp{" +
                 "id=" + id +
+                ", patient=" + patient +
+                ", demandeur=" + demandeur +
+                ", consulteur=" + consulteur +
+                ", secteur=" + secteur +
                 ", provenance=" + provenance +
                 ", date_prestation=" + date_prestation +
                 '}';

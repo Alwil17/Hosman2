@@ -4,6 +4,7 @@ import com.dopediatrie.hosman.secretariat.entity.Reliquat;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.ReliquatRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.ReliquatResponse;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.repository.ReliquatRepository;
 import com.dopediatrie.hosman.secretariat.repository.EtatRepository;
 import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
@@ -22,7 +23,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class ReliquatServiceImpl implements ReliquatService {
     private final ReliquatRepository reliquatRepository;
     private final EtatRepository etatRepository;
-    private final FactureRepository factureRepository;
+    private final PatientRepository patientRepository;
     private final String NOT_FOUND = "RELIQUAT_NOT_FOUND";
 
     @Override
@@ -36,6 +37,7 @@ public class ReliquatServiceImpl implements ReliquatService {
 
         Reliquat reliquat = Reliquat.builder()
                 .montant(reliquatRequest.getMontant())
+                .patient(patientRepository.findById(reliquatRequest.getPatient_id()).orElseThrow())
                 .etat(etatRepository.findById(reliquatRequest.getEtat_id()).orElseThrow())
                 .date_operation(reliquatRequest.getDate_operation())
                 .build();

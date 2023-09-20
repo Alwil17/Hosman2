@@ -7,6 +7,7 @@ import com.dopediatrie.hosman.secretariat.payload.response.CreanceResponse;
 import com.dopediatrie.hosman.secretariat.repository.CreanceRepository;
 import com.dopediatrie.hosman.secretariat.repository.EtatRepository;
 import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.service.CreanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +23,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class CreanceServiceImpl implements CreanceService {
     private final CreanceRepository creanceRepository;
     private final EtatRepository etatRepository;
-    private final FactureRepository factureRepository;
+    private final PatientRepository patientRepository;
     private final String NOT_FOUND = "CREANCE_NOT_FOUND";
 
     @Override
@@ -38,6 +39,7 @@ public class CreanceServiceImpl implements CreanceService {
                 .montant(creanceRequest.getMontant())
                 .etat(etatRepository.findById(creanceRequest.getEtat_id()).get())
                 .date_operation(creanceRequest.getDate_operation())
+                .patient(patientRepository.findById(creanceRequest.getPatient_id()).orElseThrow())
                 .build();
 
         creance = creanceRepository.save(creance);

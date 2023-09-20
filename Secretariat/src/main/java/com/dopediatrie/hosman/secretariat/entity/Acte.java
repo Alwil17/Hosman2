@@ -24,7 +24,6 @@ public class Acte {
     private long structure_id;
     @ManyToOne
     @JoinColumn(name = "groupe_id")
-    @JsonIgnore
     private Groupe groupe;
     @OneToMany(mappedBy = "acte")
     @JsonIgnore

@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.MajorationRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.MajorationResponse;
 import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
 import com.dopediatrie.hosman.secretariat.repository.MajorationRepository;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.service.MajorationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +21,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class MajorationServiceImpl implements MajorationService {
     private final MajorationRepository majorationRepository;
-    private final FactureRepository factureRepository;
+    private final PatientRepository patientRepository;
     private final String NOT_FOUND = "MAJORATION_NOT_FOUND";
 
     @Override
@@ -34,6 +35,7 @@ public class MajorationServiceImpl implements MajorationService {
         Majoration majoration = Majoration.builder()
                 .montant(majorationRequest.getMontant())
                 .motif(majorationRequest.getMotif())
+                .patient(patientRepository.findById(majorationRequest.getPatient_id()).orElseThrow())
                 .date_operation(majorationRequest.getDate_operation())
                 .build();
 

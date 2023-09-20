@@ -7,19 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "prestation_tarif")
+@Table(name = "prestation_tarif_temp")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PrestationTarif {
+public class PrestationTarifTemp {
     @EmbeddedId
-    private PrestationTarifPK id;
+    private PrestationTarifTempPK id;
 
     @ManyToOne
-    @MapsId("prestation_id")
-    @JoinColumn(name = "prestation_id")
-    private Prestation prestation;
+    @MapsId("prestation_temp_id")
+    @JoinColumn(name = "prestation_temp_id")
+    private PrestationTemp prestation;
     @ManyToOne
     @MapsId("tarif_id")
     @JoinColumn(name = "tarif_id")

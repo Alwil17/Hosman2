@@ -26,6 +26,7 @@ public class Reduction {
     private Facture facture;
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 
     @Override

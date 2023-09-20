@@ -33,6 +33,7 @@ public class FactureResponse {
     private LocalDateTime date_reglement;
     private Etat etat;
     private int exporte;
+    private long prestation_id;
     private Prestation prestation;
     private String path;
 }

@@ -5,6 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.ReductionRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.ReductionResponse;
 import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
+import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.repository.ReductionRepository;
 import com.dopediatrie.hosman.secretariat.service.ReductionService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class ReductionServiceImpl implements ReductionService {
     private final ReductionRepository reductionRepository;
-    private final FactureRepository factureRepository;
+    private final PatientRepository patientRepository;
     private final String NOT_FOUND = "REDUCTION_NOT_FOUND";
 
     @Override
@@ -35,6 +36,7 @@ public class ReductionServiceImpl implements ReductionService {
         Reduction reduction = Reduction.builder()
                 .montant(reductionRequest.getMontant())
                 .motif(reductionRequest.getMotif())
+                .patient(patientRepository.findById(reductionRequest.getPatient_id()).orElseThrow())
                 .date_operation(reductionRequest.getDate_operation())
                 .build();
         reduction = reductionRepository.save(reduction);

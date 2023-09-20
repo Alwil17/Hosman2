@@ -2,8 +2,11 @@ package com.dopediatrie.hosman.secretariat.controller;
 
 import com.dopediatrie.hosman.secretariat.entity.Prestation;
 import com.dopediatrie.hosman.secretariat.payload.request.PrestationRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.PrestationTempRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.PrestationResponse;
 import com.dopediatrie.hosman.secretariat.service.PrestationService;
+import com.dopediatrie.hosman.secretariat.service.PrestationTempService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.util.List;
 public class PrestationController {
 
     private final PrestationService prestationService;
+    private final PrestationTempService prestationTempService;
 
     @GetMapping
     public ResponseEntity<List<Prestation>> getAllPrestations() {
@@ -28,14 +32,13 @@ public class PrestationController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addPrestation(@RequestBody PrestationRequest prestationRequest) {
+    public ResponseEntity<FactureResponse> addPrestation(@RequestBody PrestationTempRequest prestationRequest) {
 
-        log.info("PrestationController | addPrestation is called");
+        log.info("PrestationController | addPrestationTemp is called");
+        log.info("PrestationController | addPrestationTemp | prestationRequest : " + prestationRequest.toString());
 
-        log.info("PrestationController | addPrestation | prestationRequest : " + prestationRequest.toString());
-
-        long prestationId = prestationService.addPrestation(prestationRequest);
-        return new ResponseEntity<>(prestationId, HttpStatus.CREATED);
+        FactureResponse response = prestationTempService.addPrestationTemp(prestationRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

@@ -28,6 +28,7 @@ public class Creance {
     private Etat etat;
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 
     @Override
