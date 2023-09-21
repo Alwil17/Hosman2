@@ -1,4 +1,4 @@
-<label class="form-label"
+<label class="form-label" *ngIf="label"
   >{{ label }}
   <span *ngIf="isMandatory && !control.disabled" class="text-danger"
     >*</span
@@ -10,7 +10,9 @@
   notFoundText="Aucun résultat"
   [items]="options"
   bindLabel="text"
-  [editableSearchTerm]="true"
+  [editableSearchTerm]="editable"
+  [clearable]="clearable"
+  [searchable]="searchable"
   [addTag]="canAddOption ? addTagFn : false"
   [placeholder]="placeholder"
   [selectOnTab]="true"

@@ -15,6 +15,9 @@ export class SelectComponent implements OnInit {
   @Input() options: SelectOption[] = [];
   @Input() control = new FormControl();
   @Input() canAddOption = false;
+  @Input() editable = true;
+  @Input() clearable = true;
+  @Input() searchable = true;
 
   constructor() {}
 

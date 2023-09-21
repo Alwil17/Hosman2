@@ -10,8 +10,8 @@
     <div class="card-header">
       <div class="row g-4 align-items-center">
         <div class="col-md-7 col-xl-4">
-          <div class="hstack gap-2">
-            <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
+          <div class="hstack gap-3">
+            <!-- <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
               <button
                 type="button"
                 class="btn btn-light btn-icon waves-effect arrow-none"
@@ -25,7 +25,7 @@
                 <button ngbDropdownItem>Date de naissance</button>
                 <button ngbDropdownItem>Date d'entrée</button>
               </div>
-            </div>
+            </div> -->
 
             <div class="search-box">
               <input
@@ -34,12 +34,25 @@
                 class="form-control"
                 placeholder="Rechercher"
                 [(ngModel)]="searchTerm"
-                (ngModelChange)="filterPatients()"
+                (ngModelChange)="searchPatients()"
               />
               <i class="ri-search-line search-icon"></i>
             </div>
+
+            <div><b>par</b></div>
+
+            <div class="col-md-6">
+              <app-select
+                [editable]="false"
+                [clearable]="false"
+                [searchable]="false"
+                [options]="searchCriteria"
+                [control]="searchCriterionControl"
+              ></app-select>
+            </div>
           </div>
         </div>
+
         <div class="d-flex col-md-5 col-xl-8">
           <button
             type="button"
@@ -81,11 +94,14 @@
                 >
                   <td>{{ patient.reference }}</td>
                   <td>{{ patient.nom | uppercase }}</td>
+                  <!-- <td><ngb-highlight [result]="patient.nom" [term]="searchTerm" ></ngb-highlight></td> -->
                   <td>{{ patient.prenoms }}</td>
                   <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
-                  <td>{{ patient.tel1 | mask : "09 09 09 09 09 09 09 09 09 09" }}</td>
+                  <td>
+                    {{ patient.tel1 | mask : "09 09 09 09 09 09 09 09 09 09" }}
+                  </td>
 
                   <td>{{ patient.date_ajout | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.no_piece }}</td>

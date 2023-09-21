@@ -37,95 +37,71 @@ export class PatientService {
 
   allPatients: Patient[] = PATIENTS;
 
-  constructor(
-    private http: HttpClient,
+  constructor(private http: HttpClient) {}
 
-    private cityService: CityService,
-    private neighborhoodService: NeighborhoodService,
-    private insuranceService: InsuranceService,
-    private insuranceTypeService: InsuranceTypeService,
-    private countryService: CountryService,
-    private professionService: ProfessionService,
-    private employerService: EmployerService
-  ) {}
+  searchBy(searchTerm: string, criterion: string): Observable<Patient[]> {
+    let apiComplementary = "";
 
-  registerPatient(patientRequest: PatientRequest): Observable<any> {
-    // PATIENT
-
-    // const personToContact = new PersonToContact({
-    //   id: Math.floor(Math.random() * 1000),
-    //   ...patientRequest.personne_a_prevenir,
-    // });
-
-    // const city = this.cityService.cities.find(
-    //   (city) => patientRequest.adresse.ville_id == city.id
-    // )!;
-
-    // const neighborhood = this.neighborhoodService.neighborhoods.find(
-    //   (neighborhood) => patientRequest.adresse.quartier_id == neighborhood.id
-    // )!;
-
-    // const address = new Address({
-    //   id: Math.floor(Math.random() * 1000),
-    //   ville: city!,
-    //   quartier: neighborhood!,
-    //   ...patientRequest.adresse,
-    // });
-
-    // const homeland = this.countryService.countries.find(
-    //   (country) => patientRequest.pays_origine_id == country.id
-    // )!;
-
-    // //INSURANCE
-    // let insurance;
-    // if (patientRequest.assurance) {
-    //   insurance = this.insuranceService.insurances.find(
-    //     (ins) => patientRequest.assurance!.id == ins.id
-    //   );
+    if (criterion == "fullname") {
+      apiComplementary = "nom";
+    } else if (criterion == "reference") {
+      apiComplementary = "reference";
+    }
+    // else if(criterion == "dob") {
+    //   apiComplementary = ""
+    // }
+    // else if(criterion == "doc") {
+    //   apiComplementary = ""
     // }
 
-    // const nationality = this.countryService.countries.find(
-    //   (country) => patientRequest.nationalite_id == country.id
-    // )!;
+    if (searchTerm == "" || apiComplementary == "") {
+      return of([]);
+    }
 
-    // const profession = this.professionService.professions.find(
-    //   (profession) => patientRequest.profession_id == profession.id
-    // );
+    return this.http
+      .get<PatientResponse[]>(
+        `${apiEndpoint}/search?${apiComplementary}=${searchTerm}`
+      )
+      .pipe(
+        map((patients) => {
+          const mapped: Patient[] = patients.map((patient) =>
+            Patient.fromResponse(patient)
+          );
 
-    // const employer = this.employerService.employers.find(
-    //   (employer) => patientRequest.employeur_id == employer.id
-    // );
+          return mapped;
+        })
+      );
+  }
 
-    // //PATIENT_INSURANCE
-    // // if (insurance && patientInsurance) {
-    // //   this.registerPatientInsurance({
-    // //     id: -1,
-    // //     patient_id: patientRequest.id,
-    // //     assurance_id: insurance!.id,
-    // //     taux: patientInsurance.taux,
-    // //     date_expiration: patientInsurance.date_expiration,
-    // //   });
-    // // }
+  searchByFullname(fullname: string): Observable<Patient[]> {
+    return this.http
+      .get<PatientResponse[]>(`${apiEndpoint}/search?nom=${fullname}`)
+      .pipe(
+        map((patients) => {
+          const mapped: Patient[] = patients.map((patient) =>
+            Patient.fromResponse(patient)
+          );
 
-    // const patient = new Patient({
-    //   ...patientRequest,
-    //   id: this.allPatients.length + 1,
-    //   reference: "PAT" + (this.allPatients.length + 1),
-    //   personne_a_prevenir: personToContact,
-    //   adresse: address,
-    //   pays_origine: homeland,
-    //   assurance: insurance,
-    //   nationalite: nationality,
-    //   profession: profession,
-    //   employeur: employer,
-    // }); // Patient.emptyPatient()
+          return mapped;
+        })
+      );
+  }
 
-    // console.log("Registered patient \n" + JSON.stringify(patient, null, 2));
+  searchByReference(reference: string): Observable<Patient[]> {
+    return this.http
+      .get<PatientResponse[]>(`${apiEndpoint}/search?reference=${reference}`)
+      .pipe(
+        map((patients) => {
+          const mapped: Patient[] = patients.map((patient) =>
+            Patient.fromResponse(patient)
+          );
 
-    // this.allPatients = [...this.allPatients, patient];
+          return mapped;
+        })
+      );
+  }
 
-    // this.activePatient = patient;
-
+  registerPatient(patientRequest: PatientRequest): Observable<any> {
     return this.http.post<any>(apiEndpoint, patientRequest);
   }
 
@@ -145,42 +121,17 @@ export class PatientService {
         return;
       })
     );
-
-    // subscribe({
-    //   next: (data) => {
-
-    //     this.activePatient = data
-
-    //   },
-    //   error: (e) => {
-    //     console.error(e);
-    //   },
-    // });
-
-    // this.activePatient = this.allPatients.find(
-    //   (patient) => patientId == patient.id
-    // )!;
   }
 
   getActivePatientType() {
-    // console.log("active patient type", this.activePatient.type_patient.id);
-
     return this.activePatient.is_assure;
   }
 
   getActivePatientRate() {
-    // console.log("active patient type", this.activePatient.type_patient.id);
-
-    // const patientInsurance = this.patientInsurances.find(
-    //   (value) => value.patient_id == this.activePatient.id
-    // );
-
     return this.activePatient?.taux_assurance ?? 0;
   }
 
   getAll(): Observable<Patient[]> {
-    // return of([...this.allPatients]);
-
     return this.http.get<PatientResponse[]>(apiEndpoint).pipe(
       map((patients) => {
         const mapped: Patient[] = patients.map((patient) =>
@@ -197,32 +148,6 @@ export class PatientService {
       .get<PatientResponse>(`${apiEndpoint}/${id}`)
       .pipe(map((patient) => Patient.fromResponse(patient)));
   }
-
-  // registerPatientInsurance(patientInsurance: IPatientInsurance) {
-  //   patientInsurance.id = Math.floor(Math.random() * (1000000 - 1 + 1) + 1);
-  //   this.patientInsurances = [...this.patientInsurances, patientInsurance];
-
-  //   console.log(patientInsurance);
-  // }
-
-  // getPatientInsurance(patientId: number, insuranceId: number) {
-  //   return this.patientInsurances.find(
-  //     (value) =>
-  //       value.patient_id == patientId && value.assurance_id == insuranceId
-  //   );
-  // }
-
-  // getInsurance(patientId: number) {
-  //   const patientInsurance = this.patientInsurances.find(
-  //     (value) => value.patient_id == patientId
-  //   );
-
-  //   const insurance = INSURANCES.find(
-  //     (ins) => patientInsurance?.assurance_id == ins.id
-  //   );
-
-  //   return insurance;
-  // }
 
   // create(data: any): Observable<any> {
   //   return this.http.post(apiEndpoint, data);
