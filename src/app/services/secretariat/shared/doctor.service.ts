@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Doctor } from "src/app/models/secretariat/shared/doctor.model";
 import { DoctorResponse } from "src/app/models/secretariat/shared/responses/doctor-response.model";
@@ -17,6 +17,24 @@ export class DoctorService {
   getAll(): Observable<Doctor[]> {
     return this.http.get<DoctorResponse[]>(apiEndpoint).pipe(
       map((doctors) => {
+        const mapped: Doctor[] = doctors.map((doctor) =>
+          Doctor.fromResponse(doctor)
+        );
+
+        return mapped;
+      })
+    );
+  }
+
+  getByType(type: string): Observable<Doctor[]> {
+    if (!type) {
+      return of([]);
+    }
+
+    return this.http.get<DoctorResponse[]>(`${apiEndpoint}/type/${type}`).pipe(
+      map((doctors) => {
+        console.log(doctors);
+
         const mapped: Doctor[] = doctors.map((doctor) =>
           Doctor.fromResponse(doctor)
         );

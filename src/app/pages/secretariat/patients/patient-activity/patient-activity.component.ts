@@ -90,26 +90,12 @@ export class PatientActivityComponent implements OnInit {
   activitiesSelect: IPrestationSelect[] = [];
 
   selectedPatient!: Patient;
-  // selectedInsurance?: Insurance;
-  // selectedPatientInsurance?: IPatientInsurance;
 
-  selectedPrestationIndex = 0;
-
-  // invoiceModalRef!: NgbModalRef;
+  selectedPrestationIndex = "";
 
   sectors!: SelectOption[];
-  // = [
-  // { id: 0, text: "MEDECINE INTERNE ET GENERALE" },
-  // { id: 1, text: "PEDIATRIE" },
-  // { id: 2, text: "CARDIOLOGIE" },
-  // { id: 3, text: "NEUROLOGIE" },
-  // ];
 
   consultingDoctors!: SelectOption[];
-  //  = [
-  //   { id: 0, text: "Dr J-P" },
-  //   { id: 1, text: "Dr Gael" },
-  // ];
 
   doctorTypes = [
     { id: 1, text: "Interne" },
@@ -117,16 +103,8 @@ export class PatientActivityComponent implements OnInit {
   ];
 
   doctors!: SelectOption[];
-  //  = [
-  //   { id: 0, text: "Dr J-P" },
-  //   { id: 1, text: "Dr Gael" },
-  // ];
 
   performedBys!: SelectOption[];
-  //  = [
-  //   { id: 0, text: "Dr J-P" },
-  //   { id: 1, text: "Dr Gael" },
-  // ];
 
   @ViewChildren(InputComponent)
   inputFields!: QueryList<InputComponent>;
@@ -152,8 +130,8 @@ export class PatientActivityComponent implements OnInit {
       next: (data) => {
         this.actGroups = data;
 
-        this.selectedPrestationIndex = data[0].id;
-        this.tariffService.getByGroupId(data[0].id).subscribe({
+        this.selectedPrestationIndex = data[0].code;
+        this.tariffService.getByGroupCode(data[0].code).subscribe({
           next: (data) => {
             this.selectedGroupTariffs = data;
 
@@ -226,11 +204,27 @@ export class PatientActivityComponent implements OnInit {
   docAddable = false;
   onChanges() {
     this.doctorTypeControl.valueChanges.subscribe((value) => {
+      console.log(value);
+
+      this.doctorService.getByType(value?.text).subscribe({
+        next: (data) => {
+          this.doctors = data.map((doctor) => ({
+            id: doctor.id,
+            text: doctor.fullName,
+          }));
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
       if (value && value.text == "Externe") {
         this.docAddable = true;
       } else {
         this.docAddable = false;
       }
+
+      this.doctorControl.setValue(null);
     });
   }
 
@@ -265,9 +259,9 @@ export class PatientActivityComponent implements OnInit {
   }
 
   updateTable(actGroup: ActGroup) {
-    const id = actGroup.id;
+    const code = actGroup.code;
 
-    this.selectedPrestationIndex = id;
+    this.selectedPrestationIndex = code;
 
     if (actGroup.code == "GRP001") {
       this.isMedicalProceduresSelected = true;
@@ -283,8 +277,8 @@ export class PatientActivityComponent implements OnInit {
 
       // Disabling non-medical procedures controls
       this.doctorTypeControl.clearValidators();
-      this.doctorTypeControl.updateValueAndValidity();
-      this.doctorTypeControl.disable();
+      this.doctorTypeControl.updateValueAndValidity({ emitEvent: false });
+      this.doctorTypeControl.disable({ emitEvent: false });
 
       this.doctorControl.clearValidators();
       this.doctorControl.updateValueAndValidity();
@@ -313,8 +307,8 @@ export class PatientActivityComponent implements OnInit {
 
       // Enabling non-medical procedures controls
       this.doctorTypeControl.addValidators([Validators.required]);
-      this.doctorTypeControl.updateValueAndValidity();
-      this.doctorTypeControl.enable();
+      this.doctorTypeControl.updateValueAndValidity({ emitEvent: false });
+      this.doctorTypeControl.enable({ emitEvent: false });
 
       this.doctorControl.addValidators([Validators.required]);
       this.doctorControl.updateValueAndValidity();
@@ -331,7 +325,7 @@ export class PatientActivityComponent implements OnInit {
       this.originControl.enable();
     }
 
-    this.tariffService.getByGroupId(id).subscribe({
+    this.tariffService.getByGroupCode(code).subscribe({
       next: (data) => {
         this.selectedGroupTariffs = data;
 
@@ -421,7 +415,7 @@ export class PatientActivityComponent implements OnInit {
     const item2: IPrestationSelect = {
       id: item.id,
       rubrique: this.actGroups.find(
-        (value) => this.selectedPrestationIndex == value.id
+        (value) => this.selectedPrestationIndex == value.code
       )!.libelle, //this.selectedGroupTariffs.find((value) => item.id == value.id)!.description,
       prestation: item.designation,
       price: item.price,

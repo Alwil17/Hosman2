@@ -25,16 +25,30 @@ export class TariffService {
     );
   }
 
-  getByGroupId(id: any): Observable<Tariff[]> {
-    return this.http.get<TariffResponse[]>(`${apiEndpoint}/groupe/${id}`).pipe(
-      map((tariffs) => {
-        const mapped: Tariff[] = tariffs.map((tariff) =>
-          Tariff.fromResponse(tariff)
-        );
+  // getByGroupId(id: any): Observable<Tariff[]> {
+  //   return this.http.get<TariffResponse[]>(`${apiEndpoint}/groupe/${id}`).pipe(
+  //     map((tariffs) => {
+  //       const mapped: Tariff[] = tariffs.map((tariff) =>
+  //         Tariff.fromResponse(tariff)
+  //       );
 
-        return mapped;
-      })
-    );
+  //       return mapped;
+  //     })
+  //   );
+  // }
+
+  getByGroupCode(code: string): Observable<Tariff[]> {
+    return this.http
+      .get<TariffResponse[]>(`${apiEndpoint}/groupe/${code}/all`)
+      .pipe(
+        map((tariffs) => {
+          const mapped: Tariff[] = tariffs.map((tariff) =>
+            Tariff.fromResponse(tariff)
+          );
+
+          return mapped;
+        })
+      );
   }
 
   // create(data: DoctorRequest): Observable<any> {
