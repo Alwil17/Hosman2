@@ -26,20 +26,23 @@ public class CaisseServiceImpl implements CaisseService {
     private final String NOT_FOUND = "CAISSE_NOT_FOUND";
 
     @Override
-    public Caisse getCurrentCaisse() {
+    public CaisseResponse getCurrentCaisse() {
         Date dt = new Date();
         LocalDateTime today = LocalDateTime.from(dt.toInstant().atZone(ZoneId.of("UTC")));
         LocalDateTime tomorrow = LocalDateTime.from(dt.toInstant().atZone(ZoneId.of("UTC"))).plusDays(1);
+        String libelle = "Caisse_"+ today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        Caisse caisse = caisseRepository.getCurrentCaisse(today, tomorrow, true).orElseThrow(() -> new SecretariatCustomException(
-                "No opened caisse found",
-                NOT_FOUND
-        ));
+        Caisse caisse;
 
-        if(caisse == null){
+        if(caisseRepository.existsByLibelle(libelle) == null || !caisseRepository.existsByLibelle(libelle)){
             caisse = addCaisse(0);
+        }else {
+            caisse = caisseRepository.findByLibelle(libelle).get();
         }
-        return caisse;
+
+        CaisseResponse caisseResponse = new CaisseResponse();
+        copyProperties(caisse, caisseResponse);
+        return caisseResponse;
     }
 
     @Override

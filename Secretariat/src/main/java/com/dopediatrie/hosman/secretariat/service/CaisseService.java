@@ -7,7 +7,7 @@ import com.dopediatrie.hosman.secretariat.payload.response.CaisseResponse;
 import java.util.List;
 
 public interface CaisseService {
-    Caisse getCurrentCaisse();
+    CaisseResponse getCurrentCaisse();
 
     Caisse addCaisse(double amount);
 

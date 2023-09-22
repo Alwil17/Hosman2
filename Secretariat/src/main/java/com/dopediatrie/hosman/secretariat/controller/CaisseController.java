@@ -21,11 +21,8 @@ public class CaisseController {
 
     @GetMapping
     public ResponseEntity<CaisseResponse> getCurrentCaisse() {
-
         log.info("CaisseController | getCurrentCaisse is called");
-        CaisseResponse caisseResponse = new CaisseResponse();
-        Caisse caisse = caisseService.getCurrentCaisse();
-        copyProperties(caisse, caisseResponse);
+        CaisseResponse caisseResponse = caisseService.getCurrentCaisse();
         return new ResponseEntity<>(caisseResponse, HttpStatus.OK);
     }
 }
