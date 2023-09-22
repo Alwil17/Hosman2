@@ -3,9 +3,11 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 import com.dopediatrie.hosman.secretariat.entity.Encaissement;
 import com.dopediatrie.hosman.secretariat.entity.EncaissementMode;
 import com.dopediatrie.hosman.secretariat.entity.EncaissementModePK;
+import com.dopediatrie.hosman.secretariat.entity.ModePayement;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.EncaissementModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.EncaissementRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.EncaissementResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.*;
@@ -23,9 +25,11 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class EncaissementServiceImpl implements EncaissementService {
     private final EncaissementRepository encaissementRepository;
     private final EncaissementModeRepository eModeRepository;
+    private final ModePayementRepository modePayementRepository;
 
     private final EncaissementModeService encaissementModeService;
-    private final String NOT_FOUND = "PATIENT_NOT_FOUND";
+    private final CaisseService caisseService;
+    private final String NOT_FOUND = "ENCAISSEMENT_NOT_FOUND";
 
     @Override
     public List<Encaissement> getAllEncaissements() {
@@ -44,10 +48,13 @@ public class EncaissementServiceImpl implements EncaissementService {
 
         encaissement = encaissementRepository.save(encaissement);
 
+        double toCaisse = 0;
         for (EncaissementModeRequest eMode : encaissementRequest.getMode_payements()) {
             eMode.setEncaissement_id(encaissement.getId());
             encaissementModeService.addEncaissementMode(eMode);
+            toCaisse += eMode.getMontant();
         }
+        caisseService.addAmountCaisse(toCaisse);
 
         log.info("EncaissementServiceImpl | addEncaissement | Encaissement Created");
         log.info("EncaissementServiceImpl | addEncaissement | Encaissement Id : " + encaissement.getId());

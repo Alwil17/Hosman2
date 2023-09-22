@@ -7,6 +7,7 @@ import com.dopediatrie.hosman.secretariat.payload.response.DepenseResponse;
 import com.dopediatrie.hosman.secretariat.repository.DepenseRepository;
 import com.dopediatrie.hosman.secretariat.repository.PersonneRepository;
 import com.dopediatrie.hosman.secretariat.repository.RubriqueDepenseRepository;
+import com.dopediatrie.hosman.secretariat.service.CaisseService;
 import com.dopediatrie.hosman.secretariat.service.DepenseService;
 import com.dopediatrie.hosman.secretariat.service.PersonneService;
 import com.dopediatrie.hosman.secretariat.service.RubriqueDepenseService;
@@ -29,6 +30,7 @@ public class DepenseServiceImpl implements DepenseService {
 
     private final RubriqueDepenseService rubriqueDepenseService;
     private final PersonneService personneService;
+    private final CaisseService caisseService;
     private final String NOT_FOUND = "DEPENSE_NOT_FOUND";
 
     @Override
@@ -56,6 +58,8 @@ public class DepenseServiceImpl implements DepenseService {
                 .build();
 
         depense = depenseRepository.save(depense);
+
+        caisseService.substractAmountCaisse(depense.getMontant());
 
         log.info("DepenseServiceImpl | addDepense | Depense Created");
         log.info("DepenseServiceImpl | addDepense | Depense Id : " + depense.getId());

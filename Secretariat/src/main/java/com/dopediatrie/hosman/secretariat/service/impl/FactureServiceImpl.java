@@ -26,6 +26,7 @@ public class FactureServiceImpl implements FactureService {
     private final EtatRepository etatRepository;
     private final ReductionRepository reductionRepository;
     private final MajorationRepository majorationRepository;
+    private final ModePayementRepository modePayementRepository;
     private final CreanceRepository creanceRepository;
     private final ReliquatRepository reliquatRepository;
     private final FactureModeRepository eModeRepository;
@@ -33,6 +34,7 @@ public class FactureServiceImpl implements FactureService {
     private final PrestationTempRepository prestationTempRepository;
     private final PrestationTarifTempRepository prestationTarifTempRepository;
 
+    private final CaisseService caisseService;
     private final ReductionService reductionService;
     private final MajorationService majorationService;
     private final CreanceService creanceService;
@@ -100,14 +102,15 @@ public class FactureServiceImpl implements FactureService {
                 .secteur_id(prestationTemp.getSecteur().getId())
                 .patient_id(prestationTemp.getPatient().getId())
                 .build();
-        log.info(prestationRequest);
+        //log.info(prestationRequest);
 
         long prestationId =  prestationService.addPrestation(prestationRequest);
 
         // push facture to db
         facture.setPrestation(prestationRepository.findById(prestationId).orElseThrow());
         facture = factureRepository.save(facture);
-
+        facture.setReference(String.format("%06d", facture.getId()));
+        facture = factureRepository.save(facture);
         // add payement modes
         for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
             eMode.setFacture_id(facture.getId());
@@ -129,6 +132,16 @@ public class FactureServiceImpl implements FactureService {
         }
         // delete prestationTemp
         prestationTempRepository.deleteById(factureRequest.getPrestation_id());
+
+
+        double toCaisse = facture.getA_payer();
+        for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
+            ModePayement modePayement = modePayementRepository.findById(eMode.getMode_payement_id()).orElseThrow();
+            if(!modePayement.getSlug().equals("especes")){
+                toCaisse -= eMode.getMontant();
+            }
+        }
+        caisseService.addAmountCaisse(toCaisse);
 
         log.info("FactureServiceImpl | addFacture | Facture Created");
         log.info("FactureServiceImpl | addFacture | Facture Id : " + facture.getId());

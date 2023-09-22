@@ -83,7 +83,7 @@ public class PatientServiceImpl implements PatientService {
         if(personne_a_prevenir_id != 0)
             patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).orElseThrow());
 
-        //patient = patientRepository.save(patient);
+        patient = patientRepository.save(patient);
         patient.setReference(String.format("%06d", patient.getId()));
         patient = patientRepository.save(patient);
 

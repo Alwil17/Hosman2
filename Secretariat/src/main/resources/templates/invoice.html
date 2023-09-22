@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <meta charset="UTF-8"></meta>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
     <title>Invoice</title>
     <style>
         @page {
             /* dimensions for the whole page */
-            size: A4;
-
+            size: A5;
             margin: 0;
         }
 
@@ -20,8 +18,8 @@
 
         body {
             /* A5 dimensions */
-            width: 190mm;
-            height: 207mm;
+            width: 138mm;
+            height: 210mm;
 
 
             margin: auto;
@@ -43,6 +41,15 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        /*.header-bottom > span:first-child {
+            align-self: flex-end;
+        }
+
+        .header-bottom > span:last-child {
+            align-self: flex-start;
+        }*/
+
 
         .header-top-right {
             display: flex;
@@ -110,17 +117,17 @@
         }
 
         .mr-8 {
-            margin-right: 2rem
+            margin-right: 32px
         }
 
         .text-2xl {
-            font-size: 1.5rem;
-            line-height: 2rem;
+            font-size: 24px;
+            line-height: 32px;
         }
 
         .py-2 {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
     </style>
 </head>
@@ -139,7 +146,7 @@
 
     <div class="header-bottom">
         <span class="text-2xl font-bold">Reçu de caisse</span>
-        <span class="mr-8">Caissière</span>
+        <span class="mr-8" style="margin-left: auto;">Caissière</span>
     </div>
 </div>
 
@@ -150,14 +157,14 @@
             <p th:text="${reference}">-</p>
         </div>
         <div class="patient-info">
-            <p>Patient(e): <b th:text="${nom}">-</b></p>
-            <p>Sexe: <b th:text="${sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
+            <p>Patient(e): <b th:text="${patient.nom}">-</b></p>
+            <p>Sexe: <b th:text="${patient.sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
         </div>
     </div>
 
     <div class="insurance-info py-2">
-        <span>ASSUREUR: LUI-MÊME</span>
-        <span>Taux de PEC: 0%</span>
+        <span>ASSUREUR: <b th:text="${patient.assurance.nom}">LUI-MÊME</b></span>
+        <span>Taux de PEC: <b th:text="${patient.taux_assurance}">0</b>%</span>
     </div>
 
     <div class="activities">
@@ -173,15 +180,10 @@
             <tr>
                 <td colspan="3"><em><u>ANALYSE</u></em></td>
             </tr>
-            <tr>
-                <td style="width: 70%;">TP / INR</td>
-                <td style="width: 10%; text-align: end;">1</td>
-                <td style="width: 20%; text-align: end;">3000</td>
-            </tr>
-            <tr>
-                <td style="width: 70%;">VS</td>
-                <td style="width: 10%; text-align: end;">2</td>
-                <td style="width: 20%; text-align: end;">10000</td>
+            <tr th:each="tarif: ${tarifs}" >
+                <td th:text="${tarif.tarif.libelle}" style="width: 70%;" />
+                <td th:text="${tarif.quantite}" style="width: 10%; text-align: end;" />
+                <td th:text="${tarif.total_price_gros}" style="width: 20%; text-align: end;" />
             </tr>
 
             </tbody>

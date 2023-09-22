@@ -1,8 +1,12 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
 import com.dopediatrie.hosman.secretariat.entity.Facture;
+import com.dopediatrie.hosman.secretariat.entity.Patient;
+import com.dopediatrie.hosman.secretariat.entity.PrestationTarif;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
+import com.dopediatrie.hosman.secretariat.repository.PrestationTarifRepository;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
 import com.lowagie.text.DocumentException;
@@ -25,7 +29,11 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/factures")
@@ -34,6 +42,7 @@ import java.util.List;
 public class FactureController {
 
     private final FactureService factureService;
+    private final PrestationTarifRepository tarifRepository;
 
     @Autowired
     SpringTemplateEngine templateEngine;
@@ -78,8 +87,11 @@ public class FactureController {
         FactureResponse factureResponse
                 = factureService.getFactureById(factureId);
 
-        Context context = new Context();
+        Patient patient = factureResponse.getPrestation().getPatient();
 
+        List<PrestationTarif> tarifs = tarifRepository.findByPrestationId(factureResponse.getPrestation().getId());
+
+        Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("patient",factureResponse.getReference());
         context.setVariable("total",factureResponse.getTotal());
@@ -89,6 +101,9 @@ public class FactureController {
         context.setVariable("a_payer",factureResponse.getA_payer());
         context.setVariable("verse",factureResponse.getVerse());
         context.setVariable("reliquat",factureResponse.getReliquat().getMontant());
+        context.setVariable("patient", patient);
+        context.setVariable("date_naissance", patient.getDate_naissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        context.setVariable("tarifs", tarifs);
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);
@@ -110,9 +125,10 @@ public class FactureController {
         renderer.setDocumentFromString(xHtml, baseUrl);
         renderer.layout();
 
-        /*OutputStream outputStream = new FileOutputStream("src//test.pdf");
+        OutputStream outputStream = new FileOutputStream("src//test.pdf");
         renderer.createPDF(outputStream);
         outputStream.close();
+        /*
         factureResponse.setPath(FileSystems
                 .getDefault()
                 .getPath("src")
