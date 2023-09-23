@@ -93,9 +93,20 @@
                   class="user-select-none"
                 >
                   <td>{{ patient.reference }}</td>
-                  <td>{{ patient.nom | uppercase }}</td>
-                  <!-- <td><ngb-highlight [result]="patient.nom" [term]="searchTerm" ></ngb-highlight></td> -->
-                  <td>{{ patient.prenoms }}</td>
+                  <!-- <td>{{ patient.nom | uppercase }}</td> -->
+                  <td>
+                    <ngb-highlight
+                      [result]="patient.nom"
+                      [term]="searchTerm.split(' ')[0]"
+                    ></ngb-highlight>
+                  </td>
+                  <!-- <td>{{ patient.prenoms }}</td> -->
+                  <td>
+                    <ngb-highlight
+                      [result]="patient.prenoms"
+                      [term]="searchTerm.split(' ')[1]"
+                    ></ngb-highlight>
+                  </td>
                   <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
