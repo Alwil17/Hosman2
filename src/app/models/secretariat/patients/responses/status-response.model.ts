@@ -1,6 +1,7 @@
 export interface StatusResponse {
   id: number;
   nom: string;
-  couleur?: string;
+  slug: string;
+  couleur: string;
   indice: number;
 }

@@ -38,6 +38,8 @@ import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
 import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 import { WarningMessages } from "src/app/helpers/messages";
+import { PrestationService } from "src/app/services/secretariat/patients/prestation.service";
+import { PrestationRequest } from "src/app/models/secretariat/patients/requests/prestation-request.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -120,7 +122,8 @@ export class PatientActivityComponent implements OnInit {
     private modalService: NgbModal,
     private toastService: ToastService,
     private actGroupService: ActGroupService,
-    private tariffService: TariffService
+    private tariffService: TariffService,
+    private prestationService: PrestationService
   ) {
     this.selectedPatient = patientService.getActivePatient();
 
@@ -572,42 +575,61 @@ export class PatientActivityComponent implements OnInit {
       return;
     }
 
-    // if (!this.invoiceModalRef) {
-    const invoiceModalRef = this.modalService.open(
-      PatientInvoiceFormComponent,
-      {
-        size: "xl",
-        centered: true,
-        scrollable: true,
-        backdrop: "static",
-      }
-    );
-    // }
+    const prestation = new PrestationRequest({
+      patient_id: this.patientService.getActivePatient().id,
+      consulteur_id: this.consultingDoctorControl.value.id,
+      date_prestation: new Date(this.activityDateControl.value),
+      tarifs: this.table2.map((item) => ({
+        tarif_id: item.id,
+        quantite: item.quantity,
+      })),
+      demandeur_id: 1, // this.doctorControl.value.id,
+      secteur_id: 1, // this.sectorControl.value.id,
+      provenance: this.originControl.value,
+    });
 
-    const prestation = new Prestation(
-      1,
-      this.sectorControl.value
-        ? this.sectors[parseInt(this.sectorControl.value.id)].text
-        : "",
-      this.consultingDoctorControl.value
-        ? this.consultingDoctors[
-            parseInt(this.consultingDoctorControl.value.id)
-          ].text
-        : "",
-      new Date(),
-      this.originControl.value ?? "PISJO",
-      this.doctorTypeControl.value
-        ? this.doctorTypes[parseInt(this.doctorTypeControl.value.id)].text
-        : "",
-      this.doctorControl.value
-        ? this.doctors[parseInt(this.doctorControl.value.id)].text
-        : "",
-      this.performedByControl.value
-        ? this.performedBys[parseInt(this.performedByControl.value.id)].text
-        : ""
-    );
+    console.log(JSON.stringify(prestation, null, 2));
+    
 
-    invoiceModalRef.componentInstance.patientActivities = this.table2;
-    invoiceModalRef.componentInstance.patientPrestationInfo = prestation;
+    this.prestationService.generatePreInvoiceInfos(prestation).subscribe({
+      next: (data) => {
+        const invoiceModalRef = this.modalService.open(
+          PatientInvoiceFormComponent,
+          {
+            size: "xl",
+            centered: true,
+            scrollable: true,
+            backdrop: "static",
+          }
+        );
+
+        invoiceModalRef.componentInstance.patientActivities = this.table2;
+        invoiceModalRef.componentInstance.preInvoiceInfos = data;
+      },
+      error: (e) => {},
+    });
+
+    // const prestation = new Prestation(
+    //   1,
+    //   this.sectorControl.value
+    //     ? this.sectors[parseInt(this.sectorControl.value.id)].text
+    //     : "",
+    //   this.consultingDoctorControl.value
+    //     ? this.consultingDoctors[
+    //         parseInt(this.consultingDoctorControl.value.id)
+    //       ].text
+    //     : "",
+    //   new Date(),
+    //   this.originControl.value ?? "PISJO",
+    //   this.doctorTypeControl.value
+    //     ? this.doctorTypes[parseInt(this.doctorTypeControl.value.id)].text
+    //     : "",
+    //   this.doctorControl.value
+    //     ? this.doctors[parseInt(this.doctorControl.value.id)].text
+    //     : "",
+    //   this.performedByControl.value
+    //     ? this.performedBys[parseInt(this.performedByControl.value.id)].text
+    //     : ""
+    // );
   }
 }

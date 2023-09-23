@@ -27,6 +27,12 @@ import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { InvoiceResponse } from "src/app/models/secretariat/patients/responses/invoice-response.model";
+import { StatusService } from "src/app/services/secretariat/patients/status.service";
+import { PaymentModeService } from "src/app/services/secretariat/patients/payment-mode.service";
+import { forkJoin } from "rxjs";
+import { PaymentModeCode } from "src/app/models/enums/payment-mode.enum";
+import { StatusCode } from "src/app/models/enums/status.enum";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -38,7 +44,10 @@ export class PatientInvoiceFormComponent implements OnInit {
   patientActivities: IPrestationSelect[] = [];
 
   @Input()
-  patientPrestationInfo!: Prestation;
+  preInvoiceInfos!: InvoiceResponse;
+
+  // @Input()
+  // patientPrestationInfo!: Prestation;
 
   // @Input()
   // patient: Patient;
@@ -47,6 +56,7 @@ export class PatientInvoiceFormComponent implements OnInit {
   today = new Date().toLocaleDateString("fr-ca");
 
   private initialPatientShareAmount!: number;
+
   patientShareAmount!: number;
 
   totalAmount!: number;
@@ -102,7 +112,9 @@ export class PatientInvoiceFormComponent implements OnInit {
     private waitingListService: WaitingListService,
     private invoiceService: InvoiceService,
     private modalService: NgbModal,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private statusService: StatusService,
+    private paymentModeService: PaymentModeService
   ) {}
 
   ngOnInit(): void {
@@ -139,15 +151,6 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.setInitialValues();
 
     this.onFormInputsChanges();
-
-    // this.invoiceForm = this.formBuilder.group({
-    //   totalAmount: "",
-    // insuranceRate: "",
-    // insuranceShare: "",
-    // previousDebtsTotal: "",
-    // billingDate: "",
-    // paymentDate: "",
-    // });
   }
 
   setInitialValues() {
@@ -155,7 +158,7 @@ export class PatientInvoiceFormComponent implements OnInit {
 
     this.patientShareAmount = this.initialPatientShareAmount;
 
-    this.totalAmount = 0;
+    this.totalAmount = this.preInvoiceInfos.total; // = 0;
 
     this.discountValue = 0;
     // this.discountPercent = 0;
@@ -169,9 +172,9 @@ export class PatientInvoiceFormComponent implements OnInit {
 
     this.remainderAmount = 0;
 
-    this.patientActivities.forEach(
-      (pActivity) => (this.totalAmount += pActivity.total_price)
-    );
+    // this.patientActivities.forEach(
+    //   (pActivity) => (this.totalAmount += pActivity.total_price)
+    // );
     this.totalAmountControl.setValue(this.totalAmount);
 
     this.insuranceRateControl.setValue(
@@ -181,7 +184,8 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.setPatientShareToMaxAmount();
 
     this.insuranceShareControl.setValue(
-      this.totalAmount - this.patientShareAmount
+      this.preInvoiceInfos.montant_pec
+      // this.totalAmount - this.patientShareAmount
     );
   }
 
@@ -191,17 +195,23 @@ export class PatientInvoiceFormComponent implements OnInit {
       const insuranceRate = parseIntOrZero(this.insuranceRateControl.value);
 
       if (value === "rp") {
-        this.initialPatientShareAmount =
-          totalAmount - (totalAmount * insuranceRate) / 100;
+        // this.initialPatientShareAmount =
+        //   totalAmount - (totalAmount * insuranceRate) / 100;
+
+        this.initialPatientShareAmount = this.preInvoiceInfos.a_payer;
 
         this.patientShareAmount = this.initialPatientShareAmount;
+
+        this.insuranceShareControl.setValue(this.preInvoiceInfos.montant_pec);
       } else if (value === "tp") {
         this.setPatientShareToMaxAmount();
+
+        this.insuranceShareControl.setValue("0");
       }
 
-      this.insuranceShareControl.setValue(
-        this.totalAmount - this.patientShareAmount
-      );
+      // this.insuranceShareControl.setValue(
+      //   this.totalAmount - this.patientShareAmount
+      // );
 
       this.discountValueControl.setValue("0");
       this.discountPercentControl.setValue("0");
@@ -409,10 +419,6 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.patientShareAmount = this.initialPatientShareAmount;
   }
 
-  // parseIntOrZero(value: any) {
-  //   return Number.isNaN(parseInt(value)) ? 0 : parseInt(value);
-  // }
-
   calculatePatientGivenAmount() {
     const total =
       parseIntOrZero(this.paymentCashControl.value) +
@@ -454,179 +460,178 @@ export class PatientInvoiceFormComponent implements OnInit {
         type: ToastType.Warning,
       });
 
-
       return;
     }
 
     console.log("Validate payment");
 
-    const wlItem = new WaitingListItem(
-      1,
-      this.patientService.getActivePatient().reference,
-      this.patientService.getActivePatient().nom,
+    // const wlItem = new WaitingListItem(
+    //   1,
+    //   this.patientService.getActivePatient().reference,
+    //   this.patientService.getActivePatient().nom,
 
-      this.patientService.getActivePatient().prenoms,
+    //   this.patientService.getActivePatient().prenoms,
 
-      this.patientService.getActivePatient().date_naissance,
+    //   this.patientService.getActivePatient().date_naissance,
 
-      this.patientService.getActivePatient().sexe,
+    //   this.patientService.getActivePatient().sexe,
 
-      this.patientActivities.map((act) => act.prestation),
-      this.patientActivities
-        .map((act) => act.total_price)
-        .reduce((pVal, cVal) => pVal + cVal),
-      this.patientPrestationInfo.sector ?? "",
-      this.patientPrestationInfo.consultingDoctor ?? "",
-      new Date()
-    );
-
-    // const paymentModes = [
-    //   this.paymentCheckCashControl.value
-    //     ? {
-    //         mode_payement_id: 2,
-    //         montant: parseIntOrZero(this.paymentCashControl.value),
-    //       }
-    //     : {},
-    //   this.paymentCheckCardControl.value
-    //     ? {
-    //         mode_payement_id: 3,
-    //         montant: parseIntOrZero(this.paymentCardControl.value),
-    //       }
-    //     : {},
-    //   this.paymentCheckChequeControl.value
-    //     ? {
-    //         mode_payement_id: 4,
-    //         montant: parseIntOrZero(this.paymentChequeControl.value),
-    //       }
-    //     : {},
-    // ];
+    //   this.patientActivities.map((act) => act.prestation),
+    //   this.patientActivities
+    //     .map((act) => act.total_price)
+    //     .reduce((pVal, cVal) => pVal + cVal),
+    //   this.patientPrestationInfo.sector ?? "",
+    //   this.patientPrestationInfo.consultingDoctor ?? "",
+    //   new Date()
+    // );
 
     const cashAmount = parseIntOrZero(this.paymentCashControl.value);
     const cardAmount = parseIntOrZero(this.paymentCardControl.value);
     const chequeAmount = parseIntOrZero(this.paymentChequeControl.value);
 
-    const paymentModes = [];
+    const paymentModes: { mode_payement_id: number; montant: number }[] = [];
 
-    if (cashAmount !== 0) {
-      paymentModes.push({
-        mode_payement_id: 2,
-        montant: cashAmount,
-      });
-    }
-    if (cardAmount !== 0) {
-      paymentModes.push({
-        mode_payement_id: 3,
-        montant: cardAmount,
-      });
-    }
-    if (chequeAmount !== 0) {
-      paymentModes.push({
-        mode_payement_id: 4,
-        montant: chequeAmount,
-      });
-    }
+    // if (cashAmount !== 0) {
+    //   paymentModes.push({
+    //     mode_payement_id: 2,
+    //     montant: cashAmount,
+    //   });
+    // }
+    // if (cardAmount !== 0) {
+    //   paymentModes.push({
+    //     mode_payement_id: 3,
+    //     montant: cardAmount,
+    //   });
+    // }
+    // if (chequeAmount !== 0) {
+    //   paymentModes.push({
+    //     mode_payement_id: 4,
+    //     montant: chequeAmount,
+    //   });
+    // }
 
-    const invoice = new InvoiceRequest({
-      // reference: "FAC1",
-      total: this.totalAmount,
-      montant_pec: this.patientService.getActivePatientRate(),
-      reduction: new DiscountRequest({
-        montant: this.discountValue,
-        motif: "",
-        date_operation: new Date(),
-        // patient_id: this.patientService.getActivePatient().id,
-      }),
-      majoration: new MarkupRequest({
-        montant: this.markupValue,
-        motif: "",
-        date_operation: new Date(),
-        // patient_id: this.patientService.getActivePatient().id,
-      }),
+    const statuses$ = this.statusService.getAll();
+    const paymentModes$ = this.paymentModeService.getAll();
 
-      a_payer: this.patientShareAmount,
-      creance: new DebtRequest({
-        montant: this.debtAmount,
-        etat_id: this.debtAmount > 0 ? 1 : 2,
-        date_operation: new Date(),
-        // patient_id: this.patientService.getActivePatient().id,
-      }),
-      reliquat: new RemainderRequest({
-        montant: this.remainderAmount,
-        etat_id: this.remainderAmount > 0 ? 1 : 2,
-        date_operation: new Date(),
-        // patient_id: this.patientService.getActivePatient().id,
-      }),
-
-      date_facture: new Date(),
-      date_reglement: new Date(),
-      patient_id: this.patientService.getActivePatient().id,
-      etat_id: this.debtAmount > 0 ? 1 : 2,
-      // exporte: 0,
-      //paymentModes,
-      mode_payements: paymentModes,
-      // [
-      //   {
-      //     mode_payement_id: 2,
-      //     montant: 0,
-      //   },
-      // ],
-    });
-
-    console.log(paymentModes);
-
-    this.invoiceService.create(invoice).subscribe({
+    forkJoin({ statuses: statuses$, paymentModes: paymentModes$ }).subscribe({
       next: (data) => {
-        console.log(data);
+        // Getting payment modes
+        if (cashAmount !== 0) {
+          paymentModes.push({
+            mode_payement_id: data.paymentModes.find(
+              (value) => PaymentModeCode.CASH == value.slug
+            )!.id,
+            montant: cashAmount,
+          });
+        }
+        if (cardAmount !== 0) {
+          paymentModes.push({
+            mode_payement_id: data.paymentModes.find(
+              (value) => PaymentModeCode.CARD == value.slug
+            )!.id,
+            montant: cardAmount,
+          });
+        }
+        if (chequeAmount !== 0) {
+          paymentModes.push({
+            mode_payement_id: data.paymentModes.find(
+              (value) => PaymentModeCode.CHEQUE == value.slug
+            )!.id,
+            montant: chequeAmount,
+          });
+        }
 
-        this.toastService.show({
-          messages: ["Paiement enregistré."],
-          type: ToastType.Success,
+        console.log(JSON.stringify(paymentModes, null, 2));
+
+        // Getting
+        const invoice = new InvoiceRequest({
+          total: this.totalAmount,
+          montant_pec: parseIntOrZero(this.insuranceShareControl.value),
+          reduction: new DiscountRequest({
+            montant: this.discountValue,
+            motif: "",
+            date_operation: new Date(),
+            // patient_id: this.patientService.getActivePatient().id,
+          }),
+          majoration: new MarkupRequest({
+            montant: this.markupValue,
+            motif: "",
+            date_operation: new Date(),
+            // patient_id: this.patientService.getActivePatient().id,
+          }),
+
+          a_payer: this.patientShareAmount,
+          creance: new DebtRequest({
+            montant: this.debtAmount,
+            etat_id: data.statuses.find(
+              (value) => StatusCode.PAID == value.indice
+            )!.id, // this.debtAmount > 0 ? 1 : 2,
+            date_operation: new Date(),
+            // patient_id: this.patientService.getActivePatient().id,
+          }),
+          reliquat: new RemainderRequest({
+            montant: this.remainderAmount,
+            etat_id: data.statuses.find(
+              (value) => StatusCode.PAID == value.indice
+            )!.id, // this.remainderAmount > 0 ? 1 : 2,
+            date_operation: new Date(),
+            // patient_id: this.patientService.getActivePatient().id,
+          }),
+
+          date_facture: new Date(),
+          date_reglement: new Date(),
+          patient_id: this.patientService.getActivePatient().id,
+          prestation_id: this.preInvoiceInfos.prestation_id,
+          etat_id: data.statuses.find(
+            (value) => StatusCode.PAID == value.indice
+          )!.id, // this.debtAmount > 0 ? 1 : 2,
+          mode_payements: paymentModes,
         });
 
-        this.waitingListService.create(wlItem).subscribe({
+        console.log(JSON.stringify(invoice, null, 2));
+
+        this.invoiceService.create(invoice).subscribe({
           next: (data) => {
-            console.log(data, "\nHere");
+            console.log(data);
 
             this.toastService.show({
-              messages: ["Patient envoyé en liste d'attente."],
+              messages: ["Paiement enregistré."],
               type: ToastType.Success,
+            });
+
+            this.invoiceService.loadPdf(data).subscribe({
+              next: (data) => {
+                this.toastService.show({
+                  messages: ["Génération du reçu."],
+                  type: ToastType.Success,
+                });
+
+                const pdfModalRef = this.modalService.open(PdfModalComponent, {
+                  size: "xl",
+                  centered: true,
+                  // scrollable: true,
+                  backdrop: "static",
+                });
+
+                pdfModalRef.componentInstance.title = "Reçu";
+                pdfModalRef.componentInstance.pdfSrc = data;
+              },
+              error: (e) => {
+                console.error(e);
+
+                this.toastService.show({
+                  messages: ["Echec de la génération du reçu."],
+                  delay: 10000,
+                  type: ToastType.Error,
+                });
+              },
             });
           },
           error: (e) => {
             console.error(e);
 
             this.toastService.show({
-              messages: [
-                "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
-              ],
-              delay: 10000,
-              type: ToastType.Error,
-            });
-          },
-        });
-
-        this.invoiceService.loadPdf(data).subscribe({
-          next: (data) => {
-            this.toastService.show({
-              messages: ["Génération du reçu."],
-              type: ToastType.Success,
-            });
-
-            const pdfModalRef = this.modalService.open(PdfModalComponent, {
-              size: "xl",
-              centered: true,
-              // scrollable: true,
-              backdrop: "static",
-            });
-
-            pdfModalRef.componentInstance.title = "Reçu";
-            pdfModalRef.componentInstance.pdfSrc = data;
-          },
-          error: (e) => {
-            console.error(e);
-
-            this.toastService.show({
-              messages: ["Echec de la génération du reçu."],
+              messages: ["Paiement non enregistré."],
               delay: 10000,
               type: ToastType.Error,
             });
@@ -635,14 +640,116 @@ export class PatientInvoiceFormComponent implements OnInit {
       },
       error: (e) => {
         console.error(e);
-
-        this.toastService.show({
-          messages: ["Paiement non enregistré."],
-          delay: 10000,
-          type: ToastType.Error,
-        });
       },
     });
+
+    // const invoice = new InvoiceRequest({
+    //   total: this.totalAmount,
+    //   montant_pec: parseIntOrZero(this.insuranceShareControl.value),
+    //   reduction: new DiscountRequest({
+    //     montant: this.discountValue,
+    //     motif: "",
+    //     date_operation: new Date(),
+    //     // patient_id: this.patientService.getActivePatient().id,
+    //   }),
+    //   majoration: new MarkupRequest({
+    //     montant: this.markupValue,
+    //     motif: "",
+    //     date_operation: new Date(),
+    //     // patient_id: this.patientService.getActivePatient().id,
+    //   }),
+
+    //   a_payer: this.patientShareAmount,
+    //   creance: new DebtRequest({
+    //     montant: this.debtAmount,
+    //     etat_id: this.debtAmount > 0 ? 1 : 2,
+    //     date_operation: new Date(),
+    //     // patient_id: this.patientService.getActivePatient().id,
+    //   }),
+    //   reliquat: new RemainderRequest({
+    //     montant: this.remainderAmount,
+    //     etat_id: this.remainderAmount > 0 ? 1 : 2,
+    //     date_operation: new Date(),
+    //     // patient_id: this.patientService.getActivePatient().id,
+    //   }),
+
+    //   date_facture: new Date(),
+    //   date_reglement: new Date(),
+    //   patient_id: this.patientService.getActivePatient().id,
+    //   prestation_id: this.preInvoiceInfos.prestation_id,
+    //   etat_id: this.debtAmount > 0 ? 1 : 2,
+    //   mode_payements: paymentModes,
+    // });
+
+    // this.invoiceService.create(invoice).subscribe({
+    //   next: (data) => {
+    //     console.log(data);
+
+    //     this.toastService.show({
+    //       messages: ["Paiement enregistré."],
+    //       type: ToastType.Success,
+    //     });
+
+    //     // this.waitingListService.create(wlItem).subscribe({
+    //     //   next: (data) => {
+    //     //     console.log(data, "\nHere");
+
+    //     //     this.toastService.show({
+    //     //       messages: ["Patient envoyé en liste d'attente."],
+    //     //       type: ToastType.Success,
+    //     //     });
+    //     //   },
+    //     //   error: (e) => {
+    //     //     console.error(e);
+
+    //     //     this.toastService.show({
+    //     //       messages: [
+    //     //         "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
+    //     //       ],
+    //     //       delay: 10000,
+    //     //       type: ToastType.Error,
+    //     //     });
+    //     //   },
+    //     // });
+
+    //     this.invoiceService.loadPdf(data).subscribe({
+    //       next: (data) => {
+    //         this.toastService.show({
+    //           messages: ["Génération du reçu."],
+    //           type: ToastType.Success,
+    //         });
+
+    //         const pdfModalRef = this.modalService.open(PdfModalComponent, {
+    //           size: "xl",
+    //           centered: true,
+    //           // scrollable: true,
+    //           backdrop: "static",
+    //         });
+
+    //         pdfModalRef.componentInstance.title = "Reçu";
+    //         pdfModalRef.componentInstance.pdfSrc = data;
+    //       },
+    //       error: (e) => {
+    //         console.error(e);
+
+    //         this.toastService.show({
+    //           messages: ["Echec de la génération du reçu."],
+    //           delay: 10000,
+    //           type: ToastType.Error,
+    //         });
+    //       },
+    //     });
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+
+    //     this.toastService.show({
+    //       messages: ["Paiement non enregistré."],
+    //       delay: 10000,
+    //       type: ToastType.Error,
+    //     });
+    //   },
+    // });
   }
 
   // openInvoiceModal(invoiceModal: any) {

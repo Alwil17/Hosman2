@@ -6,7 +6,7 @@ import { RemainderRequest } from "./remainder-request.model";
 export interface IInvoiceRequest {
   //   reference: string;
   total: number;
-  montant_pec?: number;
+  montant_pec: number;
   reduction: DiscountRequest;
   majoration: MarkupRequest;
   a_payer: number;
@@ -16,13 +16,17 @@ export interface IInvoiceRequest {
   date_reglement: Date;
   etat_id: number;
   patient_id: number;
+  prestation_id: number;
   exporte?: number;
-  mode_payements: {}[];
+  mode_payements: {
+    mode_payement_id: number;
+    montant: number;
+  }[];
 }
 
 export class InvoiceRequest {
   total: number;
-  montant_pec?: number;
+  montant_pec: number;
   reduction: DiscountRequest;
   majoration: MarkupRequest;
   a_payer: number;
@@ -32,8 +36,12 @@ export class InvoiceRequest {
   date_reglement: Date;
   etat_id: number;
   patient_id: number;
+  prestation_id: number;
   exporte?: number;
-  mode_payements: {}[];
+  mode_payements: {
+    mode_payement_id: number;
+    montant: number;
+  }[];
 
   constructor(iInvoice: IInvoiceRequest) {
     this.total = iInvoice.total;
@@ -47,6 +55,7 @@ export class InvoiceRequest {
     this.date_reglement = iInvoice.date_reglement;
     this.etat_id = iInvoice.etat_id;
     this.patient_id = iInvoice.patient_id;
+    this.prestation_id = iInvoice.prestation_id;
     this.exporte = iInvoice.exporte;
     this.mode_payements = iInvoice.mode_payements;
   }

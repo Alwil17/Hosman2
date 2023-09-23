@@ -5,24 +5,25 @@ import { RemainderResponse } from "./remainder-response.model";
 import { StatusResponse } from "./status-response.model";
 
 export interface InvoiceResponse {
-    id: number;
-    reference: string;
-    total: number;
-    montant_pec: number;
-    reduction: DiscountResponse;
-    majoration: MarkupResponse;
-    a_payer: number;
-    creance: DebtResponse;
-    reliquat: RemainderResponse;
-    date_facture: Date;
-    date_reglement: Date;
-    etat: StatusResponse;
-    exporte: number;
-    // mode_payements: [
-    //   {
-    //     facture_id: number;
-    //     mode_payement_id: number;
-    //     montant: number;
-    //   }
-    // ];
-  }
+  id: number;
+  reference: string;
+  total: number;
+  montant_pec: number;
+  reduction: DiscountResponse;
+  majoration: MarkupResponse;
+  a_payer: number;
+  creance: DebtResponse;
+  reliquat: RemainderResponse;
+  date_facture: Date;
+  date_reglement: Date;
+  prestation_id: number;
+  etat: StatusResponse;
+  exporte: number;
+  // mode_payements: [
+  //   {
+  //     facture_id: number;
+  //     mode_payement_id: number;
+  //     montant: number;
+  //   }
+  // ];
+}

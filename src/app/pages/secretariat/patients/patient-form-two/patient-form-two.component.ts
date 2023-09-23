@@ -1,4 +1,3 @@
-import { DatePipe } from "@angular/common";
 import {
   Component,
   Input,
@@ -7,24 +6,11 @@ import {
   ViewChildren,
 } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { NgbModal, NgbNavChangeEvent } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
-import { COUNTRIES } from "src/app/data/secretariat/countries.data";
-import { PROFESSIONS } from "src/app/data/secretariat/professions.data";
-import { INSURANCES } from "src/app/data/secretariat/insurances.data";
-import { EMPLOYERS } from "src/app/data/secretariat/employers.data";
-import { CITIES } from "src/app/data/secretariat/cities.data";
-import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
-import { INSURANCE_TYPES } from "src/app/data/secretariat/insurance-types.data";
 import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
-import {
-  IPatient,
-  Patient,
-} from "src/app/models/secretariat/patients/patient.model";
 import { PatientInsurance } from "src/app/models/secretariat/patients/patient-insurance.model";
-import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
-import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
 import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 import { PersonToContactFormComponent } from "./person-to-contact-form/person-to-contact-form.component";
 import { PersonToContactRequest } from "src/app/models/secretariat/patients/requests/person-to-contact-request.model";
