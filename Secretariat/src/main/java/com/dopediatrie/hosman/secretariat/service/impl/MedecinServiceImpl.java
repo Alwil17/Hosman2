@@ -32,6 +32,7 @@ public class MedecinServiceImpl implements MedecinService {
     public long addMedecin(MedecinRequest medecinRequest) {
         log.info("MedecinServiceImpl | addMedecin is called");
         long employeur_id = (medecinRequest.getEmployeur_id() != 0) ? employeurRepository.findById(medecinRequest.getEmployeur_id()).get().getId() : 0;
+        long secteur_id = (medecinRequest.getSecteur_id() != 0) ? secteurRepository.findById(medecinRequest.getSecteur_id()).get().getId() : 0;
 
         Medecin medecin
                 = Medecin.builder()
@@ -46,11 +47,12 @@ public class MedecinServiceImpl implements MedecinService {
                 .type_piece(medecinRequest.getType_piece())
                 .no_piece(medecinRequest.getNo_piece())
                 .type(medecinRequest.getType())
-                .secteur(secteurRepository.findById(medecinRequest.getSecteur_id()).get())
                 .build();
 
         if(employeur_id != 0)
             medecin.setEmployeur(employeurRepository.findById(employeur_id).get());
+        if(secteur_id != 0)
+            medecin.setSecteur(secteurRepository.findById(secteur_id).get());
 
         medecin = medecinRepository.save(medecin);
 

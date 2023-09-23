@@ -110,11 +110,14 @@ public class FactureServiceImpl implements FactureService {
             prestationRequest.setSecteur_id(secteur_id);
         if(demandeur_id != 0){
             long employeur_id = (prestationTemp.getDemandeur().getEmployeur() != null) ? prestationTemp.getDemandeur().getEmployeur().getId() : 0;
+            long secteur_med_id = (prestationTemp.getDemandeur().getSecteur() != null) ? prestationTemp.getDemandeur().getSecteur().getId() : 0;
             MedecinRequest demandeur = MedecinRequest.builder().build();
             copyProperties(prestationTemp.getDemandeur(), demandeur);
-            demandeur.setSecteur_id(prestationTemp.getDemandeur().getSecteur().getId());
             if(employeur_id != 0){
                 demandeur.setEmployeur_id(employeur_id);
+            }
+            if(secteur_med_id != 0){
+                demandeur.setSecteur_id(secteur_med_id);
             }
             prestationRequest.setDemandeur(demandeur);
         }
