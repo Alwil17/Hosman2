@@ -106,6 +106,15 @@ long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().
                 verse += fm.getMontant();
             }
         }
+        String assurance_nom = "";
+        double taux_assurance = 0;
+        if(patient.getAssurance() != null){
+            assurance_nom = patient.getAssurance().getNom();
+            taux_assurance = patient.getTaux_assurance();
+        }else{
+            assurance_nom = "LUI-MÊME";
+            taux_assurance = 0;
+        }
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("date_heure",factureResponse.getDate_facture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
@@ -122,6 +131,8 @@ long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().
         context.setVariable("tarifs", tarifs);
         context.setVariable("groupe", groupe);
         context.setVariable("attente", nuum);
+        context.setVariable("nom_assurance", assurance_nom);
+        context.setVariable("taux_assurance", taux_assurance);
         context.setVariable("mode", factureResponse.getMode_payements().get(0));
 
 
