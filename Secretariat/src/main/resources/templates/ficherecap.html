@@ -19,26 +19,26 @@
         body {
             /* A5 dimensions */
             width: 138mm;
-            height: 170mm;
+            height: 190mm;
 
 
             margin: auto;
             margin-top: 15mm;
 
             padding: 2%;
-            border: solid 0.1mm;
+            border: solid 1mm;
             background: #fff;
         }
 
         .header-top {
             display: flex;
-            /*justify-content: space-between;*/
+            justify-content: space-between;
             align-items: center;
         }
 
         .header-bottom {
             display: flex;
-            /*justify-content: space-between;*/
+            justify-content: space-between;
             align-items: center;
         }
 
@@ -84,15 +84,9 @@
             padding-left: 5%;
         }
 
-        .table-footer-tr {
-            padding-top: 5mm !important;
-            border-bottom: solid white !important;
-            border-right: solid white !important;
-            border-left: solid white !important;
-        }
         .insurance-info {
             display: flex;
-            /*justify-content: space-between;*/
+            justify-content: space-between;
             align-items: center;
         }
 
@@ -141,37 +135,19 @@
 <body>
 
 <div class="header">
-    <table style="width: 100%;">
-        <tbody>
-        <tr style="background: #fff; border: solid white !important;">
-            <td style="width: 60%; text-align: start; border: solid white !important; font-weight: 300;" class="header-top-right">
-                <span style="font-size: 13px;">POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
-                <span style="font-size: 12px; margin-left: 15mm;">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
-            </td>
-            <td style="width: 40%; right: 0; text-align: right; border: solid white !important;" th:text="${date_heure}">Date and Time</td>
-        </tr>
-        </tbody>
-    </table>
-    <!--<div class="header-top">
-        <div class="header-top-right" style="text-align: start; width: 60%;">
-            <span style="font-size: 13px;">POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
-            <span style="font-size: 11px; margin-left: 15mm;">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
+    <div class="header-top">
+        <div class="header-top-right">
+            <span>POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
+            <span class="text-center">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
         </div>
-        <span class="mr-8" style="text-align: left; width: 30%;" th:text="${date_heure}">Date and Time</span>
-    </div>-->
+        <span class="text-left mr-8">Date and Time</span>
+    </div>
 
-    <table style="width: 100%;">
-        <tbody>
-        <tr style="background: #fff; border: solid white !important;">
-            <td style="width: 70%; text-align: start; border: solid white !important;" class="text-2xl font-bold">Reçu de caisse</td>
-            <td style="width: 30%; right: 0; text-align: right; border: solid white !important;">Caissière</td>
-        </tr>
-        </tbody>
-    </table>
-    <!--<div class="header-bottom" style="width: 100%;">
-        <span style="text-align: start; width: 40%;" class="text-2xl font-bold">Reçu de caisse</span>
-        <span class="mr-8" style="text-align: end !important; width: 60% !important;">Caissière</span>
-    </div>-->
+
+    <div class="header-bottom">
+        <span class="text-2xl font-bold">Reçu de caisse</span>
+        <span class="mr-8" style="margin-left: auto;">Caissière</span>
+    </div>
 </div>
 
 <div class="content">
@@ -186,18 +162,10 @@
         </div>
     </div>
 
-    <table style="width: 100%;">
-        <tbody>
-        <tr style="background: #fff; border: solid white !important;">
-            <td style="width: 70%; text-align: start; border: solid white !important;">ASSUREUR: <b th:text="${patient.assurance.nom}">LUI-MÊME</b></td>
-            <td style="width: 30%; right: 0; text-align: right; border: solid white !important;">Taux de PEC: <b th:text="${patient.taux_assurance}">0</b>%</td>
-        </tr>
-        </tbody>
-    </table>
-    <!--<div class="insurance-info py-2">
-        <span style="text-align: start; width: 60%;">ASSUREUR: <b th:text="${patient.assurance.nom}">LUI-MÊME</b></span>
-        <span style="text-align: end; margin-left: auto; width: 40%;">Taux de PEC: <b th:text="${patient.taux_assurance}">0</b>%</span>
-    </div>-->
+    <div class="insurance-info py-2">
+        <span>ASSUREUR: <b th:text="${patient.assurance.nom}">LUI-MÊME</b></span>
+        <span>Taux de PEC: <b th:text="${patient.taux_assurance}">0</b>%</span>
+    </div>
 
     <div class="activities">
         <table class="activities-table" style="width: 100%;">
@@ -258,21 +226,12 @@
                 <td style="width: 40%; text-align: end;" th:text="${reliquat}">0</td>
             </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td class="table-footer-tr" style="text-align: start; vertical-align:top"><u>Mode de Règlement:</u></td>
-                    <td class="table-footer-tr" style="text-align: left; vertical-align:top;" >
-                        <b th:text="${mode.nom}">-</b>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
-
-        <div class="payment-info">
-        </div>
     </div>
 
+    <div class="payment-info">
 
+    </div>
 </div>
 </body>
 

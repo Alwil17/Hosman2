@@ -95,19 +95,30 @@ public class FactureServiceImpl implements FactureService {
         // commit prestationTemp to prestation
         PrestationTemp prestationTemp = prestationTempRepository.findById(factureRequest.getPrestation_id()).orElseThrow();
         //copyProperties(prestationTemp, prestationRequest);
-        MedecinRequest demandeur = MedecinRequest.builder().build();
-        copyProperties(prestationTemp.getDemandeur(), demandeur);
-        demandeur.setSecteur_id(prestationTemp.getDemandeur().getId());
-        demandeur.setEmployeur_id(prestationTemp.getDemandeur().getEmployeur().getId());
+
+
+        long secteur_id = (prestationTemp.getSecteur() != null) ? prestationTemp.getSecteur().getId() : 0;
+        long demandeur_id = (prestationTemp.getDemandeur() != null) ? prestationTemp.getDemandeur().getId() : 0;
 
         PrestationRequest prestationRequest = PrestationRequest.builder()
                 .provenance(prestationTemp.getProvenance())
                 .date_prestation(prestationTemp.getDate_prestation())
                 .consulteur_id(prestationTemp.getConsulteur().getId())
-                .demandeur(demandeur)
-                .secteur_id(prestationTemp.getSecteur().getId())
                 .patient_id(prestationTemp.getPatient().getId())
                 .build();
+        if (secteur_id != 0)
+            prestationRequest.setSecteur_id(secteur_id);
+        if(demandeur_id != 0){
+            long employeur_id = (prestationTemp.getDemandeur().getEmployeur() != null) ? prestationTemp.getDemandeur().getEmployeur().getId() : 0;
+            MedecinRequest demandeur = MedecinRequest.builder().build();
+            copyProperties(prestationTemp.getDemandeur(), demandeur);
+            demandeur.setSecteur_id(prestationTemp.getDemandeur().getSecteur().getId());
+            if(employeur_id != 0){
+                demandeur.setEmployeur_id(employeur_id);
+            }
+            prestationRequest.setDemandeur(demandeur);
+        }
+
         //log.info(prestationRequest);
 
         long prestationId =  prestationService.addPrestation(prestationRequest);

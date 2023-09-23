@@ -31,6 +31,7 @@ public class MedecinServiceImpl implements MedecinService {
     @Override
     public long addMedecin(MedecinRequest medecinRequest) {
         log.info("MedecinServiceImpl | addMedecin is called");
+        long employeur_id = (medecinRequest.getEmployeur_id() != 0) ? employeurRepository.findById(medecinRequest.getEmployeur_id()).get().getId() : 0;
 
         Medecin medecin
                 = Medecin.builder()
@@ -45,9 +46,11 @@ public class MedecinServiceImpl implements MedecinService {
                 .type_piece(medecinRequest.getType_piece())
                 .no_piece(medecinRequest.getNo_piece())
                 .type(medecinRequest.getType())
-                .employeur(employeurRepository.findById(medecinRequest.getEmployeur_id()).get())
                 .secteur(secteurRepository.findById(medecinRequest.getSecteur_id()).get())
                 .build();
+
+        if(employeur_id != 0)
+            medecin.setEmployeur(employeurRepository.findById(employeur_id).get());
 
         medecin = medecinRepository.save(medecin);
 

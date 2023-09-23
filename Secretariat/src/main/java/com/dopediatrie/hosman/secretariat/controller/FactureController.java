@@ -108,6 +108,7 @@ long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().
         }
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
+        context.setVariable("date_heure",factureResponse.getDate_facture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
         context.setVariable("patient",factureResponse.getReference());
         context.setVariable("total",factureResponse.getTotal());
         context.setVariable("montant_pec",factureResponse.getMontant_pec());
@@ -121,6 +122,7 @@ long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().
         context.setVariable("tarifs", tarifs);
         context.setVariable("groupe", groupe);
         context.setVariable("attente", nuum);
+        context.setVariable("mode", factureResponse.getMode_payements().get(0));
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);
