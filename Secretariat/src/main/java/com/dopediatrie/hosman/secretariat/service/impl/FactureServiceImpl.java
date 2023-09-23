@@ -95,11 +95,16 @@ public class FactureServiceImpl implements FactureService {
         // commit prestationTemp to prestation
         PrestationTemp prestationTemp = prestationTempRepository.findById(factureRequest.getPrestation_id()).orElseThrow();
         //copyProperties(prestationTemp, prestationRequest);
+        MedecinRequest demandeur = MedecinRequest.builder().build();
+        copyProperties(prestationTemp.getDemandeur(), demandeur);
+        demandeur.setSecteur_id(prestationTemp.getDemandeur().getId());
+        demandeur.setEmployeur_id(prestationTemp.getDemandeur().getEmployeur().getId());
+
         PrestationRequest prestationRequest = PrestationRequest.builder()
                 .provenance(prestationTemp.getProvenance())
                 .date_prestation(prestationTemp.getDate_prestation())
                 .consulteur_id(prestationTemp.getConsulteur().getId())
-                .demandeur_id(prestationTemp.getDemandeur().getId())
+                .demandeur(demandeur)
                 .secteur_id(prestationTemp.getSecteur().getId())
                 .patient_id(prestationTemp.getPatient().getId())
                 .build();
