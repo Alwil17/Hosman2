@@ -1,12 +1,10 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
-import com.dopediatrie.hosman.secretariat.entity.Facture;
-import com.dopediatrie.hosman.secretariat.entity.Patient;
-import com.dopediatrie.hosman.secretariat.entity.Prestation;
-import com.dopediatrie.hosman.secretariat.entity.PrestationTarif;
+import com.dopediatrie.hosman.secretariat.entity.*;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
+import com.dopediatrie.hosman.secretariat.repository.FactureModeRepository;
 import com.dopediatrie.hosman.secretariat.repository.PrestationTarifRepository;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
@@ -44,6 +42,7 @@ public class FactureController {
 
     private final FactureService factureService;
     private final PrestationTarifRepository tarifRepository;
+    private final FactureModeRepository factureModeRepository;
 
     @Autowired
     SpringTemplateEngine templateEngine;
@@ -99,6 +98,14 @@ public class FactureController {
             groupe = prestation.getSecteur().getLibelle();
         }
 long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
+        double verse = 0;
+        List<FactureMode> fms = factureModeRepository.findByFacture_Id(factureId);
+        for (FactureMode fm: fms
+             ) {
+            if(fm.getMode_payement().getSlug().equals("especes")){
+                verse += fm.getMontant();
+            }
+        }
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("patient",factureResponse.getReference());
@@ -107,7 +114,7 @@ long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().
         context.setVariable("majoration",factureResponse.getMajoration().getMontant());
         context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
-        context.setVariable("verse",factureResponse.getMode_payements().);
+        context.setVariable("verse", verse);
         context.setVariable("reliquat",factureResponse.getReliquat().getMontant());
         context.setVariable("patient", patient);
         context.setVariable("date_naissance", patient.getDate_naissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
