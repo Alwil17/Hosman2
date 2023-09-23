@@ -4,32 +4,29 @@ import { Observable, of } from "rxjs";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "";
+const apiEndpoint = environment.baseUrl + "attentes";
 
 @Injectable({
   providedIn: "root",
 })
 export class WaitingListService {
-  private waitingList: WaitingListItem[] = [
-  ];
+  private waitingList: WaitingListItem[] = [];
 
   constructor(private http: HttpClient) {}
 
-  getAll() {
-    return [...this.waitingList];
+  getAll(): Observable<WaitingListItem[]> {
+    return this.http.get<WaitingListItem[]>(apiEndpoint);
   }
 
-  create(
-    data: WaitingListItem
-  ): Observable<any> {
-    this.waitingList = [...this.waitingList, data];
-
-    return of(true);
-    // return this.http.post(baseUrl, data2);
+  delete(id: any): Observable<void> {
+    return this.http.delete<void>(`${apiEndpoint}/${id}`);
   }
 
-  // getAll(): Observable<Patient[]> {
-  //   return this.http.get<Patient[]>(baseUrl);
+  // create(data: WaitingListItem): Observable<any> {
+  //   this.waitingList = [...this.waitingList, data];
+
+  //   return of(true);
+  //   // return this.http.post(baseUrl, data2);
   // }
 
   // get(id: any): Observable<any> {

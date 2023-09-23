@@ -1,6 +1,7 @@
 import { DebtResponse } from "./debt-response.model";
 import { DiscountResponse } from "./discount-response.model";
 import { MarkupResponse } from "./markup-response.model";
+import { PrestationResponse } from "./prestation-response.model";
 import { RemainderResponse } from "./remainder-response.model";
 import { StatusResponse } from "./status-response.model";
 
@@ -19,6 +20,8 @@ export interface InvoiceResponse {
   prestation_id: number;
   etat: StatusResponse;
   exporte: number;
+  prestation: PrestationResponse;
+
   // mode_payements: [
   //   {
   //     facture_id: number;

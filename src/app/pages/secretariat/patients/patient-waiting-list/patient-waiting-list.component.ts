@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { WaitingListService } from "src/app/services/secretariat/patients/waiting-list.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 @Component({
   selector: "app-patient-waiting-list",
@@ -19,13 +21,10 @@ export class PatientWaitingListComponent implements OnInit {
   collectionSize = this.waitingList.length;
   waitingListCut: WaitingListItem[] = [];
 
-  constructor(private waitingListService: WaitingListService) {
-    this.waitingList =
-      // ...this.waitingList,
-      this.waitingListService.getAll();
-
-    this.refreshPatients();
-  }
+  constructor(
+    private waitingListService: WaitingListService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -35,9 +34,37 @@ export class PatientWaitingListComponent implements OnInit {
       { label: "Patients" },
       { label: "Liste d'attente", active: true },
     ];
+
+    this.refreshWaitingList();
   }
 
-  refreshPatients() {
+  refreshWaitingList() {
+    this.waitingListService.getAll().subscribe({
+      next: (data) => {
+        this.toastService.show({
+          messages: ["Rafraîchissement de la liste."],
+          type: ToastType.Success,
+        });
+
+        this.waitingList = data;
+
+        this.refreshWaitingListTable();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          messages: [
+            "Une erreur s'est produite lors du rafraîchissment de la liste.",
+          ],
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
+  }
+
+  refreshWaitingListTable() {
     this.collectionSize = this.waitingList.length;
 
     this.waitingListCut = this.waitingList
@@ -46,5 +73,26 @@ export class PatientWaitingListComponent implements OnInit {
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
       );
+  }
+
+  deleteWaitingListItem(id: any) {
+    this.waitingListService.delete(id).subscribe({
+      next: (data) => {
+        this.toastService.show({
+          messages: ["Patient retiré de la liste d'attente."],
+          type: ToastType.Success,
+        });
+
+        this.refreshWaitingList();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 }

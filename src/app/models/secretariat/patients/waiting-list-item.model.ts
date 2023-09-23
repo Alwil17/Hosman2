@@ -1,56 +1,44 @@
 import { calculateExactAge } from "src/app/helpers/age-calculator";
+import { Patient } from "./patient.model";
+import { Doctor } from "../shared/doctor.model";
+import { Sector } from "../shared/sector.model";
+import { Invoice } from "./invoice.model";
+
+export interface IWaitingListItem {
+  id: number;
+  num_attente: number;
+  ordre: number;
+  attente: boolean;
+  date_attente: Date;
+  patient: Patient;
+  medecin: Doctor;
+  receveur?: Doctor;
+  secteur: Sector;
+  facture: Invoice;
+}
 
 export class WaitingListItem {
-  order: number;
-  reference: string;
-  lastname: string;
-  firstname: string;
-  dob: Date;
-  //   age: string;
-  gender: string;
-  acts: string[];
-  invoiceTotal: number;
-  sector: string;
-  doctor: string;
-  private dateTimeOfArrival: Date;
+  id: number;
+  num_attente: number;
+  ordre: number;
+  attente: boolean;
+  date_attente: Date;
+  patient: Patient;
+  medecin: Doctor;
+  receveur?: Doctor;
+  secteur: Sector;
+  facture: Invoice;
 
-  constructor(
-    order: number,
-    reference: string,
-    lastname: string,
-    firstname: string,
-    dob: Date,
-    // age: string,
-    gender: string,
-    acts: string[],
-    invoiceTotal: number,
-    sector: string,
-    doctor: string,
-    dateTimeOfArrival: Date
-  ) {
-    this.order = order;
-    this.reference = reference;
-    this.lastname = lastname;
-    this.firstname = firstname;
-    this.dob = dob;
-    // this.age = age;
-    this.gender = gender;
-    this.acts = acts;
-    this.invoiceTotal = invoiceTotal;
-    this.sector = sector;
-    this.doctor = doctor;
-    this.dateTimeOfArrival = dateTimeOfArrival;
-  }
-
-  get age() {
-    return calculateExactAge(this.dob);
-  }
-
-  get dateOfArrival() {
-    return this.dateTimeOfArrival;
-  }
-
-  get timeOfArrival() {
-    return this.dateTimeOfArrival;
+  constructor(iWaitingListItem: IWaitingListItem) {
+    this.id = iWaitingListItem.id;
+    this.num_attente = iWaitingListItem.num_attente;
+    this.ordre = iWaitingListItem.ordre;
+    this.attente = iWaitingListItem.attente;
+    this.date_attente = iWaitingListItem.date_attente;
+    this.patient = iWaitingListItem.patient;
+    this.medecin = iWaitingListItem.medecin;
+    this.receveur = iWaitingListItem.receveur;
+    this.secteur = iWaitingListItem.secteur;
+    this.facture = iWaitingListItem.facture;
   }
 }

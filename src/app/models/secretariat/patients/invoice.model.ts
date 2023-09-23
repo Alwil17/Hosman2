@@ -1,6 +1,7 @@
 import { Debt } from "./debt.model";
 import { Discount } from "./discount.model";
 import { Markup } from "./markup.model";
+import { Prestation } from "./prestation.model";
 import { Remainder } from "./remainder.model";
 import { InvoiceResponse } from "./responses/invoice-response.model";
 import { Status } from "./status.model";
@@ -19,6 +20,7 @@ export interface IInvoice {
   date_reglement: Date;
   etat: Status;
   exporte: number;
+  prestation: Prestation;
   //   mode_payements: [
   //     {
   //       facture_id: number;
@@ -42,6 +44,7 @@ export class Invoice {
   date_reglement: Date;
   etat: Status;
   exporte: number;
+  prestation: Prestation;
 
   constructor(iInvoice: IInvoice) {
     this.id = iInvoice.id;
@@ -57,6 +60,7 @@ export class Invoice {
     this.date_reglement = iInvoice.date_reglement;
     this.etat = iInvoice.etat;
     this.exporte = iInvoice.exporte;
+    this.prestation = iInvoice.prestation;
   }
 
   static fromResponse(invoice: InvoiceResponse) {
@@ -74,6 +78,7 @@ export class Invoice {
       date_reglement: invoice.date_reglement,
       etat: Status.fromResponse(invoice.etat),
       exporte: invoice.exporte,
+      prestation: Prestation.fromResponse(invoice.prestation),
     });
   }
 }
