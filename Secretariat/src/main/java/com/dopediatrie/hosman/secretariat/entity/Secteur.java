@@ -30,6 +30,9 @@ public class Secteur {
     private List<Prestation> prestations;
     @OneToMany(mappedBy = "secteur")
     @JsonIgnore
+    private List<Attente> attentes;
+    @OneToMany(mappedBy = "secteur")
+    @JsonIgnore
     private List<PrestationTemp> temp_prestations;
 
     @Override

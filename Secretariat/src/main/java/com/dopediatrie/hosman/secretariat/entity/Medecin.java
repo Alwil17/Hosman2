@@ -39,6 +39,12 @@ public class Medecin {
     @OneToMany(mappedBy = "demandeur")
     @JsonIgnore
     private List<Prestation> prestations_demandeur;
+    @OneToMany(mappedBy = "medecin")
+    @JsonIgnore
+    private List<Attente> attentes;
+    @OneToMany(mappedBy = "receveur")
+    @JsonIgnore
+    private List<Attente> recu_attentes;
     @OneToMany(mappedBy = "consulteur")
     @JsonIgnore
     private List<Prestation> prestations_consulteur;
@@ -48,4 +54,22 @@ public class Medecin {
     @OneToMany(mappedBy = "consulteur")
     @JsonIgnore
     private List<PrestationTemp> temp_prestations_consulteur;
+
+    @Override
+    public String toString() {
+        return "Medecin{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenoms='" + prenoms + '\'' +
+                ", date_naissance=" + date_naissance +
+                ", sexe=" + sexe +
+                ", lieu_naissance='" + lieu_naissance + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", email='" + email + '\'' +
+                ", type_piece='" + type_piece + '\'' +
+                ", no_piece='" + no_piece + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

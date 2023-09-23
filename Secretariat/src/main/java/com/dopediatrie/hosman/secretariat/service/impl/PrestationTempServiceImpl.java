@@ -76,7 +76,8 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                     total_prix_gros = tarif.getTarif_non_assure();
                     break;
             }
-            total_facture += (total_prix_gros * prestationTarifTempRequest.getQuantite());
+            total_prix_gros = total_prix_gros * prestationTarifTempRequest.getQuantite();
+            total_facture += total_prix_gros;
             prestationTarifTempRequest.setPrestation_temp_id(prestationTemp.getId());
             prestationTarifTempRequest.setTotal_price_gros(total_prix_gros);
             prestationTarifTempService.addPrestationTarifTemp(prestationTarifTempRequest);

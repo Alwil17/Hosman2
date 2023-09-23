@@ -54,8 +54,8 @@ public class CaisseServiceImpl implements CaisseService {
         LocalDateTime tomorrow = LocalDateTime.from(dt.toInstant().atZone(ZoneId.of("UTC"))).plusDays(1);
         String libelle = "Caisse_"+ today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        if(caisseRepository.existsByLibelle(libelle) != null && caisseRepository.existsByLibelle(libelle)){
-            Caisse current = caisseRepository.findByLibelle(libelle).get();
+        if(caisseRepository.existsByOuvert(true) != null && caisseRepository.existsByOuvert(true)){
+            Caisse current = caisseRepository.findByOuvert(true).get();
             current.setOuvert(false);
             current.setDate_fermeture(LocalDateTime.now());
             caisseRepository.save(current);

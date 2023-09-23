@@ -71,6 +71,9 @@ public class Patient implements Serializable {
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Reliquat> reliquats;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Attente> attentes;
     @ManyToOne
     @JoinColumn(name = "assurance_id")
     private Assurance assurance;

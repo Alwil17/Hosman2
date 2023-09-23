@@ -34,6 +34,7 @@ public class FactureServiceImpl implements FactureService {
     private final PrestationTempRepository prestationTempRepository;
     private final PrestationTarifTempRepository prestationTarifTempRepository;
 
+    private final AttenteService attenteService;
     private final CaisseService caisseService;
     private final ReductionService reductionService;
     private final MajorationService majorationService;
@@ -142,6 +143,18 @@ public class FactureServiceImpl implements FactureService {
             }
         }
         caisseService.addAmountCaisse(toCaisse);
+
+        Prestation prestation = prestationRepository.findById(prestationId).orElseThrow();
+        AttenteRequest attenteRequest = AttenteRequest.builder()
+                .num_attente(0)
+                .date_attente(factureRequest.getDate_facture())
+                .patient_id(factureRequest.getPatient_id())
+                .medecin_id(prestation.getConsulteur().getId())
+                .secteur_id(prestation.getSecteur().getId())
+                .facture_id(facture.getId())
+                .structure_id(1)
+                .build();
+        attenteService.addAttente(attenteRequest);
 
         log.info("FactureServiceImpl | addFacture | Facture Created");
         log.info("FactureServiceImpl | addFacture | Facture Id : " + facture.getId());

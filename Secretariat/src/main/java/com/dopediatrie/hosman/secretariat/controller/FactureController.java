@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.secretariat.controller;
 
 import com.dopediatrie.hosman.secretariat.entity.Facture;
 import com.dopediatrie.hosman.secretariat.entity.Patient;
+import com.dopediatrie.hosman.secretariat.entity.Prestation;
 import com.dopediatrie.hosman.secretariat.entity.PrestationTarif;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
@@ -87,10 +88,17 @@ public class FactureController {
         FactureResponse factureResponse
                 = factureService.getFactureById(factureId);
 
-        Patient patient = factureResponse.getPrestation().getPatient();
+        Prestation prestation = factureResponse.getPrestation();
+        Patient patient = prestation.getPatient();
 
-        List<PrestationTarif> tarifs = tarifRepository.findByPrestationId(factureResponse.getPrestation().getId());
-
+        List<PrestationTarif> tarifs = tarifRepository.findByPrestationId(prestation.getId());
+        String groupe = "";
+        if(prestation.getSecteur() == null){
+            groupe = tarifs.get(0).getTarif().getActe().getGroupe().getLibelle();
+        }else{
+            groupe = prestation.getSecteur().getLibelle();
+        }
+long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("patient",factureResponse.getReference());
@@ -99,11 +107,13 @@ public class FactureController {
         context.setVariable("majoration",factureResponse.getMajoration().getMontant());
         context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
-        context.setVariable("verse",factureResponse.getVerse());
+        context.setVariable("verse",factureResponse.getMode_payements().);
         context.setVariable("reliquat",factureResponse.getReliquat().getMontant());
         context.setVariable("patient", patient);
         context.setVariable("date_naissance", patient.getDate_naissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         context.setVariable("tarifs", tarifs);
+        context.setVariable("groupe", groupe);
+        context.setVariable("attente", nuum);
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);
@@ -117,7 +127,7 @@ public class FactureController {
 
         String baseUrl = FileSystems
                 .getDefault()
-                .getPath("src", "main", "resources","templates")
+                .getPath("src", "main", "resources", "templates")
                 .toUri()
                 .toURL()
                 .toString();

@@ -35,5 +35,7 @@ public class FactureResponse {
     private int exporte;
     private long prestation_id;
     private Prestation prestation;
+    private Attente attente;
     private String path;
+    private List<ModePayement> mode_payements;
 }

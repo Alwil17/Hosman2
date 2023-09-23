@@ -178,7 +178,7 @@
             </thead>
             <tbody>
             <tr>
-                <td colspan="3"><em><u>ANALYSE</u></em></td>
+                <td colspan="3"><em><u th:text="${groupe}">-</u></em></td>
             </tr>
             <tr th:each="tarif: ${tarifs}" >
                 <td th:text="${tarif.tarif.libelle}" style="width: 70%;" />
@@ -190,7 +190,7 @@
         </table>
 
         <div class="order-number">
-            <h1>
+            <h1 th:text="${groupe+' '+attente}">
                 ANALYSE 7
             </h1>
         </div>
