@@ -49,7 +49,7 @@ import { DebtsComponent } from "./debts/debts.component";
     NgbDropdownModule,
     NgxMaskModule,
     NgbAccordionModule,
-    // NgbTypeaheadModule,
+    NgbTypeaheadModule,
   ],
   exports: [],
   providers: [DatePipe],

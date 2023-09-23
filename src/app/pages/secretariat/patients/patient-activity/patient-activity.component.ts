@@ -412,6 +412,40 @@ export class PatientActivityComponent implements OnInit {
       );
   }
 
+  searchTerm = "";
+  searchActs() {
+    const searchedActs = this.searchTerm
+      ? this.table1.filter((act) => {
+          return act.designation
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase());
+
+          // let isFound = false;
+
+          // if (
+          //   act.designation
+          //     .toLowerCase()
+          //     .includes(this.searchTerm.toLowerCase())
+          // ) {
+          //   isFound = true;
+          // } else if (act.description) {
+          //   isFound = act.description
+          //     .toLowerCase()
+          //     .includes(this.searchTerm.toLowerCase());
+          // }
+
+          // return isFound;
+        })
+      : this.table1;
+
+    this.table1CollectionSize = searchedActs.length;
+
+    this.activities = searchedActs.slice(
+      (this.table1Page - 1) * this.table1PageSize,
+      (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+    );
+  }
+
   add(item: IPrestation) {
     console.log(item);
 
@@ -583,13 +617,12 @@ export class PatientActivityComponent implements OnInit {
         tarif_id: item.id,
         quantite: item.quantity,
       })),
-      demandeur_id: 1, // this.doctorControl.value.id,
-      secteur_id: 1, // this.sectorControl.value.id,
+      demandeur_id: 1, // this.doctorControl.value?.id,
+      secteur_id: 1, // this.sectorControl.value?.id,
       provenance: this.originControl.value,
     });
 
     console.log(JSON.stringify(prestation, null, 2));
-    
 
     this.prestationService.generatePreInvoiceInfos(prestation).subscribe({
       next: (data) => {

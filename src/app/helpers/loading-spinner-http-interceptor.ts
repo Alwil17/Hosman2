@@ -18,18 +18,24 @@ export class LoadingSpinnerHttpInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.spinnerService.show();
+    console.log("LOADING...");
+    
 
     return next.handle(req).pipe(
-      tap(
-        (event: HttpEvent<any>) => {
+      tap({
+        next: (event) => {
           if (event instanceof HttpResponse) {
             this.spinnerService.hide();
+    console.log("LOADED");
+
           }
         },
-        (error) => {
+        error: (error) => {
           this.spinnerService.hide();
-        }
-      )
+    console.log("FAILED");
+
+        },
+      })
     );
   }
 }
