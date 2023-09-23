@@ -13,7 +13,7 @@ import java.util.List;
 public class PrestationRequest {
     private String provenance;
     private long patient_id;
-    private long demandeur_id;
+    private MedecinRequest demandeur;
     private long consulteur_id;
     private long secteur_id;
     private LocalDateTime date_prestation = LocalDateTime.now();

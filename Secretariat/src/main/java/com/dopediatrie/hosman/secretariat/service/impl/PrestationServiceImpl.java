@@ -10,6 +10,7 @@ import com.dopediatrie.hosman.secretariat.payload.request.PrestationTarifRequest
 import com.dopediatrie.hosman.secretariat.payload.response.PrestationResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
+import com.dopediatrie.hosman.secretariat.service.MedecinService;
 import com.dopediatrie.hosman.secretariat.service.PrestationService;
 import com.dopediatrie.hosman.secretariat.service.PrestationTarifService;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,8 @@ public class PrestationServiceImpl implements PrestationService {
     private final PatientRepository patientRepository;
     private final MedecinRepository medecinRepository;
     private final SecteurRepository secteurRepository;
-    private final TarifRepository tarifRepository;
 
-    private final PrestationTarifService prestationTarifService;
+    private final MedecinService medecinService;
     private final String NOT_FOUND = "PRESTATION_NOT_FOUND";
 
     @Override
@@ -43,18 +43,31 @@ public class PrestationServiceImpl implements PrestationService {
     public long addPrestation(PrestationRequest prestationRequest) {
         log.info("PrestationServiceImpl | addPrestation is called");
         Patient patient = patientRepository.findById(prestationRequest.getPatient_id()).orElseThrow();
+        long secteur_id = (prestationRequest.getSecteur_id() != 0) ? secteurRepository.findById(prestationRequest.getSecteur_id()).get().getId() : 0;
+        long demandeur_id = 0;
+        if(prestationRequest.getDemandeur() != null){
+            if(prestationRequest.getDemandeur().getId() != 0){
+                demandeur_id = prestationRequest.getDemandeur().getId();
+            }else{
+                demandeur_id = medecinService.addMedecin(prestationRequest.getDemandeur());
+            }
+        }
 
         Prestation prestation
                 = Prestation.builder()
                 .provenance(prestationRequest.getProvenance())
                 .patient(patient)
                 .consulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get())
-                .demandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get())
-                .secteur(secteurRepository.findById(prestationRequest.getSecteur_id()).get())
                 .date_prestation(prestationRequest.getDate_prestation())
                 .build();
 
+        if(secteur_id != 0)
+            prestation.setSecteur(secteurRepository.findById(prestationRequest.getSecteur_id()).orElseThrow());
+        if(demandeur_id != 0)
+            prestation.setDemandeur(medecinRepository.findById(demandeur_id).orElseThrow());
+
         prestation = prestationRepository.save(prestation);
+
 
         // add data to intermediate table
         /*for (PrestationTarifRequest prestationTarifRequest : prestationRequest.getTarifs()) {
@@ -124,8 +137,6 @@ public class PrestationServiceImpl implements PrestationService {
         prestation.setProvenance(prestationRequest.getProvenance());
         prestation.setPatient(patientRepository.findById(prestationRequest.getPatient_id()).get());
         prestation.setConsulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get());
-        prestation.setDemandeur(medecinRepository.findById(prestationRequest.getDemandeur_id()).get());
-        prestation.setSecteur(secteurRepository.findById(prestationRequest.getSecteur_id()).get());
         prestation.setDate_prestation(prestationRequest.getDate_prestation());
         prestationRepository.save(prestation);
 
