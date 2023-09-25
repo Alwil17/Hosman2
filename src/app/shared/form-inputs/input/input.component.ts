@@ -38,7 +38,7 @@ export class InputComponent implements OnInit {
 
   @Input() uppercased = false;
   @Input() titlecased = false;
-  @Input() firstLetterUppercased = true;
+  @Input() firstLetterUppercased = false;
 
   constructor(private titleCase: TitleCasePipe) {}
 

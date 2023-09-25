@@ -112,6 +112,7 @@ export class PatientFormTwoComponent implements OnInit {
   genders = [
     { id: 1, text: "Masculin", short: "M" },
     { id: 2, text: "Féminin", short: "F" },
+    { id: 3, text: "Indéterminé", short: "I" },
   ];
   idTypes = [
     { id: 1, text: "CNI" },

@@ -24,7 +24,9 @@ export class SelectComponent implements OnInit {
   ngOnInit(): void {}
 
   addTagFn(value: string) {
-    return { id: -1, text: value, new: true };
+    const transformed = value.charAt(0).toUpperCase() + value.substring(1);
+
+    return { id: -1, text: transformed, new: true };
   }
 
   // OLD

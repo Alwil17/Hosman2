@@ -3,19 +3,19 @@ import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insura
 const HAS_INSURANCES = [
   {
     code: HasInsuranceCode.NO_LOCAL,
-    text: "Patient non assuré",
+    text: "0 - Non assuré",
   },
   {
     code: HasInsuranceCode.NO_FOREIGNER,
-    text: "Patient expatrié non assuré",
+    text: "0ex - Expatrié non assuré",
   },
   {
     code: HasInsuranceCode.YES_LOCAL,
-    text: "Patient avec une assurance locale",
+    text: "1 - Assurance locale",
   },
   {
     code: HasInsuranceCode.YES_FOREIGNER,
-    text: "Patient avec une assurance étrangère",
+    text: "2 - Assurance étrangère",
   },
 ];
 

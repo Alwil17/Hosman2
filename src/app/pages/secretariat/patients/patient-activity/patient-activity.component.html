@@ -423,9 +423,13 @@
                 >
                   <td>{{ item.rubrique | uppercase }}</td>
                   <td>{{ item.prestation }}</td>
-                  <td>{{ item.price }}</td>
-                  <td>{{ item.quantity }}</td>
-                  <td>{{ item.total_price }}</td>
+                  <td class="text-end">
+                    {{ item.price | mask : "separator" }}
+                  </td>
+                  <td class="text-end">{{ item.quantity }}</td>
+                  <td class="text-end">
+                    {{ item.total_price | mask : "separator" }}
+                  </td>
                 </tr>
               </tbody>
               <!-- <tfoot>
