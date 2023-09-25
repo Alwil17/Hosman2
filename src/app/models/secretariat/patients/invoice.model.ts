@@ -72,7 +72,7 @@ export class Invoice {
       reduction: Discount.fromResponse(invoice.reduction),
       majoration: Markup.fromResponse(invoice.majoration),
       a_payer: invoice.a_payer,
-      creance: invoice.creance, //Debt.fromResponse(invoice.creance),
+      creance: Debt.fromResponse(invoice.creance), // invoice.creance,
       reliquat: Remainder.fromResponse(invoice.reliquat),
       date_facture: invoice.date_facture,
       date_reglement: invoice.date_reglement,

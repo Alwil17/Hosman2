@@ -1,12 +1,15 @@
+import { SectorRequest } from "./sector-request.model";
+
 export interface IDoctorRequest {
-  id: number;
-  reference: string;
+  id?: number;
+  // reference: string;
   nom: string;
   prenoms: string;
+  type: string;
   //   date_naissance: Date;
   //   sexe: string;
   //   tel1: string;
-  //   sector: Sector;
+  // sector: SectorRequest;
   //   tel2?: string;
   //   email?: string;
   //   lieu_naissance?: string;
@@ -15,14 +18,15 @@ export interface IDoctorRequest {
 }
 
 export class DoctorRequest {
-  id: number;
-  reference: string;
+  id?: number;
+  // reference: string;
   nom: string;
   prenoms: string;
+  type: string;
   //   date_naissance: Date;
   //   sexe: string;
   //   tel1: string;
-  //   sector: Sector;
+  // sector: SectorRequest;
   //   tel2?: string;
   //   email?: string;
   //   lieu_naissance?: string;
@@ -31,8 +35,9 @@ export class DoctorRequest {
 
   constructor(iDoctor: IDoctorRequest) {
     this.id = iDoctor.id;
-    this.reference = iDoctor.reference;
+    // this.reference = iDoctor.reference;
     this.nom = iDoctor.nom;
     this.prenoms = iDoctor.prenoms;
+    this.type = iDoctor.type;
   }
 }

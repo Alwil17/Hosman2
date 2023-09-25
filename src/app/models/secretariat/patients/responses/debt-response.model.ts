@@ -6,7 +6,7 @@ export interface DebtResponse {
   id: number;
   montant: number;
   date_operation: Date;
-  patient: PatientResponse;
-  facture: InvoiceResponse;
+  // patient: PatientResponse;
+  // facture: InvoiceResponse;
   etat: StatusResponse;
 }

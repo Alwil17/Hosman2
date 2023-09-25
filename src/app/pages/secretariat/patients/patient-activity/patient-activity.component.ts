@@ -40,6 +40,7 @@ import { SelectComponent } from "src/app/shared/form-inputs/select/select.compon
 import { WarningMessages } from "src/app/helpers/messages";
 import { PrestationService } from "src/app/services/secretariat/patients/prestation.service";
 import { PrestationRequest } from "src/app/models/secretariat/patients/requests/prestation-request.model";
+import { DoctorRequest } from "src/app/models/secretariat/shared/requests/doctor-request.model";
 
 @Component({
   selector: "app-patient-activity",
@@ -370,11 +371,11 @@ export class PatientActivityComponent implements OnInit {
   refreshTable1() {
     this.table1 = this.selectedGroupTariffs.map((item) => {
       let patientPrice = 0;
-      if (this.patientService.getActivePatientType() == 1) {
+      if (this.patientService.getActivePatientType() == 0) {
         patientPrice = item.tarif_non_assure;
-      } else if (this.patientService.getActivePatientType() == 2) {
+      } else if (this.patientService.getActivePatientType() == 1) {
         patientPrice = item.tarif_etr_non_assure;
-      } else if (this.patientService.getActivePatientType() == 3) {
+      } else if (this.patientService.getActivePatientType() == 2) {
         patientPrice = item.tarif_assur_locale;
       } else {
         patientPrice = item.tarif_assur_hors_zone;
@@ -609,15 +610,46 @@ export class PatientActivityComponent implements OnInit {
       return;
     }
 
+    let doctor: DoctorRequest | undefined = undefined;
+    if (!this.isMedicalProceduresSelected) {
+      const doctorText = this.doctorControl.value?.text as string;
+      const spaceIndex = doctorText.indexOf(" ");
+
+      const id =
+        this.doctorControl.value?.id == -1 ? 0 : this.doctorControl.value?.id;
+
+      if (spaceIndex !== -1) {
+        const lastname = doctorText.substring(0, spaceIndex);
+        const firstname = doctorText.substring(spaceIndex + 1);
+        doctor = new DoctorRequest({
+          id: id,
+          nom: lastname,
+          prenoms: firstname,
+          type: this.doctorTypeControl.value.text,
+        });
+      } else {
+        doctor = new DoctorRequest({
+          id: id,
+          nom: this.doctorControl.value?.text as string,
+          prenoms: "",
+          type: this.doctorTypeControl.value.text,
+        });
+      }
+      
+      console.log("HERE");
+    }
+
     const prestation = new PrestationRequest({
       patient_id: this.patientService.getActivePatient().id,
-      consulteur_id: this.consultingDoctorControl.value.id,
+      consulteur_id:
+        this.consultingDoctorControl.value?.id ??
+        this.performedByControl.value?.id,
       date_prestation: new Date(this.activityDateControl.value),
       tarifs: this.table2.map((item) => ({
         tarif_id: item.id,
         quantite: item.quantity,
       })),
-      demandeur_id: 1, // this.doctorControl.value?.id,
+      demandeur: doctor,
       secteur_id: 1, // this.sectorControl.value?.id,
       provenance: this.originControl.value,
     });
