@@ -58,12 +58,12 @@ public class CaisseController {
     public ResponseEntity<Resource> getDailyReport() throws IOException {
         log.info("CaisseController | getDailyReport is called");
         CaisseResponse caisse = caisseService.getCurrentCaisse();
-        String datemin = caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String datemin = caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String datemax = "";
         if(caisse.getDate_fermeture() == null){
-            datemax = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            datemax = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }else{
-            datemax = caisse.getDate_fermeture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            datemax = caisse.getDate_fermeture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
         String sql = "select a.libelle as acte, b.* \n" +
@@ -97,8 +97,8 @@ public class CaisseController {
                 "  JOIN mode_facture fm ON f.id = fm.facture_id \n" +
                 "  JOIN mode_payement m ON fm.mode_payement_id = m.id \n" +
                 "WHERE \n" +
-                "  p.date_prestation >= '"+ datemin +"' \n" +
-                "  and p.date_prestation < '"+ datemax +"' \n" +
+                "  f.date_facture >= '"+ datemin +"' \n" +
+                "  and f.date_facture < '"+ datemax +"' \n" +
                 "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";
         List<FicheRecap> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> new FicheRecap(
                 resultSet.getString("acte"),
@@ -134,6 +134,7 @@ public class CaisseController {
         }
 
         Context context = new Context();
+        context.setVariable("date_heure", caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         context.setVariable("recaps", rs);
         context.setVariable("total_nb_especes", total_nb_especes);
         context.setVariable("total_total_especes", total_total_especes);
