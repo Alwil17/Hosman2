@@ -46,7 +46,7 @@ export class PatientAddressFormComponent implements OnInit {
   neighborhoods!: SelectOption[];
 
   constructor(
-    public modal: NgbActiveModal,
+    // public modal: NgbActiveModal,
     private cityService: CityService,
     private neighborhoodService: NeighborhoodService
   ) {}

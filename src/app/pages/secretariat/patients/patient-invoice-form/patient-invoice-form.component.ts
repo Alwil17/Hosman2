@@ -1,21 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
-import {
-  NgbActiveModal,
-  NgbModal,
-  NgbPanelChangeEvent,
-} from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal, NgbModal, NgbPanelChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 import { IPrestationSelect } from "../patient-activity/activity.models";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
-import { Prestation } from "src/app/models/secretariat/patients/prestation.model";
-import { WaitingListService } from "src/app/services/secretariat/patients/waiting-list.service";
-import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { InvoiceService } from "src/app/services/secretariat/patients/invoice.service";
 import { InvoiceRequest } from "src/app/models/secretariat/patients/requests/invoice-request.model";
 import { MarkupRequest } from "src/app/models/secretariat/patients/requests/markup-request.model";
@@ -23,7 +10,6 @@ import { RemainderRequest } from "src/app/models/secretariat/patients/requests/r
 import { DiscountRequest } from "src/app/models/secretariat/patients/requests/discount-request.model";
 import { DebtRequest } from "src/app/models/secretariat/patients/requests/debt-request.model";
 import { parseIntOrZero } from "src/app/helpers/parsers";
-import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-modal.component";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
@@ -109,7 +95,6 @@ export class PatientInvoiceFormComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     public patientService: PatientService,
-    private waitingListService: WaitingListService,
     private invoiceService: InvoiceService,
     private modalService: NgbModal,
     private toastService: ToastService,

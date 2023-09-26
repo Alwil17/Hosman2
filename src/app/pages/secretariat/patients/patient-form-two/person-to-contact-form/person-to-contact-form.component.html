@@ -1,4 +1,4 @@
-<div class="modal-header">
+<!-- <div class="modal-header">
   <h5 class="modal-title" id="myExtraLargeModalLabel">Personne à prévenir</h5>
   <button
     type="button"
@@ -9,9 +9,9 @@
   ></button>
 </div>
 
-<hr />
+<hr /> -->
 
-<div class="modal-body">
+<app-simple-modal title="Personne à prévenir">
   <form [formGroup]="personToContactForm">
     <div class="row g-3">
       <div class="col-md-6">
@@ -74,9 +74,9 @@
       </button>
     </div>
   </form>
-</div>
+</app-simple-modal>
 
-<hr />
+<!-- <hr />
 
 <div class="modal-footer">
   <a
@@ -86,4 +86,4 @@
     (click)="modal.close('Close click')"
     ><i class="ri-close-line me-1 align-middle"></i>Annuler et Fermer</a
   >
-</div>
+</div> -->

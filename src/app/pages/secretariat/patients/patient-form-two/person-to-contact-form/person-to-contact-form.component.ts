@@ -25,7 +25,9 @@ export class PersonToContactFormComponent implements OnInit {
   ptcTelControl = new FormControl("", [Validators.required]);
   ptcAddressControl = new FormControl("", [Validators.required]);
 
-  constructor(public modal: NgbActiveModal) {}
+  constructor(
+    // public modal: NgbActiveModal
+    ) {}
 
   ngOnInit(): void {
     this.personToContactForm = new FormGroup({

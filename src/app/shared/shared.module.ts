@@ -61,6 +61,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     InputComponent,
     SelectComponent,
     ToastsContainerComponent,
+    SimpleModalComponent,
   ],
   providers: [TitleCasePipe],
 })
