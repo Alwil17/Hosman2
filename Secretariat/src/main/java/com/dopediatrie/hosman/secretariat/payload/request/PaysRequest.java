@@ -11,5 +11,5 @@ public class PaysRequest {
     private String nom;
     private String nationalite;
     private String code;
-    private int indicatif;
+    private String indicatif;
 }

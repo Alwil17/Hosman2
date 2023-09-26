@@ -1,13 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
     <title>Invoice</title>
     <style>
         @page {
             /* dimensions for the whole page */
-            size: A5;
+            size: A4;
             margin: 0;
         }
 
@@ -18,8 +18,8 @@
 
         body {
             /* A5 dimensions */
-            width: 138mm;
-            height: 190mm;
+            width: 200mm;
+            height: 297mm;
 
 
             margin: auto;
@@ -71,34 +71,20 @@
             border-bottom: solid 0.5mm;
         }
 
-        .receipt-number {
-            display: inline-block;
-            width: 25%;
-            padding-left: 5%;
-        }
-
-        .patient-info {
-            display: inline-block;
-            width: 60%;
-            border-left: solid 0.5mm;
-            padding-left: 5%;
-        }
-
-        .insurance-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         table,
         th,
         td {
-            border: solid 0.5mm;
+            border: solid 0.2mm;
             border-collapse: collapse;
         }
 
+        th {
+            font-size: 12px;
+            text-align: center;
+        }
+
         tr {
-            line-height: 22px;
+            line-height: 26px;
         }
 
         .order-number {
@@ -120,6 +106,10 @@
             margin-right: 32px
         }
 
+        .text-sm {
+            font-size: 12px;
+        }
+
         .text-2xl {
             font-size: 24px;
             line-height: 32px;
@@ -134,103 +124,73 @@
 
 <body>
 
-<div class="header">
-    <div class="header-top">
-        <div class="header-top-right">
-            <span>POLYCLINIQUE INTERNATIONALE SAINT-JOSEPH</span>
-            <span class="text-center">Tél: (228) 22 26 94 42 / (228) 22 26 72 32</span>
-        </div>
-        <span class="text-left mr-8">Date and Time</span>
-    </div>
-
-
-    <div class="header-bottom">
-        <span class="text-2xl font-bold">Reçu de caisse</span>
-        <span class="mr-8" style="margin-left: auto;">Caissière</span>
-    </div>
+<div class="text-center">
+    <h3><u>FICHE RECAPITULATIVE DES RECETTES DU JOUR</u></h3>
 </div>
 
 <div class="content">
-    <div class="content-top">
-        <div class="receipt-number">
-            <p>Reçu N°</p>
-            <p th:text="${reference}">-</p>
-        </div>
-        <div class="patient-info">
-            <p>Patient(e): <b th:text="${patient.nom}">-</b></p>
-            <p>Sexe: <b th:text="${patient.sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
-        </div>
-    </div>
+    <table style="width: 100%;">
+        <tbody>
+        <tr style="background: #fff; border: solid white !important;">
+            <td style="width: 50%; text-align: start; border: solid white !important;">Date du jour: <b th:text="${date_jour}">01/07/2023</b></td>
+            <td style="width: 50%; right: 0; text-align: right; border: solid white !important;">Rendu par: SE</td>
+        </tr>
+        </tbody>
+    </table>
 
-    <div class="insurance-info py-2">
-        <span>ASSUREUR: <b th:text="${patient.assurance.nom}">LUI-MÊME</b></span>
-        <span>Taux de PEC: <b th:text="${patient.taux_assurance}">0</b>%</span>
-    </div>
-
-    <div class="activities">
-        <table class="activities-table" style="width: 100%;">
+    <div>
+        <table style="width: 100%;">
             <thead>
-            <tr style="background: #eee;">
-                <th style="width: 70%; text-align: start;">ACTIVITES</th>
-                <th style="width: 10%; ">QTE</th>
-                <th style="width: 20%; text-align: center;">Montants(CFA)</th>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <tr>
+                <td rowspan="2" style="border-left: solid 1px white !important; border-top: solid 1px white"></td>
+                <th colspan="2" scope="colgroup">LIQUIDITES</th>
+                <th colspan="2" scope="colgroup">CHEQUES</th>
+                <th colspan="2" scope="colgroup">VISAS</th>
+                <th colspan="2" scope="colgroup">PRISE EN CHARGE</th>
+                <th rowspan="2">TOTAL PAR SECTEUR</th>
+            </tr>
+            <tr>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td colspan="3"><em><u th:text="${groupe}">-</u></em></td>
-            </tr>
-            <tr th:each="tarif: ${tarifs}" >
-                <td th:text="${tarif.tarif.libelle}" style="width: 70%;" />
-                <td th:text="${tarif.quantite}" style="width: 10%; text-align: end;" />
-                <td th:text="${tarif.total_price_gros}" style="width: 20%; text-align: end;" />
-            </tr>
-
-            </tbody>
-        </table>
-
-        <div class="order-number">
-            <h1 th:text="${groupe+' '+attente}">
-                ANALYSE 7
-            </h1>
-        </div>
-
-        <table class="payment-table" style="width: 50%;">
-            <tbody>
-            <tr>
-                <td>Montant total :</td>
-                <td style="width: 40%; text-align: end;" th:text="${total}">0</td>
+            <tr th:each="recap: ${recaps}">
+                <th scope="row" th:text="${recap.acte}" style="width: 130px; font-size: 16px; font-weight: bold; text-align: left;">Consultation</th>
+                <td th:text="${recap.nb_especes}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_especes, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_cheque}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_cheque, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_visa}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_pec}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 100px; text-align: right !important; padding-right: 3px;">0</td>
             </tr>
             <tr>
-                <td>Montant PEC :</td>
-                <td style="width: 40%; text-align: end;" th:text="${montant_pec}">0</td>
-            </tr>
-            <tr>
-                <td>Urgence/Major :</td>
-                <td style="width: 40%; text-align: end;" th:text="${majoration}">0</td>
-            </tr>
-            <tr>
-                <td>Réduction :</td>
-                <td style="width: 40%; text-align: end;" th:text="${reduction}">0</td>
-            </tr>
-            <tr>
-                <td>Montant à payer :</td>
-                <td style="width: 40%; text-align: end;" th:text="${a_payer}">0</td>
-            </tr>
-            <tr>
-                <td>Montant versé :</td>
-                <td style="width: 40%; text-align: end;" th:text="${verse}">0</td>
-            </tr>
-            <tr>
-                <td>Reliquat :</td>
-                <td style="width: 40%; text-align: end;" th:text="${reliquat}">0</td>
+                <th scope="row">TOTAL</th>
+                <td th:text="${total_nb_especes}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_especes, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_cheque}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_cheque, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_visa}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_pec}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
             </tr>
             </tbody>
         </table>
-    </div>
-
-    <div class="payment-info">
-
     </div>
 </div>
 </body>

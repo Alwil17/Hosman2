@@ -20,10 +20,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Component
@@ -195,12 +192,29 @@ public class DatabaseSeeder {
         String sql = "SELECT c.nom FROM pays c";
         List<Pays> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
-            PaysRequest ar1 = PaysRequest.builder().code("TG").indicatif(228).nationalite("Togolaise").nom("TOGO").build();
-            PaysRequest ar2 = PaysRequest.builder().code("BN").indicatif(229).nationalite("Béninoise").nom("BENIN").build();
-            PaysRequest ar3 = PaysRequest.builder().code("GH").indicatif(233).nationalite("Ghanéenne").nom("GHANA").build();
+//            PaysRequest ar1 = PaysRequest.builder().code("TG").indicatif(228).nationalite("Togolaise").nom("TOGO").build();
+//            PaysRequest ar2 = PaysRequest.builder().code("BN").indicatif(229).nationalite("Béninoise").nom("BENIN").build();
+//            PaysRequest ar3 = PaysRequest.builder().code("GH").indicatif(233).nationalite("Ghanéenne").nom("GHANA").build();
+//            paysService.addPays(Arrays.asList(ar1, ar2, ar3));
+            List<PaysRequest> paysRequests = new ArrayList<PaysRequest>();
+            InputStream in = getClass().getResourceAsStream("/com/dopediatrie/hosman/secretariat/pays.csv");
 
+            assert in != null;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 
-            paysService.addPays(Arrays.asList(ar1, ar2, ar3));
+            Stream<String> lines = bufferedReader.lines();
+            lines.forEach(s -> {
+                String[] cols = s.split(";");
+                PaysRequest sar = PaysRequest.builder()
+                        .nom(cols[0].toUpperCase(Locale.FRANCE))
+                        .code(cols[2])
+                        .indicatif(cols[3])
+                        .nationalite(cols[1])
+                        .build();
+                paysRequests.add(sar);
+            });
+
+            paysService.addPays(paysRequests);
 
             log.info("Pays table seeded");
         }else {

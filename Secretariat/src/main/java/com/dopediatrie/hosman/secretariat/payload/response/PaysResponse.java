@@ -15,5 +15,5 @@ public class PaysResponse {
     private String slug;
     private String nationalite;
     private String code;
-    private int indicatif;
+    private String indicatif;
 }

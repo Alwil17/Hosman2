@@ -34,11 +34,17 @@ public class CaisseServiceImpl implements CaisseService {
 
         Caisse caisse;
 
-        if(caisseRepository.existsByLibelle(libelle) == null || !caisseRepository.existsByLibelle(libelle)){
+        if(caisseRepository.existsByOuvert(true) == null || !caisseRepository.existsByOuvert(true)){
+            caisse = addCaisse(0);
+        }else {
+            caisse = caisseRepository.findByOuvert(true).get();
+        }
+
+        /*if(caisseRepository.existsByLibelle(libelle) == null || !caisseRepository.existsByLibelle(libelle)){
             caisse = addCaisse(0);
         }else {
             caisse = caisseRepository.findByLibelle(libelle).get();
-        }
+        }*/
 
         CaisseResponse caisseResponse = new CaisseResponse();
         copyProperties(caisse, caisseResponse);

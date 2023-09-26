@@ -97,7 +97,7 @@ public class FactureController {
         }else{
             groupe = prestation.getSecteur().getLibelle();
         }
-long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
+        long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
         double verse = 0;
         List<FactureMode> fms = factureModeRepository.findByFacture_Id(factureId);
         for (FactureMode fm: fms

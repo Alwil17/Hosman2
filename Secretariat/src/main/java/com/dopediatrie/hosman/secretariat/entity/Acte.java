@@ -21,6 +21,7 @@ public class Acte {
     private String libelle;
     private String slug;
     private String code;
+    private int position = 0;
     private long structure_id;
     @ManyToOne
     @JoinColumn(name = "groupe_id")

@@ -22,7 +22,7 @@ public class Pays {
     private String slug;
     private String nationalite;
     private String code;
-    private int indicatif;
+    private String indicatif;
     @OneToMany(mappedBy = "pays_origine")
     @JsonIgnore
     private List<Patient> patients_originaires;

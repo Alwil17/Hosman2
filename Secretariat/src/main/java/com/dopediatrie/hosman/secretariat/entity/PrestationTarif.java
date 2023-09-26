@@ -27,3 +27,4 @@ public class PrestationTarif {
     private int quantite;
     private double total_price_gros;
 }
+
