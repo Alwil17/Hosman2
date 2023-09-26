@@ -10,6 +10,9 @@ export class SimpleModalComponent implements OnInit {
   @Input()
   title = "";
 
+  @Input()
+  closeButtonText = "Annuler et Fermer";
+
   constructor(public modal: NgbActiveModal) {}
 
   ngOnInit(): void {}
