@@ -133,6 +133,18 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public List<Patient> getPatientByDateNaissance(LocalDateTime dateNaissance, LocalDateTime dateNaissanceLimit) {
+        log.info("PatientServiceImpl | getPatientByDateNaissance is called");
+        return patientRepository.findAllByDate_naissance(dateNaissance, dateNaissanceLimit);
+    }
+
+    @Override
+    public List<Patient> getPatientByDateEntree(LocalDateTime dateEntree, LocalDateTime dateEntreeLimit) {
+        log.info("PatientServiceImpl | getPatientByDateEntree is called");
+        return patientRepository.findAllByDate_ajout(dateEntree, dateEntreeLimit);
+    }
+
+    @Override
     public void editPatient(PatientRequest patientRequest, long patientId) {
         log.info("PatientServiceImpl | editPatient is called");
 
@@ -177,4 +189,6 @@ public class PatientServiceImpl implements PatientService {
         log.info("Deleting Patient with id: {}", patientId);
         patientRepository.deleteById(patientId);
     }
+
+
 }

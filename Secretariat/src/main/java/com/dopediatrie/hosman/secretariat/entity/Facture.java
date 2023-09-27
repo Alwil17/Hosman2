@@ -52,4 +52,17 @@ public class Facture {
             joinColumns = @JoinColumn(name = "facture_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "mode_payement_id", referencedColumnName = "id"))
     private List<ModePayement> mode_payements;
+
+    @Override
+    public String toString() {
+        return "Facture{" +
+                "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", total=" + total +
+                ", montant_pec=" + montant_pec +
+                ", a_payer=" + a_payer +
+                ", date_facture=" + date_facture +
+                ", date_reglement=" + date_reglement +
+                '}';
+    }
 }

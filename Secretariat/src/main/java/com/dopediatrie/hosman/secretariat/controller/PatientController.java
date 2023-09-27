@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class PatientController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Patient>> getPatientBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "prenoms", required = false) String prenoms, @RequestParam(value = "reference", required = false) String reference) {
+    public ResponseEntity<List<Patient>> getPatientBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "prenoms", required = false) String prenoms, @RequestParam(value = "reference", required = false) String reference, @RequestParam(value = "naissance", required = false) String dateNaiss, @RequestParam(value = "entree", required = false) String dateEntr) {
 
         log.info("PatientController | getPatientBySearch is called");
         List<Patient> patientResponse = Collections.emptyList();
@@ -63,6 +64,20 @@ public class PatientController {
             patientResponse = patientService.getPatientByPrenoms(prenoms);
         if(reference != null && !reference.isBlank())
             patientResponse = patientService.getPatientByReference(reference);
+        if(dateNaiss != null){
+            String dN = dateNaiss+"T00:00:00";
+            String dNF = dateNaiss+"T23:59:59";
+            LocalDateTime dateNaissance = LocalDateTime.parse(dN);
+            LocalDateTime dateNaissanceLimit = LocalDateTime.parse(dNF);
+            patientResponse = patientService.getPatientByDateNaissance(dateNaissance, dateNaissanceLimit);
+        }
+        if(dateEntr != null){
+            String dE = dateEntr+"T00:00:00";
+            String dEF = dateEntr+"T23:59:59";
+            LocalDateTime dateEntree = LocalDateTime.parse(dE);
+            LocalDateTime dateEntreeLimit = LocalDateTime.parse(dEF);
+            patientResponse = patientService.getPatientByDateEntree(dateEntree, dateEntreeLimit);
+        }
 
         return new ResponseEntity<>(patientResponse, HttpStatus.OK);
     }

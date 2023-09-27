@@ -29,7 +29,9 @@ import java.net.MalformedURLException;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -75,6 +77,27 @@ public class FactureController {
         FactureResponse factureResponse
                 = factureService.getFactureById(factureId);
         return new ResponseEntity<>(factureResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Facture>> getFactureBySearch(@RequestParam(value = "datemin") String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "code", required = false) String code) {
+        log.info("FactureController | getFactureBySearch is called");
+        List<Facture> factures = Collections.emptyList();
+        String dD = datemin+"T00:00:00";
+        String dF;
+        if(datemax == null){
+            dF = datemin + "T23:59:59";
+        }else{
+            dF = datemax + "T23:59:59";
+        }
+        LocalDateTime dateDebut = LocalDateTime.parse(dD);
+        LocalDateTime dateFin = LocalDateTime.parse(dF);
+        if(code != null && !code.isBlank()){
+            factures = factureService.getFactureByDateMinAndMaxAndCode(dateDebut, dateFin, code);
+        }else{
+            factures = factureService.getFactureByDateMinAndMax(dateDebut, dateFin);
+        }
+        return new ResponseEntity<>(factures, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/show")

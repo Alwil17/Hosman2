@@ -4,6 +4,7 @@ import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PatientService {
@@ -22,4 +23,8 @@ public interface PatientService {
     void editPatient(PatientRequest patientRequest, long patientId);
 
     public void deletePatientById(long patientId);
+
+    List<Patient> getPatientByDateNaissance(LocalDateTime dateNaissance, LocalDateTime dateNaissanceLimit);
+
+    List<Patient> getPatientByDateEntree(LocalDateTime dateEntree, LocalDateTime dateEntreeLimit);
 }
