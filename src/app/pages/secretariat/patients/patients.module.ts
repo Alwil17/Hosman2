@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule, DatePipe } from "@angular/common";
 import { PatientsRoutingModule } from "./patients-routing.module";
-import { PatientCreateComponent } from "./patient-create/patient-create.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { PatientFormComponent } from "./patient-form/patient-form.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -10,6 +9,7 @@ import { ArchwizardModule } from "angular-archwizard";
 import { PatientActivityComponent } from "./patient-activity/patient-activity.component";
 import {
   NgbAccordionModule,
+  NgbActiveModal,
   NgbDropdownModule,
   NgbNavModule,
   NgbPaginationModule,
@@ -19,23 +19,24 @@ import { PatientListComponent } from "./patient-list/patient-list.component";
 import { NgxMaskModule } from "ngx-mask";
 import { PatientInvoiceFormComponent } from "./patient-invoice-form/patient-invoice-form.component";
 import { PatientWaitingListComponent } from "./patient-waiting-list/patient-waiting-list.component";
-import { PersonToContactFormComponent } from "./patient-form-two/person-to-contact-form/person-to-contact-form.component";
-import { PatientFormTwoComponent } from "./patient-form-two/patient-form-two.component";
-import { PatientAddressFormComponent } from "./patient-form-two/patient-address-form/patient-address-form.component";
+import { PersonToContactFormComponent } from "./patient-form/person-to-contact-form/person-to-contact-form.component";
+import { PatientAddressFormComponent } from "./patient-form/patient-address-form/patient-address-form.component";
 import { DebtsComponent } from "./debts/debts.component";
+import { PatientCreatePageComponent } from "./patient-create-page/patient-create-page.component";
+import { PatientFormModalComponent } from "./patient-form-modal/patient-form-modal.component";
 
 @NgModule({
   declarations: [
-    PatientCreateComponent,
     PatientFormComponent,
     PatientActivityComponent,
     PatientListComponent,
     PatientInvoiceFormComponent,
     PatientWaitingListComponent,
     PersonToContactFormComponent,
-    PatientFormTwoComponent,
     PatientAddressFormComponent,
     DebtsComponent,
+    PatientCreatePageComponent,
+    PatientFormModalComponent,
   ],
   imports: [
     CommonModule,

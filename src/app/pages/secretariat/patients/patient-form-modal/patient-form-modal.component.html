@@ -1,0 +1,7 @@
+<app-simple-modal [title]="title">
+  <app-patient-form
+    [patientInfos]="patientInfos"
+    (isPatientModified)="onPatientModification($event)"
+  >
+  </app-patient-form>
+</app-simple-modal>

@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-patient-create",
-  templateUrl: "./patient-create.component.html",
-  styleUrls: ["./patient-create.component.scss"],
+  selector: "app-patient-create-page",
+  templateUrl: "./patient-create-page.component.html",
+  styleUrls: ["./patient-create-page.component.scss"],
 })
-export class PatientCreateComponent implements OnInit {
+export class PatientCreatePageComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 

@@ -5,16 +5,20 @@ import { Router } from "@angular/router";
   providedIn: "root",
 })
 export class SecretariatRouterService {
-  private routesPath = {
-    patientList: "/secretariat/patients/patient-list",
-    patientNew: "/secretariat/patients/patient-new",
-    patientActivity: "/secretariat/patients/patient-activity",
-    patientDebts: "/secretariat/patients/patient-debts",
-    patientRests: "/secretariat/patients/patient-rests",
-    patientWaitingList: "/secretariat/patients/patient-waiting-list",
+  private secretariatPath = "/secretariat";
 
-    expenses: "/secretariat/expenses",
-    collections: "/secretariat/collections",
+  private patientsPath = this.secretariatPath + "/patients";
+
+  private routesPath = {
+    patientList: this.patientsPath + "/patient-list",
+    patientCreate: this.patientsPath + "/patient-create",
+    patientActivity: this.patientsPath + "/patient-activity",
+    patientDebts: this.patientsPath + "/patient-debts",
+    patientRests: this.patientsPath + "/patient-rests",
+    patientWaitingList: this.patientsPath + "/patient-waiting-list",
+
+    expenses: this.secretariatPath + "/expenses",
+    collections: this.secretariatPath + "/collections",
   };
 
   constructor(private router: Router) {}
@@ -24,7 +28,7 @@ export class SecretariatRouterService {
   }
 
   async navigateToPatientNew() {
-    await this.router.navigateByUrl(this.routesPath.patientNew);
+    await this.router.navigateByUrl(this.routesPath.patientCreate);
   }
 
   async navigateToPatientActivity() {

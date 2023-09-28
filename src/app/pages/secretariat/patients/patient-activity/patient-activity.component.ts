@@ -1,4 +1,11 @@
-import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  QueryList,
+  TemplateRef,
+  ViewChild,
+  ViewChildren,
+} from "@angular/core";
 import { IActivity, IPrestation, IPrestationSelect } from "./activity.models";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
@@ -41,6 +48,10 @@ import { WarningMessages } from "src/app/helpers/messages";
 import { PrestationService } from "src/app/services/secretariat/patients/prestation.service";
 import { PrestationRequest } from "src/app/models/secretariat/patients/requests/prestation-request.model";
 import { DoctorRequest } from "src/app/models/secretariat/shared/requests/doctor-request.model";
+import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-modal.component";
+import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
+import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
+import { PatientFormModalComponent } from "../patient-form-modal/patient-form-modal.component";
 
 @Component({
   selector: "app-patient-activity",
@@ -124,7 +135,8 @@ export class PatientActivityComponent implements OnInit {
     private toastService: ToastService,
     private actGroupService: ActGroupService,
     private tariffService: TariffService,
-    private prestationService: PrestationService
+    private prestationService: PrestationService,
+    private checkoutService: CheckoutService
   ) {
     this.selectedPatient = patientService.getActivePatient();
 
@@ -635,7 +647,7 @@ export class PatientActivityComponent implements OnInit {
           type: this.doctorTypeControl.value.text,
         });
       }
-      
+
       console.log("HERE");
     }
 
@@ -671,7 +683,14 @@ export class PatientActivityComponent implements OnInit {
         invoiceModalRef.componentInstance.patientActivities = this.table2;
         invoiceModalRef.componentInstance.preInvoiceInfos = data;
       },
-      error: (e) => {},
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
     });
 
     // const prestation = new Prestation(
@@ -697,4 +716,63 @@ export class PatientActivityComponent implements OnInit {
     //     : ""
     // );
   }
+
+  openPatientModificationModal() {
+    const patientModifyModalRef = this.modalService.open(
+      PatientFormModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        // scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
+
+    patientModifyModalRef.componentInstance.title =
+      "Modifier les informations du patient";
+    patientModifyModalRef.componentInstance.patientInfos = this.selectedPatient;
+
+    patientModifyModalRef.componentInstance.isPatientModified.subscribe(
+      (isPatientModified: boolean) => {
+        console.log("Patient modified : " + isPatientModified);
+
+        this.selectedPatient = this.patientService.getActivePatient();
+
+        if (isPatientModified) {
+          patientModifyModalRef.close();
+        }
+      }
+    );
+  }
+
+  // displayReport() {
+  //   this.checkoutService.loadPdf().subscribe({
+  //     next: (data) => {
+  //       this.toastService.show({
+  //         messages: ["Génération de la fiche de compte."],
+  //         type: ToastType.Success,
+  //       });
+
+  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
+  //         size: "xl",
+  //         centered: true,
+  //         scrollable: true,
+  //         backdrop: "static",
+  //       });
+
+  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
+  //       pdfModalRef.componentInstance.pdfSrc = data;
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+
+  //       this.toastService.show({
+  //         messages: ["Echec de la génération de la fiche de comptes."],
+  //         delay: 10000,
+  //         type: ToastType.Error,
+  //       });
+  //     },
+  //   });
+  // }
 }

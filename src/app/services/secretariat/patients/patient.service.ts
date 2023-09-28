@@ -101,13 +101,35 @@ export class PatientService {
       );
   }
 
-  registerPatient(patientRequest: PatientRequest): Observable<any> {
-    return this.http.post<any>(apiEndpoint, patientRequest);
+  create(data: PatientRequest): Observable<any> {
+    return this.http.post<any>(apiEndpoint, data);
   }
 
-  getPatient(patientId: number) {
-    return this.allPatients.find((value) => value.id == patientId);
+  getAll(): Observable<Patient[]> {
+    return this.http.get<PatientResponse[]>(apiEndpoint).pipe(
+      map((patients) => {
+        const mapped: Patient[] = patients.map((patient) =>
+          Patient.fromResponse(patient)
+        );
+
+        return mapped;
+      })
+    );
   }
+
+  get(id: any): Observable<Patient> {
+    return this.http
+      .get<PatientResponse>(`${apiEndpoint}/${id}`)
+      .pipe(map((patient) => Patient.fromResponse(patient)));
+  }
+
+  update(id: any, data: PatientRequest): Observable<any> {
+    return this.http.put(`${apiEndpoint}/${id}`, data);
+  }
+
+  // getPatient(patientId: number) {
+  //   return this.allPatients.find((value) => value.id == patientId);
+  // }
 
   getActivePatient() {
     return new Patient(this.activePatient);
@@ -130,30 +152,4 @@ export class PatientService {
   getActivePatientRate() {
     return this.activePatient?.taux_assurance ?? 0;
   }
-
-  getAll(): Observable<Patient[]> {
-    return this.http.get<PatientResponse[]>(apiEndpoint).pipe(
-      map((patients) => {
-        const mapped: Patient[] = patients.map((patient) =>
-          Patient.fromResponse(patient)
-        );
-
-        return mapped;
-      })
-    );
-  }
-
-  get(id: any): Observable<Patient> {
-    return this.http
-      .get<PatientResponse>(`${apiEndpoint}/${id}`)
-      .pipe(map((patient) => Patient.fromResponse(patient)));
-  }
-
-  // create(data: any): Observable<any> {
-  //   return this.http.post(apiEndpoint, data);
-  // }
-
-  // update(id: any, data: any): Observable<any> {
-  //   return this.http.put(`${apiEndpoint}/${id}`, data);
-  // }
 }

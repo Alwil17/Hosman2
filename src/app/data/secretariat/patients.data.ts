@@ -10,12 +10,12 @@ import { PatientInsurance } from "src/app/models/secretariat/patients/patient-in
 
 const PATIENTS: Patient[] = [
   new Patient({
-    id: 1,
+    id: 403,
     reference: "PAT1",
     nom: "CATASTROPHE",
     prenoms: "Climatique",
     date_naissance: new Date("1999-07-24"),
-    sexe: "Masculin",
+    sexe: "F",
     lieu_naissance: "Lomé - Golfe",
     is_assure: 0,
     tel1: "99686933",

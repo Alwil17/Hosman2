@@ -26,6 +26,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 import { PdfModalComponent } from "./modals/pdf-modal/pdf-modal.component";
 import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
 import { ToastsContainerComponent } from "./toasts-container/toasts-container.component";
+import { CardComponent } from "./card/card.component";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -42,6 +43,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PdfModalComponent,
     PdfViewerComponent,
     ToastsContainerComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +64,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SelectComponent,
     ToastsContainerComponent,
     SimpleModalComponent,
+    CardComponent,
   ],
   providers: [TitleCasePipe],
 })

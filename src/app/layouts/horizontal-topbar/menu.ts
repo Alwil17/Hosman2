@@ -9,7 +9,7 @@ export const MENU: MenuItem[] = [
   {
     id: 2,
     label: "MENUITEMS.PATIENTS.LIST.PATIENT_NEW",
-    link: "/secretariat/patients/patient-new",
+    link: "/secretariat/patients/patient-create",
     icon: "ri-user-add-fill",
   },
   {
