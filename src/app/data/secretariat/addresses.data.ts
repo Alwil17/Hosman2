@@ -3,7 +3,7 @@ import { CITIES } from "./cities.data";
 import { NEIGHBORHOODS } from "./neighborhoods.data";
 
 const ADDRESSES: Address[] = [
-  {
+  new Address({
     id: 1,
     ville: CITIES[0],
     quartier: NEIGHBORHOODS[0],
@@ -11,7 +11,7 @@ const ADDRESSES: Address[] = [
     bp: "01BP01",
     arrondissement: "5ème",
     no_maison: "1234",
-  },
+  }),
 ];
 
 export { ADDRESSES };

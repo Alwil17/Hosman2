@@ -43,6 +43,22 @@ export class Address {
     });
   }
 
+  toText() {
+    return (
+      this.ville.nom +
+      ", " +
+      this.quartier.nom +
+      ", " +
+      (this.rue ?? "--- ") +
+      ", " +
+      (this.bp ?? "--- ") +
+      ", " +
+      (this.arrondissement ?? "--- ") +
+      ", " +
+      (this.no_maison ? "Maison n° " + this.no_maison : "--- ")
+    );
+  }
+
   // constructor(
   //   id: number,
   //   ville: City,
