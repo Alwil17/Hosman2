@@ -5,7 +5,7 @@ export interface ICountry {
   nom: string;
   nationalite: string;
   code?: string;
-  indicatif?: number;
+  indicatif?: string;
 }
 
 export class Country {
@@ -13,7 +13,7 @@ export class Country {
   nom: string;
   nationalite: string;
   code?: string;
-  indicatif?: number;
+  indicatif?: string;
 
   constructor(iCountry: ICountry) {
     this.id = iCountry.id;

@@ -2,14 +2,14 @@ export class CountryRequest {
   nom: string;
   nationalite: string;
   code?: string;
-  indicatif?: number;
+  indicatif?: string;
   id?: number;
 
   constructor(
     nom: string,
     nationalite: string,
     code?: string,
-    indicatif?: number,
+    indicatif?: string,
     id?: number
   ) {
     this.nom = nom;
