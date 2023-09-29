@@ -23,7 +23,6 @@
 
 
             margin: auto;
-            margin-top: 15mm;
 
             padding: 2%;
             border: solid 1mm;
@@ -178,7 +177,7 @@
                 <td th:text="${#numbers.formatDecimal(recap.montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 100px; text-align: right !important; padding-right: 3px;">0</td>
             </tr>
             <tr>
-                <th scope="row">TOTAL</th>
+                <th scope="row" style="width: 130px; font-size: 16px; font-weight: bold; text-align: left;">TOTAUX</th>
                 <td th:text="${total_nb_especes}" style="text-align: center !important;">0</td>
                 <td th:text="${#numbers.formatDecimal(total_total_especes, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
                 <td th:text="${total_nb_cheque}" style="text-align: center !important;">0</td>

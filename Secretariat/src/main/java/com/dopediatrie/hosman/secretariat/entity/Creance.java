@@ -20,6 +20,7 @@ public class Creance {
     private long id;
     private double montant;
     private LocalDateTime date_operation;
+    private LocalDateTime date_reglement;
     @OneToOne(mappedBy = "creance")
     @JsonIgnore
     private Facture facture;

@@ -21,6 +21,7 @@ public class Reliquat {
     private long id;
     private double montant;
     private LocalDateTime date_operation;
+    private LocalDateTime date_retrait;
     @OneToOne(mappedBy = "reliquat")
     @JsonIgnore
     private Facture facture;

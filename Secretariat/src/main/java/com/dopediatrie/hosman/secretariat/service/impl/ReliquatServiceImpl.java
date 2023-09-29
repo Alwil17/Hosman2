@@ -81,6 +81,7 @@ public class ReliquatServiceImpl implements ReliquatService {
         reliquat.setMontant(reliquatRequest.getMontant());
         reliquat.setEtat(etatRepository.findById(reliquatRequest.getEtat_id()).get());
         reliquat.setDate_operation(reliquatRequest.getDate_operation());
+        reliquat.setDate_retrait(reliquatRequest.getDate_retrait());
         reliquatRepository.save(reliquat);
 
         log.info("ReliquatServiceImpl | editReliquat | Reliquat Updated");

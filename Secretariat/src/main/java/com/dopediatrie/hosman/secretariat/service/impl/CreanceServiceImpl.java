@@ -81,6 +81,7 @@ public class CreanceServiceImpl implements CreanceService {
         creance.setMontant(creanceRequest.getMontant());
         creance.setEtat(etatRepository.findById(creanceRequest.getEtat_id()).get());
         creance.setDate_operation(creanceRequest.getDate_operation());
+        creance.setDate_reglement(creanceRequest.getDate_reglement());
         creanceRepository.save(creance);
 
         log.info("CreanceServiceImpl | editCreance | Creance Updated");

@@ -12,4 +12,5 @@ public class CreanceRequest {
     private long etat_id;
     private long patient_id;
     private LocalDateTime date_operation;
+    private LocalDateTime date_reglement;
 }

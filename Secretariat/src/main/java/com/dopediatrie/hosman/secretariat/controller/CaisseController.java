@@ -1,10 +1,7 @@
 package com.dopediatrie.hosman.secretariat.controller;
 
-import com.dopediatrie.hosman.secretariat.entity.Caisse;
-import com.dopediatrie.hosman.secretariat.entity.FicheRecap;
-import com.dopediatrie.hosman.secretariat.payload.request.NameRequest;
+import com.dopediatrie.hosman.secretariat.entity.*;
 import com.dopediatrie.hosman.secretariat.payload.response.CaisseResponse;
-import com.dopediatrie.hosman.secretariat.repository.CaisseRepository;
 import com.dopediatrie.hosman.secretariat.service.CaisseService;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +21,10 @@ import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.FileSystems;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/caisse")
@@ -39,7 +32,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class CaisseController {
 
-    private final CaisseRepository caisseRepository;
     private final CaisseService caisseService;
 
     @Autowired
@@ -59,11 +51,14 @@ public class CaisseController {
         log.info("CaisseController | getDailyReport is called");
         CaisseResponse caisse = caisseService.getCurrentCaisse();
         String datemin = caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String datemax = "";
+        String datemax;
+        String datejour;
         if(caisse.getDate_fermeture() == null){
             datemax = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            datejour = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }else{
             datemax = caisse.getDate_fermeture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            datejour = caisse.getDate_fermeture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
 
         String sql = "select a.libelle as acte, b.* \n" +
@@ -98,7 +93,7 @@ public class CaisseController {
                 "  JOIN mode_payement m ON fm.mode_payement_id = m.id \n" +
                 "WHERE \n" +
                 "  f.date_facture >= '"+ datemin +"' \n" +
-                "  and f.date_facture < '"+ datemax +"' \n" +
+                "  and f.date_facture <= '"+ datemax +"' \n" +
                 "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";
         List<FicheRecap> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> new FicheRecap(
                 resultSet.getString("acte"),
@@ -112,6 +107,91 @@ public class CaisseController {
                 0,
                 resultSet.getDouble("montant_total")
         ));
+        String creancesql = "select * from creance join etat e on creance.etat_id = e.id " +
+                "where e.slug = 'payee' " +
+                "and creance.date_reglement >= '"+ datemin +"' " +
+                "and creance.date_reglement <= '"+ datemax +"'";
+        /*List<Creance> creances = jdbcTemplate.query(sql, (resultSet, rowNum) -> new Creance(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getDate("date_operation"),
+                resultSet.getDate("date_reglement"),
+                resultSet.getLong("etat_id"),
+                resultSet.getLong("patient_id")
+        ));*/
+        FicheRecap creance = new FicheRecap("Règlement de Créance",
+                0, 0, 0, 0, 0, 0, 0, 0, 0);
+        List<Creance> creances = jdbcTemplate.query(creancesql, (resultSet, rowNum) -> null);
+        if(creances != null && creances.size() > 0){
+            for (Creance c : creances) {
+                creance.setNb_especes(creance.getNb_especes()+1);
+                creance.setTotal_especes(creance.getTotal_especes() + c.getMontant());
+                creance.setMontant_total(creance.getTotal_especes() + c.getMontant());
+            }
+        }
+        rs.add(creance);
+
+        String majorationsql = "select * from majoration " +
+                "where date_operation >= '"+ datemin +"' " +
+                "and date_operation <= '"+ datemax +"'";
+        FicheRecap majoration = new FicheRecap("Majoration",
+                0, 0, 0, 0, 0, 0, 0, 0, 0);
+        List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> null);
+        if(majorations != null && majorations.size() > 0){
+            for (Majoration c : majorations) {
+                majoration.setNb_especes(majoration.getNb_especes()+1);
+                majoration.setTotal_especes(majoration.getTotal_especes() + c.getMontant());
+                majoration.setMontant_total(majoration.getTotal_especes() + c.getMontant());
+            }
+        }
+        rs.add(majoration);
+
+        String encaissementsql = "select 'HP Comptabilité' as acte,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'especes' THEN 1 ELSE 0 END\n" +
+                ") AS nb_especes,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'especes' THEN em.montant ELSE 0 END\n" +
+                ") AS total_especes,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'cheque' THEN 1 ELSE 0 END\n" +
+                ") AS nb_cheque,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'cheque' THEN em.montant ELSE 0 END\n" +
+                ") AS total_cheque,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'visa' THEN 1 ELSE 0 END\n" +
+                ") AS nb_visa,\n" +
+                "SUM(\n" +
+                "    CASE WHEN m.slug = 'visa' THEN em.montant ELSE 0 END\n" +
+                ") AS total_visa, \n" +
+                "SUM(em.montant) AS montant_total \n" +
+                "from encaissement e\n" +
+                "join mode_encaissement em on em.encaissement_id = e.id \n" +
+                "join mode_payement m on em.mode_payement_id = m.id \n" +
+                "where e.date_encaissement >= '"+ datemin +"' \n" +
+                "and e.date_encaissement <= '"+ datemax +"' \n" +
+                "and e.provenance = 'compta'";
+
+        List<FicheRecap> encaissements = jdbcTemplate.query(encaissementsql, (resultSet, rowNum) -> new FicheRecap(
+                resultSet.getString("acte"),
+                resultSet.getInt("nb_especes"),
+                resultSet.getDouble("total_especes"),
+                resultSet.getInt("nb_cheque"),
+                resultSet.getDouble("total_cheque"),
+                resultSet.getInt("nb_visa"),
+                resultSet.getDouble("total_visa"),
+                0,
+                0,
+                resultSet.getDouble("montant_total")
+        ));
+        if(encaissements != null && encaissements.size() > 0){
+            rs.addAll(encaissements);
+        }
+        FicheRecap hpsecretariat = new FicheRecap("HP Secretariat",
+                0, 0, 0, 0, 0, 0, 0, 0, 0);
+        rs.add(hpsecretariat);
+
         int total_nb_especes = 0;
         int total_total_especes = 0;
         int total_nb_cheque = 0;
@@ -133,8 +213,9 @@ public class CaisseController {
             total_montant_total += ficheRecap.getMontant_total();
         }
 
+
         Context context = new Context();
-        context.setVariable("date_heure", caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        context.setVariable("date_jour", datejour);
         context.setVariable("recaps", rs);
         context.setVariable("total_nb_especes", total_nb_especes);
         context.setVariable("total_total_especes", total_total_especes);

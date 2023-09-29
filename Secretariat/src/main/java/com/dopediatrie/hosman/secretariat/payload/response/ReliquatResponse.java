@@ -18,4 +18,5 @@ public class ReliquatResponse {
     private double montant;
     private Etat etat;
     private LocalDateTime date_operation;
+    private LocalDateTime date_retrait;
 }
