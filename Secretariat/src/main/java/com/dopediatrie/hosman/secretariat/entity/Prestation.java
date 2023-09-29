@@ -21,7 +21,6 @@ public class Prestation {
     private long id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    @JsonIgnore
     private Patient patient;
     private String provenance;
     @ManyToOne
