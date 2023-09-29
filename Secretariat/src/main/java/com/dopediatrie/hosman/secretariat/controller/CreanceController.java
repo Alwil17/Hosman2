@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -48,6 +51,30 @@ public class CreanceController {
         CreanceResponse creanceResponse
                 = creanceService.getCreanceById(creanceId);
         return new ResponseEntity<>(creanceResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Creance>> getCreanceBySearch(@RequestParam(value = "datemin") String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "reference", required = false) String reference) {
+        log.info("CreanceController | getCreanceBySearch is called");
+        List<Creance> creances = Collections.emptyList();
+        String dD = datemin+"T00:00:00";
+        String dF;
+        if(datemax == null){
+            dF = datemin + "T23:59:59";
+        }else{
+            dF = datemax + "T23:59:59";
+        }
+        LocalDateTime dateDebut = LocalDateTime.parse(dD);
+        LocalDateTime dateFin = LocalDateTime.parse(dF);
+        if(nom != null && !nom.isBlank())
+            creances = creanceService.getCreanceByDateMinAndMaxAndNom(dateDebut, dateFin, nom);
+        if(reference != null && !reference.isBlank())
+            creances = creanceService.getCreanceByDateMinAndMaxAndReference(dateDebut, dateFin, reference);
+        if((nom == null || (nom != null && nom.isBlank())) && (reference == null || (reference != null && reference.isBlank()))){
+            creances = creanceService.getCreanceByDateMinAndMax(dateDebut, dateFin);
+        }
+
+        return new ResponseEntity<>(creances, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

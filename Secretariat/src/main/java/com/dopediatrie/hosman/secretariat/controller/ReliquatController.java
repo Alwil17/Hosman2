@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -48,6 +51,29 @@ public class ReliquatController {
         ReliquatResponse reliquatResponse
                 = reliquatService.getReliquatById(reliquatId);
         return new ResponseEntity<>(reliquatResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Reliquat>> getReliquatBySearch(@RequestParam(value = "datemin") String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "reference", required = false) String reference) {
+        log.info("ReliquatController | getReliquatBySearch is called");
+        List<Reliquat> reliquats = Collections.emptyList();
+        String dD = datemin+"T00:00:00";
+        String dF;
+        if(datemax == null){
+            dF = datemin + "T23:59:59";
+        }else{
+            dF = datemax + "T23:59:59";
+        }
+        LocalDateTime dateDebut = LocalDateTime.parse(dD);
+        LocalDateTime dateFin = LocalDateTime.parse(dF);
+        if(nom != null && !nom.isBlank())
+            reliquats = reliquatService.getReliquatByDateMinAndMaxAndNom(dateDebut, dateFin, nom);
+        if(reference != null && !reference.isBlank())
+            reliquats = reliquatService.getReliquatByDateMinAndMaxAndReference(dateDebut, dateFin, reference);
+        if((nom == null || (nom != null && nom.isBlank())) && (reference == null || (reference != null && reference.isBlank()))){
+            reliquats = reliquatService.getReliquatByDateMinAndMax(dateDebut, dateFin);
+        }
+        return new ResponseEntity<>(reliquats, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

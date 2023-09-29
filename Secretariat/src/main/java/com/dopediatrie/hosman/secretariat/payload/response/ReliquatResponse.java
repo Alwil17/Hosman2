@@ -17,6 +17,7 @@ public class ReliquatResponse {
     private long id;
     private double montant;
     private Etat etat;
+    private String facture_ref;
     private LocalDateTime date_operation;
     private LocalDateTime date_retrait;
 }

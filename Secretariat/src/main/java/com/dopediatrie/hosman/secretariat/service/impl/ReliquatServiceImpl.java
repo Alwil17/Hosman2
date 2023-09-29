@@ -7,12 +7,13 @@ import com.dopediatrie.hosman.secretariat.payload.response.ReliquatResponse;
 import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.repository.ReliquatRepository;
 import com.dopediatrie.hosman.secretariat.repository.EtatRepository;
-import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
 import com.dopediatrie.hosman.secretariat.service.ReliquatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -28,7 +29,15 @@ public class ReliquatServiceImpl implements ReliquatService {
 
     @Override
     public List<Reliquat> getAllReliquats() {
-        return reliquatRepository.findAll();
+        List<Reliquat> reliquats = reliquatRepository.findAll();
+        List<Reliquat> reliquatList = new ArrayList<Reliquat>();
+        for (Reliquat reliquat : reliquats) {
+            if(reliquat.getFacture() != null){
+                reliquat.setFacture_ref(reliquat.getFacture().getReference());
+            }
+            reliquatList.add(reliquat);
+        }
+        return reliquatList;
     }
 
     @Override
@@ -60,12 +69,57 @@ public class ReliquatServiceImpl implements ReliquatService {
                         () -> new SecretariatCustomException("Reliquat with given Id not found", NOT_FOUND));
 
         ReliquatResponse reliquatResponse = new ReliquatResponse();
-
+        if(reliquat.getFacture() != null){
+            reliquatResponse.setFacture_ref(reliquat.getFacture().getReference());
+        }
         copyProperties(reliquat, reliquatResponse);
 
         log.info("ReliquatServiceImpl | getReliquatById | reliquatResponse :" + reliquatResponse.toString());
 
         return reliquatResponse;
+    }
+
+    @Override
+    public List<Reliquat> getReliquatByDateMinAndMax(LocalDateTime datemin, LocalDateTime datemax) {
+        log.info("ReliquatServiceImpl | getReliquatByDateMinAndMax is called");
+        List<Reliquat> reliquats = reliquatRepository.getAllByDateminAndDatemax(datemin, datemax);
+        List<Reliquat> reliquatList = new ArrayList<Reliquat>();
+        for (Reliquat reliquat : reliquats) {
+            if(reliquat.getFacture() != null){
+                reliquat.setFacture_ref(reliquat.getFacture().getReference());
+            }
+            reliquatList.add(reliquat);
+        }
+        return reliquatList;
+    }
+
+    @Override
+    public List<Reliquat> getReliquatByDateMinAndMaxAndNom(LocalDateTime datemin, LocalDateTime datemax, String nom) {
+        log.info("ReliquatServiceImpl | getReliquatByDateMinAndMaxAndNom is called");
+        List<Reliquat> reliquats = reliquatRepository.getAllByDateminAndDatemaxAndNom(datemin, datemax, nom);
+        List<Reliquat> reliquatList = new ArrayList<Reliquat>();
+        log.info(reliquats.size());
+        for (Reliquat reliquat : reliquats) {
+            if(reliquat.getFacture() != null){
+                reliquat.setFacture_ref(reliquat.getFacture().getReference());
+            }
+            reliquatList.add(reliquat);
+        }
+        return reliquatList;
+    }
+
+    @Override
+    public List<Reliquat> getReliquatByDateMinAndMaxAndReference(LocalDateTime datemin, LocalDateTime datemax, String reference) {
+        log.info("ReliquatServiceImpl | getReliquatByDateMinAndMaxAndReference is called");
+        List<Reliquat> reliquats = reliquatRepository.getAllByDateminAndDatemaxAndReference(datemin, datemax, reference);
+        List<Reliquat> reliquatList = new ArrayList<Reliquat>();
+        for (Reliquat reliquat : reliquats) {
+            if(reliquat.getFacture() != null){
+                reliquat.setFacture_ref(reliquat.getFacture().getReference());
+            }
+            reliquatList.add(reliquat);
+        }
+        return reliquatList;
     }
 
     @Override

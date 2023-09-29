@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,9 @@ public class CreanceServiceImpl implements CreanceService {
         List<Creance> creances = creanceRepository.findAllWithPositiveMontant();
         List<Creance> creanceList = new ArrayList<Creance>();
         for (Creance creance : creances) {
-            creance.setFacture_ref(creance.getFacture().getReference());
+            if(creance.getFacture() != null){
+                creance.setFacture_ref(creance.getFacture().getReference());
+            }
             creanceList.add(creance);
         }
         return creanceList;
@@ -68,12 +71,56 @@ public class CreanceServiceImpl implements CreanceService {
                         () -> new SecretariatCustomException("Creance with given Id not found", NOT_FOUND));
 
         CreanceResponse creanceResponse = new CreanceResponse();
-        creanceResponse.setFacture_ref(creance.getFacture().getReference());
+        if(creance.getFacture() != null){
+            creanceResponse.setFacture_ref(creance.getFacture().getReference());
+        }
         copyProperties(creance, creanceResponse);
 
         log.info("CreanceServiceImpl | getCreanceById | creanceResponse :" + creanceResponse.toString());
 
         return creanceResponse;
+    }
+
+    @Override
+    public List<Creance> getCreanceByDateMinAndMax(LocalDateTime datemin, LocalDateTime datemax) {
+        log.info("CreanceServiceImpl | getCreanceByDateMinAndMax is called");
+        List<Creance> creances = creanceRepository.getAllByDateminAndDatemax(datemin, datemax);
+        List<Creance> creanceList = new ArrayList<Creance>();
+        for (Creance creance : creances) {
+            if(creance.getFacture() != null){
+                creance.setFacture_ref(creance.getFacture().getReference());
+            }
+            creanceList.add(creance);
+        }
+        return creanceList;
+    }
+
+    @Override
+    public List<Creance> getCreanceByDateMinAndMaxAndNom(LocalDateTime datemin, LocalDateTime datemax, String nom) {
+        log.info("CreanceServiceImpl | getCreanceByDateMinAndMaxAndNom is called");
+        List<Creance> creances = creanceRepository.getAllByDateminAndDatemaxAndNom(datemin, datemax, nom);
+        List<Creance> creanceList = new ArrayList<Creance>();
+        for (Creance creance : creances) {
+            if(creance.getFacture() != null){
+                creance.setFacture_ref(creance.getFacture().getReference());
+            }
+            creanceList.add(creance);
+        }
+        return creanceList;
+    }
+
+    @Override
+    public List<Creance> getCreanceByDateMinAndMaxAndReference(LocalDateTime datemin, LocalDateTime datemax, String reference) {
+        log.info("CreanceServiceImpl | getCreanceByDateMinAndMaxAndReference is called");
+        List<Creance> creances = creanceRepository.getAllByDateminAndDatemaxAndReference(datemin, datemax, reference);
+        List<Creance> creanceList = new ArrayList<Creance>();
+        for (Creance creance : creances) {
+            if(creance.getFacture() != null){
+                creance.setFacture_ref(creance.getFacture().getReference());
+            }
+            creanceList.add(creance);
+        }
+        return creanceList;
     }
 
     @Override
