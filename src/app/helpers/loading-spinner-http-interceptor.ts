@@ -6,7 +6,7 @@ import {
   HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, tap } from "rxjs";
+import { Observable, delay, tap } from "rxjs";
 import { LoadingSpinnerService } from "../services/secretariat/shared/loading-spinner.service";
 
 @Injectable()
@@ -17,23 +17,23 @@ export class LoadingSpinnerHttpInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.spinnerService.show();
+    setTimeout(() => {
+      this.spinnerService.show();
+    });
     console.log("LOADING...");
-    
 
     return next.handle(req).pipe(
+      // delay(5000),
       tap({
         next: (event) => {
           if (event instanceof HttpResponse) {
             this.spinnerService.hide();
-    console.log("LOADED");
-
+            console.log("LOADED");
           }
         },
         error: (error) => {
           this.spinnerService.hide();
-    console.log("FAILED");
-
+          console.log("FAILED");
         },
       })
     );
