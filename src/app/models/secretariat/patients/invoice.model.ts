@@ -50,10 +50,10 @@ export class Invoice {
     this.id = iInvoice.id;
     this.reference = iInvoice.reference;
     this.total = iInvoice.total;
-    this.montant_pec = iInvoice.id;
+    this.montant_pec = iInvoice.montant_pec;
     this.reduction = iInvoice.reduction;
     this.majoration = iInvoice.majoration;
-    this.a_payer = iInvoice.id;
+    this.a_payer = iInvoice.a_payer;
     this.creance = iInvoice.creance;
     this.reliquat = iInvoice.reliquat;
     this.date_facture = iInvoice.date_facture;

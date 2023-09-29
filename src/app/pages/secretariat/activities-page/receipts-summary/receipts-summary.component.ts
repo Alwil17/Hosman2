@@ -6,6 +6,8 @@ import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
 import { InvoiceService } from "src/app/services/secretariat/patients/invoice.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ActivitiesDetailComponent } from "../activities-detail/activities-detail.component";
+import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
+import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 
 @Component({
   selector: "app-receipts-summary",
@@ -32,7 +34,8 @@ export class ReceiptsSummaryComponent implements OnInit {
     private invoiceService: InvoiceService,
     private toastService: ToastService,
     private modalService: NgbModal
-  ) {}
+  ) // private checkoutService: CheckoutService
+  {}
 
   ngOnInit(): void {
     this.refreshInvoicesList();
@@ -92,4 +95,34 @@ export class ReceiptsSummaryComponent implements OnInit {
       keyboard: false,
     });
   }
+
+  // printReport() {
+  //   this.checkoutService.loadPdf().subscribe({
+  //     next: (data) => {
+  //       this.toastService.show({
+  //         messages: ["Génération de la fiche de compte."],
+  //         type: ToastType.Success,
+  //       });
+
+  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
+  //         size: "xl",
+  //         centered: true,
+  //         scrollable: true,
+  //         backdrop: "static",
+  //       });
+
+  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
+  //       pdfModalRef.componentInstance.pdfSrc = data;
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+
+  //       this.toastService.show({
+  //         messages: ["Echec de la génération de la fiche de comptes."],
+  //         delay: 10000,
+  //         type: ToastType.Error,
+  //       });
+  //     },
+  //   });
+  // }
 }
