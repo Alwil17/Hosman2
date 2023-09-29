@@ -128,6 +128,6 @@ export class PatientListComponent implements OnInit {
   }
 
   async goToPatientNew() {
-    await this.secretariatRouter.navigateToPatientNew();
+    await this.secretariatRouter.navigateToPatientCreate();
   }
 }

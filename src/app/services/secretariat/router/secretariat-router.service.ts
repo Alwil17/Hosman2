@@ -19,6 +19,7 @@ export class SecretariatRouterService {
 
     expenses: this.secretariatPath + "/expenses",
     collections: this.secretariatPath + "/collections",
+    activities: this.secretariatPath + "/activities/all",
   };
 
   constructor(private router: Router) {}
@@ -27,7 +28,7 @@ export class SecretariatRouterService {
     await this.router.navigateByUrl(this.routesPath.patientList);
   }
 
-  async navigateToPatientNew() {
+  async navigateToPatientCreate() {
     await this.router.navigateByUrl(this.routesPath.patientCreate);
   }
 
@@ -53,5 +54,8 @@ export class SecretariatRouterService {
 
   async navigateToCollections() {
     await this.router.navigateByUrl(this.routesPath.collections);
+  }
+  async navigateToActivities() {
+    await this.router.navigateByUrl(this.routesPath.activities);
   }
 }
