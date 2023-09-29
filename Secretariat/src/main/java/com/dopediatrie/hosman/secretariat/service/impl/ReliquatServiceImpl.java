@@ -29,7 +29,7 @@ public class ReliquatServiceImpl implements ReliquatService {
 
     @Override
     public List<Reliquat> getAllReliquats() {
-        List<Reliquat> reliquats = reliquatRepository.findAll();
+        List<Reliquat> reliquats = reliquatRepository.findAllWithPositiveMontant();
         List<Reliquat> reliquatList = new ArrayList<Reliquat>();
         for (Reliquat reliquat : reliquats) {
             if(reliquat.getFacture() != null){

@@ -139,9 +139,11 @@ public class CaisseController {
         List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> null);
         if(majorations != null && majorations.size() > 0){
             for (Majoration c : majorations) {
-                majoration.setNb_especes(majoration.getNb_especes()+1);
-                majoration.setTotal_especes(majoration.getTotal_especes() + c.getMontant());
-                majoration.setMontant_total(majoration.getTotal_especes() + c.getMontant());
+                if(c != null) {
+                    majoration.setNb_especes(majoration.getNb_especes()+1);
+                    majoration.setTotal_especes(majoration.getTotal_especes() + c.getMontant());
+                    majoration.setMontant_total(majoration.getTotal_especes() + c.getMontant());
+                }
             }
         }
         rs.add(majoration);

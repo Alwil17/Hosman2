@@ -1,6 +1,5 @@
 package com.dopediatrie.hosman.secretariat.repository;
 
-import com.dopediatrie.hosman.secretariat.entity.Creance;
 import com.dopediatrie.hosman.secretariat.entity.Reliquat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReliquatRepository extends JpaRepository<Reliquat,Long> {
+    @Query("select c from Reliquat c where c.montant > 0")
+    List<Reliquat> findAllWithPositiveMontant();
+
     @Query("SELECT p from Reliquat p where p.facture.id = :factureId")
     Optional<Reliquat> findByFactureId(@Param("factureId") long factureId);
 
