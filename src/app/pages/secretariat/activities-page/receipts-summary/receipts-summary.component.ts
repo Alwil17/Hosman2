@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
 import { InvoiceService } from "src/app/services/secretariat/patients/invoice.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ActivitiesDetailComponent } from "../activities-detail/activities-detail.component";
 
 @Component({
   selector: "app-receipts-summary",
@@ -14,7 +16,7 @@ export class ReceiptsSummaryComponent implements OnInit {
   // To set date max
   today = new Date().toLocaleDateString("fr-ca");
 
-  receiptsDateControl = new FormControl(this.today, [Validators.required]);
+  receiptsDateControl = new FormControl(this.today);
 
   searchTerm = "";
 
@@ -28,11 +30,18 @@ export class ReceiptsSummaryComponent implements OnInit {
 
   constructor(
     private invoiceService: InvoiceService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
     this.refreshInvoicesList();
+
+    this.receiptsDateControl.valueChanges.subscribe((value) => {
+      if (value != null && value != "") {
+        this.refreshInvoicesList();
+      }
+    });
   }
 
   refreshInvoicesList() {
@@ -72,5 +81,15 @@ export class ReceiptsSummaryComponent implements OnInit {
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
       );
+  }
+
+  openActivitiesDetailModal() {
+    const invoiceModalRef = this.modalService.open(ActivitiesDetailComponent, {
+      size: "xl",
+      centered: true,
+      // scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
   }
 }
