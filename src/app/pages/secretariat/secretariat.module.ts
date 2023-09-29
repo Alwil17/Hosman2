@@ -13,9 +13,19 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskModule } from "ngx-mask";
 import { CollectionsComponent } from "./collections/collections.component";
 import { PersonFormComponent } from "./expenses/person-form/person-form.component";
+import { ActivitiesPageComponent } from "./activities-page/activities-page.component";
+import { ReceiptsSummaryComponent } from "./activities-page/receipts-summary/receipts-summary.component";
+import { ActivitiesDetailComponent } from "./activities-page/activities-detail/activities-detail.component";
 
 @NgModule({
-  declarations: [ExpensesComponent, CollectionsComponent, PersonFormComponent],
+  declarations: [
+    ExpensesComponent,
+    CollectionsComponent,
+    PersonFormComponent,
+    ActivitiesPageComponent,
+    ReceiptsSummaryComponent,
+    ActivitiesDetailComponent,
+  ],
   imports: [
     CommonModule,
     SecretariatRoutingModule,

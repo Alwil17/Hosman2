@@ -76,7 +76,7 @@ export const MENU: MenuItem[] = [
   {
     id: 13,
     label: "MENUITEMS.INFORMATIONS.LIST.EXAMINATIONS",
-    link: "/secretariat/activities/all",
+    link: "/extern/exams",
     icon: "ri-file-text-fill",
   },
   {

@@ -15,21 +15,21 @@ const apiEndpoint = environment.baseUrl + "factures";
 export class InvoiceService {
   constructor(private http: HttpClient) {}
 
-  // getAll(): Observable<Invoice[]> {
-  //   return this.http.get<InvoiceResponse[]>(apiEndpoint).pipe(
-  //     map((invoices) => {
-  //       const mapped: Invoice[] = invoices.map((invoice) =>
-  //         Invoice.fromResponse(invoice)
-  //       );
+  getAll(): Observable<Invoice[]> {
+    return this.http.get<InvoiceResponse[]>(apiEndpoint).pipe(
+      map((invoices) => {
+        const mapped: Invoice[] = invoices.map((invoice) =>
+          Invoice.fromResponse(invoice)
+        );
 
-  //       return mapped;
-  //     })
-  //   );
-  // }
+        return mapped;
+      })
+    );
+  }
 
   create(data: InvoiceRequest): Observable<any> {
     console.log(JSON.stringify(data, null, 2));
-    
+
     return this.http.post(apiEndpoint, data);
   }
 
@@ -45,6 +45,35 @@ export class InvoiceService {
       headers: headers,
       responseType: "blob",
     });
+  }
+
+  searchBy(criteria: {
+    minDate: Date;
+    maxDate?: Date;
+    actGroupCode?: string;
+  }): Observable<Invoice[]> {
+    let apiComplementary =
+      "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+
+    if (criteria.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+    if (criteria.actGroupCode) {
+      apiComplementary += "&code=" + criteria.actGroupCode;
+    }
+
+    return this.http
+      .get<InvoiceResponse[]>(`${apiEndpoint}/search?${apiComplementary}`)
+      .pipe(
+        map((invoices) => {
+          const mapped: Invoice[] = invoices.map((invoice) =>
+            Invoice.fromResponse(invoice)
+          );
+
+          return mapped;
+        })
+      );
   }
 
   // update(id: any, data: any): Observable<any> {

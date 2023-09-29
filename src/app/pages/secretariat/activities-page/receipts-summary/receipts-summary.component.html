@@ -1,0 +1,159 @@
+<app-card title="Récapitulatif des reçus émis" [separator]="true">
+  <ng-container customCardHeader>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-7 col-xl-4">
+        <div class="hstack gap-3">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <app-input
+                label="Date du jour"
+                type="date"
+                [maxDate]="today"
+                [control]="receiptsDateControl"
+              >
+              </app-input>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="search-box mt-2">
+              <input
+                type="text"
+                name="searchTerm"
+                class="form-control"
+                placeholder="Rechercher"
+                [(ngModel)]="searchTerm"
+              />
+              <!-- 
+                        (ngModelChange)="searchPatients()" -->
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex col-md-5 col-xl-8">
+        <button type="button" class="btn btn-success btn-label ms-auto">
+          <i
+            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
+          ></i>
+          Activités
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container customCardBody>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive table-card">
+          <table class="table table-hover table-striped align-middle mb-0">
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ "N° Reçu" | uppercase }}</th>
+                <th scope="col">{{ "Nom" | uppercase }}</th>
+                <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
+                <th scope="col">{{ "Montant" | uppercase }}</th>
+                <th scope="col">{{ "Emetteur" | uppercase }}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let invoice of invoicesListCut"
+                class="user-select-none"
+              >
+                <td>{{ invoice.reference }}</td>
+                <td>{{ invoice.prestation.patient.nom }}</td>
+                <td>{{ invoice.prestation.patient.prenoms }}</td>
+                <!-- <td>
+                  <ngb-highlight
+                    [result]="invoice.prestation.patient.nom"
+                    [term]="searchTerm.split(' ')[0]"
+                  ></ngb-highlight>
+                </td>
+                <td>
+                  <ngb-highlight
+                    [result]="patient.prenoms"
+                    [term]="searchTerm.split(' ')[1]"
+                  ></ngb-highlight>
+                </td> -->
+                <td>{{ invoice.total }}</td>
+                <td>-</td>
+
+                <ng-template #noInsurance>
+                  <td><em>Non assuré</em></td>
+                </ng-template>
+
+                <td>
+                  <div class="d-inline-block" ngbDropdown container="body">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
+                        ></i>
+                        Détails
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Duplicata
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Imprimer
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                        ></i>
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="collectionSize"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="refreshInvoices()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="pageSize"
+              (ngModelChange)="refreshInvoices()"
+            >
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-card>

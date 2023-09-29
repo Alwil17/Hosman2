@@ -9,6 +9,9 @@ export class CardComponent implements OnInit {
   @Input()
   title = "";
 
+  @Input()
+  separator = false;
+
   constructor() {}
 
   ngOnInit(): void {}
