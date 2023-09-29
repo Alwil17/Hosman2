@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +22,8 @@ public class Creance {
     private double montant;
     private LocalDateTime date_operation;
     private LocalDateTime date_reglement;
+    @Transient
+    private String facture_ref;
     @OneToOne(mappedBy = "creance")
     @JsonIgnore
     private Facture facture;
@@ -29,8 +32,12 @@ public class Creance {
     private Etat etat;
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    @JsonIgnore
     private Patient patient;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "mode_creance",
+            joinColumns = @JoinColumn(name = "creance_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "mode_payement_id", referencedColumnName = "id"))
+    private List<ModePayement> mode_payements;
 
     @Override
     public String toString() {

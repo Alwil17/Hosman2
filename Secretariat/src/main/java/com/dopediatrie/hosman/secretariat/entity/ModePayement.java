@@ -26,6 +26,9 @@ public class ModePayement {
     @ManyToMany(mappedBy = "mode_payements")
     @JsonIgnore
     private List<Facture> factures;
+    @ManyToMany(mappedBy = "mode_payements")
+    @JsonIgnore
+    private List<Creance> creances;
 
     @Override
     public String toString() {

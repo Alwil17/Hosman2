@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -28,7 +30,13 @@ public class CreanceServiceImpl implements CreanceService {
 
     @Override
     public List<Creance> getAllCreances() {
-        return creanceRepository.findAllWithPositiveMontant();
+        List<Creance> creances = creanceRepository.findAllWithPositiveMontant();
+        List<Creance> creanceList = new ArrayList<Creance>();
+        for (Creance creance : creances) {
+            creance.setFacture_ref(creance.getFacture().getReference());
+            creanceList.add(creance);
+        }
+        return creanceList;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class CreanceServiceImpl implements CreanceService {
                         () -> new SecretariatCustomException("Creance with given Id not found", NOT_FOUND));
 
         CreanceResponse creanceResponse = new CreanceResponse();
-
+        creanceResponse.setFacture_ref(creance.getFacture().getReference());
         copyProperties(creance, creanceResponse);
 
         log.info("CreanceServiceImpl | getCreanceById | creanceResponse :" + creanceResponse.toString());

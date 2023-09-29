@@ -20,6 +20,6 @@ public class CreanceResponse {
     private double montant;
     private LocalDateTime date_operation;
     private LocalDateTime date_reglement;
-    private Facture facture;
     private Etat etat;
+    private String facture_ref;
 }
