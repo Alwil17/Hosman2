@@ -16,6 +16,7 @@ import { PersonFormComponent } from "./expenses/person-form/person-form.componen
 import { ActivitiesPageComponent } from "./activities-page/activities-page.component";
 import { ReceiptsSummaryComponent } from "./activities-page/receipts-summary/receipts-summary.component";
 import { ActivitiesDetailComponent } from "./activities-page/activities-detail/activities-detail.component";
+import { TariffsComponent } from './tariffs/tariffs.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ActivitiesDetailComponent } from "./activities-page/activities-detail/a
     ActivitiesPageComponent,
     ReceiptsSummaryComponent,
     ActivitiesDetailComponent,
+    TariffsComponent,
   ],
   imports: [
     CommonModule,

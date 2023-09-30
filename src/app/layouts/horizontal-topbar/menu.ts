@@ -58,7 +58,7 @@ export const MENU: MenuItem[] = [
   {
     id: 10,
     label: "MENUITEMS.INFORMATIONS.LIST.TARIFFS",
-    link: "/tariffs",
+    link: "/secretariat/tariffs",
     icon: "ri-file-list-3-fill",
   },
   {
