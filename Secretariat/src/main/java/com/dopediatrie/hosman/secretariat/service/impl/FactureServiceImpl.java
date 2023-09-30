@@ -154,11 +154,11 @@ public class FactureServiceImpl implements FactureService {
         prestationTempRepository.deleteById(factureRequest.getPrestation_id());
 
 
-        double toCaisse = facture.getA_payer();
+        double toCaisse = 0;
         for (FactureModeRequest eMode : factureRequest.getMode_payements()) {
             ModePayement modePayement = modePayementRepository.findById(eMode.getMode_payement_id()).orElseThrow();
-            if(!modePayement.getSlug().equals("especes")){
-                toCaisse -= eMode.getMontant();
+            if(modePayement.getSlug().equals("especes")){
+                toCaisse += eMode.getMontant();
             }
         }
         caisseService.addAmountCaisse(toCaisse);

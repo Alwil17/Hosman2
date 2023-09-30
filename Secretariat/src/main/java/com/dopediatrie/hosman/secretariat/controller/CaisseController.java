@@ -6,6 +6,7 @@ import com.dopediatrie.hosman.secretariat.service.CaisseService;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.aspectj.internal.lang.reflect.DeclareParentsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -215,6 +216,47 @@ public class CaisseController {
             total_montant_total += ficheRecap.getMontant_total();
         }
 
+        double remises = 0;
+        String reductionsql = "select * from reduction " +
+                "where date_operation >= '"+ datemin +"' " +
+                "and date_operation <= '"+ datemax +"'";
+        List<Reduction> reductions = jdbcTemplate.query(reductionsql, (resultSet, rowNum) -> null);
+        if(reductions != null && reductions.size() > 0){
+            for (Reduction c : reductions) {
+                if(c != null) {
+                    remises += c.getMontant();
+                }
+            }
+        }
+
+        double dettesc = 0;
+        String dettesql = "select * from creance join etat e on creance.etat_id = e.id " +
+                "where e.slug != 'payee' " +
+                "and creance.date_operation >= '"+ datemin +"' " +
+                "and creance.date_operation <= '"+ datemax +"'";
+        List<Creance> dettes = jdbcTemplate.query(dettesql, (resultSet, rowNum) -> null);
+        if(dettes != null && dettes.size() > 0){
+            for (Creance c : dettes) {
+                if(c != null){
+                    dettesc += c.getMontant();
+                }
+            }
+        }
+
+        double depensesc = 0;
+        String depensesql = "select * from depense " +
+                "where date_depense >= '"+ datemin +"' " +
+                "and date_depense <= '"+ datemax +"'";
+        List<Depense> depenses = jdbcTemplate.query(depensesql, (resultSet, rowNum) -> null);
+        if(depenses != null && depenses.size() > 0){
+            for (Depense c : depenses) {
+                if(c != null){
+                    depensesc += c.getMontant();
+                }
+            }
+        }
+
+        double ca_total = total_montant_total - depensesc;
 
         Context context = new Context();
         context.setVariable("date_jour", datejour);
@@ -228,6 +270,10 @@ public class CaisseController {
         context.setVariable("total_nb_pec", total_nb_pec);
         context.setVariable("total_total_pec", total_total_pec);
         context.setVariable("total_montant_total", total_montant_total);
+        context.setVariable("remises", remises);
+        context.setVariable("creances", dettesc);
+        context.setVariable("depenses", depensesc);
+        context.setVariable("ca_total", ca_total);
 
         String htmlContentToRender = templateEngine.process("ficherecap", context);
         String xHtml = Utils.xhtmlConvert(htmlContentToRender);

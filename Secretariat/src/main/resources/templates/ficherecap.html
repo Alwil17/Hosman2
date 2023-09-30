@@ -118,6 +118,28 @@
             padding-top: 8px;
             padding-bottom: 8px;
         }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .t0 {
+            border-top: solid white;
+        }
+
+        .b0 {
+            border-bottom: solid white;
+        }
+
+        .r0 {
+            border-right: solid white;
+        }
+
+        .l0 {
+            border-left: solid white;
+        }
     </style>
 </head>
 
@@ -174,7 +196,7 @@
                 <td th:text="${#numbers.formatDecimal(recap.total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
                 <td th:text="${recap.nb_pec}" style="text-align: center !important;">0</td>
                 <td th:text="${#numbers.formatDecimal(recap.total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
-                <td th:text="${#numbers.formatDecimal(recap.montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 100px; text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 100px; text-align: right !important; padding-right: 3px;">0</td>
             </tr>
             <tr>
                 <th scope="row" style="width: 130px; font-size: 16px; font-weight: bold; text-align: left;">TOTAUX</th>
@@ -186,7 +208,30 @@
                 <td th:text="${#numbers.formatDecimal(total_total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
                 <td th:text="${total_nb_pec}" style="text-align: center !important;">0</td>
                 <td th:text="${#numbers.formatDecimal(total_total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
-                <td th:text="${#numbers.formatDecimal(total_montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(total_montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <table style="width: 100%; margin-top: 10px;">
+            <tbody>
+            <tr>
+                <th scope="row" class="title t0 b0 l0" style="width: 90px;">Remises :</th>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(remises, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Créances :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(creances, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Dépenses :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(depenses, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%;">
+            <tbody>
+            <tr>
+                <th scope="row" class="title" >Chiffre d'affaire = Total général par secteur - Dépenses</th>
+                <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 150px;" th:text="${#numbers.formatDecimal(ca_total, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             </tbody>
         </table>
