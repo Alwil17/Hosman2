@@ -73,19 +73,19 @@ export class PatientService {
       );
   }
 
-  searchByFullname(fullname: string): Observable<Patient[]> {
-    return this.http
-      .get<PatientResponse[]>(`${apiEndpoint}/search?nom=${fullname}`)
-      .pipe(
-        map((patients) => {
-          const mapped: Patient[] = patients.map((patient) =>
-            Patient.fromResponse(patient)
-          );
+  // searchByFullname(fullname: string): Observable<Patient[]> {
+  //   return this.http
+  //     .get<PatientResponse[]>(`${apiEndpoint}/search?nom=${fullname}`)
+  //     .pipe(
+  //       map((patients) => {
+  //         const mapped: Patient[] = patients.map((patient) =>
+  //           Patient.fromResponse(patient)
+  //         );
 
-          return mapped;
-        })
-      );
-  }
+  //         return mapped;
+  //       })
+  //     );
+  // }
 
   searchByReference(reference: string): Observable<Patient[]> {
     return this.http

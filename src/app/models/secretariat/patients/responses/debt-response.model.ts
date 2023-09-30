@@ -4,9 +4,10 @@ import { StatusResponse } from "./status-response.model";
 
 export interface DebtResponse {
   id: number;
+  facture_ref?: string;
   montant: number;
   date_operation: Date;
-  // patient: PatientResponse;
-  // facture: InvoiceResponse;
+  date_retrait: Date;
+  patient: PatientResponse;
   etat: StatusResponse;
 }

@@ -19,4 +19,44 @@ export class DebtService {
       .get<DebtResponse[]>(apiEndpoint)
       .pipe(map((debts) => debts.map((debt) => Debt.fromResponse(debt))));
   }
+
+  searchBy(criteria: {
+    minDate: Date;
+    maxDate?: Date;
+    searchTerm?: string;
+    criterion?: string;
+  }): Observable<Debt[]> {
+    let apiComplementary =
+      "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+
+    if (criteria.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+
+    if (criteria.searchTerm && criteria.criterion) {
+      if (criteria.criterion == "fullname") {
+        apiComplementary += "&nom=";
+      } else if (criteria.criterion == "reference") {
+        apiComplementary += "&reference=";
+      }
+
+      apiComplementary += criteria.searchTerm;
+    }
+
+    // console.log(
+    //   JSON.stringify(criteria, null, 2) +
+    //     `${apiEndpoint}/search?${apiComplementary}`
+    // );
+
+    return this.http
+      .get<DebtResponse[]>(`${apiEndpoint}/search?${apiComplementary}`)
+      .pipe(
+        map((debts) => {
+          const mapped: Debt[] = debts.map((debt) => Debt.fromResponse(debt));
+
+          return mapped;
+        })
+      );
+  }
 }

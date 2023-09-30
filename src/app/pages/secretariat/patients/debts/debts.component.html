@@ -12,51 +12,77 @@
         <h4 class="card-title mb-0">Créances</h4>
       </div>
       <!-- end card header -->
-      <div class="card-body">
-        <!-- <div>
-          <p>
-            Hospitalisation Comptabilité :
-            <br />
-          </p>
+      <div class="card-body border-bottom">
+        <div class="row">
+          <!-- justify-content-center -->
+          <div class="col-md-4 mb-3">
+            <app-input
+              label="Date de début"
+              type="date"
+              [maxDate]="today"
+              [control]="startDateControl"
+            >
+            </app-input>
+          </div>
+          <div class="col-md-4 mb-3">
+            <app-input
+              label="Date de fin"
+              type="date"
+              [maxDate]="today"
+              [control]="endDateControl"
+            >
+            </app-input>
+          </div>
         </div>
 
-        <hr /> -->
+        <div class="row">
+          <!-- justify-content-center -->
+          <div class="col-md-4 mb-3">
+            <app-input label="Rechercher" [control]="searchControl">
+            </app-input>
+          </div>
+          <div class="col-md-4 mb-3">
+            <app-select
+              label="Critère de recherche"
+              [clearable]="false"
+              [searchable]="false"
+              [options]="criteria"
+              [control]="criterionControl"
+            ></app-select>
+          </div>
+        </div>
       </div>
+      
       <div class="card-body">
         <hr />
         <!-- EXPENSE TABLE START -->
         <div class="row">
           <div class="col-12">
             <div class="table-responsive table-card">
-              <table class="table table-hover table-striped align-middle mb-0">
+              <table
+                class="table table-hover table-striped table-bordered align-middle mb-0"
+              >
                 <thead class="table-light text-muted">
                   <tr>
                     <th scope="col">{{ "Date" | uppercase }}</th>
-                    <!-- <th scope="col">{{ "N° Reçu" | uppercase }}</th> -->
-                    <!-- <th scope="col">{{ "Montant" | uppercase }}</th>
-                    <th scope="col">{{ "Accordé par" | uppercase }}</th> -->
-                    <!-- <th scope="col">{{ "Nom" | uppercase }}</th>
-                    <th scope="col">{{ "Prénom(s)" | uppercase }}</th> -->
+                    <th scope="col">{{ "N° Reçu" | uppercase }}</th>
+                    <th scope="col">{{ "Nom" | uppercase }}</th>
+                    <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
                     <th scope="col">{{ "Montant" | uppercase }}</th>
-                    <!-- <th scope="col">{{ "Receveur" | uppercase }}</th>
-                    <th scope="col">{{ "Reçu" | uppercase }}</th>
-                    <th scope="col">{{ "Rubrique" | uppercase }}</th> -->
+                    <th scope="col">{{ "Reste à payer" | uppercase }}</th>
+                    <th scope="col">{{ "Acompte" | uppercase }}</th>
                     <!-- <th scope="col"></th> -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of debtListCut" class="user-select-none">
                     <td>{{ item.date_operation | date : "dd/MM/yyyy" }}</td>
-                    <!-- <td>{{ item.facture.reference }}</td> -->
-                    <!-- <td>{{ item.montant | mask : "separator" }}</td>
-                    <td>-</td> -->
-                    <!-- <td>{{ item.patient.nom }}</td>
-                    <td>{{ item.patient.prenoms }}</td> -->
-                    <td>{{ item.montant }}</td>
-                    <!-- <td>{{ item.beneficiaire.fullName }}</td>
-
-                    <td>{{ item.recu == 0 ? "NON" : "OUI" }}</td>
-                    <td>{{ item.rubrique.nom }}</td> -->
+                    <td>{{ item.facture_ref ?? "-" }}</td>
+                    <td>{{ item.patient.nom }}</td>
+                    <td>{{ item.patient.prenoms }}</td>
+                    <td class="text-end">{{ item.montant }}</td>
+                    <td class="text-end">{{ 0 }}</td>
+                    <td class="text-end">{{ 0 }}</td>
 
                     <!-- <td>
                       <div class="d-inline-block" ngbDropdown container="body">
@@ -72,12 +98,9 @@
                             <i
                               class="ri-edit-2-line label-icon align-middle fs-16 me-2 text-warning"
                             ></i>
-                            Modifier
+                            Régler
                           </button>
-                          <button
-                            ngbDropdownItem
-                            (click)="deleteExpense(item.id)"
-                          >
+                          <button ngbDropdownItem>
                             <i
                               class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
                             ></i>
