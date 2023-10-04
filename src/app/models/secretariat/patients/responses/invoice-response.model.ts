@@ -21,12 +21,9 @@ export interface InvoiceResponse {
   etat: StatusResponse;
   exporte: number;
   prestation: PrestationResponse;
-
-  // mode_payements: [
-  //   {
-  //     facture_id: number;
-  //     mode_payement_id: number;
-  //     montant: number;
-  //   }
-  // ];
+  mode_payements: {
+    id: number;
+    nom: string;
+    slug: string;
+  }[];
 }

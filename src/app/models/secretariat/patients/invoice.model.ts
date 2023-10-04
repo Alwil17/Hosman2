@@ -21,13 +21,11 @@ export interface IInvoice {
   etat: Status;
   exporte: number;
   prestation: Prestation;
-  //   mode_payements: [
-  //     {
-  //       facture_id: number;
-  //       mode_payement_id: number;
-  //       montant: number;
-  //     }
-  //   ];
+  mode_payements: {
+    id: number;
+    nom: string;
+    slug: string;
+  }[];
 }
 
 export class Invoice {
@@ -45,6 +43,11 @@ export class Invoice {
   etat: Status;
   exporte: number;
   prestation: Prestation;
+  mode_payements: {
+    id: number;
+    nom: string;
+    slug: string;
+  }[];
 
   constructor(iInvoice: IInvoice) {
     this.id = iInvoice.id;
@@ -61,6 +64,7 @@ export class Invoice {
     this.etat = iInvoice.etat;
     this.exporte = iInvoice.exporte;
     this.prestation = iInvoice.prestation;
+    this.mode_payements = iInvoice.mode_payements;
   }
 
   static fromResponse(invoice: InvoiceResponse) {
@@ -79,6 +83,7 @@ export class Invoice {
       etat: Status.fromResponse(invoice.etat),
       exporte: invoice.exporte,
       prestation: Prestation.fromResponse(invoice.prestation),
+      mode_payements: invoice.mode_payements,
     });
   }
 }
