@@ -30,12 +30,18 @@ export class ReceiptsSummaryComponent implements OnInit {
   collectionSize = this.invoicesList.length;
   invoicesListCut: Invoice[] = [];
 
+  cashTotal = 0;
+  chequeTotal = 0;
+  cardTotal = 0;
+  scTotal = 0;
+  generalTotal = 0;
+
   constructor(
     private invoiceService: InvoiceService,
     private toastService: ToastService,
-    private modalService: NgbModal
-  ) // private checkoutService: CheckoutService
-  {}
+    private modalService: NgbModal,
+    private checkoutService: CheckoutService
+  ) {}
 
   ngOnInit(): void {
     this.refreshInvoicesList();
@@ -58,6 +64,20 @@ export class ReceiptsSummaryComponent implements OnInit {
           //   messages: ["Rafraîchissement de la liste."],
           //   type: ToastType.Success,
           // });
+
+          this.cashTotal = 0;
+          this.chequeTotal = 0;
+          this.cardTotal = 0;
+          this.scTotal = 0;
+          this.generalTotal = 0;
+
+          this.invoicesList.forEach((value) => {
+            this.cashTotal += value.a_payer - value.creance.montant;
+            this.scTotal += value.montant_pec;
+          });
+
+          this.generalTotal =
+            this.cashTotal + this.chequeTotal + this.cardTotal + this.scTotal;
 
           this.refreshInvoices();
         },
@@ -96,33 +116,63 @@ export class ReceiptsSummaryComponent implements OnInit {
     });
   }
 
-  // printReport() {
-  //   this.checkoutService.loadPdf().subscribe({
-  //     next: (data) => {
-  //       this.toastService.show({
-  //         messages: ["Génération de la fiche de compte."],
-  //         type: ToastType.Success,
-  //       });
+  printInvoice(invoiceId: number) {
+    this.invoiceService.loadPdf(invoiceId).subscribe({
+      next: (data) => {
+        this.toastService.show({
+          messages: ["Génération du reçu."],
+          type: ToastType.Success,
+        });
 
-  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
-  //         size: "xl",
-  //         centered: true,
-  //         scrollable: true,
-  //         backdrop: "static",
-  //       });
+        const pdfModalRef = this.modalService.open(PdfModalComponent, {
+          size: "xl",
+          centered: true,
+          // scrollable: true,
+          backdrop: "static",
+        });
 
-  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
-  //       pdfModalRef.componentInstance.pdfSrc = data;
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
+        pdfModalRef.componentInstance.title = "Reçu";
+        pdfModalRef.componentInstance.pdfSrc = data;
+      },
+      error: (e) => {
+        console.error(e);
 
-  //       this.toastService.show({
-  //         messages: ["Echec de la génération de la fiche de comptes."],
-  //         delay: 10000,
-  //         type: ToastType.Error,
-  //       });
-  //     },
-  //   });
-  // }
+        this.toastService.show({
+          messages: ["Echec de la génération du reçu."],
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
+  }
+
+  printReport() {
+    this.checkoutService.loadPdf().subscribe({
+      next: (data) => {
+        this.toastService.show({
+          messages: ["Génération de la fiche de compte."],
+          type: ToastType.Success,
+        });
+
+        const pdfModalRef = this.modalService.open(PdfModalComponent, {
+          size: "xl",
+          centered: true,
+          scrollable: true,
+          backdrop: "static",
+        });
+
+        pdfModalRef.componentInstance.title = "Fiche de comptes";
+        pdfModalRef.componentInstance.pdfSrc = data;
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          messages: ["Echec de la génération de la fiche de comptes."],
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
+  }
 }
