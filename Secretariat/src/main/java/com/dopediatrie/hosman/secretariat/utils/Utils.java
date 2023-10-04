@@ -22,6 +22,7 @@ public class Utils {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         tidy.parseDOM(inputStream, outputStream);
         return outputStream.toString("UTF-8");*/
+
         doc.outputSettings().prettyPrint(false);
         doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);

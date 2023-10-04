@@ -1,8 +1,10 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.Caisse;
 import com.dopediatrie.hosman.secretariat.entity.Depense;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.DepenseRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.CaisseResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.DepenseResponse;
 import com.dopediatrie.hosman.secretariat.repository.DepenseRepository;
 import com.dopediatrie.hosman.secretariat.repository.PersonneRepository;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -32,6 +35,7 @@ public class DepenseServiceImpl implements DepenseService {
     private final PersonneService personneService;
     private final CaisseService caisseService;
     private final String NOT_FOUND = "DEPENSE_NOT_FOUND";
+    private final String NOT_PERMITTED = "OPERATION_NOT_PERMITTED";
 
     @Override
     public List<Depense> getAllDepenses() {
@@ -95,6 +99,8 @@ public class DepenseServiceImpl implements DepenseService {
                         "Depense with given Id not found",
                         NOT_FOUND
                 ));
+
+        // Si la rubrique change
         long rubriqueId;
         if(!depense.getRubrique().getNom().equals(depenseRequest.getRubrique().getNom())){
             if(rubriqueDepenseRepository.existsByNom(depenseRequest.getRubrique().getNom())){
@@ -106,16 +112,61 @@ public class DepenseServiceImpl implements DepenseService {
             rubriqueId = rubriqueDepenseService.addRubriqueDepense(depenseRequest.getRubrique());
         }
 
-        personneService.editPersonne(depenseRequest.getBeneficiaire(), depense.getBeneficiaire().getId());
+        // si le bénéficiaire change
+        personneService.addPersonne(depenseRequest.getBeneficiaire());
 
-        depense.setMontant(depenseRequest.getMontant());
+        // Si le montant change
         depense.setMotif(depenseRequest.getMotif());
         depense.setRubrique(rubriqueDepenseRepository.findById(rubriqueId).orElseThrow());
         depense.setAccordeur_id(depenseRequest.getAccordeur_id());
         depense.setCaissier_id(depenseRequest.getCaissier_id());
         depense.setDate_depense(depenseRequest.getDate_depense());
         depense.setRecu(depenseRequest.getRecu());
-        depenseRepository.save(depense);
+        depense.setDate_modification(LocalDateTime.now());
+        depense = depenseRepository.save(depense);
+
+
+        /*
+        Motification du montant de la dépense
+        * On ne peut modifier une dépenser que si sa caisse est ouverte.
+        * Si la caisse est déjà fermée alors pas de modification de montant.
+        */
+        // On cherche la caisse ouverte
+        CaisseResponse caisse = caisseService.getCurrentCaisse();
+        // Si la date de la dépense est après l'ouverture de la caisse alors:
+        if(depense.getDate_depense().isAfter(caisse.getDate_ouverture())){
+            // Si le montant de la dépense est différent du nouveau montant alors:
+            if(depense.getMontant() != depenseRequest.getMontant()){
+                double toAdd = 0;
+                // Si le montant de la dépense est supérieur au nouveau montant alors :
+                if (depense.getMontant() > depenseRequest.getMontant()){
+                    // On doit ajouter de l'argent à la caisse
+                    // on calcul alors la somme à ajouter
+                    toAdd = depense.getMontant() - depenseRequest.getMontant();
+                    // Et on l'ajoute
+                    caisseService.addAmountCaisse(toAdd);
+                }else{
+                    // Sinon si le montant de la dépense est inféieur au nouveau montant alors :
+                    // On doit retirer de l'argent à la caisse
+                    // on calcul alors la somme à retier
+                    toAdd = depenseRequest.getMontant() - depense.getMontant();
+                    // Et on la retire
+                    caisseService.substractAmountCaisse(toAdd);
+                }
+                // On met à jour le nouveau montant de la dépense
+                depense.setMontant(depenseRequest.getMontant());
+                depense = depenseRepository.save(depense);
+            }
+            // Si les deux montants sont les mêmes, on ne fait rien
+        }else {
+            // Si la date de la dépense est avant l'ouverture de la caisse alors:
+            // Nous sommes dans le cas d'une dépense antérieure
+            // On signale à l'utilisateur que l'opération n'est pas permise.
+            throw new SecretariatCustomException(
+                    "Vous ne pouvez pas modifier cette dépense car la caisse à laquelle elle est liée a déjà été fermée.",
+                    NOT_PERMITTED);
+        }
+
 
         log.info("DepenseServiceImpl | editDepense | Depense Updated");
         log.info("DepenseServiceImpl | editDepense | Depense Id : " + depense.getId());
@@ -132,6 +183,26 @@ public class DepenseServiceImpl implements DepenseService {
                     NOT_FOUND);
         }
         log.info("Deleting Depense with id: {}", depenseId);
-        depenseRepository.deleteById(depenseId);
+        Depense depense = depenseRepository.findById(depenseId).get();
+        /*
+        Suppression de la dépense
+        * On ne peut supprimer une dépense que si sa caisse est ouverte.
+        * Si la caisse est déjà fermée alors pas de suppression.
+        */
+        // On cherche la caisse ouverte
+        CaisseResponse caisse = caisseService.getCurrentCaisse();
+        // Si la date de la dépense est après l'ouverture de la caisse alors:
+        if(depense.getDate_depense().isAfter(caisse.getDate_ouverture())){
+            // On restitue la somme à la caisse
+            caisseService.addAmountCaisse(depense.getMontant());
+            depenseRepository.deleteById(depenseId);
+        }else {
+            // Si la date de la dépense est avant l'ouverture de la caisse alors:
+            // Nous sommes dans le cas d'une dépense antérieure
+            // On signale à l'utilisateur que l'opération n'est pas permise.
+            throw new SecretariatCustomException(
+                    "Vous ne pouvez pas supprimer cette dépense car la caisse à laquelle elle est liée a déjà été fermée.",
+                    NOT_PERMITTED);
+        }
     }
 }

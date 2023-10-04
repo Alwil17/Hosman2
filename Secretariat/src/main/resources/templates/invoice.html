@@ -13,19 +13,19 @@
 
         html {
             /* off-white, so body edge is visible in browser */
-            background: #eee;
+            background: #fff;
         }
 
         body {
             /* A5 dimensions */
-            width: 138mm;
-            height: 180mm;
+            width: 142mm;
+            /*height: 180mm;*/
 
 
             margin: auto;
 
             padding: 2%;
-            border: solid 0.1mm;
+            /*border: solid 0.1mm;*/
             background: #fff;
         }
 
@@ -181,7 +181,7 @@
             <p th:text="${reference}">-</p>
         </div>
         <div class="patient-info">
-            <p>Patient(e): <b th:text="${patient.nom}">-</b></p>
+            <p>Patient(e): <b th:text="${patient.nom +' '+ patient.prenoms}">-</b></p>
             <p>Sexe: <b th:text="${patient.sexe}">-</b> <span style="margin-left: 10mm;">Date de naissance: <b th:text="${date_naissance}">-</b></span></p>
         </div>
     </div>

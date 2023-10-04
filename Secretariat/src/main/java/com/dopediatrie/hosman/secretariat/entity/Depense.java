@@ -28,6 +28,7 @@ public class Depense {
     @JoinColumn(name = "beneficiaire_id")
     private Personne beneficiaire;
     private LocalDateTime date_depense;
+    private LocalDateTime date_modification;
     private long accordeur_id;
     private long caissier_id;
     private int recu;

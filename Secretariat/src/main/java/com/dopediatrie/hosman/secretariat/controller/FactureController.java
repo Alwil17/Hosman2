@@ -141,10 +141,10 @@ public class FactureController {
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("date_heure",factureResponse.getDate_facture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        context.setVariable("patient",factureResponse.getReference());
+//        context.setVariable("patient",factureResponse.getReference());
         context.setVariable("total",factureResponse.getTotal());
         context.setVariable("montant_pec",factureResponse.getMontant_pec());
-        context.setVariable("majoration",factureResponse.getMajoration().getMontant());
+//        context.setVariable("majoration",factureResponse.getMajoration().getMontant());
         context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
         context.setVariable("verse", verse);

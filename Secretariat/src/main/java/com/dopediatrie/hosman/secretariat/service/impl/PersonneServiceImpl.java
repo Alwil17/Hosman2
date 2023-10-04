@@ -46,6 +46,12 @@ public class PersonneServiceImpl implements PersonneService {
             personne = personneRepository.save(personne);
         }else{
             personne = personneRepository.searchByNomAndPrenoms(personneRequest.getNom(), personneRequest.getPrenoms()).get();
+            personne.setTel1(personneRequest.getTel1());
+            personne.setTel2(personneRequest.getTel2());
+            personne.setType_piece(personneRequest.getType_piece());
+            personne.setNo_piece(personneRequest.getNo_piece());
+            personne.setAdresse(personneRequest.getAdresse());
+            personne = personneRepository.save(personne);
         }
 
         log.info("PersonneServiceImpl | addPersonne | Personne Created");
@@ -76,23 +82,24 @@ public class PersonneServiceImpl implements PersonneService {
     public void editPersonne(PersonneRequest personneRequest, long personneId) {
         log.info("PersonneServiceImpl | editPersonne is called");
 
-        Personne personne
-                = personneRepository.findById(personneId)
-                .orElseThrow(() -> new SecretariatCustomException(
-                        "Personne with given Id not found",
-                        NOT_FOUND
-                ));
-        personne.setNom(personneRequest.getNom());
-        personne.setPrenoms(personneRequest.getPrenoms());
-        personne.setTel1(personneRequest.getTel1());
-        personne.setTel2(personneRequest.getTel2());
-        personne.setType_piece(personneRequest.getType_piece());
-        personne.setNo_piece(personneRequest.getNo_piece());
-        personne.setAdresse(personneRequest.getAdresse());
-        personneRepository.save(personne);
-
+        if(personneRepository.existsById(personneId)){
+            Personne personne = personneRepository.findById(personneId)
+                    .orElseThrow(() -> new SecretariatCustomException(
+                            "Personne with given Id not found",
+                            NOT_FOUND
+                    ));
+            personne.setNom(personneRequest.getNom());
+            personne.setPrenoms(personneRequest.getPrenoms());
+            personne.setTel1(personneRequest.getTel1());
+            personne.setTel2(personneRequest.getTel2());
+            personne.setType_piece(personneRequest.getType_piece());
+            personne.setNo_piece(personneRequest.getNo_piece());
+            personne.setAdresse(personneRequest.getAdresse());
+            personneRepository.save(personne);
+        }else{
+            addPersonne(personneRequest);
+        }
         log.info("PersonneServiceImpl | editPersonne | Personne Updated");
-        log.info("PersonneServiceImpl | editPersonne | Personne Id : " + personne.getId());
     }
 
     @Override
