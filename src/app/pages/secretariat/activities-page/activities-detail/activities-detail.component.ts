@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
@@ -7,6 +8,7 @@ import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
 import { InvoiceService } from "src/app/services/secretariat/patients/invoice.service";
 import { ActGroupService } from "src/app/services/secretariat/shared/act-group.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 
 @Component({
   selector: "app-activities-detail",
@@ -33,10 +35,17 @@ export class ActivitiesDetailComponent implements OnInit {
   endDateControl = new FormControl();
   rubricControl = new FormControl(this.rubricFirstOption);
   searchControl = new FormControl("");
+
+  activityTotal = 0;
+  paidTotal = 0;
+  scTotal = 0;
+  generalTotal = 0;
+
   constructor(
     private actGroupService: ActGroupService,
     private invoiceService: InvoiceService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +110,20 @@ export class ActivitiesDetailComponent implements OnInit {
           //   type: ToastType.Success,
           // });
 
+          this.activityTotal = 0;
+          this.paidTotal = 0;
+          this.scTotal = 0;
+          this.generalTotal = 0;
+
+          this.invoicesList.forEach((value) => {
+            this.activityTotal += value.total;
+            this.paidTotal += value.a_payer - value.creance.montant;
+            this.scTotal += value.montant_pec;
+          });
+
+          this.generalTotal =
+            this.activityTotal + this.paidTotal + this.scTotal;
+
           this.refreshInvoices();
         },
         error: (error) => {
@@ -126,5 +149,35 @@ export class ActivitiesDetailComponent implements OnInit {
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
       );
+  }
+
+  printInvoice(invoiceId: number) {
+    this.invoiceService.loadPdf(invoiceId).subscribe({
+      next: (data) => {
+        this.toastService.show({
+          messages: ["Génération du reçu."],
+          type: ToastType.Success,
+        });
+
+        const pdfModalRef = this.modalService.open(PdfModalComponent, {
+          size: "xl",
+          centered: true,
+          // scrollable: true,
+          backdrop: "static",
+        });
+
+        pdfModalRef.componentInstance.title = "Reçu";
+        pdfModalRef.componentInstance.pdfSrc = data;
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          messages: ["Echec de la génération du reçu."],
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 }

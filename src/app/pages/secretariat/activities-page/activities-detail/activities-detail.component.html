@@ -2,72 +2,56 @@
   title="Requêtes des activités du secrétariat"
   closeButtonText="Fermer"
 >
-  <div class="row g-4 align-items-center">
-    <div class="col-md-7 col-xl-4">
-      <div class="hstack gap-3">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <app-input
-              label="Date de début"
-              type="date"
-              [maxDate]="today"
-              [control]="startDateControl"
-            >
-            </app-input>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <app-input
-              label="Date de fin"
-              type="date"
-              [maxDate]="today"
-              [control]="endDateControl"
-            >
-            </app-input>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="mb-3">
-            <app-select
-              label="Rubrique"
-              [clearable]="false"
-              [options]="rubrics"
-              [control]="rubricControl"
-            ></app-select>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="search-box mt-2">
-            <input
-              type="text"
-              name="searchTerm"
-              class="form-control"
-              placeholder="Rechercher"
-            />
-            <!-- 
-                [(ngModel)]="searchTerm"
-                      (ngModelChange)="searchPatients()" -->
-            <i class="ri-search-line search-icon"></i>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <app-input
+          label="Date de début"
+          type="date"
+          [maxDate]="today"
+          [control]="startDateControl"
+        >
+        </app-input>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <app-input
+          label="Date de fin"
+          type="date"
+          [maxDate]="today"
+          [control]="endDateControl"
+        >
+        </app-input>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <app-select
+          label="Rubrique"
+          [clearable]="false"
+          [options]="rubrics"
+          [control]="rubricControl"
+        ></app-select>
       </div>
     </div>
 
-    <!-- <div class="d-flex col-md-5 col-xl-8">
-      <button
-        type="button"
-        class="btn btn-success btn-label ms-auto"
-        (click)="openActivitiesDetailModal()"
-      >
-        <i
-          class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
-        ></i>
-        Activités
-      </button>
-    </div> -->
+    <div class="col-md-6">
+      <div class="search-box mt-4">
+        <input
+          type="text"
+          name="searchTerm"
+          class="form-control"
+          placeholder="Rechercher"
+        />
+        <!-- 
+          [(ngModel)]="searchTerm"
+                (ngModelChange)="searchPatients()" -->
+        <i class="ri-search-line search-icon"></i>
+      </div>
+    </div>
   </div>
 
   <hr />
@@ -75,7 +59,9 @@
   <div class="row">
     <div class="col-12">
       <div class="table-responsive table-card">
-        <table class="table table-hover table-striped align-middle mb-0">
+        <table
+          class="table table-hover table-striped table-bordered align-middle mb-0"
+        >
           <thead class="table-light text-muted">
             <tr>
               <th scope="col">{{ "N° Reçu" | uppercase }}</th>
@@ -109,15 +95,25 @@
                   [term]="searchTerm.split(' ')[1]"
                 ></ngb-highlight>
               </td> -->
-              <td>{{ invoice.prestation.tarifs[0].libelle }}</td>
-              <td>{{ invoice.total }}</td>
-              <td>{{ "Coming soon..." }}</td>
-              <td>{{ invoice.montant_pec }}</td>
+              <td>
+                <span *ngFor="let act of invoice.prestation.tarifs">
+                  {{ act.libelle + ", " }}
+                </span>
+              </td>
+              <td class="text-end">{{ invoice.total | mask : "separator" }}</td>
+              <td class="text-end">
+                {{
+                  invoice.a_payer - invoice.creance.montant | mask : "separator"
+                }}
+              </td>
+              <td class="text-end">
+                {{ invoice.montant_pec | mask : "separator" }}
+              </td>
               <td>{{ invoice.date_facture | date : "dd/MM/yyyy" }}</td>
 
-              <ng-template #noInsurance>
+              <!-- <ng-template #noInsurance>
                 <td><em>Non assuré</em></td>
-              </ng-template>
+              </ng-template> -->
 
               <td>
                 <div class="d-inline-block" ngbDropdown container="body">
@@ -158,10 +154,22 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th colspan="3" class="text-end">{{ invoicesList.length }}</th>
+              <th class="text-end">{{ activityTotal | mask : "separator" }}</th>
+              <th class="text-end">{{ paidTotal | mask : "separator" }}</th>
+              <th class="text-end">{{ scTotal | mask : "separator" }}</th>
+              <th></th>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
   </div>
+
+  <hr />
 
   <div class="row">
     <div class="col-12">
