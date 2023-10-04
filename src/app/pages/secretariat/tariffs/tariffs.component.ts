@@ -10,6 +10,9 @@ import { TariffService } from "src/app/services/secretariat/shared/tariff.servic
   styleUrls: ["./tariffs.component.scss"],
 })
 export class TariffsComponent implements OnInit {
+  // bread crumb items
+  breadCrumbItems!: Array<{}>;
+
   actGroups!: ActGroup[];
   selectedGroupTariffs!: Tariff[];
 
@@ -33,6 +36,14 @@ export class TariffsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    /**
+     * BreadCrumb
+     */
+    this.breadCrumbItems = [
+      { label: "Renseignements" },
+      { label: "Tarifs", active: true },
+    ];
+
     this.actGroupService.getAll().subscribe({
       next: (data) => {
         this.actGroups = data;
