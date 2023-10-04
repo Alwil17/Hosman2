@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface CaisseRepository extends JpaRepository<Caisse,Long> {
@@ -23,4 +24,7 @@ public interface CaisseRepository extends JpaRepository<Caisse,Long> {
     Boolean existsByLibelle(String libelle);
     Optional<Caisse> findByOuvert(boolean ouvert);
     Boolean existsByOuvert(boolean ouvert);
+
+    @Query("select c from Caisse c where c.date_ouverture >= :datemin or c.date_fermeture <= :datemax")
+    List<Caisse> findByDateminAndDatemax(LocalDateTime datemin, LocalDateTime datemax);
 }

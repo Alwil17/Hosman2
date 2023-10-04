@@ -154,6 +154,20 @@ public class CaisseServiceImpl implements CaisseService {
         return caisseResponse;
     }
 
+    @Override
+    public Caisse getCaisseByLibelle(String libelle) {
+        log.info("CaisseServiceImpl | getCaisseByLibelle is called");
+        Caisse caisse
+                = caisseRepository.findByLibelle(libelle).isPresent() ? caisseRepository.findByLibelle(libelle).get() : null;
+        return caisse;
+    }
+
+    @Override
+    public List<Caisse> getCaisseByDateminAndDatexax(LocalDateTime datemin, LocalDateTime datemax) {
+        log.info("CaisseServiceImpl | getCaisseByDateminAndDatexax is called");
+        return caisseRepository.findByDateminAndDatemax(datemin, datemax);
+    }
+
 
     @Override
     public CaisseResponse closeCaisseById(long caisseId) {
