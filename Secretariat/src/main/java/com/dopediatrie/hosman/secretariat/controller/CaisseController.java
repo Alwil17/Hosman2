@@ -31,6 +31,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @RestController
 @RequestMapping("/caisse")
 @RequiredArgsConstructor
@@ -52,13 +54,13 @@ public class CaisseController {
     }
 
     @GetMapping("/report")
-    public ResponseEntity<Resource> getDailyReport(@RequestParam(value = "datemin", required = false) String datemin, @RequestParam(value = "datemax", required = false) String datemax) throws IOException {
+    public ResponseEntity<Resource> getDailyReport(@RequestParam(value = "datemin", required = false) String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "vue") String vue) throws IOException {
         log.info("CaisseController | getDailyReport is called");
         HttpHeaders headers = new HttpHeaders();
         Resource resource;
         URI uri;
         if(datemin == null && datemax == null){
-            uri = getReportForCurrentDate();
+            uri = getReportForCurrentDate(vue);
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("inline", uri.toURL().toString());
 
@@ -79,10 +81,20 @@ public class CaisseController {
                 String libelleCaisse = "Caisse_"+datemin;
                 Caisse caisse = caisseService.getCaisseByLibelle(libelleCaisse);
                 if (caisse == null){
-                    //dateOuverture = LocalDateTime.parse(dateOuv);
                     dateFer = datemin +"T23:59:59";
                     dateFermeture = LocalDateTime.parse(dateFer);
-                    caisses = caisseService.getCaisseByDateminAndDatexax(dateOuverture, dateFermeture);
+
+                    CaisseResponse currentCaisse = caisseService.getCurrentCaisse();
+                    if(currentCaisse != null && currentCaisse.getDate_ouverture().isBefore(dateOuverture)){
+                        dateOuverture = currentCaisse.getDate_ouverture();
+                        caisse = new Caisse();
+                        copyProperties(currentCaisse, caisse);
+                        caisses.add(caisse);
+                    }else{
+                        caisses = caisseService.getCaisseByDateminAndDatexax(dateOuverture, dateFermeture);
+                    }
+                    //dateOuverture = LocalDateTime.parse(dateOuv);
+
                 }else {
                     dateOuverture = caisse.getDate_ouverture();
                     if(caisse.getDate_fermeture() == null){
@@ -107,22 +119,21 @@ public class CaisseController {
             headers.setContentType(MediaType.TEXT_PLAIN);
             resource = new ByteArrayResource("Aucune caisse trouvee pour cette periode".getBytes());
         }else{
-            /*LocalDateTime minDate = caisses.get(0).getDate_ouverture();
-            LocalDateTime maxDate = caisses.get(0).getDate_fermeture();*/
-            dateOuverture = caisses.get(0).getDate_ouverture();
+            LocalDateTime minDate = dateOuverture;
+            LocalDateTime maxDate = dateFermeture;
 
             for (Caisse caisse : caisses) {
-                if (caisse.getDate_ouverture().isBefore(dateOuverture)) {
+                if (caisse.getDate_ouverture().isBefore(minDate)) {
                     dateOuverture = caisse.getDate_ouverture();
                 }
-                /*if (caisse.getDate_fermeture().isAfter(maxDate)) {
-                    maxDate = caisse.getDate_fermeture();
-                }*/
+                if (caisse.getDate_fermeture() != null && caisse.getDate_fermeture().isAfter(maxDate)) {
+                    dateFermeture = caisse.getDate_fermeture();
+                }
             }
             // Les min et max ont été déterminés.
             log.info(dateOuverture);
             log.info(dateFermeture);
-            uri = generateReportFor(dateOuverture, dateFermeture);
+            uri = generateReportFor(dateOuverture, dateFermeture, vue);
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("inline", uri.toURL().toString());
 
@@ -132,10 +143,12 @@ public class CaisseController {
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
-    public URI generateReportFor(LocalDateTime dateOuverture, LocalDateTime dateFermerture) throws IOException {
+    public URI generateReportFor(LocalDateTime dateOuverture, LocalDateTime dateFermerture, String vue) throws IOException {
         String datemin = dateOuverture.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String datemax = dateFermerture.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String sql = "select a.libelle as acte, b.* \n" +
+        String datedebut = dateOuverture.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String datefin = dateFermerture.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        /*String sql = "select a.libelle as acte, b.* \n" +
                 "from acte a \n" +
                 "left join (SELECT a.libelle AS libelle, \n" +
                 "  SUM(\n" +
@@ -168,9 +181,10 @@ public class CaisseController {
                 "WHERE \n" +
                 "  f.date_facture >= '"+ datemin +"' \n" +
                 "  and f.date_facture <= '"+ datemax +"' \n" +
-                "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";
+                "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";*/
+        String sql = Utils.getQuery(datemin, datemax, vue);
         List<FicheRecap> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> new FicheRecap(
-                resultSet.getString("acte"),
+                resultSet.getString("actec"),
                 resultSet.getInt("nb_especes"),
                 resultSet.getDouble("total_especes"),
                 resultSet.getInt("nb_cheque"),
@@ -332,7 +346,8 @@ public class CaisseController {
         double ca_total = total_montant_total - depensesc;
 
         Context context = new Context();
-        //context.setVariable("date_jour", datejour);
+        context.setVariable("date_debut", datedebut);
+        context.setVariable("date_fin", datefin);
         context.setVariable("recaps", rs);
         context.setVariable("total_nb_especes", total_nb_especes);
         context.setVariable("total_total_especes", total_total_especes);
@@ -348,7 +363,7 @@ public class CaisseController {
         context.setVariable("depenses", depensesc);
         context.setVariable("ca_total", ca_total);
 
-        String htmlContentToRender = templateEngine.process("ficherecap", context);
+        String htmlContentToRender = templateEngine.process("ficherecapperiod", context);
         String xHtml = Utils.xhtmlConvert(htmlContentToRender);
 
         ITextRenderer renderer = new ITextRenderer();
@@ -366,18 +381,18 @@ public class CaisseController {
         renderer.setDocumentFromString(xHtml, baseUrl);
         renderer.layout();
 
-        OutputStream outputStream = new FileOutputStream("src//recap.pdf");
+        OutputStream outputStream = new FileOutputStream("src//recapperiod.pdf");
         renderer.createPDF(outputStream);
         outputStream.close();
 
         return FileSystems
                 .getDefault()
                 .getPath("src")
-                .resolve("recap.pdf")
+                .resolve("recapperiod.pdf")
                 .toUri();
     }
 
-    public URI getReportForCurrentDate() throws IOException {
+    public URI getReportForCurrentDate(String vue) throws IOException {
 
         CaisseResponse caisse = caisseService.getCurrentCaisse();
         String datemin = caisse.getDate_ouverture().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -391,7 +406,7 @@ public class CaisseController {
             datejour = caisse.getDate_fermeture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
 
-        String sql = "select a.libelle as acte, b.* \n" +
+        /*String sql = "select a.libelle as acte, b.* \n" +
                 "from acte a \n" +
                 "left join (SELECT a.libelle AS libelle, \n" +
                 "  SUM(\n" +
@@ -424,9 +439,10 @@ public class CaisseController {
                 "WHERE \n" +
                 "  f.date_facture >= '"+ datemin +"' \n" +
                 "  and f.date_facture <= '"+ datemax +"' \n" +
-                "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";
+                "GROUP BY a.libelle)b on a.libelle = b.libelle order by a.position asc";*/
+        String sql = Utils.getQuery(datemin, datemax, vue);
         List<FicheRecap> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> new FicheRecap(
-                resultSet.getString("acte"),
+                resultSet.getString("actec"),
                 resultSet.getInt("nb_especes"),
                 resultSet.getDouble("total_especes"),
                 resultSet.getInt("nb_cheque"),

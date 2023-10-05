@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta charset="UTF-8"/>
-    <title>Fiche récapitulative du jour</title>
+    <title>Fiche récapitulative périodique</title>
     <style>
         @page {
             /* dimensions for the whole page */
@@ -147,14 +147,14 @@
 <body>
 
 <div class="text-center">
-    <h3><u>FICHE RECAPITULATIVE DES RECETTES DU JOUR</u></h3>
+    <h3><u>FICHE RECAPITULATIVE DES RECETTES SUR UNE PERIODE</u></h3>
 </div>
 
 <div class="content">
     <table style="width: 100%;">
         <tbody>
         <tr style="background: #fff; border: solid white !important;">
-            <td style="width: 50%; text-align: start; border: solid white !important;">Date du jour: <b th:text="${date_jour}">01/07/2023</b></td>
+            <td style="width: 50%; text-align: start; border: solid white !important;">Période du: <b th:text="${date_debut}">01/07/2023</b> au <b th:text="${date_fin}">01/07/2023</b> </td>
             <td style="width: 50%; right: 0; text-align: right; border: solid white !important;">Rendu par: SE</td>
         </tr>
         </tbody>

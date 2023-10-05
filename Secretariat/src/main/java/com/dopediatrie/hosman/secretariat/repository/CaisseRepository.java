@@ -25,6 +25,6 @@ public interface CaisseRepository extends JpaRepository<Caisse,Long> {
     Optional<Caisse> findByOuvert(boolean ouvert);
     Boolean existsByOuvert(boolean ouvert);
 
-    @Query("select c from Caisse c where c.date_ouverture >= :datemin or c.date_fermeture <= :datemax")
+    @Query("select c from Caisse c where c.date_ouverture >= :datemin and (c.date_fermeture is null or c.date_fermeture <= :datemax)")
     List<Caisse> findByDateminAndDatemax(LocalDateTime datemin, LocalDateTime datemax);
 }
