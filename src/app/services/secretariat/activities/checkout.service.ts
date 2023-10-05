@@ -31,9 +31,6 @@ export class CheckoutService {
     let headers = new HttpHeaders();
     headers = headers.set("Accept", "application/pdf");
 
-    console.log(`${apiEndpoint}/report${apiComplementary}`);
-    
-
     return this.http.get(`${apiEndpoint}/report${apiComplementary}`, {
       headers: headers,
       responseType: "blob",

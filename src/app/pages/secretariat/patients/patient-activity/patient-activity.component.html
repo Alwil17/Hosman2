@@ -223,7 +223,7 @@
               <div class="col-md-4">
                 <div class="mb-3">
                   <app-select
-                    label="Médecin"
+                    label="Médecin demandeur"
                     [isMandatory]="true"
                     [options]="doctors"
                     [canAddOption]="docAddable"
@@ -236,7 +236,6 @@
                 <div class="mb-3">
                   <app-select
                     label="Effectué par"
-                    [isMandatory]="true"
                     [options]="performedBys"
                     [control]="performedByControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
@@ -276,7 +275,6 @@
                   <app-input
                     label="Provenance"
                     placeholder="Clinique/Hôpital de provenance du patient"
-                    [isMandatory]="true"
                     [control]="originControl"
                     [isFormSubmitted]="isActivityFormSubmitted"
                   ></app-input>

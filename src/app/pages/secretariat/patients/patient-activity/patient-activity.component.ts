@@ -77,9 +77,7 @@ export class PatientActivityComponent implements OnInit {
   doctorControl = new FormControl({ value: null, disabled: true }, [
     Validators.required,
   ]);
-  performedByControl = new FormControl({ value: null, disabled: true }, [
-    Validators.required,
-  ]);
+  performedByControl = new FormControl({ value: null, disabled: true });
 
   activityDateControl = new FormControl(this.today, [Validators.required]);
   quantityControl = new FormControl(1, [Validators.required]);
@@ -236,8 +234,14 @@ export class PatientActivityComponent implements OnInit {
 
       if (value && value.text == "Externe") {
         this.docAddable = true;
+
+        this.originControl.setValue(null);
+        this.originControl.enable();
       } else {
         this.docAddable = false;
+
+        this.originControl.setValue("PISJO");
+        this.originControl.disable();
       }
 
       this.doctorControl.setValue(null);
@@ -300,13 +304,13 @@ export class PatientActivityComponent implements OnInit {
       this.doctorControl.updateValueAndValidity();
       this.doctorControl.disable();
 
-      this.performedByControl.clearValidators();
-      this.performedByControl.updateValueAndValidity();
+      // this.performedByControl.clearValidators();
+      // this.performedByControl.updateValueAndValidity();
       this.performedByControl.disable();
 
       // Disabling origin control
-      this.originControl.clearValidators();
-      this.originControl.updateValueAndValidity();
+      // this.originControl.clearValidators();
+      // this.originControl.updateValueAndValidity();
       this.originControl.setValue("PISJO");
       this.originControl.disable();
     } else {
@@ -330,13 +334,13 @@ export class PatientActivityComponent implements OnInit {
       this.doctorControl.updateValueAndValidity();
       this.doctorControl.enable();
 
-      this.performedByControl.addValidators([Validators.required]);
-      this.performedByControl.updateValueAndValidity();
+      // this.performedByControl.addValidators([Validators.required]);
+      // this.performedByControl.updateValueAndValidity();
       this.performedByControl.enable();
 
       // Enabling origin control
-      this.originControl.addValidators([Validators.required]);
-      this.originControl.updateValueAndValidity();
+      // this.originControl.addValidators([Validators.required]);
+      // this.originControl.updateValueAndValidity();
       this.originControl.setValue(null);
       this.originControl.enable();
     }
