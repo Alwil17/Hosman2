@@ -96,9 +96,21 @@
                 ></ngb-highlight>
               </td> -->
               <td>
-                <span *ngFor="let act of invoice.prestation.tarifs">
-                  {{ act.libelle + ", " }}
-                </span>
+                <ng-container
+                  *ngFor="
+                    let act of invoice.prestation.tarifs | slice : 0 : 5;
+                    index as i;
+                    count as c
+                  "
+                >
+                  <span>
+                    {{ act.libelle }}
+                  </span>
+                  <span *ngIf="i < 4"> <b>*</b> </span>
+                  <span *ngIf="i == 4 && c < invoice.prestation.tarifs.length"
+                    ><b> * </b> <b> ... </b></span
+                  >
+                </ng-container>
               </td>
               <td class="text-end">{{ invoice.total | mask : "separator" }}</td>
               <td class="text-end">
