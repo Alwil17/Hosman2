@@ -7,6 +7,7 @@ import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.FactureModeRepository;
 import com.dopediatrie.hosman.secretariat.repository.PrestationTarifRepository;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
 import com.lowagie.text.DocumentException;
 import lombok.RequiredArgsConstructor;
@@ -138,13 +139,15 @@ public class FactureController {
             assurance_nom = "LUI-MÊME";
             taux_assurance = 0;
         }
+        String mode = Str.convertModePayementToString(factureResponse.getMode_payements());
+
         Context context = new Context();
         context.setVariable("reference",factureResponse.getReference());
         context.setVariable("date_heure",factureResponse.getDate_facture().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 //        context.setVariable("patient",factureResponse.getReference());
         context.setVariable("total",factureResponse.getTotal());
         context.setVariable("montant_pec",factureResponse.getMontant_pec());
-//        context.setVariable("majoration",factureResponse.getMajoration().getMontant());
+        context.setVariable("majoration",factureResponse.getMajoration().getMontant());
         context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
         context.setVariable("verse", verse);
@@ -156,7 +159,7 @@ public class FactureController {
         context.setVariable("attente", nuum);
         context.setVariable("nom_assurance", assurance_nom);
         context.setVariable("taux_assurance", taux_assurance);
-        context.setVariable("mode", factureResponse.getMode_payements().get(0));
+        context.setVariable("mode", mode);
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);
