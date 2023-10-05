@@ -8,6 +8,7 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 import { ActivitiesDetailComponent } from "../activities-detail/activities-detail.component";
 import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
+import { ReportSearchCriteriaModalComponent } from "./report-search-criteria-modal/report-search-criteria-modal.component";
 
 @Component({
   selector: "app-receipts-summary",
@@ -127,7 +128,7 @@ export class ReceiptsSummaryComponent implements OnInit {
         const pdfModalRef = this.modalService.open(PdfModalComponent, {
           size: "xl",
           centered: true,
-          // scrollable: true,
+          scrollable: true,
           backdrop: "static",
         });
 
@@ -146,33 +147,45 @@ export class ReceiptsSummaryComponent implements OnInit {
     });
   }
 
-  printReport() {
-    this.checkoutService.loadPdf().subscribe({
-      next: (data) => {
-        this.toastService.show({
-          messages: ["Génération de la fiche de compte."],
-          type: ToastType.Success,
-        });
-
-        const pdfModalRef = this.modalService.open(PdfModalComponent, {
-          size: "xl",
-          centered: true,
-          scrollable: true,
-          backdrop: "static",
-        });
-
-        pdfModalRef.componentInstance.title = "Fiche de comptes";
-        pdfModalRef.componentInstance.pdfSrc = data;
-      },
-      error: (e) => {
-        console.error(e);
-
-        this.toastService.show({
-          messages: ["Echec de la génération de la fiche de comptes."],
-          delay: 10000,
-          type: ToastType.Error,
-        });
-      },
-    });
+  displayReportModal() {
+    const reportModal = this.modalService.open(
+      ReportSearchCriteriaModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
   }
+
+  // printReport() {
+  //   this.checkoutService.loadPdf().subscribe({
+  //     next: (data) => {
+  //       this.toastService.show({
+  //         messages: ["Génération de la fiche de compte."],
+  //         type: ToastType.Success,
+  //       });
+
+  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
+  //         size: "xl",
+  //         centered: true,
+  //         scrollable: true,
+  //         backdrop: "static",
+  //       });
+
+  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
+  //       pdfModalRef.componentInstance.pdfSrc = data;
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+
+  //       this.toastService.show({
+  //         messages: ["Echec de la génération de la fiche de comptes."],
+  //         delay: 10000,
+  //         type: ToastType.Error,
+  //       });
+  //     },
+  //   });
+  // }
 }

@@ -1,0 +1,32 @@
+<app-simple-modal title="Fiche récapitulative" closeButtonText="Fermer">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <app-input
+        label="Date de début"
+        type="date"
+        [maxDate]="today"
+        [control]="startDateControl"
+      >
+      </app-input>
+    </div>
+    <div class="col-md-6 mb-3">
+      <app-input
+        label="Date de fin"
+        type="date"
+        [maxDate]="today"
+        [control]="endDateControl"
+      >
+      </app-input>
+    </div>
+  </div>
+
+  <div class="d-flex mt-3">
+    <button class="btn btn-success ms-auto" (click)="displayReportPdf()">
+      Imprimer la version résumée
+    </button>
+
+    <button class="btn btn-secondary ms-2" (click)="displayReportPdf()">
+      Imprimer la version détaillée
+    </button>
+  </div>
+</app-simple-modal>

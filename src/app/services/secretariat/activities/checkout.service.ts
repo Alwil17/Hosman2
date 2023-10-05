@@ -11,11 +11,30 @@ const apiEndpoint = environment.baseUrl + "caisse";
 export class CheckoutService {
   constructor(private http: HttpClient) {}
 
-  loadPdf(): Observable<any> {
+  loadPdfBy(criteria?: { minDate: Date; maxDate?: Date }): Observable<any> {
+    let apiComplementary = "?";
+
+    if (criteria?.minDate) {
+      apiComplementary +=
+        "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+    }
+
+    if (criteria?.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+
+    if (!criteria?.minDate && !criteria?.maxDate) {
+      apiComplementary = "";
+    }
+
     let headers = new HttpHeaders();
     headers = headers.set("Accept", "application/pdf");
 
-    return this.http.get(`${apiEndpoint}/report`, {
+    console.log(`${apiEndpoint}/report${apiComplementary}`);
+    
+
+    return this.http.get(`${apiEndpoint}/report${apiComplementary}`, {
       headers: headers,
       responseType: "blob",
     });

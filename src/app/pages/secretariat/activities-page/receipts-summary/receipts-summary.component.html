@@ -38,18 +38,19 @@
           class="btn btn-success btn-label ms-auto"
           (click)="openActivitiesDetailModal()"
         >
-          <i
-            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
-          ></i>
+          <i class="ri-history-line label-icon align-middle fs-16 me-2"></i>
           Activités
         </button>
         <button
           type="button"
           class="btn btn-secondary btn-label ms-2"
-          (click)="printReport()"
+          (click)="displayReportModal()"
         >
-          <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-          Imprimer la fiche de compte
+          <i
+            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
+          ></i>
+          <!-- ri-printer-line -->
+          Fiche récapitulative
         </button>
       </div>
       <!-- <div class="d-flex col-md-5 col-xl-8">
@@ -112,9 +113,9 @@
                 </td>
                 <td>-</td>
 
-                <ng-template #noInsurance>
+                <!-- <ng-template #noInsurance>
                   <td><em>Non assuré</em></td>
-                </ng-template>
+                </ng-template> -->
 
                 <td>
                   <div class="d-inline-block" ngbDropdown container="body">

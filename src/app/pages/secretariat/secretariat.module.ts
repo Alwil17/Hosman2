@@ -17,6 +17,7 @@ import { ActivitiesPageComponent } from "./activities-page/activities-page.compo
 import { ReceiptsSummaryComponent } from "./activities-page/receipts-summary/receipts-summary.component";
 import { ActivitiesDetailComponent } from "./activities-page/activities-detail/activities-detail.component";
 import { TariffsComponent } from './tariffs/tariffs.component';
+import { ReportSearchCriteriaModalComponent } from './activities-page/receipts-summary/report-search-criteria-modal/report-search-criteria-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TariffsComponent } from './tariffs/tariffs.component';
     ReceiptsSummaryComponent,
     ActivitiesDetailComponent,
     TariffsComponent,
+    ReportSearchCriteriaModalComponent,
   ],
   imports: [
     CommonModule,
