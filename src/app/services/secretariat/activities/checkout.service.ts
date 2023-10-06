@@ -11,12 +11,22 @@ const apiEndpoint = environment.baseUrl + "caisse";
 export class CheckoutService {
   constructor(private http: HttpClient) {}
 
-  loadPdfBy(criteria?: { minDate: Date; maxDate?: Date }): Observable<any> {
-    let apiComplementary = "?";
+  loadPdfBy(criteria: {
+    isDetailed: boolean;
+    minDate: Date;
+    maxDate?: Date;
+  }): Observable<any> {
+    let apiComplementary = "?vue=";
+
+    if (criteria.isDetailed) {
+      apiComplementary += "tout";
+    } else {
+      apiComplementary += "compact";
+    }
 
     if (criteria?.minDate) {
       apiComplementary +=
-        "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+        "&datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
     }
 
     if (criteria?.maxDate) {
@@ -24,9 +34,9 @@ export class CheckoutService {
         "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
     }
 
-    if (!criteria?.minDate && !criteria?.maxDate) {
-      apiComplementary = "";
-    }
+    // if (!criteria?.minDate && !criteria?.maxDate) {
+    //   apiComplementary = "";
+    // }
 
     let headers = new HttpHeaders();
     headers = headers.set("Accept", "application/pdf");

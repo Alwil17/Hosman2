@@ -26,14 +26,14 @@ export class ReportSearchCriteriaModalComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  displayReportPdf() {
+  displayReportPdf(isDetailed: boolean) {
     const minDate = new Date(this.startDateControl.value);
     const maxDate = this.endDateControl.value
       ? new Date(this.endDateControl.value)
       : undefined;
 
     this.checkoutService
-      .loadPdfBy({ minDate: minDate, maxDate: maxDate })
+      .loadPdfBy({ isDetailed: isDetailed, minDate: minDate, maxDate: maxDate })
       .subscribe({
         next: (data) => {
           this.toastService.show({
