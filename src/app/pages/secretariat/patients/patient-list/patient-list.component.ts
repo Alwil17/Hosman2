@@ -10,6 +10,8 @@ import { SelectOption } from "src/app/models/extras/select.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
+import { PatientFormModalComponent } from "../patient-form-modal/patient-form-modal.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-patient-list",
@@ -22,10 +24,16 @@ export class PatientListComponent implements OnInit, AfterViewInit {
 
   searchTerm = "";
 
+  isTextTerm = true;
+
   searchCriteria: SelectOption[] = [
     {
       id: "fullname",
       text: "Nom et prénoms",
+    },
+    {
+      id: "firstname",
+      text: "Prénoms",
     },
     {
       id: "reference",
@@ -41,6 +49,11 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  // To set date max
+  today = new Date().toLocaleDateString("fr-ca");
+
+  dateTermControl = new FormControl(this.today);
+
   searchCriterionControl = new FormControl(this.searchCriteria[0]);
 
   searchedPatients: Patient[] = [];
@@ -53,7 +66,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
 
   constructor(
     private secretariatRouter: SecretariatRouterService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private modalService: NgbModal
   ) {
     // this.patientService.getAll().subscribe({
     //   next: (data) => {
@@ -83,6 +97,22 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     ];
 
     this.searchCriterionControl.valueChanges.subscribe((value) => {
+      if (
+        value.id == this.searchCriteria[0].id ||
+        value.id == this.searchCriteria[1].id ||
+        value.id == this.searchCriteria[2].id
+      ) {
+        this.isTextTerm = true;
+      } else {
+        this.isTextTerm = false;
+      }
+
+      this.searchPatients();
+    });
+
+    this.dateTermControl.valueChanges.subscribe((value) => {
+      console.log(value);
+
       this.searchPatients();
     });
   }
@@ -96,8 +126,16 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     //     )
     //   : [];
 
+    let searchTerm = "";
+    if (this.isTextTerm) {
+      searchTerm = this.searchTerm;
+    } else {
+      searchTerm = this.dateTermControl.value;
+      // new Date(this.dateTermControl.value).toLocaleDateString("fr-ca");
+    }
+
     this.patientService
-      .searchBy(this.searchTerm, this.searchCriterionControl.value?.id)
+      .searchBy(searchTerm, this.searchCriterionControl.value?.id)
       .subscribe({
         next: (data) => {
           this.searchedPatients = data;
@@ -127,7 +165,7 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   }
 
   // async
-  view(patient: any) {
+  goToPatientActivity(patient: Patient) {
     this.patientService.setActivePatient(patient.id).subscribe({
       next: async (data) => {
         await this.secretariatRouter.navigateToPatientActivity();
@@ -142,5 +180,33 @@ export class PatientListComponent implements OnInit, AfterViewInit {
 
   async goToPatientNew() {
     await this.secretariatRouter.navigateToPatientCreate();
+  }
+
+  openPatientModificationModal(patient: Patient) {
+    const patientModifyModalRef = this.modalService.open(
+      PatientFormModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        // scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
+
+    patientModifyModalRef.componentInstance.title =
+      "Modifier les informations du patient";
+    patientModifyModalRef.componentInstance.patientInfos = patient;
+
+    patientModifyModalRef.componentInstance.isPatientModified.subscribe(
+      (isPatientModified: boolean) => {
+        console.log("Patient modified : " + isPatientModified);
+
+        if (isPatientModified) {
+          patientModifyModalRef.close();
+          this.searchPatients();
+        }
+      }
+    );
   }
 }

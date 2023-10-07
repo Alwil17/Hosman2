@@ -44,15 +44,15 @@ export class PatientService {
 
     if (criterion == "fullname") {
       apiComplementary = "nom";
+    } else if (criterion == "firstname") {
+      apiComplementary = "prenoms";
     } else if (criterion == "reference") {
       apiComplementary = "reference";
+    } else if (criterion == "dob") {
+      apiComplementary = "naissance";
+    } else if (criterion == "doc") {
+      apiComplementary = "entree";
     }
-    // else if(criterion == "dob") {
-    //   apiComplementary = ""
-    // }
-    // else if(criterion == "doc") {
-    //   apiComplementary = ""
-    // }
 
     if (searchTerm == "" || apiComplementary == "") {
       return of([]);

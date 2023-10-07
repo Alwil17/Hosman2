@@ -11,23 +11,7 @@
       <div class="row g-4 align-items-center">
         <div class="col-md-7 col-xl-4">
           <div class="hstack gap-3">
-            <!-- <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
-              <button
-                type="button"
-                class="btn btn-light btn-icon waves-effect arrow-none"
-                ngbDropdownToggle
-              >
-                <i class="ri-filter-2-fill"></i>
-              </button>
-              <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                <button ngbDropdownItem>Nom & Prénom(s)</button>
-                <button ngbDropdownItem>Numéro patient</button>
-                <button ngbDropdownItem>Date de naissance</button>
-                <button ngbDropdownItem>Date d'entrée</button>
-              </div>
-            </div> -->
-
-            <div class="search-box">
+            <div class="search-box" *ngIf="isTextTerm; else dateTermField">
               <input
                 #firstField
                 type="text"
@@ -39,6 +23,16 @@
               />
               <i class="ri-search-line search-icon"></i>
             </div>
+            <ng-template #dateTermField>
+              <div class="col-md-6">
+                <app-input
+                  type="date"
+                  [maxDate]="today"
+                  [control]="dateTermControl"
+                >
+                </app-input>
+              </div>
+            </ng-template>
 
             <div><b>par</b></div>
 
@@ -90,7 +84,7 @@
               <tbody>
                 <tr
                   *ngFor="let patient of patients"
-                  (dblclick)="view(patient)"
+                  (dblclick)="goToPatientActivity(patient)"
                   class="user-select-none"
                 >
                   <td>{{ patient.reference }}</td>
@@ -98,24 +92,52 @@
                   <td>
                     <ngb-highlight
                       [result]="patient.nom"
-                      [term]="searchTerm.split(' ')[0]"
+                      [term]="
+                        searchCriterionControl.value?.id == 'fullname'
+                          ? searchTerm.split(' ')[0]
+                          : ''
+                      "
                     ></ngb-highlight>
                   </td>
                   <!-- <td>{{ patient.prenoms }}</td> -->
                   <td>
                     <ngb-highlight
                       [result]="patient.prenoms"
-                      [term]="searchTerm.split(' ')[1]"
+                      [term]="
+                        searchCriterionControl.value?.id != 'firstname'
+                          ? searchTerm.split(' ')[1]
+                          : searchTerm
+                      "
                     ></ngb-highlight>
                   </td>
-                  <td>{{ patient.date_naissance | date : "dd/MM/yyyy" }}</td>
+                  <td>
+                    <ngb-highlight
+                      [result]="patient.date_naissance | date : 'dd/MM/yyyy'"
+                      [term]="
+                        searchCriterionControl.value?.id == 'dob'
+                          ? (dateTermControl.value | date : 'dd/MM/yyyy')!
+                          : ''
+                      "
+                    ></ngb-highlight>
+                    <!-- {{ patient.date_naissance | date : "dd/MM/yyyy" }} -->
+                  </td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.sexe }}</td>
                   <td>
                     {{ patient.tel1 | mask : "09 09 09 09 09 09 09 09 09 09" }}
                   </td>
 
-                  <td>{{ patient.date_ajout | date : "dd/MM/yyyy" }}</td>
+                  <td>
+                    <ngb-highlight
+                      [result]="patient.date_ajout | date : 'dd/MM/yyyy'"
+                      [term]="
+                        searchCriterionControl.value?.id == 'doc'
+                          ? (dateTermControl.value | date : 'dd/MM/yyyy')!
+                          : ''
+                      "
+                    ></ngb-highlight>
+                    <!-- {{ patient.date_ajout | date : "dd/MM/yyyy" }} -->
+                  </td>
                   <td>{{ patient.no_piece }}</td>
 
                   <td *ngIf="patient.hasInsurance; else noInsurance">
@@ -141,11 +163,23 @@
                           ></i>
                           Voir
                         </button>
-                        <button ngbDropdownItem>
+                        <button
+                          ngbDropdownItem
+                          (click)="openPatientModificationModal(patient)"
+                        >
                           <i
                             class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
                           ></i>
                           Modifier
+                        </button>
+                        <button
+                          ngbDropdownItem
+                          (click)="goToPatientActivity(patient)"
+                        >
+                          <i
+                            class="ri-arrow-right-line label-icon align-middle fs-16 me-2 text-secondary"
+                          ></i>
+                          Aller vers activités/prestations
                         </button>
                       </div>
                     </div>
