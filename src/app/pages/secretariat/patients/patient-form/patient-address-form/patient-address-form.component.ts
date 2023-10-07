@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { CITIES } from "src/app/data/secretariat/cities.data";
@@ -15,7 +24,7 @@ import { NeighborhoodRequest } from "src/app/models/secretariat/patients/request
   templateUrl: "./patient-address-form.component.html",
   styleUrls: ["./patient-address-form.component.scss"],
 })
-export class PatientAddressFormComponent implements OnInit {
+export class PatientAddressFormComponent implements OnInit, AfterViewInit {
   @Input()
   address!: AddressRequest;
 
@@ -44,6 +53,13 @@ export class PatientAddressFormComponent implements OnInit {
 
   cities!: SelectOption[];
   neighborhoods!: SelectOption[];
+
+  @ViewChild("firstField", { read: ElementRef })
+  firstField!: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.firstField.nativeElement.querySelector("input").focus();
+  }
 
   constructor(
     // public modal: NgbActiveModal,

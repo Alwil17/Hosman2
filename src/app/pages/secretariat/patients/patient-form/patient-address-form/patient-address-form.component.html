@@ -17,6 +17,7 @@
       <div class="col-md-6">
         <div class="mb-3">
           <app-select
+            #firstField
             label="Ville"
             [isMandatory]="true"
             [options]="cities"
@@ -42,8 +43,8 @@
       <div class="col-md-6">
         <div class="mb-3">
           <app-input
-            label="Rue"
-            placeholder="Sasir la rue"
+            label="Rue et numéro"
+            placeholder="Sasir la rue et le numéro"
             [control]="paStreetControl"
             [isFormSubmitted]="isPatientAddressFormSubmitted"
           >

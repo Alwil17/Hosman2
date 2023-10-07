@@ -1,4 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
@@ -10,7 +16,7 @@ import { SecretariatRouterService } from "src/app/services/secretariat/router/se
   templateUrl: "./patient-list.component.html",
   styleUrls: ["./patient-list.component.scss"],
 })
-export class PatientListComponent implements OnInit {
+export class PatientListComponent implements OnInit, AfterViewInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -58,6 +64,13 @@ export class PatientListComponent implements OnInit {
     //     console.error(error);
     //   },
     // });
+  }
+
+  @ViewChild("firstField", { read: ElementRef })
+  firstField!: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.firstField.nativeElement.focus();
   }
 
   ngOnInit(): void {

@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
   QueryList,
+  ViewChild,
   ViewChildren,
 } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -40,12 +43,13 @@ import { SelectComponent } from "src/app/shared/form-inputs/select/select.compon
 import { WarningMessages } from "src/app/helpers/messages";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { forkJoin } from "rxjs";
+import { parseIntOrZero } from "src/app/helpers/parsers";
 @Component({
   selector: "app-patient-form",
   templateUrl: "./patient-form.component.html",
   styleUrls: ["./patient-form.component.scss"],
 })
-export class PatientFormComponent implements OnInit {
+export class PatientFormComponent implements OnInit, AfterViewInit {
   @Input()
   patientInfos?: Patient;
 
@@ -126,6 +130,13 @@ export class PatientFormComponent implements OnInit {
   @ViewChildren(SelectComponent)
   selectFields!: QueryList<SelectComponent>;
 
+  @ViewChild("firstField", { read: ElementRef })
+  firstField!: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.firstField.nativeElement.querySelector("input").focus();
+  }
+
   constructor(
     private patientService: PatientService,
     private secretariatRouter: SecretariatRouterService,
@@ -192,6 +203,30 @@ export class PatientFormComponent implements OnInit {
         const dob = calculateExactAge(new Date(value));
 
         this.ageControl.setValue(dob);
+
+        const patientAge = parseIntOrZero(
+          (this.ageControl.value as string).split(" ")[0]
+        );
+
+        if (patientAge < 18) {
+          this.professionControl.setValue(null);
+          this.professionControl.disable();
+
+          this.patientEmployerControl.clearValidators();
+          this.patientEmployerControl.updateValueAndValidity();
+          this.patientEmployerControl.setValue(null);
+          this.patientEmployerControl.disable();
+          this.isEmployerMandatory = false;
+        } else {
+          this.professionControl.enable();
+
+          if (parseIntOrZero(this.hasInsuranceControl.value?.id) >= 2) {
+            this.patientEmployerControl.addValidators([Validators.required]);
+            this.patientEmployerControl.updateValueAndValidity();
+            this.isEmployerMandatory = true;
+          }
+          this.patientEmployerControl.enable();
+        }
       }
     });
 
@@ -199,6 +234,10 @@ export class PatientFormComponent implements OnInit {
       if (!value) {
         return;
       }
+
+      const patientAge = parseIntOrZero(
+        (this.ageControl.value as string).split(" ")[0]
+      );
 
       if (value.id < 2) {
         this.insuranceControl.clearValidators();
@@ -216,10 +255,21 @@ export class PatientFormComponent implements OnInit {
         // this.insuranceRateControl.setValue("");
         this.insuranceRateControl.disable();
 
-        this.patientEmployerControl.clearValidators();
-        this.patientEmployerControl.updateValueAndValidity();
+        // this.patientEmployerControl.clearValidators();
+        // this.patientEmployerControl.updateValueAndValidity();
         // this.patientEmployerControl.setValue("");
         // this.patientEmployerControl.disable();
+
+        this.patientEmployerControl.clearValidators();
+        this.patientEmployerControl.updateValueAndValidity();
+
+        if (patientAge < 18) {
+          this.patientEmployerControl.setValue(null);
+          this.patientEmployerControl.disable();
+        } else {
+          this.patientEmployerControl.enable();
+        }
+
         this.isEmployerMandatory = false;
       } else {
         this.insuranceControl.addValidators([Validators.required]);
@@ -240,10 +290,18 @@ export class PatientFormComponent implements OnInit {
 
         // this.insuranceTag.disabled
 
-        this.patientEmployerControl.addValidators([Validators.required]);
-        this.patientEmployerControl.updateValueAndValidity();
-        this.patientEmployerControl.enable();
-        this.isEmployerMandatory = true;
+        if (patientAge < 18) {
+          this.patientEmployerControl.clearValidators();
+          this.patientEmployerControl.updateValueAndValidity();
+          this.patientEmployerControl.setValue(null);
+          this.patientEmployerControl.disable();
+          this.isEmployerMandatory = false;
+        } else {
+          this.patientEmployerControl.addValidators([Validators.required]);
+          this.patientEmployerControl.updateValueAndValidity();
+          this.patientEmployerControl.enable();
+          this.isEmployerMandatory = true;
+        }
       }
     });
 
@@ -508,11 +566,11 @@ export class PatientFormComponent implements OnInit {
           (cityAndNeighborhood: any) => {
             this.patientAddressControl.setValue(
               cityAndNeighborhood.city +
-                ", " +
+                ", Quartier: " +
                 cityAndNeighborhood.neighborhood +
                 ", " +
                 (formData.rue ?? "--- ") +
-                ", " +
+                ", Boîte postale: " +
                 (formData.bp ?? "--- ") +
                 ", " +
                 (formData.arrondissement ?? "--- ") +

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { PersonToContactRequest } from "src/app/models/secretariat/patients/requests/person-to-contact-request.model";
@@ -8,7 +17,7 @@ import { PersonToContactRequest } from "src/app/models/secretariat/patients/requ
   templateUrl: "./person-to-contact-form.component.html",
   styleUrls: ["./person-to-contact-form.component.scss"],
 })
-export class PersonToContactFormComponent implements OnInit {
+export class PersonToContactFormComponent implements OnInit, AfterViewInit {
   @Input()
   data!: PersonToContactRequest;
 
@@ -25,9 +34,15 @@ export class PersonToContactFormComponent implements OnInit {
   ptcTelControl = new FormControl("", [Validators.required]);
   ptcAddressControl = new FormControl("", [Validators.required]);
 
-  constructor(
-    // public modal: NgbActiveModal
-    ) {}
+  @ViewChild("firstField", { read: ElementRef })
+  firstField!: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.firstField.nativeElement.querySelector("input").focus();
+  }
+
+  constructor() // public modal: NgbActiveModal
+  {}
 
   ngOnInit(): void {
     this.personToContactForm = new FormGroup({
