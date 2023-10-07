@@ -658,8 +658,8 @@ export class PatientActivityComponent implements OnInit {
     const prestation = new PrestationRequest({
       patient_id: this.patientService.getActivePatient().id,
       consulteur_id:
-        this.consultingDoctorControl.value?.id ??
-        this.performedByControl.value?.id,
+        (this.consultingDoctorControl.value?.id ??
+        this.performedByControl.value?.id) ?? this.doctors[0].id,
       date_prestation: new Date(this.activityDateControl.value),
       tarifs: this.table2.map((item) => ({
         tarif_id: item.id,
