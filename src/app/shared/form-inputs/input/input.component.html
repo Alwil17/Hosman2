@@ -26,7 +26,7 @@
             control.errors
         }"
         [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
-        (click)="emitOnInputClick ? emitInputClick() : null"
+        (dblclick)="emitOnInputClick ? emitInputClick() : null"
         (keyup)="
           uppercased || titlecased || firstLetterUppercased ? onChange() : null
         "
@@ -61,7 +61,7 @@
         control.errors
     }"
     [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
-    (click)="emitOnInputClick ? emitInputClick() : null"
+    (dblclick)="emitOnInputClick ? emitInputClick() : null"
     (keyup)="
       uppercased || titlecased || firstLetterUppercased ? onChange() : null
     "
