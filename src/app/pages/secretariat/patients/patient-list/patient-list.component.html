@@ -87,8 +87,17 @@
                   (dblclick)="goToPatientActivity(patient)"
                   class="user-select-none"
                 >
-                  <td>{{ patient.reference }}</td>
-                  <!-- <td>{{ patient.nom | uppercase }}</td> -->
+                  <td>
+                    <ngb-highlight
+                      [result]="patient.reference"
+                      [term]="
+                        searchCriterionControl.value?.id == 'reference'
+                          ? searchTerm
+                          : ''
+                      "
+                    ></ngb-highlight>
+                  </td>
+
                   <td>
                     <ngb-highlight
                       [result]="patient.nom"
@@ -99,7 +108,7 @@
                       "
                     ></ngb-highlight>
                   </td>
-                  <!-- <td>{{ patient.prenoms }}</td> -->
+
                   <td>
                     <ngb-highlight
                       [result]="patient.prenoms"
@@ -110,6 +119,7 @@
                       "
                     ></ngb-highlight>
                   </td>
+
                   <td>
                     <ngb-highlight
                       [result]="patient.date_naissance | date : 'dd/MM/yyyy'"
@@ -121,8 +131,11 @@
                     ></ngb-highlight>
                     <!-- {{ patient.date_naissance | date : "dd/MM/yyyy" }} -->
                   </td>
+
                   <td>{{ patient.age }}</td>
+
                   <td>{{ patient.sexe }}</td>
+
                   <td>
                     {{ patient.tel1 | mask : "09 09 09 09 09 09 09 09 09 09" }}
                   </td>
@@ -138,13 +151,36 @@
                     ></ngb-highlight>
                     <!-- {{ patient.date_ajout | date : "dd/MM/yyyy" }} -->
                   </td>
+
                   <td>{{ patient.no_piece }}</td>
 
                   <td *ngIf="patient.hasInsurance; else noInsurance">
                     {{ patient.assurance?.nom }}
+                    <span *ngIf="patient.is_assure == 2; else foreignInsurance">
+                      <em>(Locale)</em>
+                    </span>
+                    <ng-template #foreignInsurance>
+                      <span>
+                        <em>(Etrangère)</em>
+                      </span>
+                    </ng-template>
                   </td>
                   <ng-template #noInsurance>
-                    <td><em>Non assuré</em></td>
+                    <td>
+                      <span
+                        *ngIf="
+                          patient.is_assure == 0;
+                          else noInsuranceForeigner
+                        "
+                      >
+                        <em>Non assuré local</em>
+                      </span>
+                      <ng-template #noInsuranceForeigner>
+                        <span>
+                          <em>Non assuré étranger</em>
+                        </span>
+                      </ng-template>
+                    </td>
                   </ng-template>
 
                   <td>
