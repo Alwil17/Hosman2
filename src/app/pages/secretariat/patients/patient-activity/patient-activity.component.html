@@ -346,7 +346,7 @@
 
           <div class="table-responsive mt-4 mt-xl-0">
             <table
-              class="table table-hover table-striped table-bordered align-middle mb-0"
+              class="table table-hover table-striped table-bordered table-sm align-middle mb-0"
             >
               <thead>
                 <tr>
@@ -355,7 +355,7 @@
                   <th scope="col">Description</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="user-select-none">
                 <tr *ngFor="let item of activities" (dblclick)="add(item)">
                   <td>
                     <ngb-highlight
@@ -413,7 +413,7 @@
 
           <div class="table-responsive mt-4 mt-xl-0">
             <table
-              class="table table-hover table-striped table-bordered align-middle mb-0"
+              class="table table-hover table-striped table-bordered table-sm align-middle mb-0"
             >
               <thead>
                 <tr>
@@ -424,7 +424,7 @@
                   <th scope="col">Prix total</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="user-select-none">
                 <tr
                   *ngFor="let item of activitiesSelect"
                   (dblclick)="remove(item)"
