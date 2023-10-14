@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { NgbActiveModal, NgbModal, NgbPanelChangeEvent } from "@ng-bootstrap/ng-bootstrap";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  NgbActiveModal,
+  NgbModal,
+  NgbPanelChangeEvent,
+} from "@ng-bootstrap/ng-bootstrap";
 import { IPrestationSelect } from "../patient-activity/activity.models";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
@@ -92,6 +96,21 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   isInvoiceFormSubmitted = false;
 
+  @ViewChild("discountValueField", { read: ElementRef })
+  discountValueField!: ElementRef;
+  @ViewChild("discountPercentField", { read: ElementRef })
+  discountPercentField!: ElementRef;
+  @ViewChild("markupValueField", { read: ElementRef })
+  markupValueField!: ElementRef;
+  @ViewChild("markupPercentField", { read: ElementRef })
+  markupPercentField!: ElementRef;
+  @ViewChild("paymentCashField", { read: ElementRef })
+  paymentCashField!: ElementRef;
+  @ViewChild("paymentCardField", { read: ElementRef })
+  paymentCardField!: ElementRef;
+  @ViewChild("paymentChequeField", { read: ElementRef })
+  paymentChequeField!: ElementRef;
+
   constructor(
     public modal: NgbActiveModal,
     public patientService: PatientService,
@@ -166,12 +185,24 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.patientService.getActivePatientRate()
     );
 
-    this.setPatientShareToMaxAmount();
+    // this.setPatientShareToMaxAmount();
 
     this.insuranceShareControl.setValue(
-      this.preInvoiceInfos.montant_pec
+      "0"
+      // this.preInvoiceInfos.montant_pec
       // this.totalAmount - this.patientShareAmount
     );
+  }
+
+  calculateDiscountAndMarkupAmount() {
+    const discountAndMarkupAmount =
+      this.initialPatientShareAmount - this.discountValue + this.markupValue;
+
+    this.patientShareAmount =
+      discountAndMarkupAmount < 0 ? 0 : discountAndMarkupAmount;
+
+    this.calculateRemainder();
+    this.calculateDebt();
   }
 
   onFormInputsChanges() {
@@ -198,14 +229,16 @@ export class PatientInvoiceFormComponent implements OnInit {
       //   this.totalAmount - this.patientShareAmount
       // );
 
-      this.discountValueControl.setValue("0");
-      this.discountPercentControl.setValue("0");
+      // this.discountValueControl.setValue("0");
+      // this.discountPercentControl.setValue("0");
 
-      this.markupValueControl.setValue("0");
-      this.markupPercentControl.setValue("0");
+      // this.markupValueControl.setValue("0");
+      // this.markupPercentControl.setValue("0");
 
-      this.calculateRemainder();
-      this.calculateDebt();
+      // this.calculateRemainder();
+      // this.calculateDebt();
+
+      this.calculateDiscountAndMarkupAmount();
     });
 
     this.discountRadioControl.valueChanges.subscribe((value) => {
@@ -216,7 +249,11 @@ export class PatientInvoiceFormComponent implements OnInit {
         this.discountPercentControl.disable();
         this.discountPercentControl.setValue("0");
 
-        this.markupRadioControl.setValue("");
+        // this.markupRadioControl.setValue("");
+
+        setTimeout(() => {
+          this.discountValueField.nativeElement.querySelector("input").focus();
+        });
       } else if (value === "percent") {
         this.discountPercentControl.enable();
         this.discountPercentControl.setValue("");
@@ -224,7 +261,13 @@ export class PatientInvoiceFormComponent implements OnInit {
         this.discountValueControl.disable();
         this.discountValueControl.setValue("0");
 
-        this.markupRadioControl.setValue("");
+        // this.markupRadioControl.setValue("");
+
+        setTimeout(() => {
+          this.discountPercentField.nativeElement
+            .querySelector("input")
+            .focus();
+        });
       } else {
         this.discountValueControl.disable();
         this.discountValueControl.setValue("0");
@@ -241,13 +284,15 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.discountValueControl.valueChanges.subscribe((value) => {
       this.discountValue = parseIntOrZero(value);
 
-      const discountedAmount =
-        this.initialPatientShareAmount - this.discountValue;
+      // const discountedAmount =
+      //   this.initialPatientShareAmount - this.discountValue + this.markupValue;
 
-      this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
+      // this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
 
-      this.calculateRemainder();
-      this.calculateDebt();
+      // this.calculateRemainder();
+      // this.calculateDebt();
+
+      this.calculateDiscountAndMarkupAmount();
     });
 
     this.discountPercentControl.valueChanges.subscribe((value) => {
@@ -256,13 +301,15 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.discountValue =
         (this.initialPatientShareAmount * discountPercentage) / 100;
 
-      const discountedAmount =
-        this.initialPatientShareAmount - this.discountValue;
+      // const discountedAmount =
+      //   this.initialPatientShareAmount - this.discountValue + this.markupValue;
 
-      this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
+      // this.patientShareAmount = discountedAmount < 0 ? 0 : discountedAmount;
 
-      this.calculateRemainder();
-      this.calculateDebt();
+      // this.calculateRemainder();
+      // this.calculateDebt();
+
+      this.calculateDiscountAndMarkupAmount();
     });
 
     this.markupRadioControl.valueChanges.subscribe((value) => {
@@ -273,7 +320,11 @@ export class PatientInvoiceFormComponent implements OnInit {
         this.markupPercentControl.disable();
         this.markupPercentControl.setValue("0");
 
-        this.discountRadioControl.setValue("");
+        // this.discountRadioControl.setValue("");
+
+        setTimeout(() => {
+          this.markupValueField.nativeElement.querySelector("input").focus();
+        });
       } else if (value === "percent") {
         this.markupPercentControl.enable();
         this.markupPercentControl.setValue("");
@@ -281,7 +332,11 @@ export class PatientInvoiceFormComponent implements OnInit {
         this.markupValueControl.disable();
         this.markupValueControl.setValue("0");
 
-        this.discountRadioControl.setValue("");
+        // this.discountRadioControl.setValue("");
+
+        setTimeout(() => {
+          this.markupPercentField.nativeElement.querySelector("input").focus();
+        });
       } else {
         this.markupValueControl.disable();
         this.markupValueControl.setValue("0");
@@ -296,12 +351,15 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.markupValueControl.valueChanges.subscribe((value) => {
       this.markupValue = parseIntOrZero(value);
 
-      const markupAmount = this.initialPatientShareAmount + this.markupValue;
+      // const markupAmount =
+      //   this.initialPatientShareAmount + this.markupValue - this.discountValue;
 
-      this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
+      // this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
 
-      this.calculateRemainder();
-      this.calculateDebt();
+      // this.calculateRemainder();
+      // this.calculateDebt();
+
+      this.calculateDiscountAndMarkupAmount();
     });
 
     this.markupPercentControl.valueChanges.subscribe((value) => {
@@ -310,18 +368,25 @@ export class PatientInvoiceFormComponent implements OnInit {
       this.markupValue =
         (this.initialPatientShareAmount * markupPercentage) / 100;
 
-      const markupAmount = this.initialPatientShareAmount + this.markupValue;
+      // const markupAmount =
+      //   this.initialPatientShareAmount + this.markupValue - this.discountValue;
 
-      this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
+      // this.patientShareAmount = markupAmount < 0 ? 0 : markupAmount;
 
-      this.calculateRemainder();
-      this.calculateDebt();
+      // this.calculateRemainder();
+      // this.calculateDebt();
+
+      this.calculateDiscountAndMarkupAmount();
     });
 
     this.paymentCheckCashControl.valueChanges.subscribe((value) => {
       if (value == true) {
         this.paymentCashControl.enable();
         this.paymentCashControl.setValue("");
+
+        setTimeout(() => {
+          this.paymentCashField.nativeElement.querySelector("input").focus();
+        });
       } else {
         this.paymentCashControl.disable();
         this.paymentCashControl.setValue("0");
@@ -331,6 +396,10 @@ export class PatientInvoiceFormComponent implements OnInit {
       if (value == true) {
         this.paymentCardControl.enable();
         this.paymentCardControl.setValue("");
+
+        setTimeout(() => {
+          this.paymentCardField.nativeElement.querySelector("input").focus();
+        });
       } else {
         this.paymentCardControl.disable();
         this.paymentCardControl.setValue("0");
@@ -340,6 +409,10 @@ export class PatientInvoiceFormComponent implements OnInit {
       if (value == true) {
         this.paymentChequeControl.enable();
         this.paymentChequeControl.setValue("");
+
+        setTimeout(() => {
+          this.paymentChequeField.nativeElement.querySelector("input").focus();
+        });
       } else {
         this.paymentChequeControl.disable();
         this.paymentChequeControl.setValue("0");
@@ -426,9 +499,9 @@ export class PatientInvoiceFormComponent implements OnInit {
   }
 
   beforePanelChange($event: NgbPanelChangeEvent) {
-    if ($event.panelId === "payment") {
-      $event.preventDefault();
-    }
+    // if ($event.panelId === "payment") {
+    //   $event.preventDefault();
+    // }
   }
 
   validatePayment() {
@@ -436,7 +509,7 @@ export class PatientInvoiceFormComponent implements OnInit {
 
     if (this.invoiceForm?.invalid) {
       const invalidFieldsData = this.rptpRadioControl.invalid
-        ? ["Veuillez faire un choix entre RP et TP"]
+        ? ['Veuillez faire un choix entre "payer sa part" et "tout payer"']
         : [""];
 
       this.toastService.show({

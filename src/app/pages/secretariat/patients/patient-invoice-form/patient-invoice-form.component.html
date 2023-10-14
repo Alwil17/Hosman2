@@ -3,7 +3,7 @@
   <h5 class="modal-title">Règlement</h5>
   <button
     type="button"
-    class="btn-close"
+    class="btn-close btn-danger"
     data-bs-dismiss="modal"
     aria-label="Close"
     (click)="modal.dismiss('Close click')"
@@ -58,11 +58,16 @@
           ></app-input>
         </div>
 
-        <div class="row justify-content-end mb-3">
-          <div class="col-6 d-flex justify-content-around">
-            <div
-              class="form-check form-check-inline form-radio-outline form-radio-secondary"
-            >
+        <div class="row mb-3">
+          <!--  justify-content-end -->
+          <div class="col-6 d-flex justify-content-start">
+            <b>Le patient souhaite <span class="text-danger">*</span></b>
+          </div>
+
+          <div class="col-6">
+            <!--  d-flex justify-content-around -->
+            <div class="form-check form-radio-outline form-radio-secondary">
+              <!--  form-check-inline -->
               <input
                 class="form-check-input"
                 type="radio"
@@ -75,20 +80,11 @@
                     isInvoiceFormSubmitted && rptpRadioControl.errors
                 }"
               />
-              <label class="form-check-label" for="rp"> RP </label>
-              <ng-container *ngIf="isInvoiceFormSubmitted">
-                <div
-                  *ngIf="rptpRadioControl.errors?.['required']"
-                  class="invalid-feedback"
-                >
-                  Veuillez faire un choix (entre RP et TP)
-                </div>
-              </ng-container>
+              <label class="form-check-label" for="rp"> payer sa part </label>
             </div>
 
-            <div
-              class="form-check form-check-inline form-radio-outline form-radio-secondary"
-            >
+            <div class="form-check form-radio-outline form-radio-secondary">
+              <!--  form-check-inline -->
               <input
                 class="form-check-input"
                 type="radio"
@@ -101,7 +97,17 @@
                     isInvoiceFormSubmitted && rptpRadioControl.errors
                 }"
               />
-              <label class="form-check-label" for="tp"> TP </label>
+              <label class="form-check-label" for="tp"> tout payer </label>
+
+              <ng-container *ngIf="isInvoiceFormSubmitted">
+                <div
+                  *ngIf="rptpRadioControl.errors?.['required']"
+                  class="invalid-feedback"
+                >
+                  Veuillez faire un choix (entre "payer sa quote-part" et "tout
+                  payer")
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -207,6 +213,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #discountValueField
                     [alignRight]="true"
                     [control]="discountValueControl"
                     maskFormat="separator"
@@ -234,6 +241,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #discountPercentField
                     [alignRight]="true"
                     [control]="discountPercentControl"
                     maskFormat="percent"
@@ -279,6 +287,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #markupValueField
                     [alignRight]="true"
                     [control]="markupValueControl"
                     maskFormat="separator"
@@ -306,6 +315,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #markupPercentField
                     [alignRight]="true"
                     [control]="markupPercentControl"
                     maskFormat="percent"
@@ -326,7 +336,7 @@
                   aria-expanded="false"
                   aria-controls="gen-ques-collapseOne"
                 >
-                  Règlement
+                  <b class="text-primary text-uppercase">Règlement</b>
                 </button>
               </h2>
             </ng-template>
@@ -363,6 +373,7 @@
 
                 <div class="col-lg-6">
                   <app-input
+                    #paymentCashField
                     [alignRight]="true"
                     [control]="paymentCashControl"
                     maskFormat="separator"
@@ -401,6 +412,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #paymentCardField
                     [alignRight]="true"
                     [control]="paymentCardControl"
                     maskFormat="separator"
@@ -439,6 +451,7 @@
                 </div>
                 <div class="col-lg-6">
                   <app-input
+                    #paymentChequeField
                     [alignRight]="true"
                     [control]="paymentChequeControl"
                     maskFormat="separator"
@@ -504,7 +517,7 @@
               </h1>
             </div>
           </div>
-          
+
           <div class="row mb-2">
             <div class="col-lg-6 d-flex align-items-center">
               <label class="form-label m-0">Créance</label>
@@ -568,7 +581,7 @@
     class="btn btn-link link-success fw-medium shadow-none"
     data-bs-dismiss="modal"
     (click)="modal.close('Close click')"
-    ><i class="ri-close-line me-1 align-middle"></i>Annuler et Fermer</a
+    ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
   >
   <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 </div>
