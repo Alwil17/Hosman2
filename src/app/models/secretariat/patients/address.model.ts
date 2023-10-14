@@ -46,14 +46,16 @@ export class Address {
   toText() {
     return (
       this.ville.nom +
-      ", " +
+      ", Quartier: " +
       this.quartier.nom +
       ", " +
       (this.rue ?? "--- ") +
       ", " +
-      (this.bp ?? "--- ") +
+      (this.bp ? "Boîte postale: " + this.bp : "--- ") +
       ", " +
-      (this.arrondissement ?? "--- ") +
+      (this.arrondissement
+        ? "Arrondissement: " + this.arrondissement
+        : "--- ") +
       ", " +
       (this.no_maison ? "Maison n° " + this.no_maison : "--- ")
     );
