@@ -570,10 +570,12 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
                 cityAndNeighborhood.neighborhood +
                 ", " +
                 (formData.rue ?? "--- ") +
-                ", Boîte postale: " +
-                (formData.bp ?? "--- ") +
                 ", " +
-                (formData.arrondissement ?? "--- ") +
+                (formData.bp ? "Boîte postale: " + formData.bp : "--- ") +
+                ", " +
+                (formData.arrondissement
+                  ? "Arrondissement: " + formData.arrondissement
+                  : "--- ") +
                 ", " +
                 (formData.no_maison
                   ? "Maison n° " + formData.no_maison
