@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { AbstractControl, FormControl } from "@angular/forms";
 import { SelectOption } from "../../../models/extras/select.model";
 
 @Component({
@@ -13,15 +13,19 @@ export class SelectComponent implements OnInit {
   @Input() isFormSubmitted = false;
   @Input() placeholder = "Sélectionner...";
   @Input() options: SelectOption[] = [];
-  @Input() control = new FormControl();
+  @Input() control: AbstractControl | FormControl = new FormControl();
   @Input() canAddOption = false;
   @Input() editable = true;
   @Input() clearable = true;
   @Input() searchable = true;
+  formControl!: FormControl;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.control instanceof AbstractControl)
+      this.formControl = this.control as FormControl;
+  }
 
   addTagFn(value: string) {
     const transformed = value.charAt(0).toUpperCase() + value.substring(1);

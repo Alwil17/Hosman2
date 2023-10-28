@@ -16,7 +16,7 @@
   [addTag]="canAddOption ? addTagFn : false"
   [placeholder]="placeholder"
   [selectOnTab]="true"
-  [formControl]="control"
+  [formControl]="formControl"
   [ngClass]="{
     'is-invalid custom-select-invalid':
       ((control.touched && control.dirty) || isFormSubmitted) && control.errors
