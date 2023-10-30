@@ -24,7 +24,7 @@
 
             margin: auto;
 
-            padding: 2%;
+            padding: 3mm;
             /*border: solid 0.1mm;*/
             background: #fff;
         }
@@ -98,6 +98,7 @@
         table,
         th,
         td {
+            padding-left: 3px;
             border: solid 0.5mm;
             border-collapse: collapse;
         }
@@ -215,52 +216,70 @@
             <tr th:each="tarif: ${tarifs}" >
                 <td th:text="${tarif.tarif.libelle}" style="width: 70%;" />
                 <td th:text="${tarif.quantite}" style="width: 10%; text-align: end;" />
-                <td th:text="${tarif.total_price_gros}" style="width: 20%; text-align: end;" />
+                <td th:text="${#numbers.formatDecimal(tarif.total_price_gros, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 20%; text-align: right !important; padding-right: 3px;" />
             </tr>
 
             </tbody>
         </table>
 
         <div class="order-number">
-            <h2 th:text="${groupe+' '+attente}">
+            <h1 th:text="${groupe+' '+attente}">
                 ANALYSE 7
-            </h2>
+            </h1>
         </div>
 
         <table class="payment-table" style="width: 50%;">
             <tbody>
             <tr>
-                <td>Montant total :</td>
-                <td style="width: 40%; text-align: end;" th:text="${total}">0</td>
+                <td colspan="2" style="font-size: 15px;">MONTANT TOTAL :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(total, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Montant PEC :</td>
-                <td style="width: 40%; text-align: end;" th:text="${montant_pec}">0</td>
+                <td colspan="2" style="font-size: 13px;">Montant PEC :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(montant_pec, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Majoration/Urgence:</td>
-                <td style="width: 40%; text-align: end;" th:text="${majoration}">0</td>
+                <td colspan="2" style="font-size: 13px;">Majoration/Urgence:</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(majoration, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Réduction :</td>
-                <td style="width: 40%; text-align: end;" th:text="${reduction}">0</td>
+                <td colspan="2" style="font-size: 13px;">Réduction :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(reduction, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Montant à payer :</td>
-                <td style="width: 40%; text-align: end;" th:text="${a_payer}">0</td>
+                <td colspan="2" style="font-size: 15px;">MONTANT A PAYER :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(a_payer, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Montant versé :</td>
-                <td style="width: 40%; text-align: end;" th:text="${verse}">0</td>
+                <td th:rowspan="${modes_count}" style="font-size: 13px; text-align: left; vertical-align: top;">Montant payé en </td>
+<!--                <td style="font-size: 14px; border-left: solid white; border-bottom: solid white;">espèces</td>-->
+<!--                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(verse_especes, 0, 'WHITESPACE', 0, 'POINT')}">0</td>-->
+<!--                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(verse, 0, 'WHITESPACE', 0, 'POINT')}">0</td>-->
+            </tr>
+            <tr th:each="modep: ${modes}">
+                <td style="font-size: 14px; border-left: solid white; border-bottom: solid white;" th:text="${modep.slug}"></td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(modep.montant, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>
+            <!--<tr>
+                <td style="font-size: 14px; border-left: solid white; border-bottom: solid white;">chèque</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(verse_cheques, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             <tr>
-                <td>Reliquat :</td>
-                <td style="width: 40%; text-align: end;" th:text="${reliquat}">0</td>
+                <td style="font-size: 14px; border-left: solid white;">visa</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(verse_visa, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>-->
+            <tr>
+                <td colspan="2"  style="font-size: 15px;">RELIQUAT :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(reliquat, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-size: 15px;">CREANCE :</td>
+                <td style="width: 40%; text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(creance, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="table-footer-tr" style="text-align: start; vertical-align:top"><u>Mode de Règlement:</u></td>
+                    <td colspan="2" class="table-footer-tr" style="text-align: start; vertical-align:top"><u>Mode de Règlement:</u></td>
                     <td class="table-footer-tr" style="text-align: left; vertical-align:top;" >
                         <b th:text="${mode}">-</b>
                     </td>
@@ -268,8 +287,8 @@
             </tfoot>
         </table>
 
-        <div class="payment-info">
-        </div>
+        <!--<div class="payment-info">
+        </div>-->
     </div>
 
 

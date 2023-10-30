@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.utils;
 
+import com.dopediatrie.hosman.secretariat.entity.FactureMode;
 import com.dopediatrie.hosman.secretariat.entity.ModePayement;
 
 import java.text.Normalizer;
@@ -22,6 +23,17 @@ public class Str {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             sb.append(list.get(i).getNom());
+            if (i != list.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String convertFactureModePayementToString(List<FactureMode> list) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).getMode_payement().getNom());
             if (i != list.size() - 1) {
                 sb.append(", ");
             }

@@ -32,6 +32,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,14 +123,19 @@ public class FactureController {
             groupe = prestation.getSecteur().getLibelle();
         }
         long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
-        double verse = 0;
+
         List<FactureMode> fms = factureModeRepository.findByFacture_Id(factureId);
-        for (FactureMode fm: fms
-             ) {
-            if(fm.getMode_payement().getSlug().equals("especes")){
-                verse += fm.getMontant();
+        List<ModePayement> modePayements = new ArrayList<ModePayement>();
+        for (ModePayement mps : factureResponse.getMode_payements()) {
+            for (FactureMode fm: fms) {
+                if(mps.getSlug().equals(fm.getMode_payement().getSlug())){
+                    mps.setMontant(fm.getMontant());
+                    modePayements.add(mps);
+                }
             }
         }
+        factureResponse.setMode_payements(modePayements);
+
         String assurance_nom = "";
         double taux_assurance = 0;
         if(patient.getAssurance() != null){
@@ -139,6 +145,7 @@ public class FactureController {
             assurance_nom = "LUI-MÊME";
             taux_assurance = 0;
         }
+
         String mode = Str.convertModePayementToString(factureResponse.getMode_payements());
 
         Context context = new Context();
@@ -150,8 +157,9 @@ public class FactureController {
         context.setVariable("majoration",factureResponse.getMajoration().getMontant());
         context.setVariable("reduction",factureResponse.getReduction().getMontant());
         context.setVariable("a_payer",factureResponse.getA_payer());
-        context.setVariable("verse", verse);
+//        context.setVariable("verse", verse);
         context.setVariable("reliquat",factureResponse.getReliquat().getMontant());
+        context.setVariable("creance",factureResponse.getCreance().getMontant());
         context.setVariable("patient", patient);
         context.setVariable("date_naissance", patient.getDate_naissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         context.setVariable("tarifs", tarifs);
@@ -160,6 +168,8 @@ public class FactureController {
         context.setVariable("nom_assurance", assurance_nom);
         context.setVariable("taux_assurance", taux_assurance);
         context.setVariable("mode", mode);
+        context.setVariable("modes", factureResponse.getMode_payements());
+        context.setVariable("modes_count", factureResponse.getMode_payements().size()+1);
 
 
         String htmlContentToRender = templateEngine.process("invoice", context);

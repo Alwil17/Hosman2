@@ -1,0 +1,19 @@
+server:
+  port: 83
+spring:
+  datasource:
+    url: jdbc:mysql://91.234.194.31:3306/c0hosman_stock
+    username: c0hosman
+    password: hosman123
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/hosman_stock
+#    username: root
+#    password:
+  profiles:
+    active: debug
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: Stock

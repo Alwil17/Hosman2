@@ -55,6 +55,9 @@ public class Patient implements Serializable {
     private List<Prestation> prestations;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
+    private List<RendezVous> rdvs;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
     private List<PrestationTemp> temp_prestations;
     @OneToOne
     @JoinColumn(name = "adresse_id")

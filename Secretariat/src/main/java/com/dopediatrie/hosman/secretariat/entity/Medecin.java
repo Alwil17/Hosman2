@@ -42,6 +42,12 @@ public class Medecin {
     @OneToMany(mappedBy = "medecin")
     @JsonIgnore
     private List<Attente> attentes;
+    @OneToMany(mappedBy = "medecin")
+    @JsonIgnore
+    private List<RendezVous> rdvs;
+    @OneToMany(mappedBy = "intervenant")
+    @JsonIgnore
+    private List<RendezVous> rdv_intervenants;
     @OneToMany(mappedBy = "receveur")
     @JsonIgnore
     private List<Attente> recu_attentes;

@@ -27,6 +27,9 @@ public class Etat {
     private List<Facture> factures;
     @OneToMany(mappedBy = "etat")
     @JsonIgnore
+    private List<RendezVous> rdvs;
+    @OneToMany(mappedBy = "etat")
+    @JsonIgnore
     private List<Creance> creances;
     @OneToMany(mappedBy = "etat")
     @JsonIgnore

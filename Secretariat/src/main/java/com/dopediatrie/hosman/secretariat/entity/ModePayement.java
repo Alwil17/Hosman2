@@ -20,6 +20,8 @@ public class ModePayement {
     private long id;
     private String nom;
     private String slug;
+    @Transient
+    private double montant = 0;
     @ManyToMany(mappedBy = "mode_payements")
     @JsonIgnore
     private List<Encaissement> encaissements;
