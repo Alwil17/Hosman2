@@ -35,23 +35,31 @@ public class Utils {
                 "    CASE WHEN m.slug = 'especes' THEN 1 ELSE 0 END\n" +
                 "  ) AS nb_especes, \n" +
                 "  SUM(\n" +
-                "    CASE WHEN m.slug = 'especes' THEN pt.total_price_gros ELSE 0 END\n" +
+                "    CASE WHEN m.slug = 'especes' THEN fm.montant ELSE 0 END\n" +
                 "  ) AS total_especes, \n" +
                 "  SUM(\n" +
                 "    CASE WHEN m.slug = 'cheque' THEN 1 ELSE 0 END\n" +
                 "  ) AS nb_cheque, \n" +
                 "  SUM(\n" +
-                "    CASE WHEN m.slug = 'cheque' THEN pt.total_price_gros ELSE 0 END\n" +
+                "    CASE WHEN m.slug = 'cheque' THEN fm.montant ELSE 0 END\n" +
                 "  ) AS total_cheque, \n" +
                 "  SUM(\n" +
                 "    CASE WHEN m.slug = 'visa' THEN 1 ELSE 0 END\n" +
                 "  ) AS nb_visa, \n" +
                 "  SUM(\n" +
-                "    CASE WHEN m.slug = 'visa' THEN pt.total_price_gros ELSE 0 END\n" +
+                "    CASE WHEN m.slug = 'visa' THEN fm.montant ELSE 0 END\n" +
                 "  ) AS total_visa,\n" +
-                "  SUM(pt.total_price_gros) AS montant_total \n" +
+                "  SUM(\n" +
+                "    CASE WHEN f.montant_pec>0 THEN 1 ELSE 0 END\n" +
+                "  ) AS nb_pec, \n" +
+                "  SUM(\n" +
+                "    CASE WHEN f.montant_pec>0 THEN pe.montant_pec ELSE 0 END\n" +
+                "  ) AS total_pec,\n" +
+                "  SUM(fm.montant)+SUM(CASE WHEN f.montant_pec>0 THEN pe.montant_pec ELSE 0 END) AS montant_total \n" +
                 "FROM \n" +
                 "  facture f \n" +
+                "  JOIN pec pe ON pe.facture_id = f.id \n" +
+                "  JOIN assurance assur ON pe.assurance_id = assur.id \n" +
                 "  JOIN prestation p ON f.prestation_id = p.id \n" +
                 "  JOIN prestation_tarif pt ON p.id = pt.prestation_id \n" +
                 "  JOIN tarif t ON pt.tarif_id = t.id \n" +

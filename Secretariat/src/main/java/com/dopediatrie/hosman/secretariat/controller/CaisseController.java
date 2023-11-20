@@ -191,8 +191,8 @@ public class CaisseController {
                 resultSet.getDouble("total_cheque"),
                 resultSet.getInt("nb_visa"),
                 resultSet.getDouble("total_visa"),
-                0,
-                0,
+                resultSet.getInt("nb_pec"),
+                resultSet.getDouble("total_pec"),
                 resultSet.getDouble("montant_total")
         ));
         String creancesql = "select * from creance join etat e on creance.etat_id = e.id " +
@@ -224,7 +224,12 @@ public class CaisseController {
                 "and date_operation <= '"+ datemax +"'";
         FicheRecap majoration = new FicheRecap("Majoration",
                 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> null);
+        List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> new Majoration(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
         if(majorations != null && majorations.size() > 0){
             for (Majoration c : majorations) {
                 if(c != null) {
@@ -307,7 +312,12 @@ public class CaisseController {
         String reductionsql = "select * from reduction " +
                 "where date_operation >= '"+ datemin +"' " +
                 "and date_operation <= '"+ datemax +"'";
-        List<Reduction> reductions = jdbcTemplate.query(reductionsql, (resultSet, rowNum) -> null);
+        List<Reduction> reductions = jdbcTemplate.query(reductionsql, (resultSet, rowNum) -> new Reduction(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
         if(reductions != null && reductions.size() > 0){
             for (Reduction c : reductions) {
                 if(c != null) {
@@ -321,7 +331,11 @@ public class CaisseController {
                 "where e.slug != 'payee' " +
                 "and creance.date_operation >= '"+ datemin +"' " +
                 "and creance.date_operation <= '"+ datemax +"'";
-        List<Creance> dettes = jdbcTemplate.query(dettesql, (resultSet, rowNum) -> null);
+        List<Creance> dettes = jdbcTemplate.query(dettesql, (resultSet, rowNum) -> new Creance(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
         if(dettes != null && dettes.size() > 0){
             for (Creance c : dettes) {
                 if(c != null){
@@ -334,7 +348,13 @@ public class CaisseController {
         String depensesql = "select * from depense " +
                 "where date_depense >= '"+ datemin +"' " +
                 "and date_depense <= '"+ datemax +"'";
-        List<Depense> depenses = jdbcTemplate.query(depensesql, (resultSet, rowNum) -> null);
+        List<Depense> depenses = jdbcTemplate.query(depensesql, (resultSet, rowNum) -> new Depense(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_depense").toLocalDateTime(),
+                resultSet.getTimestamp("date_modification").toLocalDateTime()
+        ));
         if(depenses != null && depenses.size() > 0){
             for (Depense c : depenses) {
                 if(c != null){
@@ -343,7 +363,28 @@ public class CaisseController {
             }
         }
 
-        double ca_total = total_montant_total - depensesc;
+        double reliquatsc = 0;
+        String reliquatsql = "select * from reliquat join etat e on reliquat.etat_id = e.id " +
+                "where e.slug = 'payee' " +
+                "and date_operation >= '"+ datemin +"' " +
+                "and date_operation <= '"+ datemax +"'";
+
+        List<Reliquat> reliquats = jdbcTemplate.query(reliquatsql, (resultSet, rowNum) -> new Reliquat(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
+        if(reliquats != null && reliquats.size() > 0){
+            System.out.println(reliquats.size());
+            for (Reliquat c : reliquats) {
+                if(c != null){
+                    System.out.println(datemin + " "+ datemax + " "+c.getMontant());
+                    reliquatsc += c.getMontant();
+                }
+            }
+        }
+
+        double ca_total = total_montant_total - depensesc - reliquatsc;
 
         Context context = new Context();
         context.setVariable("date_debut", datedebut);
@@ -361,6 +402,7 @@ public class CaisseController {
         context.setVariable("remises", remises);
         context.setVariable("creances", dettesc);
         context.setVariable("depenses", depensesc);
+        context.setVariable("reliquats", reliquatsc);
         context.setVariable("ca_total", ca_total);
 
         String htmlContentToRender = templateEngine.process("ficherecapperiod", context);
@@ -449,8 +491,8 @@ public class CaisseController {
                 resultSet.getDouble("total_cheque"),
                 resultSet.getInt("nb_visa"),
                 resultSet.getDouble("total_visa"),
-                0,
-                0,
+                resultSet.getInt("nb_pec"),
+                resultSet.getDouble("total_pec"),
                 resultSet.getDouble("montant_total")
         ));
         String creancesql = "select * from creance join etat e on creance.etat_id = e.id " +
@@ -482,7 +524,12 @@ public class CaisseController {
                 "and date_operation <= '"+ datemax +"'";
         FicheRecap majoration = new FicheRecap("Majoration",
                 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> null);
+        List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> new Majoration(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
         if(majorations != null && majorations.size() > 0){
             for (Majoration c : majorations) {
                 if(c != null) {
@@ -565,7 +612,12 @@ public class CaisseController {
         String reductionsql = "select * from reduction " +
                 "where date_operation >= '"+ datemin +"' " +
                 "and date_operation <= '"+ datemax +"'";
-        List<Reduction> reductions = jdbcTemplate.query(reductionsql, (resultSet, rowNum) -> null);
+        List<Reduction> reductions = jdbcTemplate.query(reductionsql, (resultSet, rowNum) -> new Reduction(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
         if(reductions != null && reductions.size() > 0){
             for (Reduction c : reductions) {
                 if(c != null) {
@@ -579,7 +631,11 @@ public class CaisseController {
                 "where e.slug != 'payee' " +
                 "and creance.date_operation >= '"+ datemin +"' " +
                 "and creance.date_operation <= '"+ datemax +"'";
-        List<Creance> dettes = jdbcTemplate.query(dettesql, (resultSet, rowNum) -> null);
+        List<Creance> dettes = jdbcTemplate.query(dettesql, (resultSet, rowNum) -> new Creance(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+                ));
         if(dettes != null && dettes.size() > 0){
             for (Creance c : dettes) {
                 if(c != null){
@@ -592,7 +648,13 @@ public class CaisseController {
         String depensesql = "select * from depense " +
                 "where date_depense >= '"+ datemin +"' " +
                 "and date_depense <= '"+ datemax +"'";
-        List<Depense> depenses = jdbcTemplate.query(depensesql, (resultSet, rowNum) -> null);
+        List<Depense> depenses = jdbcTemplate.query(depensesql, (resultSet, rowNum) -> new Depense(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getString("motif"),
+                resultSet.getTimestamp("date_depense").toLocalDateTime(),
+                resultSet.getTimestamp("date_modification").toLocalDateTime()
+        ));
         if(depenses != null && depenses.size() > 0){
             for (Depense c : depenses) {
                 if(c != null){
@@ -601,7 +663,29 @@ public class CaisseController {
             }
         }
 
-        double ca_total = total_montant_total - depensesc;
+        double reliquatsc = 0;
+        String reliquatsql = "select * from reliquat join etat e on reliquat.etat_id = e.id " +
+                "where e.slug = 'payee' " +
+                "and date_operation >= '"+ datemin +"' " +
+                "and date_operation <= '"+ datemax +"'";
+
+        List<Reliquat> reliquats = jdbcTemplate.query(reliquatsql, (resultSet, rowNum) -> new Reliquat(
+                resultSet.getLong("id"),
+                resultSet.getDouble("montant"),
+                resultSet.getTimestamp("date_operation").toLocalDateTime()
+        ));
+        if(reliquats != null && reliquats.size() > 0){
+            System.out.println(reliquats.size());
+            for (Reliquat c : reliquats) {
+                if(c != null){
+                    System.out.println(datemin + " "+ datemax + " "+c.getMontant());
+                    reliquatsc += c.getMontant();
+                }
+            }
+        }
+
+        System.out.println(datemin + " "+ datemax + " "+reliquatsc);
+        double ca_total = total_montant_total - depensesc - reliquatsc;
 
         Context context = new Context();
         context.setVariable("date_jour", datejour);
@@ -618,6 +702,7 @@ public class CaisseController {
         context.setVariable("remises", remises);
         context.setVariable("creances", dettesc);
         context.setVariable("depenses", depensesc);
+        context.setVariable("reliquats", reliquatsc);
         context.setVariable("ca_total", ca_total);
 
         String htmlContentToRender = templateEngine.process("ficherecap", context);

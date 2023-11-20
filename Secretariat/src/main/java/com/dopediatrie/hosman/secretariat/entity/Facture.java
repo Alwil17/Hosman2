@@ -47,6 +47,9 @@ public class Facture {
     @OneToOne(mappedBy = "facture")
     @JsonIgnore
     private Attente attente;
+    @OneToMany(mappedBy = "facture")
+    @JsonIgnore
+    private List<PEC> pecs;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mode_facture",
             joinColumns = @JoinColumn(name = "facture_id", referencedColumnName = "id"),

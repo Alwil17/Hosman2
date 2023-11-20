@@ -29,6 +29,13 @@ public class Reduction {
     @JsonIgnore
     private Patient patient;
 
+    public Reduction(long id, double montant, String motif, LocalDateTime date_operation) {
+        this.id = id;
+        this.montant = montant;
+        this.motif = motif;
+        this.date_operation = date_operation;
+    }
+
     @Override
     public String toString() {
         return "Reduction{" +

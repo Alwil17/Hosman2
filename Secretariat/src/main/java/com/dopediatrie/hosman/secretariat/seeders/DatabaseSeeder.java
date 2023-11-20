@@ -93,7 +93,7 @@ public class DatabaseSeeder {
             ActeRequest ar2 = ActeRequest.builder().libelle("Actes en K").code("ActeK").groupe_code("GRP001").position(2).structure_id(1).build();
             ActeRequest ar3 = ActeRequest.builder().libelle("Contrôle").code("Cont").groupe_code("GRP001").position(1).structure_id(1).build();
             ActeRequest ar4 = ActeRequest.builder().libelle("Vaccinations").code("Vacc").groupe_code("GRP001").position(3).structure_id(1).build();
-            ActeRequest ar5 = ActeRequest.builder().libelle("Injections").code("Vacc").groupe_code("GRP001").position(4).structure_id(1).build();
+            ActeRequest ar5 = ActeRequest.builder().libelle("Injections").code("Vacc").groupe_code("GRP006").position(4).structure_id(1).build();
             ActeRequest ar6 = ActeRequest.builder().libelle("Pansements").code("Pans").groupe_code("GRP004").position(0).structure_id(1).build();
             ActeRequest ar7 = ActeRequest.builder().libelle("Kinésithérapie").code("kine").groupe_code("GRP005").position(0).structure_id(1).build();
             ActeRequest ar8 = ActeRequest.builder().libelle("Prise de sang").code("Ps").groupe_code("GRP001").position(0).structure_id(1).build();
@@ -101,7 +101,7 @@ public class DatabaseSeeder {
             ActeRequest ar10 = ActeRequest.builder().libelle("IDR").code("idr").groupe_code("GRP001").position(0).structure_id(1).build();
             ActeRequest ar11 = ActeRequest.builder().libelle("Soins").code("Soin").groupe_code("GRP001").position(0).structure_id(1).build();
             ActeRequest ar12 = ActeRequest.builder().libelle("Radiographie").code("radio").groupe_code("GRP008").position(0).structure_id(1).build();
-            ActeRequest ar13 = ActeRequest.builder().libelle("Echographie").code("echo").groupe_code("GRP006").position(0).structure_id(1).build();
+            ActeRequest ar13 = ActeRequest.builder().libelle("Echographie").code("echo").groupe_code("GRP009").position(0).structure_id(1).build();
             ActeRequest ar14 = ActeRequest.builder().libelle("ECG").code("ecg").groupe_code("GRP010").position(0).structure_id(1).build();
             ActeRequest ar15 = ActeRequest.builder().libelle("EEG").code("eeg").groupe_code("GRP011").position(0).structure_id(1).build();
             ActeRequest ar16 = ActeRequest.builder().libelle("Scanners").code("scan").groupe_code("GRP002").position(0).structure_id(1).build();

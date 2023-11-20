@@ -26,6 +26,7 @@ public class FactureResponse {
     private Reduction reduction;
     private double a_payer;
     private double verse;
+    private double surplus;
     private Reliquat reliquat;
     private Creance creance;
     private String mode_payement;

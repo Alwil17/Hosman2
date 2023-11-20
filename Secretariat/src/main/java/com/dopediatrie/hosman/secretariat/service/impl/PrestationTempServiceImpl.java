@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.AssuranceTarif;
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.entity.PrestationTemp;
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
@@ -30,6 +31,7 @@ public class PrestationTempServiceImpl implements PrestationTempService {
     private final MedecinRepository medecinRepository;
     private final SecteurRepository secteurRepository;
     private final TarifRepository tarifRepository;
+    private final AssuranceTarifRepository assuranceTarifRepository;
 
     private final PrestationTarifTempService prestationTarifTempService;
     private final MedecinService medecinService;
@@ -69,6 +71,7 @@ public class PrestationTempServiceImpl implements PrestationTempService {
 
         prestationTemp = prestationTempRepository.save(prestationTemp);
         double total_facture = 0;
+        double surplus = 0;
         // add data to intermediate table
         for (PrestationTarifTempRequest prestationTarifTempRequest : prestationTempRequest.getTarifs()) {
             Tarif tarif = tarifRepository.findById(prestationTarifTempRequest.getTarif_id()).orElseThrow();
@@ -81,7 +84,17 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                     total_prix_gros = tarif.getTarif_etr_non_assure();
                     break;
                 case 2:
-                    total_prix_gros = tarif.getTarif_assur_locale();
+                    double base_remb = 0;
+                    if(patient.getAssurance().getTarifs() != null && patient.getAssurance().getTarifs().size() > 0){
+                        log.info("Entered");
+                        if(assuranceTarifRepository.existsByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId())){
+                            AssuranceTarif at = assuranceTarifRepository.findByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId()).get();
+                            base_remb = at.getBase_remboursement();
+                            surplus += tarif.getTarif_assur_locale() - base_remb;
+                        }
+                    }
+                    total_prix_gros = (base_remb != 0) ? base_remb : tarif.getTarif_assur_locale();
+
                     break;
                 case 3:
                     total_prix_gros = tarif.getTarif_assur_hors_zone();
@@ -98,6 +111,7 @@ public class PrestationTempServiceImpl implements PrestationTempService {
         }
 
         double montant_pec = 0;
+
         switch (patient.getIs_assure()){
             case 0:
                 montant_pec = 0;
@@ -106,21 +120,22 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                 montant_pec = 0;
                 break;
             default:
-                montant_pec = (total_facture * patient.getTaux_assurance() / 100) ;
+                montant_pec = (total_facture * patient.getTaux_assurance() / 100);
                 break;
         }
 
-        double a_payer = total_facture - montant_pec;
+        double a_payer = total_facture - montant_pec + surplus;
 
         FactureResponse response = FactureResponse.builder()
-                .total(total_facture)
+                .total(total_facture+surplus)
                 .montant_pec(montant_pec)
                 .a_payer(a_payer)
+                .surplus(surplus)
                 .prestation_id(prestationTemp.getId())
                 .date_facture(LocalDateTime.now())
                 .date_reglement(LocalDateTime.now())
                 .build();
-
+        log.info("total " +total_facture+ " - surplus " +surplus+" - pec " +montant_pec+" - apayer " +a_payer);
         log.info("PrestationTempTempServiceImpl | addPrestationTemp | PrestationTemp Created");
         log.info("PrestationTempTempServiceImpl | addPrestationTemp | PrestationTemp Id : " + prestationTemp.getId());
         return response;

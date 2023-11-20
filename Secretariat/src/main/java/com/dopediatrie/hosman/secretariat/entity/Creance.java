@@ -39,6 +39,12 @@ public class Creance {
             inverseJoinColumns = @JoinColumn(name = "mode_payement_id", referencedColumnName = "id"))
     private List<ModePayement> mode_payements;
 
+    public Creance(long id, double montant, LocalDateTime date_operation) {
+        this.id = id;
+        this.montant = montant;
+        this.date_operation = date_operation;
+    }
+
     @Override
     public String toString() {
         return "Creance{" +

@@ -93,17 +93,29 @@ public class EncaissementServiceImpl implements EncaissementService {
         encaissement.setProvenance(encaissementRequest.getProvenance());
         encaissement.setDate_encaissement(encaissementRequest.getDate_encaissement());
         encaissementRepository.save(encaissement);
-
+        double toCaisse = 0;
         for (EncaissementModeRequest eMode : encaissementRequest.getMode_payements()) {
             if(eModeRepository.existsByEncaissement_IdAndMode_payement_Id(eMode.getEncaissement_id(), eMode.getMode_payement_id())){
                 EncaissementMode em = eModeRepository.findByEncaissement_IdAndMode_payement_Id(eMode.getEncaissement_id(), eMode.getMode_payement_id()).orElseThrow();
-                em.setMontant(eMode.getMontant());
+                // Si le montant augmente, on ajoute la différence à la caisse.
+                if(em.getMontant() < eMode.getMontant()){
+                    toCaisse += (eMode.getMontant() - em.getMontant());
+                    em.setMontant(eMode.getMontant());
+                }else if (em.getMontant() > eMode.getMontant()){
+                    // Si le montant diminue, on retire la différence de la caisse.
+                    toCaisse -= (em.getMontant() - eMode.getMontant());
+                    em.setMontant(eMode.getMontant());
+                }else {
+                    log.info("le montant n'a pas changé");
+                }
                 eModeRepository.save(em);
             }else{
                 eMode.setEncaissement_id(encaissement.getId());
+                toCaisse += eMode.getMontant();
                 encaissementModeService.addEncaissementMode(eMode);
             }
         }
+        caisseService.addAmountCaisse(toCaisse);
 
         log.info("EncaissementServiceImpl | editEncaissement | Encaissement Updated");
         log.info("EncaissementServiceImpl | editEncaissement | Encaissement Id : " + encaissement.getId());
@@ -120,6 +132,15 @@ public class EncaissementServiceImpl implements EncaissementService {
                     NOT_FOUND);
         }
         log.info("Deleting Encaissement with id: {}", encaissementId);
+        double toCaisse = 0;
+        List<EncaissementMode> eModes = eModeRepository.findByEncaissement_Id(encaissementId);
+        if(eModes != null && eModes.size() > 0){
+            for (EncaissementMode eMode : eModes) {
+                toCaisse += eMode.getMontant();
+            }
+            eModeRepository.deleteByEncaissementId(encaissementId);
+        }
+        caisseService.substractAmountCaisse(toCaisse);
         encaissementRepository.deleteById(encaissementId);
     }
 }

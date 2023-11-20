@@ -34,6 +34,12 @@ public class Reliquat {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
+    public Reliquat(long id, double montant, LocalDateTime date_operation) {
+        this.id = id;
+        this.montant = montant;
+        this.date_operation = date_operation;
+    }
+
     @Override
     public String toString() {
         return "Reliquat{" +

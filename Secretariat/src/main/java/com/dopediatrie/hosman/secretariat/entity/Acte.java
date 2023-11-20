@@ -29,4 +29,7 @@ public class Acte {
     @OneToMany(mappedBy = "acte")
     @JsonIgnore
     private List<Tarif> tarifs;
+    @OneToMany(mappedBy = "acte")
+    @JsonIgnore
+    private List<PEC> pecs;
 }

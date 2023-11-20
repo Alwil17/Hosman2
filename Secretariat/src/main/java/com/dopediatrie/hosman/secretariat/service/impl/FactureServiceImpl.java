@@ -23,6 +23,7 @@ public class FactureServiceImpl implements FactureService {
     private final String NOT_FOUND = "FACTURE_NOT_FOUND";
 
     private final FactureRepository factureRepository;
+    private final PatientRepository patientRepository;
     private final EtatRepository etatRepository;
     private final ReductionRepository reductionRepository;
     private final MajorationRepository majorationRepository;
@@ -36,6 +37,7 @@ public class FactureServiceImpl implements FactureService {
 
     private final AttenteService attenteService;
     private final CaisseService caisseService;
+    private final PECService pecService;
     private final ReductionService reductionService;
     private final MajorationService majorationService;
     private final CreanceService creanceService;
@@ -138,6 +140,7 @@ public class FactureServiceImpl implements FactureService {
         }
 
         // commit PrestationTarifTemp to PrestationTarif
+        Patient pat = patientRepository.findById(factureRequest.getPatient_id()).orElseThrow();
         List<PrestationTarifTemp> ptts = prestationTarifTempRepository.findByPrestation_tempId(factureRequest.getPrestation_id());
         for (PrestationTarifTemp ptt : ptts) {
             PrestationTarifRequest ptr = PrestationTarifRequest.builder()
@@ -148,6 +151,29 @@ public class FactureServiceImpl implements FactureService {
                     .build();
             //copyProperties(ptt, ptr);
             prestationTarifService.addPrestationTarif(ptr);
+            long assurance_id = 0;
+            double montant_pec = 0;
+            switch (pat.getIs_assure()){
+                case 0:
+                    break;
+                case 1:
+                    break;
+                default:
+                    assurance_id = pat.getAssurance().getId();
+                    montant_pec = (ptt.getTotal_price_gros() * pat.getTaux_assurance() / 100);
+                    break;
+            }
+
+            if(assurance_id != 0){
+                PECRequest pecRequest = PECRequest.builder()
+                        .assurance_id(assurance_id)
+                        .facture_id(facture.getId())
+                        .acte_id(ptt.getTarif().getActe().getId())
+                        .patient_id(factureRequest.getPatient_id())
+                        .montant_pec(montant_pec)
+                        .build();
+                pecService.addPEC(pecRequest);
+            }
             prestationTarifTempRepository.deleteByPrestationIdAndTarifId(ptt.getId().prestation_temp_id, ptt.getId().tarif_id);
         }
         // delete prestationTemp

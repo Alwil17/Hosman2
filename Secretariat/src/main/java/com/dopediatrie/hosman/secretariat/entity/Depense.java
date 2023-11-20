@@ -32,4 +32,12 @@ public class Depense {
     private long accordeur_id;
     private long caissier_id;
     private int recu;
+
+    public Depense(long id, double montant, String motif, LocalDateTime date_depense, LocalDateTime date_modification) {
+        this.id = id;
+        this.montant = montant;
+        this.motif = motif;
+        this.date_depense = date_depense;
+        this.date_modification = date_modification;
+    }
 }

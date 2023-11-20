@@ -29,6 +29,9 @@ public class Assurance {
     @OneToMany(mappedBy = "assurance")
     @JsonIgnore
     private List<Patient> patients;
+    @OneToMany(mappedBy = "assurance")
+    @JsonIgnore
+    private List<PEC> pecs;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "assurance_tarif",
             joinColumns = @JoinColumn(name = "assurance_id", referencedColumnName = "id"),

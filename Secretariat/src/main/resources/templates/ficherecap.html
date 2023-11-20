@@ -225,13 +225,15 @@
                 <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(creances, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
                 <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Dépenses :</td>
                 <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(depenses, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Réliquats :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(reliquats, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             </tbody>
         </table>
         <table style="width: 100%;">
             <tbody>
             <tr>
-                <th scope="row" class="title" >Chiffre d'affaire = Total général par secteur - Dépenses</th>
+                <th scope="row" class="title" >Chiffre d'affaire = Total général par secteur - Dépenses - Reliquats</th>
                 <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 150px;" th:text="${#numbers.formatDecimal(ca_total, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
             </tr>
             </tbody>
