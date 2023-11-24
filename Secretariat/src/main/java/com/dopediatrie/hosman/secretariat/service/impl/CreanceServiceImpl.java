@@ -1,14 +1,19 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Creance;
+import com.dopediatrie.hosman.secretariat.entity.Etat;
+import com.dopediatrie.hosman.secretariat.entity.FactureMode;
+import com.dopediatrie.hosman.secretariat.entity.Reliquat;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.CreanceModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.CreanceRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.ReliquatRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.CreanceResponse;
-import com.dopediatrie.hosman.secretariat.repository.CreanceRepository;
-import com.dopediatrie.hosman.secretariat.repository.EtatRepository;
-import com.dopediatrie.hosman.secretariat.repository.FactureRepository;
-import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
+import com.dopediatrie.hosman.secretariat.repository.*;
+import com.dopediatrie.hosman.secretariat.service.CreanceModeService;
 import com.dopediatrie.hosman.secretariat.service.CreanceService;
+import com.dopediatrie.hosman.secretariat.service.FactureModeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,10 @@ public class CreanceServiceImpl implements CreanceService {
     private final CreanceRepository creanceRepository;
     private final EtatRepository etatRepository;
     private final PatientRepository patientRepository;
+    private final FactureModeRepository factureModeRepository;
+    private final ReliquatRepository reliquatRepository;
+    private final CreanceModeService creanceModeService;
+    private final FactureModeService factureModeService;
     private final String NOT_FOUND = "CREANCE_NOT_FOUND";
 
     @Override
@@ -133,14 +142,84 @@ public class CreanceServiceImpl implements CreanceService {
                         "Creance with given Id not found",
                         NOT_FOUND
                 ));
+        // Le montant de la créance change si le montant de la facture change.
         creance.setMontant(creanceRequest.getMontant());
         creance.setEtat(etatRepository.findById(creanceRequest.getEtat_id()).get());
         creance.setDate_operation(creanceRequest.getDate_operation());
-        creance.setDate_reglement(creanceRequest.getDate_reglement());
+        //creance.setDate_reglement(creanceRequest.getDate_reglement());
         creanceRepository.save(creance);
 
         log.info("CreanceServiceImpl | editCreance | Creance Updated");
         log.info("CreanceServiceImpl | editCreance | Creance Id : " + creance.getId());
+    }
+
+    @Override
+    public void soldCreance(CreanceRequest creanceRequest, long creanceId) {
+        log.info("CreanceServiceImpl | soldCreance is called");
+
+        Creance creance
+                = creanceRepository.findById(creanceId)
+                .orElseThrow(() -> new SecretariatCustomException(
+                        "Creance with given Id not found",
+                        NOT_FOUND
+                ));
+        // Le montant de la créance change si le montant de la facture change.
+        String etatString = "attente-de-payement";
+        double montant_verse = 0;
+        if((creanceRequest.getModes() != null) && (creanceRequest.getModes().size() >0)){
+            for (CreanceModeRequest cmr : creanceRequest.getModes()) {
+                cmr.setCreance_id(creanceId);
+                montant_verse += cmr.getMontant();
+                creanceModeService.addCreanceMode(cmr);
+
+                Boolean checKFM = factureModeRepository.existsByFacture_IdAndMode_payement_Id(creance.getFacture().getId(), cmr.getMode_payement_id());
+                if(checKFM == null || !checKFM){
+                    FactureModeRequest factureModeRequest = FactureModeRequest.builder()
+                            .facture_id(creance.getFacture().getId())
+                            .mode_payement_id(cmr.getMode_payement_id())
+                            .montant(cmr.getMontant())
+                            .build();
+                    factureModeService.addFactureMode(factureModeRequest);
+                }else {
+                    FactureMode factureMode = factureModeRepository.findByFacture_IdAndMode_payement_Id(creance.getFacture().getId(), cmr.getMode_payement_id()).orElseThrow();
+                    factureMode.setMontant(factureMode.getMontant()+cmr.getMontant());
+                    factureModeRepository.save(factureMode);
+                }
+            }
+        }
+
+        if(montant_verse <= 0){
+            etatString = "attente-de-payement";
+            throw new SecretariatCustomException("Il n'y a rien à mettre à jour", "422");
+        }else {
+            double newAmount = creance.getMontant()-montant_verse;
+
+            if(newAmount > 0){
+                creance.setMontant(newAmount);
+                etatString = "attente-de-payement";
+            }else if(newAmount == 0){
+                etatString = "payee";
+                creance.setDate_reglement(creanceRequest.getDate_reglement());
+                creance.setMontant(0);
+            }else {
+                creance.setDate_reglement(creanceRequest.getDate_reglement());
+                creance.setMontant(0);
+                Reliquat reliquat;
+                if(reliquatRepository.existsByFactureId(creance.getFacture().getId())){
+                    reliquat = reliquatRepository.findByFactureId(creance.getFacture().getId()).orElseThrow();
+                    reliquat.setMontant(-newAmount);
+                }
+                etatString = "payee";
+            }
+
+        }
+        Etat etat = etatRepository.findBySlug(etatString).orElseThrow();
+        creance.setEtat(etat);
+
+        creanceRepository.save(creance);
+
+        log.info("CreanceServiceImpl | soldCreance | Creance Updated");
+        log.info("CreanceServiceImpl | soldCreance | Creance Id : " + creance.getId());
     }
 
     @Override

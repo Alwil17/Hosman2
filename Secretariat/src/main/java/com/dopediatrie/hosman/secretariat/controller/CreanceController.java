@@ -90,6 +90,18 @@ public class CreanceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/{id}/sold")
+    public ResponseEntity<Void> soldCreance(@RequestBody CreanceRequest creanceRequest,
+                                            @PathVariable("id") long creanceId
+    ) {
+
+        log.info("CreanceController | soldCreance is called");
+        log.info("CreanceController | soldCreance | creanceId : " + creanceId);
+
+        creanceService.soldCreance(creanceRequest, creanceId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteCreanceById(@PathVariable("id") long creanceId) {
         creanceService.deleteCreanceById(creanceId);

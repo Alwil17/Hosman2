@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,4 +14,6 @@ public class CreanceRequest {
     private long patient_id;
     private LocalDateTime date_operation;
     private LocalDateTime date_reglement;
+
+    private List<CreanceModeRequest> modes;
 }

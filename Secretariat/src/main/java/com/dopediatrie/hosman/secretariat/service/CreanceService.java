@@ -20,6 +20,8 @@ public interface CreanceService {
 
     List<Creance> getCreanceByDateMinAndMaxAndReference(LocalDateTime datemin, LocalDateTime datemax, String reference);
 
+    void soldCreance(CreanceRequest creanceRequest, long creanceId);
+
     void editCreance(CreanceRequest creanceRequest, long creanceId);
 
     public void deleteCreanceById(long creanceId);
