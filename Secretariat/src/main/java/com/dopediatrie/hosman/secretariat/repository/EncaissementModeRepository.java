@@ -15,7 +15,7 @@ public interface EncaissementModeRepository extends JpaRepository<EncaissementMo
     @Query("SELECT em from EncaissementMode em where em.encaissement.id = :encaissementId and em.mode_payement.id = :modeId")
     Optional<EncaissementMode> findByEncaissement_IdAndMode_payement_Id(@Param("encaissementId") long encaissement_id, @Param("modeId") long mode_payement_id);
 
-    @Query("SELECT em from EncaissementMode em where em.encaissement.id = :encaissementId and em.mode_payement.id = :modeId")
+    @Query("SELECT case when count(em)>0 then true else false end from EncaissementMode em where em.encaissement.id = :encaissementId and em.mode_payement.id = :modeId")
     Boolean existsByEncaissement_IdAndMode_payement_Id(@Param("encaissementId") long encaissement_id, @Param("modeId") long mode_payement_id);
 
     @Query("SELECT em from EncaissementMode em where em.encaissement.id = :encaissementId")

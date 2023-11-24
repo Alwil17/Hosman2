@@ -42,11 +42,6 @@ public class CreanceModeServiceImpl implements CreanceModeService {
         CreanceMode creanceMode;
         Boolean check = creanceModeRepository.existsByCreance_IdAndMode_payement_Id(creanceModeRequest.getCreance_id(), creanceModeRequest.getMode_payement_id());
         if(check == null || !check){
-            creanceMode = creanceModeRepository.findByCreance_IdAndMode_payement_Id(creanceModeRequest.getCreance_id(), creanceModeRequest.getMode_payement_id()).orElseThrow();
-            creanceMode.setMontant(creanceModeRequest.getMontant() + creanceMode.getMontant());
-            creanceMode.setDate_depot(creanceModeRequest.getDate_depot());
-            creanceMode.setId(pk);
-        }else{
             creanceMode = CreanceMode.builder()
                     .id(pk)
                     .creance(creanceRepository.findById(creanceModeRequest.getCreance_id()).orElseThrow())
@@ -54,6 +49,11 @@ public class CreanceModeServiceImpl implements CreanceModeService {
                     .montant(creanceModeRequest.getMontant())
                     .date_depot(creanceModeRequest.getDate_depot())
                     .build();
+        }else{
+            creanceMode = creanceModeRepository.findByCreance_IdAndMode_payement_Id(creanceModeRequest.getCreance_id(), creanceModeRequest.getMode_payement_id()).orElseThrow();
+            creanceMode.setMontant(creanceModeRequest.getMontant() + creanceMode.getMontant());
+            creanceMode.setDate_depot(creanceModeRequest.getDate_depot());
+            creanceMode.setId(pk);
         }
 
         creanceMode = creanceModeRepository.save(creanceMode);

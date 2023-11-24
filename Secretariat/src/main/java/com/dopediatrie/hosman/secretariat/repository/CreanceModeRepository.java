@@ -13,6 +13,6 @@ public interface CreanceModeRepository extends JpaRepository<CreanceMode,Long> {
     @Query("SELECT em from CreanceMode em where em.creance.id = :creanceId and em.mode_payement.id = :modeId")
     Optional<CreanceMode> findByCreance_IdAndMode_payement_Id(@Param("creanceId") long creance_id, @Param("modeId") long mode_payement_id);
 
-    @Query("SELECT em from CreanceMode em where em.creance.id = :creanceId and em.mode_payement.id = :modeId")
+    @Query("SELECT case when count(em)>0 then true else false end from CreanceMode em where em.creance.id = :creanceId and em.mode_payement.id = :modeId")
     Boolean existsByCreance_IdAndMode_payement_Id(@Param("creanceId") long creance_id, @Param("modeId") long mode_payement_id);
 }

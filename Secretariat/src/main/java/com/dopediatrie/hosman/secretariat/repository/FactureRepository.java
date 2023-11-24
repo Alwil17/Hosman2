@@ -7,8 +7,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface FactureRepository extends JpaRepository<Facture,Long> {
+
+    Optional<Facture> findByCreanceId(long creanceId);
+
+    boolean existsByCreanceId(long creanceId);
 
     @Query("SELECT f from Facture f where f.date_facture >= :datemin and f.date_facture <= :datemax")
     List<Facture> getAllByDateminAndDatemax(@Param("datemin") LocalDateTime datemin, @Param("datemax") LocalDateTime datemax);

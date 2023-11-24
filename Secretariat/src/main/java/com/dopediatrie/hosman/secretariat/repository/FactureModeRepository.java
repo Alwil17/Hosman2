@@ -13,7 +13,7 @@ public interface FactureModeRepository extends JpaRepository<FactureMode,Long> {
     @Query("SELECT em from FactureMode em where em.facture.id = :factureId and em.mode_payement.id = :modeId")
     Optional<FactureMode> findByFacture_IdAndMode_payement_Id(@Param("factureId") long facture_id, @Param("modeId") long mode_payement_id);
 
-    @Query("SELECT em from FactureMode em where em.facture.id = :factureId and em.mode_payement.id = :modeId")
+    @Query("SELECT case when count(em)>0 then true else false end from FactureMode em where em.facture.id = :factureId and em.mode_payement.id = :modeId")
     Boolean existsByFacture_IdAndMode_payement_Id(@Param("factureId") long facture_id, @Param("modeId") long mode_payement_id);
 
     @Query("SELECT em from FactureMode em where em.facture.id = :factureId")

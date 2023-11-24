@@ -14,7 +14,7 @@ public interface CaisseRepository extends JpaRepository<Caisse,Long> {
     @Query("select c from Caisse c where c.date_ouverture >= :datemin and c.date_ouverture < :datemax and c.ouvert = :ouvert")
     Optional<Caisse> getCurrentCaisse(@Param("datemin") LocalDateTime datemin, @Param("datemax") LocalDateTime datemax, boolean ouvert);
 
-    @Query("select c from Caisse c where c.date_ouverture >= :datemin and c.date_ouverture < :datemax and c.ouvert = :ouvert")
+    @Query("select case when count(c)>0 then true else false end from Caisse c where c.date_ouverture >= :datemin and c.date_ouverture < :datemax and c.ouvert = :ouvert")
     Boolean existsCurrentCaisse(@Param("datemin") LocalDateTime datemin, @Param("datemax") LocalDateTime datemax, boolean ouvert);
 
     @Query("update Caisse c set c.ouvert = false where c.ouvert = true")

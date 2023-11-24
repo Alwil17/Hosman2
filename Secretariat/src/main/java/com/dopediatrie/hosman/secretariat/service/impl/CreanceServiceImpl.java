@@ -1,9 +1,6 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
-import com.dopediatrie.hosman.secretariat.entity.Creance;
-import com.dopediatrie.hosman.secretariat.entity.Etat;
-import com.dopediatrie.hosman.secretariat.entity.FactureMode;
-import com.dopediatrie.hosman.secretariat.entity.Reliquat;
+import com.dopediatrie.hosman.secretariat.entity.*;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.CreanceModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.CreanceRequest;
@@ -33,6 +30,7 @@ public class CreanceServiceImpl implements CreanceService {
     private final EtatRepository etatRepository;
     private final PatientRepository patientRepository;
     private final FactureModeRepository factureModeRepository;
+    private final FactureRepository factureRepository;
     private final ReliquatRepository reliquatRepository;
     private final CreanceModeService creanceModeService;
     private final FactureModeService factureModeService;
@@ -172,19 +170,25 @@ public class CreanceServiceImpl implements CreanceService {
                 montant_verse += cmr.getMontant();
                 creanceModeService.addCreanceMode(cmr);
 
-                Boolean checKFM = factureModeRepository.existsByFacture_IdAndMode_payement_Id(creance.getFacture().getId(), cmr.getMode_payement_id());
-                if(checKFM == null || !checKFM){
-                    FactureModeRequest factureModeRequest = FactureModeRequest.builder()
-                            .facture_id(creance.getFacture().getId())
-                            .mode_payement_id(cmr.getMode_payement_id())
-                            .montant(cmr.getMontant())
-                            .build();
-                    factureModeService.addFactureMode(factureModeRequest);
-                }else {
-                    FactureMode factureMode = factureModeRepository.findByFacture_IdAndMode_payement_Id(creance.getFacture().getId(), cmr.getMode_payement_id()).orElseThrow();
-                    factureMode.setMontant(factureMode.getMontant()+cmr.getMontant());
-                    factureModeRepository.save(factureMode);
+                boolean checkF = factureRepository.existsByCreanceId(creanceId);
+                if (checkF){
+                    Facture facture = factureRepository.findByCreanceId(creanceId).orElseThrow();
+
+                    Boolean checKFM = factureModeRepository.existsByFacture_IdAndMode_payement_Id(facture.getId(), cmr.getMode_payement_id());
+                    if(checKFM == null || !checKFM){
+                        FactureModeRequest factureModeRequest = FactureModeRequest.builder()
+                                .facture_id(facture.getId())
+                                .mode_payement_id(cmr.getMode_payement_id())
+                                .montant(cmr.getMontant())
+                                .build();
+                        factureModeService.addFactureMode(factureModeRequest);
+                    }else {
+                        FactureMode factureMode = factureModeRepository.findByFacture_IdAndMode_payement_Id(facture.getId(), cmr.getMode_payement_id()).orElseThrow();
+                        factureMode.setMontant(factureMode.getMontant()+cmr.getMontant());
+                        factureModeRepository.save(factureMode);
+                    }
                 }
+
             }
         }
 

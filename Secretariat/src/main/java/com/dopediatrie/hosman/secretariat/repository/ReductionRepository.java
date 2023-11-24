@@ -11,6 +11,6 @@ public interface ReductionRepository extends JpaRepository<Reduction,Long> {
     @Query("SELECT p from Reduction p where p.facture.id = :factureId")
     Optional<Reduction> findByFactureId(@Param("factureId") long factureId);
 
-    @Query("SELECT p from Reduction p where p.facture.id = :factureId")
+    @Query("SELECT case when count(p)>0 then true else false end from Reduction p where p.facture.id = :factureId")
     Boolean existsByFactureId(@Param("factureId") long factureId);
 }

@@ -11,6 +11,6 @@ public interface MajorationRepository extends JpaRepository<Majoration,Long> {
     @Query("SELECT p from Majoration p where p.facture.id = :factureId")
     Optional<Majoration> findByFactureId(@Param("factureId") long factureId);
 
-    @Query("SELECT p from Majoration p where p.facture.id = :factureId")
+    @Query("SELECT case when count(p)>0 then true else false end from Majoration p where p.facture.id = :factureId")
     Boolean existsByFactureId(@Param("factureId") long factureId);
 }

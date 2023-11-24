@@ -16,7 +16,7 @@ public interface ReliquatRepository extends JpaRepository<Reliquat,Long> {
     @Query("SELECT p from Reliquat p where p.facture.id = :factureId")
     Optional<Reliquat> findByFactureId(@Param("factureId") long factureId);
 
-    @Query("SELECT p from Reliquat p where p.facture.id = :factureId")
+    @Query("SELECT case when count(p)>0 then true else false end from Reliquat p where p.facture.id = :factureId")
     Boolean existsByFactureId(@Param("factureId") long factureId);
 
     @Query("SELECT c from Reliquat c where c.date_operation >= :datemin and c.date_operation <= :datemax and c.montant > 0")

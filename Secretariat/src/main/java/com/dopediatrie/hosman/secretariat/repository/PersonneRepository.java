@@ -11,6 +11,6 @@ public interface PersonneRepository extends JpaRepository<Personne,Long> {
     @Query("SELECT p from Personne p where concat(p.nom,' ', p.prenoms) = ':nom :prenoms'")
     Optional<Personne> searchByNomAndPrenoms(@Param("nom") String nom, @Param("prenoms") String prenoms);
 
-    @Query("SELECT p from Personne p where concat(p.nom,' ', p.prenoms) = ':nom :prenoms'")
+    @Query("SELECT case when count(p)>0 then true else false end from Personne p where concat(p.nom,' ', p.prenoms) = ':nom :prenoms'")
     Boolean existsByNomAndPrenoms(@Param("nom") String nom, @Param("prenoms") String prenoms);
 }
