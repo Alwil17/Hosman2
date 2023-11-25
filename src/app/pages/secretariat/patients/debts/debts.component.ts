@@ -1,10 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Debt } from "src/app/models/secretariat/patients/debt.model";
 import { DebtService } from "src/app/services/secretariat/patients/debt.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { DebtSettlingModalComponent } from "./debt-settling-modal/debt-settling-modal.component";
+import { merge } from "rxjs";
 
 @Component({
   selector: "app-debts",
@@ -45,6 +48,7 @@ export class DebtsComponent implements OnInit {
 
   constructor(
     private debtService: DebtService,
+    private modalService: NgbModal,
     private toastService: ToastService
   ) {}
 
@@ -144,5 +148,28 @@ export class DebtsComponent implements OnInit {
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
       );
+  }
+
+  openDebtSettlingModal(debt: Debt) {
+    const debtSettlingModalRef = this.modalService.open(
+      DebtSettlingModalComponent,
+      {
+        size: "lg",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    debtSettlingModalRef.componentInstance.debt = debt;
+
+    merge(
+      debtSettlingModalRef.closed,
+      debtSettlingModalRef.dismissed
+    ).subscribe({
+      next: (value) => {
+        this.refreshDebtsList();
+      },
+    });
   }
 }

@@ -10,6 +10,7 @@ import { PatientActivityComponent } from "./patient-activity/patient-activity.co
 import {
   NgbAccordionModule,
   NgbActiveModal,
+  NgbCollapseModule,
   NgbDropdownModule,
   NgbNavModule,
   NgbPaginationModule,
@@ -24,6 +25,8 @@ import { PatientAddressFormComponent } from "./patient-form/patient-address-form
 import { DebtsComponent } from "./debts/debts.component";
 import { PatientCreatePageComponent } from "./patient-create-page/patient-create-page.component";
 import { PatientFormModalComponent } from "./patient-form-modal/patient-form-modal.component";
+import { DebtSettlingModalComponent } from './debts/debt-settling-modal/debt-settling-modal.component';
+// import { SimplebarAngularModule } from "simplebar-angular";
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { PatientFormModalComponent } from "./patient-form-modal/patient-form-mod
     DebtsComponent,
     PatientCreatePageComponent,
     PatientFormModalComponent,
+    DebtSettlingModalComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +55,8 @@ import { PatientFormModalComponent } from "./patient-form-modal/patient-form-mod
     NgxMaskModule,
     NgbAccordionModule,
     NgbTypeaheadModule,
+    NgbCollapseModule,
+    // SimplebarAngularModule
   ],
   exports: [],
   providers: [DatePipe],

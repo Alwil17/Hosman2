@@ -18,3 +18,25 @@ export class DebtRequest {
     this.etat_id = iDebt.etat_id;
   }
 }
+
+export interface IDebtSettlingRequest {
+  modes: {
+    creance_id: number;
+    mode_payement_id: number;
+    montant: number;
+    date_depot: Date;
+  }[];
+}
+
+export class DebtSettlingRequest {
+  modes: {
+    creance_id: number;
+    mode_payement_id: number;
+    montant: number;
+    date_depot: Date;
+  }[];
+
+  constructor(iDebt: IDebtSettlingRequest) {
+    this.modes = iDebt.modes;
+  }
+}

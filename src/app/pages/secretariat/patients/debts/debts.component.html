@@ -52,7 +52,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="card-body">
         <hr />
         <!-- EXPENSE TABLE START -->
@@ -71,7 +71,7 @@
                     <th scope="col">{{ "Montant" | uppercase }}</th>
                     <th scope="col">{{ "Reste à payer" | uppercase }}</th>
                     <th scope="col">{{ "Acompte" | uppercase }}</th>
-                    <!-- <th scope="col"></th> -->
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@
                     <td class="text-end">{{ 0 }}</td>
                     <td class="text-end">{{ 0 }}</td>
 
-                    <!-- <td>
+                    <td>
                       <div class="d-inline-block" ngbDropdown container="body">
                         <button
                           type="button"
@@ -94,21 +94,21 @@
                           <i class="ri-more-fill fs-24"></i>
                         </button>
                         <div ngbDropdownMenu>
-                          <button ngbDropdownItem>
+                          <button ngbDropdownItem (click)="openDebtSettlingModal(item)">
                             <i
                               class="ri-edit-2-line label-icon align-middle fs-16 me-2 text-warning"
                             ></i>
                             Régler
                           </button>
-                          <button ngbDropdownItem>
+                          <!-- <button ngbDropdownItem>
                             <i
                               class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
                             ></i>
                             Supprimer
-                          </button>
+                          </button> -->
                         </div>
                       </div>
-                    </td> -->
+                    </td>
                   </tr>
                 </tbody>
               </table>

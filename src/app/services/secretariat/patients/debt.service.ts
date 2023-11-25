@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Debt } from "src/app/models/secretariat/patients/debt.model";
+import { DebtRequest, DebtSettlingRequest } from "src/app/models/secretariat/patients/requests/debt-request.model";
 import { DebtResponse } from "src/app/models/secretariat/patients/responses/debt-response.model";
 import { environment } from "src/environments/environment";
 
@@ -58,5 +59,9 @@ export class DebtService {
           return mapped;
         })
       );
+  }
+
+  settle(id: any, data: DebtSettlingRequest): Observable<any> {
+    return this.http.put(`${apiEndpoint}/${id}/sold`, data);
   }
 }
