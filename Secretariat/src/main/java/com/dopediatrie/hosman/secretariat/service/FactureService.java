@@ -18,6 +18,10 @@ public interface FactureService {
 
     List<Facture> getFactureByDateMinAndMaxAndCode(LocalDateTime datemin, LocalDateTime datemax, String code);
 
+    List<Facture> getFactureByDateMinAndMaxAndPatient(LocalDateTime datemin, LocalDateTime datemax, String patient);
+
+    List<Facture> getFactureByDateMinAndMaxAndCodeAndPatient(LocalDateTime datemin, LocalDateTime datemax, String code, String patient);
+
     void editFacture(FactureRequest patientRequest, long patientId);
 
     public void deleteFactureById(long patientId);

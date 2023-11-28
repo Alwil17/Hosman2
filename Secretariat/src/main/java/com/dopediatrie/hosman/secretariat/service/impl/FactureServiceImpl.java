@@ -238,6 +238,18 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
+    public List<Facture> getFactureByDateMinAndMaxAndPatient(LocalDateTime datemin, LocalDateTime datemax, String patient) {
+        log.info("FactureServiceImpl | getFactureByDateMinAndMaxAndCode is called");
+        return factureRepository.getAllByDateminAndDatemaxAndPatient(datemin, datemax, patient);
+    }
+
+    @Override
+    public List<Facture> getFactureByDateMinAndMaxAndCodeAndPatient(LocalDateTime datemin, LocalDateTime datemax, String code, String patient) {
+        log.info("FactureServiceImpl | getFactureByDateMinAndMaxAndCode is called");
+        return factureRepository.getAllByDateminAndDatemaxAndCodeAndPatient(datemin, datemax, code, patient);
+    }
+
+    @Override
     public void editFacture(FactureRequest factureRequest, long factureId) {
         log.info("FactureServiceImpl | editFacture is called");
 

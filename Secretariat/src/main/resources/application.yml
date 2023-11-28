@@ -4,14 +4,14 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 spring:
-  datasource:
-    url: jdbc:mysql://91.234.194.31:3306/c0hosman
-    username: c0hosman
-    password: hosman123
 #  datasource:
-#    url: jdbc:mysql://localhost:3306/projet_hosman
-#    username: root
-#    password:
+#    url: jdbc:mysql://91.234.194.31:3306/c0hosman
+#    username: c0hosman
+#    password: hosman123
+  datasource:
+    url: jdbc:mysql://localhost:3306/projet_hosman
+    username: root
+    password:
   profiles:
     active: debug
   jpa:

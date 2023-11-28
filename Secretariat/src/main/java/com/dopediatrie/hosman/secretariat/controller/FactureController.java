@@ -82,7 +82,7 @@ public class FactureController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Facture>> getFactureBySearch(@RequestParam(value = "datemin") String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "code", required = false) String code) {
+    public ResponseEntity<List<Facture>> getFactureBySearch(@RequestParam(value = "datemin") String datemin, @RequestParam(value = "datemax", required = false) String datemax, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "patient", required = false) String patient) {
         log.info("FactureController | getFactureBySearch is called");
         List<Facture> factures = Collections.emptyList();
         String dD = datemin+"T00:00:00";
@@ -94,9 +94,15 @@ public class FactureController {
         }
         LocalDateTime dateDebut = LocalDateTime.parse(dD);
         LocalDateTime dateFin = LocalDateTime.parse(dF);
-        if(code != null && !code.isBlank()){
+        boolean checkCode = (code != null && !code.isBlank());
+        boolean checkPatient = (patient != null && !patient.isBlank());
+        if(checkCode && checkPatient){
+            factures = factureService.getFactureByDateMinAndMaxAndCodeAndPatient(dateDebut, dateFin, code, patient);
+        }else if(checkCode == true && checkPatient == false){
             factures = factureService.getFactureByDateMinAndMaxAndCode(dateDebut, dateFin, code);
-        }else{
+        }else if(checkCode == false && checkPatient == true){
+            factures = factureService.getFactureByDateMinAndMaxAndPatient(dateDebut, dateFin, patient);
+        }else {
             factures = factureService.getFactureByDateMinAndMax(dateDebut, dateFin);
         }
         return new ResponseEntity<>(factures, HttpStatus.OK);
