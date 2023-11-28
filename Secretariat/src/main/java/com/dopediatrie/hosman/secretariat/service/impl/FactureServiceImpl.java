@@ -279,6 +279,8 @@ public class FactureServiceImpl implements FactureService {
             if(eModeRepository.existsByFacture_IdAndMode_payement_Id(eMode.getFacture_id(), eMode.getMode_payement_id())){
                 FactureMode em = eModeRepository.findByFacture_IdAndMode_payement_Id(eMode.getFacture_id(), eMode.getMode_payement_id()).orElseThrow();
                 em.setMontant(eMode.getMontant());
+                em.setNo_transaction(eMode.getNo_transaction());
+                em.setNom_service(eMode.getNom_service());
                 eModeRepository.save(em);
             }else{
                 eMode.setFacture_id(facture.getId());

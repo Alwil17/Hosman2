@@ -45,6 +45,8 @@ public class EncaissementModeServiceImpl implements EncaissementModeService {
                 .encaissement(encaissementRepository.findById(encaissementModeRequest.getEncaissement_id()).orElseThrow())
                 .mode_payement(modeRepository.findById(encaissementModeRequest.getMode_payement_id()).orElseThrow())
                 .montant(encaissementModeRequest.getMontant())
+                .no_transaction(encaissementModeRequest.getNo_transaction())
+                .nom_service(encaissementModeRequest.getNom_service())
                 .build();
 
         encaissementMode = encaissementModeRepository.save(encaissementMode);
@@ -86,6 +88,8 @@ public class EncaissementModeServiceImpl implements EncaissementModeService {
         encaissementMode.setEncaissement(encaissementRepository.findById(encaissementModeRequest.getEncaissement_id()).orElseThrow());
         encaissementMode.setMode_payement(modeRepository.findById(encaissementModeRequest.getMode_payement_id()).orElseThrow());
         encaissementMode.setMontant(encaissementModeRequest.getMontant());
+        encaissementMode.setNo_transaction(encaissementModeRequest.getNo_transaction());
+        encaissementMode.setNom_service(encaissementModeRequest.getNom_service());
         encaissementModeRepository.save(encaissementMode);
 
         log.info("EncaissementModeServiceImpl | editEncaissementMode | EncaissementMode Updated");

@@ -180,6 +180,8 @@ public class CreanceServiceImpl implements CreanceService {
                                 .facture_id(facture.getId())
                                 .mode_payement_id(cmr.getMode_payement_id())
                                 .montant(cmr.getMontant())
+                                .no_transaction(cmr.getNo_transaction())
+                                .nom_service(cmr.getNom_service())
                                 .build();
                         factureModeService.addFactureMode(factureModeRequest);
                     }else {

@@ -45,6 +45,8 @@ public class FactureModeServiceImpl implements FactureModeService {
                 .facture(factureRepository.findById(factureModeRequest.getFacture_id()).orElseThrow())
                 .mode_payement(modeRepository.findById(factureModeRequest.getMode_payement_id()).orElseThrow())
                 .montant(factureModeRequest.getMontant())
+                .no_transaction(factureModeRequest.getNo_transaction())
+                .nom_service(factureModeRequest.getNom_service())
                 .build();
 
         factureMode = factureModeRepository.save(factureMode);
@@ -86,6 +88,8 @@ public class FactureModeServiceImpl implements FactureModeService {
         factureMode.setFacture(factureRepository.findById(factureModeRequest.getFacture_id()).orElseThrow());
         factureMode.setMode_payement(modeRepository.findById(factureModeRequest.getMode_payement_id()).orElseThrow());
         factureMode.setMontant(factureModeRequest.getMontant());
+        factureMode.setNo_transaction(factureModeRequest.getNo_transaction());
+        factureMode.setNom_service(factureModeRequest.getNom_service());
         factureModeRepository.save(factureMode);
 
         log.info("FactureModeServiceImpl | editFactureMode | FactureMode Updated");

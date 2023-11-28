@@ -48,11 +48,15 @@ public class CreanceModeServiceImpl implements CreanceModeService {
                     .mode_payement(modeRepository.findById(creanceModeRequest.getMode_payement_id()).orElseThrow())
                     .montant(creanceModeRequest.getMontant())
                     .date_depot(creanceModeRequest.getDate_depot())
+                    .no_transaction(creanceModeRequest.getNo_transaction())
+                    .nom_service(creanceModeRequest.getNom_service())
                     .build();
         }else{
             creanceMode = creanceModeRepository.findByCreance_IdAndMode_payement_Id(creanceModeRequest.getCreance_id(), creanceModeRequest.getMode_payement_id()).orElseThrow();
             creanceMode.setMontant(creanceModeRequest.getMontant() + creanceMode.getMontant());
             creanceMode.setDate_depot(creanceModeRequest.getDate_depot());
+            creanceMode.setNo_transaction(creanceModeRequest.getNo_transaction());
+            creanceMode.setNom_service(creanceModeRequest.getNom_service());
             creanceMode.setId(pk);
         }
 
@@ -95,6 +99,8 @@ public class CreanceModeServiceImpl implements CreanceModeService {
         creanceMode.setCreance(creanceRepository.findById(creanceModeRequest.getCreance_id()).orElseThrow());
         creanceMode.setMode_payement(modeRepository.findById(creanceModeRequest.getMode_payement_id()).orElseThrow());
         creanceMode.setMontant(creanceModeRequest.getMontant());
+        creanceMode.setNo_transaction(creanceModeRequest.getNo_transaction());
+        creanceMode.setNom_service(creanceModeRequest.getNom_service());
         creanceModeRepository.save(creanceMode);
 
         log.info("CreanceModeServiceImpl | editCreanceMode | CreanceMode Updated");

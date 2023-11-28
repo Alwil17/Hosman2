@@ -28,4 +28,6 @@ public class CreanceMode {
     private ModePayement mode_payement;
     private double montant;
     private LocalDateTime date_depot;
+    private String no_transaction;
+    private String nom_service;
 }

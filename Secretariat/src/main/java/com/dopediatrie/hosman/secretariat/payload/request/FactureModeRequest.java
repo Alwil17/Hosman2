@@ -9,4 +9,6 @@ public class FactureModeRequest {
     private long facture_id;
     private long mode_payement_id;
     private double montant;
+    private String no_transaction;
+    private String nom_service;
 }

@@ -25,4 +25,6 @@ public class EncaissementMode {
     @JoinColumn(name = "mode_payement_id")
     private ModePayement mode_payement;
     private double montant;
+    private String no_transaction;
+    private String nom_service;
 }

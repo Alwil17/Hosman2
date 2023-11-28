@@ -17,4 +17,6 @@ public class CreanceModeResponse {
     private long mode_payement_id;
     private double montant;
     private LocalDateTime date_depot;
+    private String no_transaction;
+    private String nom_service;
 }
