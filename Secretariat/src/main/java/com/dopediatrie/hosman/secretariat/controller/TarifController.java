@@ -52,7 +52,7 @@ public class TarifController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Tarif>> getTarifBySearch(@RequestParam(value = "groupe") String groupeCode, @RequestParam(value = "acte") String acte) {
+    public ResponseEntity<List<Tarif>> getTarifBySearch(@RequestParam(value = "groupe") String groupeCode, @RequestParam(value = "acte", required = false) String acte) {
         log.info("TarifController | getTarifBySearch is called");
         List<Tarif> tarifResponses = Collections.emptyList();
 
