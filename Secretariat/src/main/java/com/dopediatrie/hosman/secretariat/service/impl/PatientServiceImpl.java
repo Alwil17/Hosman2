@@ -154,6 +154,14 @@ public class PatientServiceImpl implements PatientService {
                         "Patient with given Id not found",
                         NOT_FOUND
                 ));
+
+        long personne_a_prevenir_id = (patientRequest.getPersonne_a_prevenir() != null) ? personneAPrevenirService.addPersonneAPrevenir(patientRequest.getPersonne_a_prevenir()) : 0;
+        adresseService.editAdresse(patientRequest.getAdresse(), patient.getAdresse().getId());
+        long assurance_id = (patientRequest.getAssurance() != null) ? assuranceService.addAssurance(patientRequest.getAssurance()) : 0;
+        long profession_id = (patientRequest.getProfession() != null) ? professionService.addProfession(patientRequest.getProfession()) : 0;
+        long employeur_id = (patientRequest.getEmployeur() != null) ? employeurService.addEmployeur(patientRequest.getEmployeur()) : 0;
+
+
         patient.setNom(patientRequest.getNom());
         patient.setPrenoms(patientRequest.getPrenoms());
         patient.setDate_naissance(patientRequest.getDate_naissance());
@@ -170,6 +178,20 @@ public class PatientServiceImpl implements PatientService {
         patient.setDate_debut_assurance(patientRequest.getDate_debut_assurance());
         patient.setDate_fin_assurance(patientRequest.getDate_fin_assurance());
         patient.setStructure_id(patientRequest.getStructure_id());
+
+        if(patientRequest.getPays_origine_id() != 0)
+            patient.setPays_origine(paysRepository.findById(patientRequest.getPays_origine_id()).orElseThrow());
+        if(patientRequest.getNationalite_id() != 0)
+            patient.setNationalite(paysRepository.findById(patientRequest.getNationalite_id()).orElseThrow());
+        if(assurance_id != 0)
+            patient.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
+        if(profession_id != 0)
+            patient.setProfession(professionRepository.findById(profession_id).orElseThrow());
+        if(employeur_id != 0)
+            patient.setEmployeur(employeurRepository.findById(employeur_id).orElseThrow());
+        if(personne_a_prevenir_id != 0)
+            patient.setPersonne_a_prevenir(personneAPrevenirRepository.findById(personne_a_prevenir_id).orElseThrow());
+
         patientRepository.save(patient);
 
         log.info("PatientServiceImpl | editPatient | Patient Updated");

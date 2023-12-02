@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -50,22 +51,26 @@ public class TarifController {
         return new ResponseEntity<>(tarifResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Tarif>> getTarifBySearch(@RequestParam(value = "groupe") String groupeCode, @RequestParam(value = "acte") String acte) {
+        log.info("TarifController | getTarifBySearch is called");
+        List<Tarif> tarifResponses = Collections.emptyList();
+
+        if(acte != null && !acte.isBlank()){
+            tarifResponses = tarifService.getTarifForGroupeAndActe(groupeCode, acte);
+        }else {
+            tarifResponses = tarifService.getTarifForGroupe(groupeCode);
+        }
+        return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
+    }
+
+    @Deprecated(forRemoval = true)
     @GetMapping("/groupe/{code}/all")
     public ResponseEntity<List<Tarif>> getTarifForGroupe(@PathVariable("code") String groupeCode) {
         log.info("TarifController | getTarifForGroupe is called");
         log.info("TarifController | getTarifForGroupe | groupeCode : " + groupeCode);
 
         List<Tarif> tarifResponses = tarifService.getTarifForGroupe(groupeCode);
-
-        return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
-    }
-
-    @GetMapping("/groupe/{id}")
-    public ResponseEntity<List<Tarif>> getTarifForGroupeId(@PathVariable("id") long groupeId) {
-        log.info("TarifController | getTarifForGroupe is called");
-        log.info("TarifController | getTarifForGroupe | groupeId : " + groupeId);
-
-        List<Tarif> tarifResponses = tarifService.getTarifForGroupeId(groupeId);
 
         return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
     }

@@ -100,8 +100,12 @@ public class AdresseServiceImpl implements AdresseService {
         adresse.setArrondissement(adresseRequest.getArrondissement());
         adresse.setNo_maison(adresseRequest.getNo_maison());
         adresse.setRue(adresseRequest.getRue());
-        adresse.setVille(villeRepository.findById(ville_id).orElseThrow());
-        adresse.setQuartier(quartierRepository.findById(quartier_id).orElseThrow());
+
+        if(ville_id != 0)
+            adresse.setVille(villeRepository.findById(ville_id).orElseThrow());
+        if(quartier_id != 0)
+            adresse.setQuartier(quartierRepository.findById(quartier_id).orElseThrow());
+
         adresseRepository.save(adresse);
 
         log.info("AdresseServiceImpl | editAdresse | Adresse Updated");

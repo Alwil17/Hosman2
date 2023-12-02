@@ -40,6 +40,7 @@ public class ProfessionServiceImpl implements ProfessionService {
             profession = professionRepository.save(profession);
         }else{
             profession = professionRepository.findByDenomination(professionRequest.getDenomination()).orElseThrow();
+            editProfession(professionRequest, profession.getId());
         }
 
         log.info("ProfessionServiceImpl | addProfession | Profession Created");

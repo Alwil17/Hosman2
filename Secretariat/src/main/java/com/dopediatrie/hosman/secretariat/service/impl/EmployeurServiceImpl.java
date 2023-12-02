@@ -42,6 +42,7 @@ public class EmployeurServiceImpl implements EmployeurService {
             employeur = employeurRepository.save(employeur);
         }else{
             employeur = employeurRepository.findByNom(employeurRequest.getNom()).orElseThrow();
+            editEmployeur(employeurRequest, employeur.getId());
         }
 
         log.info("EmployeurServiceImpl | addEmployeur | Employeur Created");

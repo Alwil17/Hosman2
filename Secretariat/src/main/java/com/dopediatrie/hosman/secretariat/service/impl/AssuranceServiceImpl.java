@@ -47,6 +47,7 @@ public class AssuranceServiceImpl implements AssuranceService {
             assurance = assuranceRepository.save(assurance);
         }else{
             assurance = assuranceRepository.findByNom(assuranceRequest.getNom()).get();
+            editAssurance(assuranceRequest, assurance.getId());
         }
 
 

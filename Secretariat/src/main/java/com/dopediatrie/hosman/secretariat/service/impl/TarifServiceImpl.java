@@ -102,19 +102,18 @@ public class TarifServiceImpl implements TarifService {
     }
 
     @Override
+    public List<Tarif> getTarifForGroupeAndActe(String groupeCode, String acte) {
+        log.info("TarifServiceImpl | getTarifForGroupeAndActe is called");
+
+        return tarifRepository.findTarifsByGroupeAndActe(groupeCode, acte);
+    }
+
+    @Override
     public List<Tarif> getTarifForGroupe(String groupeCode) {
         log.info("TarifServiceImpl | getTarifForGroupe is called");
         log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeCode: {}", groupeCode);
 
         return tarifRepository.findTarifsByGroupe(groupeCode);
-    }
-
-    @Override
-    public List<Tarif> getTarifForGroupeId(long groupeId) {
-        log.info("TarifServiceImpl | getTarifForGroupe is called");
-        log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeId: {}", groupeId);
-
-        return  tarifRepository.findTarifsByGroupeId(groupeId);
     }
 
     @Override

@@ -41,6 +41,7 @@ public class PersonneAPrevenirServiceImpl implements PersonneAPrevenirService {
             personneAPrevenir = personneAPrevenirRepository.save(personneAPrevenir);
         }else{
             personneAPrevenir = personneAPrevenirRepository.searchByNomAndPrenoms(personneAPrevenirRequest.getNom(), personneAPrevenirRequest.getPrenoms()).get();
+            editPersonneAPrevenir(personneAPrevenirRequest, personneAPrevenir.getId());
         }
 
         log.info("PersonneAPrevenirServiceImpl | addPersonneAPrevenir | PersonneAPrevenir Created");
