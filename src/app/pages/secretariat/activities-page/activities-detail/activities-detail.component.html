@@ -80,9 +80,9 @@
               class="user-select-none"
             >
               <td>{{ invoice.reference }}</td>
-              <td>{{ invoice.prestation.patient.nom }}</td>
-              <td>{{ invoice.prestation.patient.prenoms }}</td>
-              <!-- <td>
+              <!-- <td>{{ invoice.prestation.patient.nom }}</td>
+              <td>{{ invoice.prestation.patient.prenoms }}</td> -->
+              <td>
                 <ngb-highlight
                   [result]="invoice.prestation.patient.nom"
                   [term]="searchTerm.split(' ')[0]"
@@ -90,10 +90,10 @@
               </td>
               <td>
                 <ngb-highlight
-                  [result]="patient.prenoms"
-                  [term]="searchTerm.split(' ')[1]"
+                  [result]="invoice.prestation.patient.prenoms"
+                  [term]="[searchTerm.split(' ')[1], searchTerm]"
                 ></ngb-highlight>
-              </td> -->
+              </td>
               <td>
                 <ng-container
                   *ngFor="
@@ -105,9 +105,9 @@
                   <span>
                     {{ act.libelle }}
                   </span>
-                  <span *ngIf="i < 4"> <b>*</b> </span>
+                  <span *ngIf="i < 4 && c !== i + 1"> <b>*</b> </span>
                   <span *ngIf="i == 4 && c < invoice.prestation.tarifs.length"
-                    ><b> * </b> <b> ... </b></span
+                    ><b> * ... </b></span
                   >
                 </ng-container>
               </td>

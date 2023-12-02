@@ -25,8 +25,6 @@
                 [(ngModel)]="searchTerm"
                 (ngModelChange)="refreshInvoicesList()"
               />
-              <!-- 
-                        (ngModelChange)="searchPatients()" -->
               <i class="ri-search-line search-icon"></i>
             </div>
           </div>
@@ -102,9 +100,9 @@
                 class="user-select-none"
               >
                 <td>{{ invoice.reference }}</td>
-                <td>{{ invoice.prestation.patient.nom }}</td>
-                <td>{{ invoice.prestation.patient.prenoms }}</td>
-                <!-- <td>
+                <!-- <td>{{ invoice.prestation.patient.nom }}</td>
+                <td>{{ invoice.prestation.patient.prenoms }}</td> -->
+                <td>
                   <ngb-highlight
                     [result]="invoice.prestation.patient.nom"
                     [term]="searchTerm.split(' ')[0]"
@@ -112,10 +110,10 @@
                 </td>
                 <td>
                   <ngb-highlight
-                    [result]="patient.prenoms"
-                    [term]="searchTerm.split(' ')[1]"
+                    [result]="invoice.prestation.patient.prenoms"
+                    [term]="[searchTerm.split(' ')[1], searchTerm]"
                   ></ngb-highlight>
-                </td> -->
+                </td>
                 <td class="text-end">
                   {{
                     invoice.a_payer - invoice.creance.montant

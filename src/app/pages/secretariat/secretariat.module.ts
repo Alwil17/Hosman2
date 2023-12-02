@@ -6,6 +6,7 @@ import {
   NgbDropdownModule,
   NgbModalModule,
   NgbPaginationModule,
+  NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { ExpensesComponent } from "./expenses/expenses.component";
 import { SharedModule } from "src/app/shared/shared.module";
@@ -40,7 +41,7 @@ import { ReportSearchCriteriaModalComponent } from './activities-page/receipts-s
     NgxMaskModule,
     NgbPaginationModule,
     NgbDropdownModule,
-
+    NgbTypeaheadModule
     // NgbModalModule
   ],
 })
