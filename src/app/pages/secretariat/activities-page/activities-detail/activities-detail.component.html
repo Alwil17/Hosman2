@@ -44,11 +44,10 @@
           type="text"
           name="searchTerm"
           class="form-control"
-          placeholder="Rechercher"
-        />
-        <!-- 
+          placeholder="Rechercher (nom et/ou prénoms)"
           [(ngModel)]="searchTerm"
-                (ngModelChange)="searchPatients()" -->
+          (ngModelChange)="refreshInvoicesList()"
+        />
         <i class="ri-search-line search-icon"></i>
       </div>
     </div>
@@ -128,7 +127,8 @@
               </ng-template> -->
 
               <td>
-                <div class="d-inline-block" ngbDropdown container="body">
+                <div class="d-inline-block" ngbDropdown>
+                  <!-- container="body" -->
                   <button
                     type="button"
                     class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"

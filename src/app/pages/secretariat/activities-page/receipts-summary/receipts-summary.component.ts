@@ -9,6 +9,7 @@ import { ActivitiesDetailComponent } from "../activities-detail/activities-detai
 import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { ReportSearchCriteriaModalComponent } from "./report-search-criteria-modal/report-search-criteria-modal.component";
+import { SelectOption } from "src/app/models/extras/select.model";
 
 @Component({
   selector: "app-receipts-summary",
@@ -20,8 +21,31 @@ export class ReceiptsSummaryComponent implements OnInit {
   today = new Date().toLocaleDateString("fr-ca");
 
   receiptsDateControl = new FormControl(this.today);
+  paymentModeCriterionControl = new FormControl({
+    id: "all",
+    text: "Tout",
+  });
 
   searchTerm = "";
+
+  paymentModeCriteria: SelectOption[] = [
+    {
+      id: "all",
+      text: "Tout",
+    },
+    {
+      id: "cash",
+      text: "Espèces",
+    },
+    {
+      id: "cheque",
+      text: "Chèque",
+    },
+    {
+      id: "card",
+      text: "Visa",
+    },
+  ];
 
   invoicesList: Invoice[] = [];
 
@@ -40,8 +64,7 @@ export class ReceiptsSummaryComponent implements OnInit {
   constructor(
     private invoiceService: InvoiceService,
     private toastService: ToastService,
-    private modalService: NgbModal,
-    private checkoutService: CheckoutService
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +79,10 @@ export class ReceiptsSummaryComponent implements OnInit {
 
   refreshInvoicesList() {
     this.invoiceService
-      .searchBy({ minDate: new Date(this.receiptsDateControl.value) })
+      .searchBy({
+        minDate: new Date(this.receiptsDateControl.value),
+        patientName: this.searchTerm,
+      })
       .subscribe({
         next: (data) => {
           this.invoicesList = data;
@@ -158,34 +184,4 @@ export class ReceiptsSummaryComponent implements OnInit {
       }
     );
   }
-
-  // printReport() {
-  //   this.checkoutService.loadPdf().subscribe({
-  //     next: (data) => {
-  //       this.toastService.show({
-  //         messages: ["Génération de la fiche de compte."],
-  //         type: ToastType.Success,
-  //       });
-
-  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
-  //         size: "xl",
-  //         centered: true,
-  //         scrollable: true,
-  //         backdrop: "static",
-  //       });
-
-  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
-  //       pdfModalRef.componentInstance.pdfSrc = data;
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-
-  //       this.toastService.show({
-  //         messages: ["Echec de la génération de la fiche de comptes."],
-  //         delay: 10000,
-  //         type: ToastType.Error,
-  //       });
-  //     },
-  //   });
-  // }
 }

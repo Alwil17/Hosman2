@@ -51,6 +51,7 @@ export class InvoiceService {
     minDate: Date;
     maxDate?: Date;
     actGroupCode?: string;
+    patientName?: string;
   }): Observable<Invoice[]> {
     let apiComplementary =
       "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
@@ -59,8 +60,13 @@ export class InvoiceService {
       apiComplementary +=
         "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
     }
+
     if (criteria.actGroupCode) {
       apiComplementary += "&code=" + criteria.actGroupCode;
+    }
+
+    if (criteria.patientName) {
+      apiComplementary += "&patient=" + criteria.patientName;
     }
 
     return this.http

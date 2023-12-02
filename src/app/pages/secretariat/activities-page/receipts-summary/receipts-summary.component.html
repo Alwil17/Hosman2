@@ -21,14 +21,25 @@
                 type="text"
                 name="searchTerm"
                 class="form-control"
-                placeholder="Rechercher"
+                placeholder="Rechercher (nom et/ou prénoms)"
                 [(ngModel)]="searchTerm"
+                (ngModelChange)="refreshInvoicesList()"
               />
               <!-- 
                         (ngModelChange)="searchPatients()" -->
               <i class="ri-search-line search-icon"></i>
             </div>
           </div>
+        </div>
+
+        <div class="col-md-6">
+          <app-select
+            [editable]="false"
+            [clearable]="false"
+            [searchable]="false"
+            [options]="paymentModeCriteria"
+            [control]="paymentModeCriterionControl"
+          ></app-select>
         </div>
       </div>
 

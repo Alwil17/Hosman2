@@ -34,7 +34,8 @@ export class ActivitiesDetailComponent implements OnInit {
   startDateControl = new FormControl(this.today);
   endDateControl = new FormControl();
   rubricControl = new FormControl(this.rubricFirstOption);
-  searchControl = new FormControl("");
+
+  searchTerm = "";
 
   activityTotal = 0;
   paidTotal = 0;
@@ -100,6 +101,7 @@ export class ActivitiesDetailComponent implements OnInit {
         minDate: minDate,
         maxDate: maxDate,
         actGroupCode: actGroupCode,
+        patientName: this.searchTerm,
       })
       .subscribe({
         next: (data) => {
