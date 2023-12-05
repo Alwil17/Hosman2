@@ -49,7 +49,7 @@ public class MedecinServiceImpl implements MedecinService {
 
         HttpEntity<MedecinRequest> request = new HttpEntity<>(toSend);
         ResponseEntity<String> responseEntity = restTemplate
-                .postForEntity(baseUrl, request, String.class);
+                .postForEntity(baseUrl+"/matricule", request, String.class);
 
         log.info("MedecinServiceImpl | addMedecin | Medecin Created");
         String medecinMatricule = (responseEntity.getBody() != null && !responseEntity.getBody().isBlank()) ? responseEntity.getBody() : "";

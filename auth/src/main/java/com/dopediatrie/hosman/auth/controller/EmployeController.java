@@ -38,6 +38,15 @@ public class EmployeController {
         return new ResponseEntity<>(employeId, HttpStatus.CREATED);
     }
 
+    @PostMapping("/matricule")
+    public ResponseEntity<String> addEmployeGetMatricule(@RequestBody EmployeRequest employeRequest) {
+
+        log.info("EmployeController | addEmploye is called");
+
+        String employeId = employeService.addEmployeGetMatricule(employeRequest);
+        return new ResponseEntity<>(employeId, HttpStatus.CREATED);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<Employe>> getEmployeBySearch(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "matricule", required = false) String matricule) {
         log.info("EmployeController | getEmployeBySearch is called");

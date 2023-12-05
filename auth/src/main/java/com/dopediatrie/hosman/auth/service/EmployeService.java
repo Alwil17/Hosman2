@@ -11,6 +11,8 @@ public interface EmployeService {
 
     long addEmploye(EmployeRequest employeRequest);
 
+    String addEmployeGetMatricule(EmployeRequest employeRequest);
+
     void addEmploye(List<EmployeRequest> employeRequests);
 
     EmployeResponse getEmployeById(long employeId);
