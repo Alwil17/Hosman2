@@ -5,7 +5,7 @@ import { DoctorResponse } from "./responses/doctor-response.model";
 
 export interface IDoctor {
   id: number;
-  reference: string;
+  matricule: string;
   nom: string;
   prenoms: string;
   //   date_naissance: Date;
@@ -21,7 +21,7 @@ export interface IDoctor {
 
 export class Doctor {
   id: number;
-  reference: string;
+  matricule: string;
   nom: string;
   prenoms: string;
   //   date_naissance: Date;
@@ -36,17 +36,17 @@ export class Doctor {
 
   constructor(iDoctor: IDoctor) {
     this.id = iDoctor.id;
-    this.reference = iDoctor.reference;
+    this.matricule = iDoctor.matricule;
     this.nom = iDoctor.nom;
     this.prenoms = iDoctor.prenoms;
   }
 
-  static fromResponse(patient: DoctorResponse): Doctor {
+  static fromResponse(doctor: DoctorResponse): Doctor {
     return new Doctor({
-      id: patient.id,
-      reference: patient.reference,
-      nom: patient.nom,
-      prenoms: patient.prenoms,
+      id: doctor.id,
+      matricule: doctor.matricule,
+      nom: doctor.nom,
+      prenoms: doctor.prenoms,
     });
   }
 

@@ -1,6 +1,6 @@
 export interface DoctorResponse {
   id: number;
-  reference: string;
+  matricule: string;
   nom: string;
   prenoms: string;
   //   date_naissance: Date;

@@ -1,8 +1,7 @@
 import { SectorRequest } from "./sector-request.model";
 
 export interface IDoctorRequest {
-  id?: number;
-  // reference: string;
+  matricule?: string;
   nom: string;
   prenoms: string;
   type: string;
@@ -18,8 +17,7 @@ export interface IDoctorRequest {
 }
 
 export class DoctorRequest {
-  id?: number;
-  // reference: string;
+  matricule?: string;
   nom: string;
   prenoms: string;
   type: string;
@@ -34,8 +32,7 @@ export class DoctorRequest {
   //   no_piece?: string;
 
   constructor(iDoctor: IDoctorRequest) {
-    this.id = iDoctor.id;
-    // this.reference = iDoctor.reference;
+    this.matricule = iDoctor.matricule;
     this.nom = iDoctor.nom;
     this.prenoms = iDoctor.prenoms;
     this.type = iDoctor.type;
