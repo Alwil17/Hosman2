@@ -22,7 +22,7 @@ public class SecteurServiceImpl implements SecteurService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String baseUrl = "http://localhost:85/secteurs";
+    private String baseUrl = "http://localhost:8085/secteurs";
 
     @Override
     public List<SecteurResponse> getAllSecteurs() {
