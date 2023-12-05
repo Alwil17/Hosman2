@@ -38,8 +38,10 @@ export class TariffService {
   // }
 
   getByGroupCode(code: string): Observable<Tariff[]> {
+    let apiComplementary = "groupe=" + code;
+
     return this.http
-      .get<TariffResponse[]>(`${apiEndpoint}/groupe/${code}/all`)
+      .get<TariffResponse[]>(`${apiEndpoint}/search?${apiComplementary}`)
       .pipe(
         map((tariffs) => {
           const mapped: Tariff[] = tariffs.map((tariff) =>
@@ -49,6 +51,18 @@ export class TariffService {
           return mapped;
         })
       );
+
+    // return this.http
+    //   .get<TariffResponse[]>(`${apiEndpoint}/groupe/${code}/all`)
+    //   .pipe(
+    //     map((tariffs) => {
+    //       const mapped: Tariff[] = tariffs.map((tariff) =>
+    //         Tariff.fromResponse(tariff)
+    //       );
+
+    //       return mapped;
+    //     })
+    //   );
   }
 
   // create(data: DoctorRequest): Observable<any> {
