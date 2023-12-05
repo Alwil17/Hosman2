@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,25 @@ public class EmployeController {
 
         long employeId = employeService.addEmploye(employeRequest);
         return new ResponseEntity<>(employeId, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Employe>> getEmployeBySearch(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "matricule", required = false) String matricule) {
+        log.info("EmployeController | getEmployeBySearch is called");
+        List<Employe> employes = Collections.emptyList();
+        if (type != null && !type.isBlank())
+            employes = employeService.getEmployeByType(type);
+        if (matricule != null && !matricule.isBlank())
+            employes = employeService.getEmployeByMatricule(matricule);
+
+        return new ResponseEntity<>(employes, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<EmployeResponse> getEmployeByUserId(@PathVariable("id") long userId) {
+        log.info("EmployeController | getEmployeByUserId is called");
+        EmployeResponse employeResponse = employeService.getEmployeByUserId(userId);
+        return new ResponseEntity<>(employeResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

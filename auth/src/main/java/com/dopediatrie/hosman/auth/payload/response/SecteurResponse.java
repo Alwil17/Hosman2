@@ -1,20 +1,15 @@
 package com.dopediatrie.hosman.auth.payload.response;
 
-import com.dopediatrie.hosman.auth.entity.Structure;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartementResponse {
+public class SecteurResponse {
     private long id;
     private String libelle;
     private String slug;

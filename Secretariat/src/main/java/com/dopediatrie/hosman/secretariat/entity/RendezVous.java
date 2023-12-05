@@ -17,12 +17,8 @@ public class RendezVous {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    @ManyToOne
-    @JoinColumn(name = "medecin_id")
-    private Medecin medecin;
-    @ManyToOne
-    @JoinColumn(name = "intervenant_id")
-    private Medecin intervenant;
+    private String medecin;
+    private String intervenant;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;

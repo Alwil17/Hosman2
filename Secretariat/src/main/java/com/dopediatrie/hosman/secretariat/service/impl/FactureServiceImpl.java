@@ -5,6 +5,7 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.*;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureModeRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.*;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class FactureServiceImpl implements FactureService {
     private final AttenteService attenteService;
     private final CaisseService caisseService;
     private final PECService pecService;
+    private final MedecinService medecinService;
     private final ReductionService reductionService;
     private final MajorationService majorationService;
     private final CreanceService creanceService;
@@ -98,30 +100,19 @@ public class FactureServiceImpl implements FactureService {
         PrestationTemp prestationTemp = prestationTempRepository.findById(factureRequest.getPrestation_id()).orElseThrow();
         //copyProperties(prestationTemp, prestationRequest);
 
-
-        long secteur_id = (prestationTemp.getSecteur() != null) ? prestationTemp.getSecteur().getId() : 0;
-        long demandeur_id = (prestationTemp.getDemandeur() != null) ? prestationTemp.getDemandeur().getId() : 0;
-
         PrestationRequest prestationRequest = PrestationRequest.builder()
                 .provenance(prestationTemp.getProvenance())
                 .date_prestation(prestationTemp.getDate_prestation())
-                .consulteur_id(prestationTemp.getConsulteur().getId())
+                .consulteur(prestationTemp.getConsulteur())
                 .patient_id(prestationTemp.getPatient().getId())
+                .secteur_code(prestationTemp.getSecteur_code())
                 .build();
-        if (secteur_id != 0)
-            prestationRequest.setSecteur_id(secteur_id);
-        if(demandeur_id != 0){
-            long employeur_id = (prestationTemp.getDemandeur().getEmployeur() != null) ? prestationTemp.getDemandeur().getEmployeur().getId() : 0;
-            long secteur_med_id = (prestationTemp.getDemandeur().getSecteur() != null) ? prestationTemp.getDemandeur().getSecteur().getId() : 0;
-            MedecinRequest demandeur = MedecinRequest.builder().build();
-            copyProperties(prestationTemp.getDemandeur(), demandeur);
-            if(employeur_id != 0){
-                demandeur.setEmployeur_id(employeur_id);
-            }
-            if(secteur_med_id != 0){
-                demandeur.setSecteur_id(secteur_med_id);
-            }
-            prestationRequest.setDemandeur(demandeur);
+        if(prestationTemp.getDemandeur() != null && !prestationTemp.getDemandeur().isBlank()){
+            MedecinRequest demandeurRequest = MedecinRequest.builder().build();
+            demandeurRequest.setSecteur(prestationTemp.getSecteur_code());
+            MedecinResponse mr = medecinService.getMedecinByMatricule(prestationTemp.getDemandeur());
+            copyProperties(mr, demandeurRequest);
+            prestationRequest.setDemandeur(demandeurRequest);
         }
 
         //log.info(prestationRequest);
@@ -194,8 +185,8 @@ public class FactureServiceImpl implements FactureService {
                 .num_attente(0)
                 .date_attente(factureRequest.getDate_facture())
                 .patient_id(factureRequest.getPatient_id())
-                .medecin_id(prestation.getConsulteur().getId())
-                .secteur_id(prestation.getSecteur().getId())
+                .medecin(prestation.getConsulteur())
+                .secteur_code(prestation.getSecteur_code())
                 .facture_id(facture.getId())
                 .structure_id(1)
                 .build();

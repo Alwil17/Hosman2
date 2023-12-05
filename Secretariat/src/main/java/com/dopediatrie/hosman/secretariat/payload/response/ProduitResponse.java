@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttenteResponse {
+public class ProduitResponse {
     private long id;
-    private long num_attente;
-    private int ordre;
-    private boolean attente;
-    private LocalDateTime date_attente;
-    private boolean urgence;
-    private long structure_id;
+    private String code;
+    private String nom;
+    private String nom_officiel;
+    private String dci;
+    private String code_acte;
+    private String autre;
+    private double prix;
 }

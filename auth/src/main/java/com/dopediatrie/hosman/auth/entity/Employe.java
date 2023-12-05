@@ -22,20 +22,26 @@ public class Employe {
     private String matricule;
     private String nom;
     private String prenoms;
+    private LocalDateTime date_naissance;
     private char sexe;
+    private String lieu_naissance;
     private String tel1;
     private String tel2;
     private String email;
     private String adresse;
     private String localisation;
+    private String type_piece;
+    private String no_piece;
+    private String provenance;
     private String autres;
     private LocalDateTime date_debut;
     private LocalDateTime date_fin;
     private boolean is_employe;
     private boolean is_temporaire;
+    private boolean is_medecin;
     @ManyToOne
-    @JoinColumn(name = "departement_id")
-    private Departement departement;
+    @JoinColumn(name = "secteur_id")
+    private Secteur secteur;
     private long profession_id;
     private long nationalite_id;
     @ManyToOne

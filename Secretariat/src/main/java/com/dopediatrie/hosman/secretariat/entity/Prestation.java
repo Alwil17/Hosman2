@@ -23,15 +23,9 @@ public class Prestation {
     @JoinColumn(name = "patient_id")
     private Patient patient;
     private String provenance;
-    @ManyToOne
-    @JoinColumn(name = "demandeur_id")
-    private Medecin demandeur;
-    @ManyToOne
-    @JoinColumn(name = "consulteur_id")
-    private Medecin consulteur;
-    @ManyToOne
-    @JoinColumn(name = "secteur_id")
-    private Secteur secteur;
+    private String demandeur;
+    private String consulteur;
+    private String secteur_code;
     private LocalDateTime date_prestation;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "prestation_tarif",

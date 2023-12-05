@@ -4,14 +4,16 @@ import com.dopediatrie.hosman.secretariat.entity.Attente;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AttenteRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AttenteResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.SecteurResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.AttenteService;
-import com.dopediatrie.hosman.secretariat.utils.Str;
+import com.dopediatrie.hosman.secretariat.service.MedecinService;
+import com.dopediatrie.hosman.secretariat.service.SecteurService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -22,14 +24,22 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class AttenteServiceImpl implements AttenteService {
     private final AttenteRepository attenteRepository;
     private final PatientRepository patientRepository;
-    private final MedecinRepository medecinRepository;
-    private final SecteurRepository secteurRepository;
     private final FactureRepository factureRepository;
+
+    private final SecteurService secteurService;
+    private final MedecinService medecinService;
     private final String NOT_FOUND = "ATTENTE_NOT_FOUND";
 
     @Override
     public List<Attente> getAllAttentes() {
-        return attenteRepository.findAll();
+        List<Attente> attentes =  attenteRepository.findAll();
+        for (Attente attente : attentes) {
+            MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+            MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            attente.setMedecin_consulteur(consulteur);
+            attente.setMedecin_receveur(receveur);
+        }
+        return attentes;
     }
 
     @Override
@@ -43,9 +53,10 @@ public class AttenteServiceImpl implements AttenteService {
                 .num_attente(max_attente+1)
                 .date_attente(attenteRequest.getDate_attente())
                 .patient(patientRepository.findById(attenteRequest.getPatient_id()).orElseThrow())
-                .medecin(medecinRepository.findById(attenteRequest.getMedecin_id()).orElseThrow())
-                .secteur(secteurRepository.findById(attenteRequest.getSecteur_id()).orElseThrow())
+                .medecin(attenteRequest.getMedecin())
+                .secteur_code(attenteRequest.getSecteur_code())
                 .facture(factureRepository.findById(attenteRequest.getFacture_id()).orElseThrow())
+                .urgence(attenteRequest.isUrgence())
                 .structure_id(attenteRequest.getStructure_id())
                 .build();
 
@@ -90,10 +101,11 @@ public class AttenteServiceImpl implements AttenteService {
         attente.setDate_attente(attenteRequest.getDate_attente());
         attente.setAttente(attenteRequest.isAttente());
         attente.setPatient(patientRepository.findById(attenteRequest.getPatient_id()).orElseThrow());
-        attente.setMedecin(medecinRepository.findById(attenteRequest.getMedecin_id()).orElseThrow());
-        attente.setReceveur(medecinRepository.findById(attenteRequest.getReceveur_id()).orElseThrow());
-        attente.setSecteur(secteurRepository.findById(attenteRequest.getSecteur_id()).orElseThrow());
+        attente.setMedecin(attenteRequest.getMedecin());
+        attente.setReceveur(attenteRequest.getReceveur());
+        attente.setSecteur_code(attenteRequest.getSecteur_code());
         attente.setFacture(factureRepository.findById(attenteRequest.getFacture_id()).orElseThrow());
+        attente.setUrgence(attenteRequest.isUrgence());
         attente.setStructure_id(attenteRequest.getStructure_id());
         attenteRepository.save(attente);
 
@@ -113,5 +125,44 @@ public class AttenteServiceImpl implements AttenteService {
         }
         log.info("Deleting Attente with id: {}", attenteId);
         attenteRepository.deleteById(attenteId);
+    }
+
+    @Override
+    public List<Attente> getAttenteForMySecteur(long userId) {
+        SecteurResponse sr = secteurService.getSecteurForUser(userId);
+        List<Attente> attentes =  attenteRepository.getAttenteBySecteurCode(sr.getCode());
+        for (Attente attente : attentes) {
+            MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+            MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            attente.setMedecin_consulteur(consulteur);
+            attente.setMedecin_receveur(receveur);
+        }
+
+        return attentes;
+    }
+
+    @Override
+    public List<Attente> getAttenteForMe(long userId) {
+        MedecinResponse mr = medecinService.getMedecinForUser(userId);
+        List<Attente> attentes =  attenteRepository.getAttenteByMedecin(mr.getMatricule());
+        for (Attente attente : attentes) {
+            MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+            MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            attente.setMedecin_consulteur(consulteur);
+            attente.setMedecin_receveur(receveur);
+        }
+        return attentes;
+    }
+
+    @Override
+    public List<Attente> getAttenteForMedecin(String medecin_matricule) {
+        List<Attente> attentes =  attenteRepository.getAttenteByMedecin(medecin_matricule);
+        for (Attente attente : attentes) {
+            MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+            MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            attente.setMedecin_consulteur(consulteur);
+            attente.setMedecin_receveur(receveur);
+        }
+        return attentes;
     }
 }

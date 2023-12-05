@@ -18,4 +18,10 @@ public interface EmployeService {
     void editEmploye(EmployeRequest employeRequest, long employeId);
 
     public void deleteEmployeById(long employeId);
+
+    List<Employe> getEmployeByType(String type);
+
+    List<Employe> getEmployeByMatricule(String matricule);
+
+    EmployeResponse getEmployeByUserId(long userId);
 }

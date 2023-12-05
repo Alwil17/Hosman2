@@ -1,4 +1,4 @@
-package com.dopediatrie.hosman.secretariat.payload.request;
+package com.dopediatrie.hosman.bm.payload.request;
 
 import lombok.Builder;
 import lombok.Data;

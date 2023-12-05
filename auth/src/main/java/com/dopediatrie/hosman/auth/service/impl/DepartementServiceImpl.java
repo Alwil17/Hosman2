@@ -34,8 +34,9 @@ public class DepartementServiceImpl implements DepartementService {
         log.info("DepartementServiceImpl | addDepartement is called");
         Departement departement
                 = Departement.builder()
-                .nom(departementRequest.getNom())
-                .slug(Str.slug(departementRequest.getNom()))
+                .libelle(departementRequest.getLibelle())
+                .slug(Str.slug(departementRequest.getLibelle()))
+                .couleur(departementRequest.getCouleur())
                 .code(departementRequest.getCode())
                 .structure(structureRepository.findById(departementRequest.getStructure_id()).get())
                 .build();
@@ -54,8 +55,9 @@ public class DepartementServiceImpl implements DepartementService {
         for (DepartementRequest departementRequest: departementRequests) {
             Departement departement
                     = Departement.builder()
-                    .nom(departementRequest.getNom())
-                    .slug(Str.slug(departementRequest.getNom()))
+                    .libelle(departementRequest.getLibelle())
+                    .slug(Str.slug(departementRequest.getLibelle()))
+                    .couleur(departementRequest.getCouleur())
                     .code(departementRequest.getCode())
                     .structure(structureRepository.findById(departementRequest.getStructure_id()).get())
                     .build();
@@ -94,8 +96,9 @@ public class DepartementServiceImpl implements DepartementService {
                         "Departement with given Id not found",
                         NOT_FOUND
                 ));
-        departement.setNom(departementRequest.getNom());
-        departement.setSlug(Str.slug(departementRequest.getNom()));
+        departement.setLibelle(departementRequest.getLibelle());
+        departement.setSlug(Str.slug(departementRequest.getLibelle()));
+        departement.setCouleur(departementRequest.getCouleur());
         departement.setCode(departementRequest.getCode());
         departementRepository.save(departement);
 

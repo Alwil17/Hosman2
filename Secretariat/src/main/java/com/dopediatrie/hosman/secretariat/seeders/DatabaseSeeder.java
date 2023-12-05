@@ -5,7 +5,6 @@ import com.dopediatrie.hosman.secretariat.payload.request.*;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.service.*;
 import com.dopediatrie.hosman.secretariat.utils.Str;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -14,12 +13,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -39,16 +35,14 @@ public class DatabaseSeeder {
     private final EmployeurService employeurService;
     private final TypeAssuranceService typeAssuranceService;
     private final ModePayementService modePayementService;
-    private final SecteurService secteurService;
     private final EtatService etatService;
-    private final MedecinService medecinService;
     private final DeviseService deviseService;
 
     @Autowired
     public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, ActeRepository acteRepository, TarifService tarifService,
                           PaysService paysService, VilleService villeService, QuartierService quartierService, ProfessionService professionService,
-                          EmployeurService employeurService, TypeAssuranceService typeAssuranceService, ModePayementService modePayementService, SecteurService secteurService,
-                          EtatService etatService, MedecinService medecinService, DeviseService deviseService) {
+                          EmployeurService employeurService, TypeAssuranceService typeAssuranceService, ModePayementService modePayementService,
+                          EtatService etatService, DeviseService deviseService) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
         this.acteRepository = acteRepository;
@@ -61,9 +55,7 @@ public class DatabaseSeeder {
         this.employeurService = employeurService;
         this.typeAssuranceService = typeAssuranceService;
         this.modePayementService = modePayementService;
-        this.secteurService = secteurService;
         this.etatService = etatService;
-        this.medecinService = medecinService;
         this.deviseService = deviseService;
     }
 
@@ -79,9 +71,7 @@ public class DatabaseSeeder {
         seedEmployeurTable();
         seedTypeAssuranceTable();
         seedModePayementTable();
-        seedSecteurTable();
         seedEtatTable();
-        seedMedecinTable();
         seedDeviseTable();
     }
 
@@ -318,25 +308,6 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedSecteurTable() {
-        String sql = "SELECT c.libelle FROM secteur c";
-        List<Secteur> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
-        if(rs == null || rs.size() <= 0) {
-            SecteurRequest ar1 = SecteurRequest.builder().libelle("Pédiatrie").couleur("pink").code("P").build();
-            SecteurRequest ar2 = SecteurRequest.builder().libelle("Médecine interne").couleur("pink").code("MI").build();
-            SecteurRequest ar3 = SecteurRequest.builder().libelle("Cardiologie").couleur("pink").code("C").build();
-            SecteurRequest ar4 = SecteurRequest.builder().libelle("Neurologie").couleur("pink").code("N").build();
-            SecteurRequest ar5 = SecteurRequest.builder().libelle("Ophtalmologie").couleur("pink").code("O").build();
-            SecteurRequest ar6 = SecteurRequest.builder().libelle("Laboratoire").couleur("pink").code("L").build();
-
-            secteurService.addSecteur(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6));
-
-            log.info("Secteur table seeded");
-        }else {
-            log.info("Secteur Seeding Not Required");
-        }
-    }
-
     private void seedEtatTable() {
         String sql = "SELECT c.nom FROM etat c";
         List<Etat> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
@@ -357,14 +328,14 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedMedecinTable() {
+    /*private void seedMedecinTable() {
         String sql = "SELECT c.nom FROM medecin c";
         List<Medecin> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
             MedecinRequest ar1 = MedecinRequest.builder().nom("DOVI-AKUE").prenoms("Jean-Pierre").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
-                    .sexe('M').lieu_naissance("Quelque part").tel1("90909090").email("adjp@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0000").employeur_id(1).secteur_id(1).build();
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90909090").email("adjp@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0000").employeur_id(1).secteur_code("MIG").build();
             MedecinRequest ar2 = MedecinRequest.builder().nom("ABALO").prenoms("Serein").date_naissance(LocalDateTime.of(1955, Month.AUGUST, 01, 00, 00))
-                    .sexe('M').lieu_naissance("Quelque part").tel1("90907878").email("aserein@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0021").employeur_id(1).secteur_id(1).build();
+                    .sexe('M').lieu_naissance("Quelque part").tel1("90907878").email("aserein@email.net").type_piece("CNI").type("interne").no_piece("0000-000-0021").employeur_id(1).secteur_code("PDI").build();
 
             medecinService.addMedecin(Arrays.asList(ar1, ar2));
 
@@ -372,7 +343,7 @@ public class DatabaseSeeder {
         }else {
             log.info("Medecin Seeding Not Required");
         }
-    }
+    }*/
 
     private void seedDeviseTable() {
         String sql = "SELECT c.nom FROM devise c";

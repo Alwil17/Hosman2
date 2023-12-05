@@ -17,9 +17,9 @@ public class PrestationTempResponse {
     private long id;
     private Patient patient;
     private String provenance;
-    private Medecin demandeur;
-    private Medecin consulteur;
-    private Secteur secteur;
+    private String demandeur;
+    private String consulteur;
+    private String secteur_code;
     private LocalDateTime date_prestation;
     private List<Tarif> tarifs;
 }

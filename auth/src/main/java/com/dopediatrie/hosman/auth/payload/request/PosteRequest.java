@@ -7,7 +7,5 @@ import lombok.Data;
 @Builder
 public class PosteRequest {
     private String intitule;
-    private String slug;
     private String code;
-    private long departement_id;
 }

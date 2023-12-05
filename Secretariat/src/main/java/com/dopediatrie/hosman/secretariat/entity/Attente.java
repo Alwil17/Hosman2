@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
+import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,18 +27,17 @@ public class Attente {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
-    @ManyToOne
-    @JoinColumn(name = "medecin")
-    private Medecin medecin;
-    @ManyToOne
-    @JoinColumn(name = "receveur_id")
-    private Medecin receveur;
-    @ManyToOne
-    @JoinColumn(name = "secteur_id")
-    private Secteur secteur;
+    @Transient
+    private MedecinResponse medecin_consulteur;
+    private String medecin;
+    @Transient
+    private MedecinResponse medecin_receveur;
+    private String receveur;
+    private String secteur_code;
     @OneToOne
     @JoinColumn(name = "facture_id")
     private Facture facture;
+    private boolean urgence = false;
     private long structure_id;
 
     @Override
@@ -48,6 +48,7 @@ public class Attente {
                 ", ordre=" + ordre +
                 ", attente=" + attente +
                 ", date_attente=" + date_attente +
+                ", urgence=" + urgence +
                 ", structure_id=" + structure_id +
                 '}';
     }

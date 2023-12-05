@@ -1,8 +1,10 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.Acte;
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.ProduitResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
@@ -10,9 +12,14 @@ import com.dopediatrie.hosman.secretariat.service.TarifService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -24,6 +31,9 @@ public class TarifServiceImpl implements TarifService {
     private final TarifRepository tarifRepository;
     private final ActeRepository acteRepository;
     private final String NOT_FOUND = "ACTE_NOT_FOUND";
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<Tarif> getAllTarifs() {
@@ -104,8 +114,44 @@ public class TarifServiceImpl implements TarifService {
     @Override
     public List<Tarif> getTarifForGroupeAndActe(String groupeCode, String acte) {
         log.info("TarifServiceImpl | getTarifForGroupeAndActe is called");
+        List<Tarif> tarifs = Collections.emptyList();
+        List<ProduitResponse> produitResponses = Collections.emptyList();
+        Acte mappedActe = Acte.builder().build();
 
-        return tarifRepository.findTarifsByGroupeAndActe(groupeCode, acte);
+        if(groupeCode.equals("GRP016")){
+            ResponseEntity<ProduitResponse[]> responseEntity = restTemplate
+                    .getForEntity("http://hosman-apps.com:83/produits/search?code_acte=medic",
+                            ProduitResponse[].class);
+
+            produitResponses = Arrays.asList(responseEntity.getBody());
+            mappedActe = acteRepository.findByCodeEquals("medic").orElseThrow();
+        }else if (groupeCode.equals("GRP017")){
+            ResponseEntity<ProduitResponse[]> responseEntity = restTemplate
+                    .getForEntity("http://hosman-apps.com:83/produits/search?code_acte=conso",
+                            ProduitResponse[].class);
+
+            produitResponses = Arrays.asList(responseEntity.getBody());
+            mappedActe = acteRepository.findByCodeEquals("conso").orElseThrow();
+        }
+        tarifs = tarifRepository.findTarifsByGroupeAndActe(groupeCode, acte);
+
+        if(produitResponses != null && produitResponses.size() > 0){
+            for (ProduitResponse pr : produitResponses) {
+                Tarif tarif = Tarif.builder()
+                        .libelle(pr.getNom_officiel())
+                        .slug(Str.slug(pr.getNom_officiel()))
+                        .code(pr.getCode())
+                        .tarif_assur_etr(pr.getPrix())
+                        .tarif_assur_hors_zone(pr.getPrix())
+                        .tarif_non_assure(pr.getPrix())
+                        .tarif_etr_non_assure(pr.getPrix())
+                        .tarif_assur_locale(pr.getPrix())
+                        .acte(mappedActe)
+                        .build();
+                tarifs.add(tarif);
+            }
+        }
+        return tarifs;
     }
 
     @Override
@@ -113,7 +159,44 @@ public class TarifServiceImpl implements TarifService {
         log.info("TarifServiceImpl | getTarifForGroupe is called");
         log.info("TarifServiceImpl | getTarifForGroupe | Get the tarif for groupeCode: {}", groupeCode);
 
-        return tarifRepository.findTarifsByGroupe(groupeCode);
+        List<Tarif> tarifs = Collections.emptyList();
+        List<ProduitResponse> produitResponses = Collections.emptyList();
+        Acte mappedActe = Acte.builder().build();
+
+        if(groupeCode.equals("GRP016")){
+            ResponseEntity<ProduitResponse[]> responseEntity = restTemplate
+                    .getForEntity("http://hosman-apps.com:83/produits/search?code_acte=medic",
+                            ProduitResponse[].class);
+
+            produitResponses = Arrays.asList(responseEntity.getBody());
+            mappedActe = acteRepository.findByCodeEquals("medic").orElseThrow();
+        }else if (groupeCode.equals("GRP017")){
+            ResponseEntity<ProduitResponse[]> responseEntity = restTemplate
+                    .getForEntity("http://hosman-apps.com:83/produits/search?code_acte=conso",
+                            ProduitResponse[].class);
+
+            produitResponses = Arrays.asList(responseEntity.getBody());
+            mappedActe = acteRepository.findByCodeEquals("conso").orElseThrow();
+        }
+        tarifs = tarifRepository.findTarifsByGroupe(groupeCode);
+
+        if(produitResponses != null && produitResponses.size() > 0){
+            for (ProduitResponse pr : produitResponses) {
+                Tarif tarif = Tarif.builder()
+                        .libelle(pr.getNom_officiel())
+                        .slug(Str.slug(pr.getNom_officiel()))
+                        .code(pr.getCode())
+                        .tarif_assur_etr(pr.getPrix())
+                        .tarif_assur_hors_zone(pr.getPrix())
+                        .tarif_non_assure(pr.getPrix())
+                        .tarif_etr_non_assure(pr.getPrix())
+                        .tarif_assur_locale(pr.getPrix())
+                        .acte(mappedActe)
+                        .build();
+                tarifs.add(tarif);
+            }
+        }
+        return tarifs;
     }
 
     @Override

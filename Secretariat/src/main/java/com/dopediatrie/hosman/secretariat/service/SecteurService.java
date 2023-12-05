@@ -1,13 +1,12 @@
 package com.dopediatrie.hosman.secretariat.service;
 
-import com.dopediatrie.hosman.secretariat.entity.Secteur;
 import com.dopediatrie.hosman.secretariat.payload.request.SecteurRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.SecteurResponse;
 
 import java.util.List;
 
 public interface SecteurService {
-    List<Secteur> getAllSecteurs();
+    List<SecteurResponse> getAllSecteurs();
 
     long addSecteur(SecteurRequest secteurRequest);
 
@@ -18,4 +17,6 @@ public interface SecteurService {
     void editSecteur(SecteurRequest secteurRequest, long secteurId);
 
     public void deleteSecteurById(long secteurId);
+
+    SecteurResponse getSecteurForUser(long userId);
 }

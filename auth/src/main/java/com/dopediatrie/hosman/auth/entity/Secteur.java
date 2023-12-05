@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Departement {
+public class Secteur {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
@@ -24,9 +23,9 @@ public class Departement {
     private String couleur;
     private String code;
     @ManyToOne
-    @JoinColumn(name = "structure_id")
-    private Structure structure;
-    @OneToMany(mappedBy = "departement")
+    @JoinColumn(name = "departement_id")
+    private Departement departement;
+    @OneToMany(mappedBy = "secteur")
     @JsonIgnore
-    private List<Secteur> secteurs;
+    private List<Employe> employes;
 }

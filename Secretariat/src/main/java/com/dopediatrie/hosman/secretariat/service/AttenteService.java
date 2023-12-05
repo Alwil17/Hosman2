@@ -16,4 +16,10 @@ public interface AttenteService {
     void editAttente(AttenteRequest attenteRequest, long attenteId);
 
     public void deleteAttenteById(long attenteId);
+
+    List<Attente> getAttenteForMySecteur(long userId);
+
+    List<Attente> getAttenteForMe(long userId);
+
+    List<Attente> getAttenteForMedecin(String medecin_matricule);
 }

@@ -1,23 +1,20 @@
 package com.dopediatrie.hosman.secretariat.service;
 
-import com.dopediatrie.hosman.secretariat.entity.Medecin;
 import com.dopediatrie.hosman.secretariat.payload.request.MedecinRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
 
 import java.util.List;
 
 public interface MedecinService {
-    List<Medecin> getAllMedecins();
+    List<MedecinResponse> getAllMedecins();
 
-    long addMedecin(MedecinRequest medecinRequest);
+    String addMedecin(MedecinRequest medecinRequest);
 
     void addMedecin(List<MedecinRequest> medecinRequests);
 
-    MedecinResponse getMedecinById(long medecinId);
+    List<MedecinResponse> getMedecinByType(String typeMedecin);
 
-    List<Medecin> getMedecinByType(String typeMedecin);
+    MedecinResponse getMedecinByMatricule(String demandeur);
 
-    void editMedecin(MedecinRequest medecinRequest, long medecinId);
-
-    public void deleteMedecinById(long medecinId);
+    MedecinResponse getMedecinForUser(long userId);
 }

@@ -13,9 +13,10 @@ public class AttenteRequest {
     private boolean attente;
     private LocalDateTime date_attente;
     private long patient_id;
-    private long medecin_id;
-    private long receveur_id;
-    private long secteur_id;
+    private String medecin;
+    private String receveur;
+    private String secteur_code;
     private long facture_id;
+    private boolean urgence;
     private long structure_id = 1;
 }

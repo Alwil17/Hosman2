@@ -28,8 +28,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class PrestationTempServiceImpl implements PrestationTempService {
     private final PrestationTempRepository prestationTempRepository;
     private final PatientRepository patientRepository;
-    private final MedecinRepository medecinRepository;
-    private final SecteurRepository secteurRepository;
     private final TarifRepository tarifRepository;
     private final AssuranceTarifRepository assuranceTarifRepository;
 
@@ -46,13 +44,12 @@ public class PrestationTempServiceImpl implements PrestationTempService {
     public FactureResponse addPrestationTemp(PrestationTempRequest prestationTempRequest) {
         log.info("PrestationTempServiceImpl | addPrestationTemp is called");
         Patient patient = patientRepository.findById(prestationTempRequest.getPatient_id()).orElseThrow();
-        long secteur_id = (prestationTempRequest.getSecteur_id() != 0) ? secteurRepository.findById(prestationTempRequest.getSecteur_id()).get().getId() : 0;
-        long demandeur_id = 0;
+        String demandeur = "";
         if(prestationTempRequest.getDemandeur() != null){
-            if(prestationTempRequest.getDemandeur().getId() != 0){
-                demandeur_id = prestationTempRequest.getDemandeur().getId();
+            if(prestationTempRequest.getDemandeur().getMatricule() != null){
+                demandeur = prestationTempRequest.getDemandeur().getMatricule();
             }else{
-                demandeur_id = medecinService.addMedecin(prestationTempRequest.getDemandeur());
+                demandeur = medecinService.addMedecin(prestationTempRequest.getDemandeur());
             }
         }
 
@@ -60,14 +57,13 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                 = PrestationTemp.builder()
                 .provenance(prestationTempRequest.getProvenance())
                 .patient(patient)
-                .consulteur(medecinRepository.findById(prestationTempRequest.getConsulteur_id()).get())
+                .consulteur(prestationTempRequest.getConsulteur())
+                .secteur_code(prestationTempRequest.getSecteur_code())
                 .date_prestation(prestationTempRequest.getDate_prestation())
                 .build();
 
-        if(secteur_id != 0)
-            prestationTemp.setSecteur(secteurRepository.findById(prestationTempRequest.getSecteur_id()).orElseThrow());
-        if(demandeur_id != 0)
-            prestationTemp.setDemandeur(medecinRepository.findById(demandeur_id).orElseThrow());
+        if(demandeur != null && !demandeur.isBlank())
+            prestationTemp.setDemandeur(demandeur);
 
         prestationTemp = prestationTempRepository.save(prestationTemp);
         double total_facture = 0;
@@ -172,7 +168,8 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                 ));
         prestationTemp.setProvenance(prestationTempRequest.getProvenance());
         prestationTemp.setPatient(patientRepository.findById(prestationTempRequest.getPatient_id()).get());
-        prestationTemp.setConsulteur(medecinRepository.findById(prestationTempRequest.getConsulteur_id()).get());
+        prestationTemp.setConsulteur(prestationTemp.getConsulteur());
+        prestationTemp.setSecteur_code(prestationTempRequest.getSecteur_code());
         prestationTemp.setDate_prestation(prestationTempRequest.getDate_prestation());
         prestationTempRepository.save(prestationTemp);
 

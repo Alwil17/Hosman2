@@ -28,8 +28,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class PrestationServiceImpl implements PrestationService {
     private final PrestationRepository prestationRepository;
     private final PatientRepository patientRepository;
-    private final MedecinRepository medecinRepository;
-    private final SecteurRepository secteurRepository;
 
     private final MedecinService medecinService;
     private final String NOT_FOUND = "PRESTATION_NOT_FOUND";
@@ -43,13 +41,12 @@ public class PrestationServiceImpl implements PrestationService {
     public long addPrestation(PrestationRequest prestationRequest) {
         log.info("PrestationServiceImpl | addPrestation is called");
         Patient patient = patientRepository.findById(prestationRequest.getPatient_id()).orElseThrow();
-        long secteur_id = (prestationRequest.getSecteur_id() != 0) ? secteurRepository.findById(prestationRequest.getSecteur_id()).get().getId() : 0;
-        long demandeur_id = 0;
+        String demandeur = "";
         if(prestationRequest.getDemandeur() != null){
-            if(prestationRequest.getDemandeur().getId() != 0){
-                demandeur_id = prestationRequest.getDemandeur().getId();
+            if(prestationRequest.getDemandeur().getMatricule() != null){
+                demandeur = prestationRequest.getDemandeur().getMatricule();
             }else{
-                demandeur_id = medecinService.addMedecin(prestationRequest.getDemandeur());
+                demandeur = medecinService.addMedecin(prestationRequest.getDemandeur());
             }
         }
 
@@ -57,14 +54,13 @@ public class PrestationServiceImpl implements PrestationService {
                 = Prestation.builder()
                 .provenance(prestationRequest.getProvenance())
                 .patient(patient)
-                .consulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get())
+                .consulteur(prestationRequest.getConsulteur())
                 .date_prestation(prestationRequest.getDate_prestation())
+                .secteur_code(prestationRequest.getSecteur_code())
                 .build();
 
-        if(secteur_id != 0)
-            prestation.setSecteur(secteurRepository.findById(prestationRequest.getSecteur_id()).orElseThrow());
-        if(demandeur_id != 0)
-            prestation.setDemandeur(medecinRepository.findById(demandeur_id).orElseThrow());
+        if(demandeur != null && !demandeur.isBlank())
+            prestation.setDemandeur(demandeur);
 
         prestation = prestationRepository.save(prestation);
 
@@ -136,8 +132,9 @@ public class PrestationServiceImpl implements PrestationService {
                 ));
         prestation.setProvenance(prestationRequest.getProvenance());
         prestation.setPatient(patientRepository.findById(prestationRequest.getPatient_id()).get());
-        prestation.setConsulteur(medecinRepository.findById(prestationRequest.getConsulteur_id()).get());
+        prestation.setConsulteur(prestationRequest.getConsulteur());
         prestation.setDate_prestation(prestationRequest.getDate_prestation());
+        prestation.setSecteur_code(prestationRequest.getSecteur_code());
         prestationRepository.save(prestation);
 
         log.info("PrestationServiceImpl | editPrestation | Prestation Updated");

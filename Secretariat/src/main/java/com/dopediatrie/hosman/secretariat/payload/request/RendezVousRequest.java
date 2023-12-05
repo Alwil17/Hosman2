@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @Builder
 public class RendezVousRequest {
-    private long medecin_id;
-    private long intervenant_id;
+    private String medecin;
+    private String intervenant;
     private long patient_id;
     private String date_rdv;
     private String heure_rdv;

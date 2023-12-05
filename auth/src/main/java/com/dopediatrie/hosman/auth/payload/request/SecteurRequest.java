@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class DepartementRequest {
+public class SecteurRequest {
     private String libelle;
     private String couleur;
     private String code;
-    private long structure_id;
+    private String departement;
 }

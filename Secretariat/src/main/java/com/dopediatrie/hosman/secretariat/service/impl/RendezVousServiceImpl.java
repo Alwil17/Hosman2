@@ -6,7 +6,6 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.RendezVousRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.RendezVousResponse;
 import com.dopediatrie.hosman.secretariat.repository.EtatRepository;
-import com.dopediatrie.hosman.secretariat.repository.MedecinRepository;
 import com.dopediatrie.hosman.secretariat.repository.PatientRepository;
 import com.dopediatrie.hosman.secretariat.repository.RendezVousRepository;
 import com.dopediatrie.hosman.secretariat.service.RendezVousService;
@@ -25,7 +24,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class RendezVousServiceImpl implements RendezVousService {
     private final RendezVousRepository rendezVousRepository;
     private final PatientRepository patientRepository;
-    private final MedecinRepository medecinRepository;
     private final EtatRepository etatRepository;
     private final String NOT_FOUND = "RDV_NOT_FOUND";
 
@@ -48,13 +46,12 @@ public class RendezVousServiceImpl implements RendezVousService {
         RendezVous rendezVous
                 = RendezVous.builder()
                 .date_rdv(date_redv)
-                .medecin(medecinRepository.findById(rendezVousRequest.getMedecin_id()).get())
+                .medecin(rendezVousRequest.getMedecin())
+                .intervenant(rendezVousRequest.getIntervenant())
                 .patient(patientRepository.findById(rendezVousRequest.getPatient_id()).get())
                 .objet(rendezVousRequest.getObjet())
                 .build();
 
-        if (rendezVousRequest.getIntervenant_id() != 0)
-            rendezVous.setIntervenant(medecinRepository.findById(rendezVousRequest.getIntervenant_id()).get());
         if(etat != null)
             rendezVous.setEtat(etat);
 
@@ -80,13 +77,12 @@ public class RendezVousServiceImpl implements RendezVousService {
             RendezVous rendezVous
                     = RendezVous.builder()
                     .date_rdv(date_redv)
-                    .medecin(medecinRepository.findById(rendezVousRequest.getMedecin_id()).get())
+                    .medecin(rendezVousRequest.getMedecin())
+                    .intervenant(rendezVousRequest.getIntervenant())
                     .patient(patientRepository.findById(rendezVousRequest.getPatient_id()).get())
                     .objet(rendezVousRequest.getObjet())
                     .build();
 
-            if (rendezVousRequest.getIntervenant_id() != 0)
-                rendezVous.setIntervenant(medecinRepository.findById(rendezVousRequest.getIntervenant_id()).get());
             if(etat != null)
                 rendezVous.setEtat(etat);
 
@@ -128,7 +124,8 @@ public class RendezVousServiceImpl implements RendezVousService {
                         NOT_FOUND
                 ));
         rendezVous.setDate_rdv(date_redv);
-        rendezVous.setMedecin(medecinRepository.findById(rendezVousRequest.getMedecin_id()).get());
+        rendezVous.setMedecin(rendezVousRequest.getMedecin());
+        rendezVous.setIntervenant(rendezVousRequest.getIntervenant());
         rendezVous.setPatient(patientRepository.findById(rendezVousRequest.getPatient_id()).get());
         rendezVous.setObjet(rendezVousRequest.getObjet());
         rendezVousRepository.save(rendezVous);

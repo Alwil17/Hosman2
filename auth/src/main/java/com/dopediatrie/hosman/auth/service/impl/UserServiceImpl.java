@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .last_access_time(userRequest.getLast_access_time())
                 .email_verified_at(userRequest.getEmail_verified_at())
                 .created_at(userRequest.getCreated_at())
-                .employe(employeRepository.findById(userRequest.getEmploye_id()).get())
+                .employe(employeRepository.findByMatriculeEquals(userRequest.getEmploye_matricule()).get())
                 .build();
 
         user = userRepository.save(user);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
                     .last_access_time(userRequest.getLast_access_time())
                     .email_verified_at(userRequest.getEmail_verified_at())
                     .created_at(userRequest.getCreated_at())
-                    .employe(employeRepository.findById(userRequest.getEmploye_id()).get())
+                    .employe(employeRepository.findByMatriculeEquals(userRequest.getEmploye_matricule()).orElseThrow())
                     .build();
             userRepository.save(user);
         }

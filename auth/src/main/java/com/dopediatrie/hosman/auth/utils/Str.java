@@ -14,4 +14,9 @@ public class Str {
         String slug = NONLATIN.matcher(normalized).replaceAll("");
         return slug.toLowerCase(Locale.ENGLISH);
     }
+
+    public static String limit(String input, int length) {
+        String newStr = input.substring(0, Math.min(input.length(), length));
+        return newStr;
+    }
 }

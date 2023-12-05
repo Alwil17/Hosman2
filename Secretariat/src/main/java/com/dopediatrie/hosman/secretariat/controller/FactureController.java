@@ -123,10 +123,10 @@ public class FactureController {
 
         List<PrestationTarif> tarifs = tarifRepository.findByPrestationId(prestation.getId());
         String groupe = "";
-        if(prestation.getSecteur() == null){
+        if(prestation.getSecteur_code() == null){
             groupe = tarifs.get(0).getTarif().getActe().getGroupe().getLibelle();
         }else{
-            groupe = prestation.getSecteur().getLibelle();
+            groupe = prestation.getSecteur_code();
         }
         long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
 

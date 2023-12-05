@@ -21,7 +21,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class PosteServiceImpl implements PosteService {
     private final PosteRepository posteRepository;
-    private final DepartementRepository departementRepository;
     private final String NOT_FOUND = "POSTE_NOT_FOUND";
 
     @Override
@@ -37,7 +36,6 @@ public class PosteServiceImpl implements PosteService {
                 .intitule(posteRequest.getIntitule())
                 .slug(Str.slug(posteRequest.getIntitule()))
                 .code(posteRequest.getCode())
-                .departement(departementRepository.findById(posteRequest.getDepartement_id()).get())
                 .build();
 
         poste = posteRepository.save(poste);
@@ -57,7 +55,6 @@ public class PosteServiceImpl implements PosteService {
                     .intitule(posteRequest.getIntitule())
                     .slug(Str.slug(posteRequest.getIntitule()))
                     .code(posteRequest.getCode())
-                    .departement(departementRepository.findById(posteRequest.getDepartement_id()).get())
                     .build();
             posteRepository.save(poste);
         }
@@ -97,7 +94,6 @@ public class PosteServiceImpl implements PosteService {
         poste.setIntitule(posteRequest.getIntitule());
         poste.setSlug(Str.slug(posteRequest.getIntitule()));
         poste.setCode(posteRequest.getCode());
-        poste.setDepartement(departementRepository.findById(posteRequest.getDepartement_id()).get());
         posteRepository.save(poste);
 
         log.info("PosteServiceImpl | editPoste | Poste Updated");

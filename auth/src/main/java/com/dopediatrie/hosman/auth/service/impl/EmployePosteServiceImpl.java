@@ -1,7 +1,9 @@
 package com.dopediatrie.hosman.auth.service.impl;
 
+import com.dopediatrie.hosman.auth.entity.Employe;
 import com.dopediatrie.hosman.auth.entity.EmployePoste;
 import com.dopediatrie.hosman.auth.entity.EmployePostePK;
+import com.dopediatrie.hosman.auth.entity.Poste;
 import com.dopediatrie.hosman.auth.exception.AuthCustomException;
 import com.dopediatrie.hosman.auth.payload.request.EmployePosteRequest;
 import com.dopediatrie.hosman.auth.payload.response.EmployePosteResponse;
@@ -35,15 +37,18 @@ public class EmployePosteServiceImpl implements EmployePosteService {
     public EmployePostePK addEmployePoste(EmployePosteRequest employePosteRequest) {
         log.info("EmployePosteServiceImpl | addEmployePoste is called");
 
+        Employe employe = employeRepository.findByMatriculeEquals(employePosteRequest.getEmploye_matricule()).orElseThrow();
+        Poste poste = posteRepository.findByCodeEquals(employePosteRequest.getPoste_code()).orElseThrow();
+
         EmployePostePK pk = new EmployePostePK();
-        pk.employe_id = employePosteRequest.getEmploye_id();
-        pk.poste_id = employePosteRequest.getPoste_id();
+        pk.employe_id = employe.getId();
+        pk.poste_id = poste.getId();
 
         EmployePoste employePoste
                 = EmployePoste.builder()
                 .id(pk)
-                .employe(employeRepository.findById(employePosteRequest.getEmploye_id()).orElseThrow())
-                .poste(posteRepository.findById(employePosteRequest.getPoste_id()).orElseThrow())
+                .employe(employe)
+                .poste(poste)
                 .build();
 
         employePoste = employePosteRepository.save(employePoste);
@@ -82,8 +87,8 @@ public class EmployePosteServiceImpl implements EmployePosteService {
                         "EmployePoste with given Id not found",
                         NOT_FOUND
                 ));
-        employePoste.setEmploye(employeRepository.findById(employePosteRequest.getEmploye_id()).orElseThrow());
-        employePoste.setPoste(posteRepository.findById(employePosteRequest.getPoste_id()).orElseThrow());
+        employePoste.setEmploye(employeRepository.findByMatriculeEquals(employePosteRequest.getEmploye_matricule()).orElseThrow());
+        employePoste.setPoste(posteRepository.findByCodeEquals(employePosteRequest.getPoste_code()).orElseThrow());
         employePosteRepository.save(employePoste);
 
         log.info("EmployePosteServiceImpl | editEmployePoste | EmployePoste Updated");

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -38,11 +39,33 @@ public class AttenteController {
         return new ResponseEntity<>(attenteId, HttpStatus.CREATED);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Attente>> getAttenteBySearch(@RequestHeader(value = "user_id", required = false) Long user_id, @RequestParam(value = "vue") String vue, @RequestParam(value = "medecin", required = false) String medecin) {
+        log.info("AttenteController | getAttenteById is called");
+        List<Attente> attentes = Collections.emptyList();
+        long userId = (user_id != null && user_id != 0) ? user_id : 1;
+        //System.out.println(userId);
+        switch (vue){
+            case "SECTEUR":
+                attentes = attenteService.getAttenteForMySecteur(userId);
+                break;
+            case "MOI":
+                attentes = attenteService.getAttenteForMe(userId);
+                break;
+            case "MEDECIN":
+                attentes = attenteService.getAttenteForMedecin(medecin);
+                break;
+            default:
+                attentes = attenteService.getAllAttentes();
+                break;
+        }
+        System.out.println(attentes.size());
+        return new ResponseEntity<>(attentes, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AttenteResponse> getAttenteById(@PathVariable("id") long attenteId) {
-
         log.info("AttenteController | getAttenteById is called");
-
         log.info("AttenteController | getAttenteById | attenteId : " + attenteId);
 
         AttenteResponse attenteResponse

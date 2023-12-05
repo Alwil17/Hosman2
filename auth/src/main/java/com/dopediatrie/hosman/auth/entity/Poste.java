@@ -21,9 +21,6 @@ public class Poste {
     private String intitule;
     private String slug;
     private String code;
-    @ManyToOne
-    @JoinColumn(name = "departement_id")
-    private Departement departement;
     @ManyToMany(mappedBy = "postes")
     @JsonIgnore
     private List<Employe> employes;
