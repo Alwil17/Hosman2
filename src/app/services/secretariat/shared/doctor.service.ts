@@ -31,6 +31,8 @@ export class DoctorService {
       return of([]);
     }
 
+    type = type.toLowerCase();
+
     return this.http.get<DoctorResponse[]>(`${apiEndpoint}/type/${type}`).pipe(
       map((doctors) => {
         console.log(doctors);
