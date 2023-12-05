@@ -94,20 +94,31 @@ public class EmployeServiceImpl implements EmployeService {
         log.info("EmployeServiceImpl | addEmploye is called");
 
         for (EmployeRequest employeRequest: employeRequests) {
+            String matricule = employeRequest.getMatricule();
+            if(matricule == null || matricule.isBlank()){
+                matricule = "PISJO"+Str.slug(Str.limit(employeRequest.getNom(), 4)+"-"+Str.limit(employeRequest.getPrenoms(), 4))+"_EXT_"+ Str.limit(Str.slug(employeRequest.getProvenance()), 6);
+            }
+
             Employe employe
                     = Employe.builder()
-                    .matricule(employeRequest.getMatricule())
+                    .matricule(matricule)
                     .nom(employeRequest.getNom())
                     .prenoms(employeRequest.getPrenoms())
+                    .date_naissance(employeRequest.getDate_naissance())
+                    .lieu_naissance(employeRequest.getLieu_naissance())
                     .sexe(employeRequest.getSexe())
                     .email(employeRequest.getEmail())
                     .adresse(employeRequest.getAdresse())
+                    .type_piece(employeRequest.getType_piece())
+                    .no_piece(employeRequest.getNo_piece())
+                    .provenance(employeRequest.getProvenance())
                     .tel1(employeRequest.getTel1())
                     .tel2(employeRequest.getTel2())
                     .localisation(employeRequest.getLocalisation())
                     .autres(employeRequest.getAutres())
                     .date_debut(employeRequest.getDate_debut())
                     .date_fin(employeRequest.getDate_fin())
+                    .is_medecin(employeRequest.is_medecin())
                     .is_employe(employeRequest.is_employe())
                     .is_temporaire(employeRequest.is_temporaire())
                     .profession_id(employeRequest.getProfession_id())
