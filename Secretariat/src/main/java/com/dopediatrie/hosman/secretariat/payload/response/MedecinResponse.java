@@ -34,7 +34,7 @@ public class MedecinResponse {
     private boolean is_employe;
     private boolean is_temporaire;
     private boolean is_medecin;
-    private String secteur;
+    private String secteur_code;
     private long structure_id;
     private long profession_id;
     private long nationalite_id;
