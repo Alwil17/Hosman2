@@ -11,7 +11,9 @@ import java.util.Optional;
 
 public interface SecteurRepository extends JpaRepository<Secteur,Long> {
     boolean existsByCode(String code);
-    Optional<Secteur> findByCodeEquals(String code);
+
+    @Query("SELECT s from Secteur s where s.code = :code")
+    Optional<Secteur> findByCodeEquals(@Param("code") String code);
 
     @Query("SELECT s from Secteur s JOIN s.departement d where d.code = :departement ")
     List<Secteur> findByDepartement(String departement);

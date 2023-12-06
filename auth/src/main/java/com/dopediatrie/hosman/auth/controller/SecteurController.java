@@ -43,14 +43,15 @@ public class SecteurController {
     public ResponseEntity<List<Secteur>> getSecteurBySearch(@RequestParam(value = "departement", required = false) String departement, @RequestParam(value = "code", required = false) String code) {
         log.info("SecteurController | getSecteurBySearch is called");
         List<Secteur> secteurs = new ArrayList<Secteur>();
-        if ((code != null && !code.isBlank()) && (departement != null && !departement.isBlank())){
+        boolean checkCode = code != null && !code.isBlank();
+        boolean checkDep = departement != null && !departement.isBlank();
+        if (checkCode && checkDep){
             secteurs = secteurService.getSecteurByDepartementAndCode(departement, code);
-        }else{
-            if (code != null && !code.isBlank())
-                secteurs.clear();
-                secteurs.add(secteurService.getSecteurByCode(code));
-            if (departement != null && !departement.isBlank())
-                secteurs = secteurService.getSecteurByDepartement(departement);
+        }else if(checkCode && !checkDep){
+            secteurs.clear();
+            secteurs.add(secteurService.getSecteurByCode(code));
+        }else if(!checkCode && checkDep){
+            secteurs = secteurService.getSecteurByDepartement(departement);
         }
         return new ResponseEntity<>(secteurs, HttpStatus.OK);
     }
