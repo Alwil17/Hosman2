@@ -3,7 +3,7 @@ import { DoctorRequest } from "../../shared/requests/doctor-request.model";
 export interface IPrestationRequest {
   patient_id: number;
   demandeur?: DoctorRequest;
-  consulteur: string;
+  consulteur?: string;
   secteur_code?: string;
   date_prestation: Date;
   provenance?: string;
@@ -16,7 +16,7 @@ export interface IPrestationRequest {
 export class PrestationRequest {
   patient_id: number;
   demandeur?: DoctorRequest;
-  consulteur: string;
+  consulteur?: string;
   secteur_code?: string;
   date_prestation: Date;
   provenance?: string;

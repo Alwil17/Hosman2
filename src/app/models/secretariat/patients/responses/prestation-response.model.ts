@@ -9,7 +9,7 @@ export interface PrestationResponse {
   patient: PatientResponse;
   provenance?: string;
   demandeur?: DoctorResponse;
-  consulteur: DoctorResponse;
+  consulteur?: DoctorResponse;
   secteur?: SectorResponse;
   date_prestation: Date;
   tarifs: TariffResponse[];

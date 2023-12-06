@@ -10,7 +10,7 @@ export interface IPrestation {
   patient: Patient;
   provenance?: string;
   demandeur?: Doctor;
-  consulteur: Doctor;
+  consulteur?: Doctor;
   secteur?: Sector;
   date_prestation: Date;
   tarifs: Tariff[];
@@ -21,7 +21,7 @@ export class Prestation {
   patient: Patient;
   provenance?: string;
   demandeur?: Doctor;
-  consulteur: Doctor;
+  consulteur?: Doctor;
   secteur?: Sector;
   date_prestation: Date;
   tarifs: Tariff[];
@@ -47,7 +47,9 @@ export class Prestation {
       demandeur: prestation.demandeur
         ? Doctor.fromResponse(prestation.demandeur)
         : undefined,
-      consulteur: Doctor.fromResponse(prestation.consulteur),
+      consulteur: prestation.consulteur
+        ? Doctor.fromResponse(prestation.consulteur)
+        : undefined,
       secteur: prestation.secteur,
       date_prestation: prestation.date_prestation,
       tarifs: prestation.tarifs.map((tariffResponse) =>
