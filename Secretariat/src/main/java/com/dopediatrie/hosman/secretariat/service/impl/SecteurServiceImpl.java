@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -97,5 +98,23 @@ public class SecteurServiceImpl implements SecteurService {
                         SecteurResponse.class);
 
         return responseEntity.getBody();
+    }
+
+    @Override
+    public SecteurResponse getSecteurByCode(String secteur_code) {
+        log.info("SecteurServiceImpl | getSecteurByCode is called");
+        try {
+            ResponseEntity<SecteurResponse[]> responseEntity = restTemplate
+                    .getForEntity(baseUrl + "/search?code=" + secteur_code,
+                            SecteurResponse[].class);
+
+            if(responseEntity.getStatusCode() == HttpStatusCode.valueOf(404)){
+                return new SecteurResponse();
+            }
+            return responseEntity.getBody()[0];
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new SecteurResponse();
+        }
     }
 }

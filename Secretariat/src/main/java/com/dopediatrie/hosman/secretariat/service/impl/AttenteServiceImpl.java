@@ -36,8 +36,10 @@ public class AttenteServiceImpl implements AttenteService {
         for (Attente attente : attentes) {
             MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
             MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            SecteurResponse secteur = secteurService.getSecteurByCode(attente.getSecteur_code());
             attente.setMedecin_consulteur(consulteur);
             attente.setMedecin_receveur(receveur);
+            attente.setSecteur(secteur);
         }
         return attentes;
     }
@@ -134,8 +136,10 @@ public class AttenteServiceImpl implements AttenteService {
         for (Attente attente : attentes) {
             MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
             MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            SecteurResponse secteur = secteurService.getSecteurByCode(attente.getSecteur_code());
             attente.setMedecin_consulteur(consulteur);
             attente.setMedecin_receveur(receveur);
+            attente.setSecteur(secteur);
         }
 
         return attentes;
@@ -148,8 +152,10 @@ public class AttenteServiceImpl implements AttenteService {
         for (Attente attente : attentes) {
             MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
             MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            SecteurResponse secteur = secteurService.getSecteurByCode(attente.getSecteur_code());
             attente.setMedecin_consulteur(consulteur);
             attente.setMedecin_receveur(receveur);
+            attente.setSecteur(secteur);
         }
         return attentes;
     }
@@ -160,8 +166,10 @@ public class AttenteServiceImpl implements AttenteService {
         for (Attente attente : attentes) {
             MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
             MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+            SecteurResponse secteur = secteurService.getSecteurByCode(attente.getSecteur_code());
             attente.setMedecin_consulteur(consulteur);
             attente.setMedecin_receveur(receveur);
+            attente.setSecteur(secteur);
         }
         return attentes;
     }

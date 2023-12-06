@@ -1,6 +1,7 @@
 package com.dopediatrie.hosman.secretariat.entity;
 
 import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.SecteurResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,8 @@ public class Attente {
     @Transient
     private MedecinResponse medecin_receveur;
     private String receveur;
+    @Transient
+    private SecteurResponse secteur;
     private String secteur_code;
     @OneToOne
     @JoinColumn(name = "facture_id")

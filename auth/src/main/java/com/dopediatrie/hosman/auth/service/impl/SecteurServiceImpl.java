@@ -108,6 +108,12 @@ public class SecteurServiceImpl implements SecteurService {
     }
 
     @Override
+    public Secteur getSecteurByCode(String code) {
+        log.info("SecteurServiceImpl | getSecteurByCode is called");
+        return secteurRepository.findByCodeEquals(code).orElseThrow();
+    }
+
+    @Override
     public List<Secteur> getSecteurByDepartementAndCode(String departement, String code) {
         log.info("SecteurServiceImpl | getSecteurByDepartementAndCode is called");
         return secteurRepository.findByDepartementAndCode(departement, code);

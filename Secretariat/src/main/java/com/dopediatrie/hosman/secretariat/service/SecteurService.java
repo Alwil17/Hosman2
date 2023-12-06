@@ -19,4 +19,6 @@ public interface SecteurService {
     public void deleteSecteurById(long secteurId);
 
     SecteurResponse getSecteurForUser(long userId);
+
+    SecteurResponse getSecteurByCode(String secteur_code);
 }

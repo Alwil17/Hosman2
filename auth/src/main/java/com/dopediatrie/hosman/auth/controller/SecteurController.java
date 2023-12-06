@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,13 +40,17 @@ public class SecteurController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Secteur>> getSecteurBySearch(@RequestParam("departement") String departement, @RequestParam(value = "code", required = false) String code) {
+    public ResponseEntity<List<Secteur>> getSecteurBySearch(@RequestParam(value = "departement", required = false) String departement, @RequestParam(value = "code", required = false) String code) {
         log.info("SecteurController | getSecteurBySearch is called");
-        List<Secteur> secteurs = Collections.emptyList();
-        if (code != null && !code.isBlank()){
+        List<Secteur> secteurs = new ArrayList<Secteur>();
+        if ((code != null && !code.isBlank()) && (departement != null && !departement.isBlank())){
             secteurs = secteurService.getSecteurByDepartementAndCode(departement, code);
-        }else {
-            secteurs = secteurService.getSecteurByDepartement(departement);
+        }else{
+            if (code != null && !code.isBlank())
+                secteurs.clear();
+                secteurs.add(secteurService.getSecteurByCode(code));
+            if (departement != null && !departement.isBlank())
+                secteurs = secteurService.getSecteurByDepartement(departement);
         }
         return new ResponseEntity<>(secteurs, HttpStatus.OK);
     }

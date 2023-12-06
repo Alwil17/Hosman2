@@ -19,6 +19,8 @@ public interface SecteurService {
 
     List<Secteur> getSecteurByDepartement(String departement);
 
+    Secteur getSecteurByCode(String code);
+
     List<Secteur> getSecteurByDepartementAndCode(String departement, String code);
 
     void editSecteur(SecteurRequest secteurRequest, long secteurId);
