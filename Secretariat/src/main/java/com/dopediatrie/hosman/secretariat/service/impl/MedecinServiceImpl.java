@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -89,9 +90,18 @@ public class MedecinServiceImpl implements MedecinService {
     @Override
     public MedecinResponse getMedecinByMatricule(String matricule) {
         log.info("MedecinServiceImpl | getMedecinByMatricule is called");
-        ResponseEntity<MedecinResponse[]> responseEntity = restTemplate
-                .getForEntity(baseUrl+"/search?matricule="+matricule, MedecinResponse[].class);
-        return responseEntity.getBody()[0];
+        try {
+            ResponseEntity<MedecinResponse[]> responseEntity = restTemplate
+                    .getForEntity(baseUrl+"/search?matricule="+matricule, MedecinResponse[].class);
+
+            if(responseEntity.getStatusCode() == HttpStatusCode.valueOf(404)){
+                return new MedecinResponse();
+            }
+            return responseEntity.getBody()[0];
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new MedecinResponse();
+        }
     }
 
     @Override

@@ -295,7 +295,8 @@ public class EmployeServiceImpl implements EmployeService {
     public List<Employe> getEmployeByMatricule(String matricule) {
         log.info("EmployeServiceImpl | getEmployeByMatricule is called");
         List<Employe> employes = new java.util.ArrayList<Employe>();
-        employes.add(employeRepository.findByMatriculeEquals(matricule).orElseThrow());
+        employes.add(employeRepository.findByMatriculeEquals(matricule).orElseThrow(
+                () -> new AuthCustomException("Employe with given Matricule not found", NOT_FOUND)));
         return employes;
     }
 }
