@@ -11,9 +11,12 @@ export interface IWaitingListItem {
   attente: boolean;
   date_attente: Date;
   patient: Patient;
-  medecin: Doctor;
-  receveur?: Doctor;
-  secteur: Sector;
+  medecin_consulteur?: Doctor;
+  medecin?: string;
+  medecin_receveur?: Doctor;
+  receveur?: string;
+  secteur?: Sector;
+  secteur_code?: string;
   facture: Invoice;
 }
 
@@ -24,9 +27,12 @@ export class WaitingListItem {
   attente: boolean;
   date_attente: Date;
   patient: Patient;
-  medecin: Doctor;
-  receveur?: Doctor;
-  secteur: Sector;
+  medecin_consulteur?: Doctor;
+  medecin?: string;
+  medecin_receveur?: Doctor;
+  receveur?: string;
+  secteur?: Sector;
+  secteur_code?: string;
   facture: Invoice;
 
   constructor(iWaitingListItem: IWaitingListItem) {
@@ -36,9 +42,12 @@ export class WaitingListItem {
     this.attente = iWaitingListItem.attente;
     this.date_attente = iWaitingListItem.date_attente;
     this.patient = iWaitingListItem.patient;
+    this.medecin_consulteur = iWaitingListItem.medecin_consulteur;
     this.medecin = iWaitingListItem.medecin;
+    this.medecin_receveur = iWaitingListItem.medecin_receveur;
     this.receveur = iWaitingListItem.receveur;
     this.secteur = iWaitingListItem.secteur;
+    this.secteur_code = iWaitingListItem.secteur_code;
     this.facture = iWaitingListItem.facture;
   }
 }

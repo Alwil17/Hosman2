@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, map, of } from "rxjs";
+import { WaitingListFilter } from "src/app/models/enums/waiting-list-filter.enum";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { environment } from "src/environments/environment";
 
@@ -16,6 +17,37 @@ export class WaitingListService {
 
   getAll(): Observable<WaitingListItem[]> {
     return this.http.get<WaitingListItem[]>(apiEndpoint);
+  }
+
+  filterBy(criteria: {
+    view: WaitingListFilter;
+    doctorRegistrationNumber?: string;
+  }): Observable<WaitingListItem[]> {
+    let apiComplementary = "vue=" + criteria.view;
+
+    if (criteria.view === WaitingListFilter.DOCTOR) {
+      if (criteria.doctorRegistrationNumber) {
+        apiComplementary += "&medecin=" + criteria.doctorRegistrationNumber;
+      } else {
+        return of([]);
+      }
+    }
+
+    console.log(`${apiEndpoint}/search?${apiComplementary}`);
+
+    return this.http
+      .get<WaitingListItem[]>(`${apiEndpoint}/search?${apiComplementary}`)
+      .pipe(
+        map((waitingList) => {
+          // const mapped: WaitingListItem[] = waitingList.map((waitingListItem) =>
+          //   WaitingListItem.fromResponse(waitingListItem)
+          // );
+
+          const mapped = waitingList;
+
+          return mapped;
+        })
+      );
   }
 
   delete(id: any): Observable<void> {
