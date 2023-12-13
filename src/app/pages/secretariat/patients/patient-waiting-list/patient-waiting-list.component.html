@@ -11,7 +11,7 @@
       <div class="row g-4 align-items-center">
         <div class="col-md-7 col-xl-4">
           <div class="hstack gap-2">
-            <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
+            <!-- <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
               <button
                 type="button"
                 class="btn btn-light btn-icon waves-effect arrow-none"
@@ -25,7 +25,7 @@
                 <button ngbDropdownItem>Date de naissance</button>
                 <button ngbDropdownItem>Date d'entrée</button>
               </div>
-            </div>
+            </div> -->
 
             <div class="search-box">
               <input
@@ -157,8 +157,16 @@
                     </ng-container>
                   </td>
                   <td>{{ item.facture.total | mask : "separator" }}</td>
-                  <td>{{ item.secteur.libelle }}</td>
-                  <td>{{ item.medecin.nom + " " + item.medecin.prenoms }}</td>
+                  <td>{{ item.secteur_code ? item.secteur?.libelle : "-" }}</td>
+                  <td>
+                    {{
+                      item.medecin
+                        ? item.medecin_consulteur?.nom +
+                          " " +
+                          item.medecin_consulteur?.prenoms
+                        : "-"
+                    }}
+                  </td>
                   <td>{{ item.date_attente | date : "dd/MM/yyyy" }}</td>
                   <td>{{ item.date_attente | date : "hh:mm:ss" }}</td>
 

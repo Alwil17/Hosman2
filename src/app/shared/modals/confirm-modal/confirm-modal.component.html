@@ -1,0 +1,21 @@
+<app-simple-modal [title]="title" [defaultFooter]="false">
+  <ng-container>
+    <p *ngIf="message">
+      <strong>{{ message }}</strong>
+    </p>
+
+    <p *ngIf="subMessage">
+      {{ subMessage }}
+    </p>
+  </ng-container>
+
+  <ng-container simpleModalFooter>
+    <button class="btn btn-outline-dark" (click)="confirm(false)">
+      {{ cancelButtonText }}
+    </button>
+    <!-- ngbAutofocus -->
+    <button class="btn btn-secondary" (click)="confirm(true)">
+      {{ confirmButtonText }}
+    </button>
+  </ng-container>
+</app-simple-modal>

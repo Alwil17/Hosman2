@@ -7,7 +7,7 @@
     class="btn-close btn-danger"
     data-bs-dismiss="modal"
     aria-label="Close"
-    (click)="modal.dismiss('Close click')"
+    (click)="modal.close('Close click')"
   ></button>
 </div>
 
@@ -20,11 +20,17 @@
 <!-- <hr /> -->
 
 <div class="modal-footer py-1 border-top border-1 border-dark">
-  <a
-    href="javascript:void(0);"
-    class="btn btn-link link-success fw-medium shadow-none"
-    data-bs-dismiss="modal"
-    (click)="modal.close('Close click')"
-    ><i class="ri-close-line me-1 align-middle"></i> {{ closeButtonText }}</a
-  >
+  <ng-container *ngIf="defaultFooter; else customFooter">
+    <a
+      href="javascript:void(0);"
+      class="btn btn-link link-success fw-medium shadow-none"
+      data-bs-dismiss="modal"
+      (click)="modal.close('Close click')"
+      ><i class="ri-close-line me-1 align-middle"></i> {{ closeButtonText }}</a
+    >
+  </ng-container>
+  
+  <ng-template #customFooter>
+    <ng-content select="[simpleModalFooter]"></ng-content>
+  </ng-template>
 </div>

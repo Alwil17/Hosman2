@@ -26,6 +26,7 @@ export class DoctorService {
     );
   }
 
+  // Make an enum for doctor type
   getByType(type: string): Observable<Doctor[]> {
     if (!type) {
       return of([]);

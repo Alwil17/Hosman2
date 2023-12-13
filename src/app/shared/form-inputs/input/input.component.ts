@@ -23,6 +23,7 @@ export class InputComponent implements OnInit {
 
   @Input() maskFormat = "";
   @Input() maskSuffix = "";
+  @Input() dropMaskInValue = true;
 
   // @Input() controlName: string = "";
   @Input() control = new FormControl();

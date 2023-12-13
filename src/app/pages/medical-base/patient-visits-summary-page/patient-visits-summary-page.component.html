@@ -1,0 +1,208 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="BASE MEDICALE"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="card">
+  <div class="card-header">
+    <div class="d-inline-block">
+      <h4>
+        <span class="badge bg-primary me-3"
+          ><i class="mdi mdi-circle-medium"></i> {{ "125064" }}</span
+        >
+      </h4>
+    </div>
+    <div class="d-inline-block">
+      <h5>RECAPITULATIF DES CONSULTATIONS ET HOSPITALISATIONS</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-10">
+        <form [formGroup]="patientVisitsForm">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <app-input label="Nom" [control]="lastNameControl"></app-input>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <app-input
+                label="Prénoms"
+                [control]="firstNameControl"
+              ></app-input>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <div class="row">
+                <div class="col-md-7">
+                  <app-input
+                    label="Né(e) le"
+                    type="date"
+                    [maxDate]="today"
+                    [control]="dateOfBirthControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-5">
+                  <app-select
+                    label="Sexe"
+                    [options]="genders"
+                    [control]="genderControl"
+                  ></app-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <app-input
+                  label="Maladie chronique 1"
+                  [readOnly]="true"
+                ></app-input>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <app-input
+                  label="Maladie chronique 2"
+                  [readOnly]="true"
+                ></app-input>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <app-input
+                  label="Maladie chronique 3"
+                  [readOnly]="true"
+                ></app-input>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-2 border-dark border-start">
+        <div class="row mt-4 mb-4">
+          <div class="col-12">
+            <button type="button" class="btn btn-light">
+              <b>Voir les antécédents</b>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="button" class="btn btn-secondary" (click)="goToPatientVisitForm()">
+              <b>Ouvrir la navette</b>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive table-card">
+          <table class="table table-hover table-striped align-middle mb-0">
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ "Numéro" | uppercase }}</th>
+                <th scope="col">{{ "Date" | uppercase }}</th>
+                <th scope="col">{{ "Heure" | uppercase }}</th>
+                <th scope="col">{{ "Poids" | uppercase }}</th>
+                <th scope="col">{{ "Taille" | uppercase }}</th>
+                <th scope="col">{{ "Tension" | uppercase }}</th>
+                <th scope="col">{{ "Température" | uppercase }}</th>
+                <th scope="col">{{ "PC" | uppercase }}</th>
+                <th scope="col">{{ "Actes" | uppercase }}</th>
+                <!-- <th scope="col">{{ "Secteur" | uppercase }}</th>
+                  <th scope="col">{{ "Médecin" | uppercase }}</th> -->
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of visitsListCut" class="user-select-none"
+              (dblclick)="openPreviousVisitsModal()">
+                <td>{{ item.number }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.time }}</td>
+                <td>{{ item.weight }}</td>
+                <td>
+                  {{ item.size }}
+                </td>
+                <td>{{ item.tension }}</td>
+                <td>{{ item.temperature }}</td>
+                <td>{{ item.pc }}</td>
+                <td>
+                  <span *ngFor="let act of item.acts">
+                    {{ act + " " }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="d-inline-block" ngbDropdown container="body">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <!-- <button ngbDropdownItem>
+                        <i
+                          class="ri-information-line label-icon align-middle fs-16 me-2 text-success"
+                        ></i>
+                        Détails de la facture
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-exchange-line label-icon align-middle fs-16 me-2 text-warning"
+                        ></i>
+                        Changer de médecin de destination
+                      </button> -->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshVisitsListTable()"
+          >
+          </ngb-pagination>
+
+          <select
+            class="form-select"
+            style="width: auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="refreshVisitsListTable()"
+          >
+            <option [ngValue]="10">10 éléments par page</option>
+            <option [ngValue]="15">15 éléments par page</option>
+            <option [ngValue]="20">20 éléments par page</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

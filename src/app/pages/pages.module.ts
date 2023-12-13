@@ -23,6 +23,8 @@ import lottie from "lottie-web";
 import { PagesRoutingModule } from "./pages-routing.module";
 import { SharedModule } from "../shared/shared.module";
 import { SecretariatModule } from "./secretariat/secretariat.module";
+import { MedicalBaseModule } from './medical-base/medical-base.module';
+import { AppsComponent } from './apps.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -30,7 +32,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 };
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AppsComponent
+  ],
   imports: [
     CommonModule,
     // FlatpickrModule.forRoot(),
@@ -44,6 +48,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     // SwiperModule,
     // LightboxModule,
     SecretariatModule,
+    MedicalBaseModule,
   ],
   providers: [
     {

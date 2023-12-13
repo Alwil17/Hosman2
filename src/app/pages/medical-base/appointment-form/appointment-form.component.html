@@ -1,0 +1,148 @@
+<app-simple-modal title="Fiche de rendez-vous">
+  <div class="row">
+    <div class="col-lg-5 border-end border-dark">
+      <form [formGroup]="appointmentForm">
+        <div class="row mb-2">
+          <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label"> Nom médecin </label>
+          </div>
+          <div class="col-lg-6">
+            <app-select
+              [readOnly]="true"
+              [options]="[]"
+              [control]="doctorNameControl"
+            ></app-select>
+          </div>
+        </div>
+        <div class="mb-2">
+          <app-input
+            [isLayoutHorizontal]="true"
+            label="Nom patient"
+            [readOnly]="true"
+            [control]="patientLastnameControl"
+          ></app-input>
+        </div>
+        <div class="mb-2">
+          <app-input
+            [isLayoutHorizontal]="true"
+            label="Prénoms patient"
+            [readOnly]="true"
+            [control]="patientFirstnameControl"
+          ></app-input>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-6 d-flex align-items-center">
+            <label class="form-label"> Sexe </label>
+          </div>
+          <div class="col-md-6">
+            <app-select
+              [readOnly]="true"
+              [options]="[]"
+              [control]="patientGenderControl"
+            ></app-select>
+          </div>
+        </div>
+        <div class="mb-2">
+          <app-input
+            [isLayoutHorizontal]="true"
+            label="Né(e) le"
+            type="date"
+            [readOnly]="true"
+            [control]="patientBirthdayControl"
+          >
+          </app-input>
+        </div>
+        <div class="mb-2">
+          <app-input
+            [isLayoutHorizontal]="true"
+            label="Date RDV"
+            type="date"
+            [minDate]="today"
+            [control]="appointmentDateControl"
+          >
+          </app-input>
+        </div>
+        <div class="mb-2">
+          <app-input
+            [isLayoutHorizontal]="true"
+            label="Heure RDV"
+            type="time"
+            [minDate]="today"
+            [control]="appointmentTimeControl"
+          >
+          </app-input>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-6 d-flex align-items-center">
+            <label class="form-label"> Intervenant </label>
+          </div>
+          <div class="col-md-6">
+            <app-select
+              [options]="[]"
+              [control]="interveningDoctorControl"
+            ></app-select>
+          </div>
+        </div>
+        <div class="mb-2">
+          <app-input
+            label="Objet du RDV"
+            [control]="appointmentReasonControl"
+          ></app-input>
+        </div>
+
+        <div class="d-flex justify-content-end my-4">
+          <!-- <button type="button" class="btn btn-light btn-label">
+            <i
+              class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+            ></i>
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-info btn-label ms-2"
+            [disabled]="true"
+          >
+            <i class="ri-printer-fill label-icon align-middle fs-16 me-2"></i>
+            Imprimer
+          </button> -->
+
+          <button type="button" class="btn btn-success btn-label ms-2">
+            <!-- (click)="validatePayment()" -->
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            <!-- ri-check-double-fill -->
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="table-responsive">
+        <table
+          class="table table-hover table-striped table-bordered align-middle mb-0"
+        >
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Date RDV</th>
+              <th scope="col">Heure</th>
+              <th scope="col">Nom patient</th>
+              <th scope="col">Prénoms patient</th>
+              <th scope="col">Objet</th>
+              <!-- <th scope="col">Médecin</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr *ngFor="let item of patientActivities">
+                  <td>{{ item.rubrique }}</td>
+                  <td>{{ item.prestation }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.total_price }}</td>
+                </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</app-simple-modal>

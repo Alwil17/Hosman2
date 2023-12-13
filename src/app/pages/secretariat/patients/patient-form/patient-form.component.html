@@ -109,7 +109,7 @@
             <app-select
               label="Assureur"
               [isMandatory]="true"
-              [options]="insurances"
+              [options]="insurancesFiltered"
               [canAddOption]="true"
               [control]="insuranceControl"
               [isFormSubmitted]="isPatientInfoFormSubmitted"
@@ -119,11 +119,10 @@
         <div class="col-md-2">
           <div class="mb-3">
             <app-input
-              label="Taux de PEC"
+              type="number"
+              label="Taux de PEC (%)"
               placeholder="Taux de prise en charge du patient"
               [isMandatory]="true"
-              maskFormat="percent"
-              maskSuffix=" %"
               [control]="insuranceRateControl"
               [isFormSubmitted]="isPatientInfoFormSubmitted"
             >
@@ -131,7 +130,7 @@
           </div>
         </div>
 
-        <div class="col-md-6" *ngIf="hasInsuranceControl.value?.id >= 2">
+        <!-- <div class="col-md-6" *ngIf="hasInsuranceControl.value?.id >= 2">
           <div class="mb-3">
             <app-select
               label="Type de l'assurance"
@@ -141,7 +140,7 @@
               [isFormSubmitted]="isPatientInfoFormSubmitted"
             ></app-select>
           </div>
-        </div>
+        </div> -->
         <!-- <div class="col-md-6"></div> -->
 
         <div class="col-md-6">

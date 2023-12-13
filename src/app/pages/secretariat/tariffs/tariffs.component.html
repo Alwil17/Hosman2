@@ -8,6 +8,7 @@
 <!-- ACTIVITIES/PRESTATIONS CHOICE -->
 <app-card title="Rubriques">
   <ng-container customCardHeader> </ng-container>
+
   <ng-container customCardBody>
     <div class="d-flex flex-wrap">
       <ng-container *ngFor="let actGroup of actGroups; index as i">
@@ -29,9 +30,200 @@
       </ng-container>
     </div>
   </ng-container>
+
+  <ng-container customCardBody2>
+    <div class="card-body border-top border-dark">
+      <button
+        class="btn btn-secondary"
+        (click)="initiateProForma()"
+        *ngIf="!isProFormaInitiated; else cancelPF"
+      >
+        <b>Initier pro forma</b>
+      </button>
+      <ng-template #cancelPF>
+        <button class="btn btn-warning text-black" (click)="cancelProForma()">
+          <b>Annuler pro forma</b>
+        </button>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-container customCardBody3>
+    <div class="card-body border-top border-dark">
+      <div class="row">
+        <div [class]="isProFormaInitiated ? 'col-md-6' : 'col-md-12'">
+          <div class="col-12 mb-3" *ngIf="isProFormaInitiated">
+            <em>Double-cliquer un élément pour l'ajouter</em>
+          </div>
+
+          <div class="table-responsive mt-4 mt-xl-0 border">
+            <table
+              class="table table-hover table-striped table-bordered align-middle mb-0"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">DESIGNATION</th>
+                  <th scope="col">NON ASSURE</th>
+                  <th scope="col">ETRANGER NON ASSURE</th>
+                  <th scope="col">ASSURANCES LOCALES</th>
+                  <th scope="col">ASSURANCES HORS ZONE</th>
+                  <th scope="col">DESCRIPTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of activities" (dblclick)="add(item)">
+                  <td>
+                    {{ item.designation }}
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.no_local | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.no_foreigner | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.yes_local | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.yes_foreigner | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td>
+                    {{ item.description }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [(page)]="table1Page"
+              [pageSize]="table1PageSize"
+              [collectionSize]="table1CollectionSize"
+              [maxSize]="2"
+              [rotate]="true"
+              (pageChange)="refreshActivities()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="table1PageSize"
+              (ngModelChange)="refreshActivities()"
+            >
+              <option [ngValue]="5">5 éléments par page</option>
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="isProFormaInitiated">
+          <div class="col-12 mb-3">
+            <em>Double-cliquer un élément pour le retirer</em>
+          </div>
+
+          <div class="table-responsive mt-4 mt-xl-0 border">
+            <table
+              class="table table-hover table-striped table-bordered align-middle mb-0"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">DESIGNATION</th>
+                  <th scope="col">QUANTITÉ</th>
+                  <th scope="col">NON ASSURE</th>
+                  <th scope="col">ETRANGER NON ASSURE</th>
+                  <th scope="col">ASSURANCES LOCALES</th>
+                  <th scope="col">ASSURANCES HORS ZONE</th>
+                  <th scope="col">DESCRIPTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of activitiesSelect"
+                  (dblclick)="remove(item)"
+                >
+                  <td>
+                    {{ item.designation }}
+                  </td>
+                  <td class="text-end">{{ item.quantity }}</td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.no_local | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.no_foreigner | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.yes_local | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td class="text-end">
+                    <b>
+                      {{ item.yes_foreigner | mask : "separator" }}
+                    </b>
+                  </td>
+                  <td>
+                    {{ item.description }}
+                  </td>
+                </tr>
+              </tbody>
+              <!-- <tfoot>
+                    <tr>
+                      <th>Total</th>
+                      <td colspan="3"></td>
+                      <th>Here</th>
+                    </tr>
+                  </tfoot> -->
+            </table>
+          </div>
+
+          <div
+            class="d-flex justify-content-between p-2"
+            *ngIf="table2CollectionSize"
+          >
+            <ngb-pagination
+              [(page)]="table2Page"
+              [pageSize]="table2PageSize"
+              [collectionSize]="table2CollectionSize"
+              [maxSize]="2"
+              [rotate]="true"
+              (pageChange)="refreshActivitiesSelect()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="table2PageSize"
+              (ngModelChange)="refreshActivitiesSelect()"
+            >
+              <option [ngValue]="5">5 éléments par page</option>
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+            </select>
+          </div>
+        </div>
+        <!--end col-->
+      </div>
+    </div>
+  </ng-container>
 </app-card>
 
-<app-card>
+<!-- <app-card>
   <ng-container customCardHeader></ng-container>
   <ng-container customCardBody>
     <div class="row">
@@ -56,7 +248,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of activities">
-                <!-- (dblclick)="add(item)" -->
+                 (dblclick)="add(item)"
                 <td>
                   {{ item.designation }}
                 </td>
@@ -121,7 +313,7 @@
           <table
             class="table table-hover table-striped table-bordered align-middle mb-0"
           >
-            <!-- <thead>
+             <thead>
                 <tr>
                   <th scope="col">Rubrique</th>
                   <th scope="col">Prestation</th>
@@ -142,14 +334,14 @@
                     {{ item.total_price | mask : "separator" }}
                   </td>
                 </tr>
-              </tbody> -->
-            <!-- <tfoot>
+              </tbody> 
+             <tfoot>
                   <tr>
                     <th>Total</th>
                     <td colspan="3"></td>
                     <th>Here</th>
                   </tr>
-                </tfoot> -->
+                </tfoot> 
           </table>
         </div>
 
@@ -179,7 +371,7 @@
           </select>
         </div>
       </div>
-      <!--end col-->
+      
     </div>
   </ng-container>
-</app-card>
+</app-card> -->

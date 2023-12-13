@@ -1,48 +1,84 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
 // Menu Pachage
 // import MetisMenu from 'metismenujs';
 
-import { MENU } from './menu';
-import { MenuItem } from './menu.model';
+import { SECRETARIAT_MENU, MEDICAL_BASE_MENU } from "./menu";
+import { MenuItem } from "./menu.model";
+import { filter } from "rxjs";
+import { Location } from "@angular/common";
 
 @Component({
-  selector: 'app-horizontal-topbar',
-  templateUrl: './horizontal-topbar.component.html',
-  styleUrls: ['./horizontal-topbar.component.scss']
+  selector: "app-horizontal-topbar",
+  templateUrl: "./horizontal-topbar.component.html",
+  styleUrls: ["./horizontal-topbar.component.scss"],
 })
 export class HorizontalTopbarComponent implements OnInit {
-
   menu: any;
   menuItems: MenuItem[] = [];
-  @ViewChild('sideMenu') sideMenu!: ElementRef;
+  @ViewChild("sideMenu") sideMenu!: ElementRef;
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
-  constructor(private router: Router, public translate: TranslateService) {
-    translate.setDefaultLang('fr');
+  constructor(
+    private router: Router,
+    public translate: TranslateService,
+    private location: Location
+  ) {
+    translate.setDefaultLang("fr");
   }
 
   ngOnInit(): void {
+    if (this.location.path().startsWith("/secretariat")) {
+      this.menuItems = SECRETARIAT_MENU;
+    } else if (this.location.path().startsWith("/medical-base")) {
+      this.menuItems = MEDICAL_BASE_MENU;
+    } else {
+      this.menuItems = [];
+    }
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        console.log(event);
+
+        if ((event.url as string).startsWith("/secretariat")) {
+          this.menuItems = SECRETARIAT_MENU;
+        } else if ((event.url as string).startsWith("/medical-base")) {
+          this.menuItems = MEDICAL_BASE_MENU;
+        } else {
+          this.menuItems = [];
+        }
+      });
+
     // Menu Items
-    this.menuItems = MENU;
+    // this.menuItems = SECRETARIAT_MENU;
   }
 
   /***
    * Activate droup down set
    */
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     this.initActiveMenu();
   }
 
-  removeActivation(items: any) {   
+  removeActivation(items: any) {
     items.forEach((item: any) => {
       if (item.classList.contains("menu-link")) {
         if (!item.classList.contains("active")) {
           item.setAttribute("aria-expanded", false);
         }
-        (item.nextElementSibling) ? item.nextElementSibling.classList.remove("show") : null;
+        item.nextElementSibling
+          ? item.nextElementSibling.classList.remove("show")
+          : null;
       }
       if (item.classList.contains("nav-link")) {
         if (item.nextElementSibling) {
@@ -55,19 +91,32 @@ export class HorizontalTopbarComponent implements OnInit {
   }
 
   // remove active items of two-column-menu
-  activateParentDropdown(item: any) { // navbar-nav menu add active
+  activateParentDropdown(item: any) {
+    // navbar-nav menu add active
     item.classList.add("active");
     let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
-    if (parentCollapseDiv) {      
+    if (parentCollapseDiv) {
       // to set aria expand true remaining
       parentCollapseDiv.classList.add("show");
       parentCollapseDiv.parentElement.children[0].classList.add("active");
-      parentCollapseDiv.parentElement.children[0].setAttribute("aria-expanded", "true");
+      parentCollapseDiv.parentElement.children[0].setAttribute(
+        "aria-expanded",
+        "true"
+      );
       if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
-        parentCollapseDiv.parentElement.closest(".collapse").classList.add("show");
-        if (parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling)
-        parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
-        parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.setAttribute("aria-expanded", "true");
+        parentCollapseDiv.parentElement
+          .closest(".collapse")
+          .classList.add("show");
+        if (
+          parentCollapseDiv.parentElement.closest(".collapse")
+            .previousElementSibling
+        )
+          parentCollapseDiv.parentElement
+            .closest(".collapse")
+            .previousElementSibling.classList.add("active");
+        parentCollapseDiv.parentElement
+          .closest(".collapse")
+          .previousElementSibling.setAttribute("aria-expanded", "true");
       }
       return false;
     }
@@ -76,7 +125,7 @@ export class HorizontalTopbarComponent implements OnInit {
 
   updateActive(event: any) {
     const ul = document.getElementById("navbar-nav");
-    
+
     if (ul) {
       const items = Array.from(ul.querySelectorAll("a.nav-link"));
       this.removeActivation(items);
@@ -87,10 +136,12 @@ export class HorizontalTopbarComponent implements OnInit {
   initActiveMenu() {
     const pathName = window.location.pathname;
     const ul = document.getElementById("navbar-nav");
-    
+
     if (ul) {
       const items = Array.from(ul.querySelectorAll("a.nav-link"));
-      let activeItems = items.filter((x: any) => x.classList.contains("active")); 
+      let activeItems = items.filter((x: any) =>
+        x.classList.contains("active")
+      );
       this.removeActivation(activeItems);
       let matchingMenuItem = items.find((x: any) => {
         return x.pathname === pathName;
@@ -102,35 +153,36 @@ export class HorizontalTopbarComponent implements OnInit {
   }
 
   toggleSubItem(event: any) {
-    if(event.target && event.target.nextElementSibling)
+    if (event.target && event.target.nextElementSibling)
       event.target.nextElementSibling.classList.toggle("show");
-  };
+  }
 
   toggleItem(event: any) {
-    let isCurrentMenuId = event.target.closest('a.nav-link');    
-    
+    let isCurrentMenuId = event.target.closest("a.nav-link");
+
     let isMenu = isCurrentMenuId.nextElementSibling as any;
-    let dropDowns = Array.from(document.querySelectorAll('#navbar-nav .show'));
+    let dropDowns = Array.from(document.querySelectorAll("#navbar-nav .show"));
     dropDowns.forEach((node: any) => {
-      node.classList.remove('show');
+      node.classList.remove("show");
     });
 
-    (isMenu) ? isMenu.classList.add('show') : null;
+    isMenu ? isMenu.classList.add("show") : null;
 
     const ul = document.getElementById("navbar-nav");
-    if(ul){
+    if (ul) {
       const iconItems = Array.from(ul.getElementsByTagName("a"));
-      let activeIconItems = iconItems.filter((x: any) => x.classList.contains("active"));
+      let activeIconItems = iconItems.filter((x: any) =>
+        x.classList.contains("active")
+      );
       activeIconItems.forEach((item: any) => {
-        item.setAttribute('aria-expanded', "false")
+        item.setAttribute("aria-expanded", "false");
         item.classList.remove("active");
       });
-    } 
+    }
     if (isCurrentMenuId) {
       this.activateParentDropdown(isCurrentMenuId);
     }
   }
-
 
   /**
    * Returns true or false if given menu item has child or not
@@ -149,5 +201,4 @@ export class HorizontalTopbarComponent implements OnInit {
       els[0].classList.remove(className);
     }
   }
-
 }

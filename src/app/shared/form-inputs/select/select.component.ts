@@ -18,6 +18,8 @@ export class SelectComponent implements OnInit {
   @Input() editable = true;
   @Input() clearable = true;
   @Input() searchable = true;
+  @Input() readOnly = false;
+
   formControl!: FormControl;
 
   constructor() {}

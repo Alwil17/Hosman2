@@ -1,6 +1,6 @@
 import { MenuItem } from "./menu.model";
 
-export const MENU: MenuItem[] = [
+export const SECRETARIAT_MENU: MenuItem[] = [
   {
     id: 1,
     label: "MENUITEMS.MENU.SECRETARIAT.TEXT",
@@ -104,5 +104,19 @@ export const MENU: MenuItem[] = [
         parentId: 14,
       },
     ],
+  },
+];
+
+export const MEDICAL_BASE_MENU: MenuItem[] = [
+  {
+    id: 1,
+    label: "Base médicale",
+    isTitle: true,
+  },
+  {
+    id: 2,
+    label: "Liste d'attente",
+    link: "/medical-base/patient-waiting-list",
+    icon: "ri-file-list-3-fill",
   },
 ];

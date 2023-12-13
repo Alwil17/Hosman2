@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   NgbActiveModal,
   NgbModal,
@@ -20,9 +27,11 @@ import { ToastType } from "src/app/models/extras/toast-type.model";
 import { InvoiceResponse } from "src/app/models/secretariat/patients/responses/invoice-response.model";
 import { StatusService } from "src/app/services/secretariat/patients/status.service";
 import { PaymentModeService } from "src/app/services/secretariat/patients/payment-mode.service";
-import { forkJoin } from "rxjs";
+import { firstValueFrom, forkJoin, merge } from "rxjs";
 import { PaymentModeCode } from "src/app/models/enums/payment-mode.enum";
 import { StatusCode } from "src/app/models/enums/status.enum";
+import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
+import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -31,7 +40,7 @@ import { StatusCode } from "src/app/models/enums/status.enum";
 })
 export class PatientInvoiceFormComponent implements OnInit {
   @Input()
-  patientActivities: IPrestationSelect[] = [];
+  patientActivities!: IPrestationSelect[];
 
   @Input()
   preInvoiceInfos!: InvoiceResponse;
@@ -77,10 +86,12 @@ export class PatientInvoiceFormComponent implements OnInit {
   discountRadioControl = new FormControl("");
   discountValueControl = new FormControl({ value: "0", disabled: true });
   discountPercentControl = new FormControl({ value: "0", disabled: true });
+  discountReasonControl = new FormControl(null);
 
   markupRadioControl = new FormControl("");
   markupValueControl = new FormControl({ value: "0", disabled: true });
   markupPercentControl = new FormControl({ value: "0", disabled: true });
+  markupReasonControl = new FormControl(null);
 
   // paymentRadioControl = new FormControl("");
 
@@ -89,8 +100,13 @@ export class PatientInvoiceFormComponent implements OnInit {
   paymentCheckChequeControl = new FormControl(false);
 
   paymentCashControl = new FormControl({ value: "0", disabled: true });
+
   paymentCardControl = new FormControl({ value: "0", disabled: true });
+  paymentCardReceiptNumberControl = new FormControl(null);
+
   paymentChequeControl = new FormControl({ value: "0", disabled: true });
+  paymentChequeReceiptNumberControl = new FormControl(null);
+  paymentChequeBankControl = new FormControl(null);
 
   invoiceForm!: FormGroup;
 
@@ -110,6 +126,8 @@ export class PatientInvoiceFormComponent implements OnInit {
   paymentCardField!: ElementRef;
   @ViewChild("paymentChequeField", { read: ElementRef })
   paymentChequeField!: ElementRef;
+
+  patientActivitiesTotal = 0;
 
   constructor(
     public modal: NgbActiveModal,
@@ -144,8 +162,8 @@ export class PatientInvoiceFormComponent implements OnInit {
 
       // paymentRadioControl: this.paymentRadioControl,
       paymentCheckCashControl: this.paymentCheckCashControl,
-      paymentCheckCardControl: this.paymentCheckCashControl,
-      paymentCheckChequeControl: this.paymentCheckCashControl,
+      paymentCheckCardControl: this.paymentCheckCardControl,
+      paymentCheckChequeControl: this.paymentCheckChequeControl,
 
       paymentCashControl: this.paymentCashControl,
       paymentCardControl: this.paymentCardControl,
@@ -192,6 +210,21 @@ export class PatientInvoiceFormComponent implements OnInit {
       // this.preInvoiceInfos.montant_pec
       // this.totalAmount - this.patientShareAmount
     );
+
+    // console.log(new Date(this.preInvoiceInfos.date_facture).toLocaleDateString("fr-ca"));
+    // console.log(new Date(this.preInvoiceInfos.date_reglement).toLocaleDateString("fr-ca"));
+
+    this.invoiceDateControl.setValue(
+      new Date(this.preInvoiceInfos.date_facture).toLocaleDateString("fr-ca")
+    );
+
+    this.paymentDateControl.setValue(
+      new Date(this.preInvoiceInfos.date_reglement).toLocaleDateString("fr-ca")
+    );
+
+    this.patientActivities.forEach((value) => {
+      this.patientActivitiesTotal += value.total_price;
+    });
   }
 
   calculateDiscountAndMarkupAmount() {
@@ -504,7 +537,24 @@ export class PatientInvoiceFormComponent implements OnInit {
     // }
   }
 
-  validatePayment() {
+  // LISTENER TO HANDLE ENTER KEY UP
+  @HostListener("window:keydown.enter", ["$event"])
+  handleEnterKeyUp(event: KeyboardEvent) {
+    event.preventDefault();
+
+    this.validatePayment();
+  }
+
+  // @HostListener("window:beforeprint", ["$event"])
+  // handlePrint(event: any) {
+  //   console.log('beforeprint');
+  // }
+
+  // REGISTER PAYMENT
+  async validatePayment() {
+    const patient = this.patientService.getActivePatient();
+
+    // VALIDATE FORM FIELDS
     this.isInvoiceFormSubmitted = true;
 
     if (this.invoiceForm?.invalid) {
@@ -521,33 +571,69 @@ export class PatientInvoiceFormComponent implements OnInit {
       return;
     }
 
-    console.log("Validate payment");
-
-    // const wlItem = new WaitingListItem(
-    //   1,
-    //   this.patientService.getActivePatient().reference,
-    //   this.patientService.getActivePatient().nom,
-
-    //   this.patientService.getActivePatient().prenoms,
-
-    //   this.patientService.getActivePatient().date_naissance,
-
-    //   this.patientService.getActivePatient().sexe,
-
-    //   this.patientActivities.map((act) => act.prestation),
-    //   this.patientActivities
-    //     .map((act) => act.total_price)
-    //     .reduce((pVal, cVal) => pVal + cVal),
-    //   this.patientPrestationInfo.sector ?? "",
-    //   this.patientPrestationInfo.consultingDoctor ?? "",
-    //   new Date()
-    // );
-
+    // PAYMENT REGISTRATION
     const cashAmount = parseIntOrZero(this.paymentCashControl.value);
     const cardAmount = parseIntOrZero(this.paymentCardControl.value);
     const chequeAmount = parseIntOrZero(this.paymentChequeControl.value);
 
-    const paymentModes: { mode_payement_id: number; montant: number }[] = [];
+    // OPEN CONFIRMATION MODAL
+    const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+
+    const messageTotal = cashAmount + cardAmount + chequeAmount;
+    const messageFullname = patient.nom + " " + patient.prenoms;
+    let messageInsurance = "";
+    if (patient.is_assure === HasInsuranceCode.NO_LOCAL) {
+      messageInsurance = "non assuré (local)";
+    } else if (patient.is_assure === HasInsuranceCode.NO_FOREIGNER) {
+      messageInsurance = "non assuré (étranger)";
+    } else if (patient.is_assure === HasInsuranceCode.YES_LOCAL) {
+      messageInsurance =
+        "assuré par " +
+        patient.assurance?.nom +
+        " (locale) à " +
+        patient.taux_assurance +
+        " %";
+    } else if (patient.is_assure === HasInsuranceCode.YES_FOREIGNER) {
+      messageInsurance =
+        "assuré par " +
+        patient.assurance?.nom +
+        "(étrangère) à " +
+        patient.taux_assurance +
+        " %";
+    }
+
+    confirmModalRef.componentInstance.message =
+      "Voulez-vous vraiment enregistrer le paiement de " +
+      messageTotal +
+      " FCFA du patient " +
+      messageFullname +
+      ", " +
+      messageInsurance +
+      " ?";
+
+    const isConfirmed = await firstValueFrom(
+      confirmModalRef.componentInstance.isConfirmed.asObservable()
+    );
+
+    // CLOSE CONFIRMATION MODAL
+    confirmModalRef.close();
+
+    // CHECK IF USER CONFIRMED OR NOT
+    if (!isConfirmed) {
+      return;
+    }
+
+    const paymentModes: {
+      mode_payement_id: number;
+      montant: number;
+      no_transaction?: string;
+      nom_service?: string;
+    }[] = [];
 
     // if (cashAmount !== 0) {
     //   paymentModes.push({
@@ -588,6 +674,7 @@ export class PatientInvoiceFormComponent implements OnInit {
               (value) => PaymentModeCode.CARD == value.slug
             )!.id,
             montant: cardAmount,
+            no_transaction: this.paymentCardReceiptNumberControl.value,
           });
         }
         if (chequeAmount !== 0) {
@@ -596,6 +683,8 @@ export class PatientInvoiceFormComponent implements OnInit {
               (value) => PaymentModeCode.CHEQUE == value.slug
             )!.id,
             montant: chequeAmount,
+            no_transaction: this.paymentChequeReceiptNumberControl.value,
+            nom_service: this.paymentChequeBankControl.value,
           });
         }
 
@@ -607,13 +696,13 @@ export class PatientInvoiceFormComponent implements OnInit {
           montant_pec: parseIntOrZero(this.insuranceShareControl.value),
           reduction: new DiscountRequest({
             montant: this.discountValue,
-            motif: "",
+            motif: this.discountReasonControl.value,
             date_operation: new Date(),
             // patient_id: this.patientService.getActivePatient().id,
           }),
           majoration: new MarkupRequest({
             montant: this.markupValue,
-            motif: "",
+            motif: this.markupReasonControl.value,
             date_operation: new Date(),
             // patient_id: this.patientService.getActivePatient().id,
           }),
@@ -636,9 +725,9 @@ export class PatientInvoiceFormComponent implements OnInit {
             // patient_id: this.patientService.getActivePatient().id,
           }),
 
-          date_facture: new Date(),
-          date_reglement: new Date(),
-          patient_id: this.patientService.getActivePatient().id,
+          date_facture: new Date(), // new Date(this.invoiceDateControl.value),
+          date_reglement: new Date(), // new Date(this.paymentDateControl.value),
+          patient_id: patient.id,
           prestation_id: this.preInvoiceInfos.prestation_id,
           etat_id: data.statuses.find(
             (value) => StatusCode.PAID == value.indice
@@ -673,6 +762,12 @@ export class PatientInvoiceFormComponent implements OnInit {
 
                 pdfModalRef.componentInstance.title = "Reçu";
                 pdfModalRef.componentInstance.pdfSrc = data;
+
+                merge(pdfModalRef.closed, pdfModalRef.dismissed).subscribe({
+                  next: (value) => {
+                    this.modal.close("Receipt pdf modal closed");
+                  },
+                });
               },
               error: (e) => {
                 console.error(e);

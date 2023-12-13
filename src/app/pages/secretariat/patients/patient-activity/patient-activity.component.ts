@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   OnInit,
   QueryList,
   TemplateRef,
@@ -19,13 +20,6 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { PatientInvoiceFormComponent } from "../patient-invoice-form/patient-invoice-form.component";
-import { ACTS } from "src/app/data/secretariat/activities/acts.data";
-import { ANALYSIS } from "src/app/data/secretariat/activities/analysis.data";
-import { ECHOGRAPHIES } from "src/app/data/secretariat/activities/echographies.data";
-import { ENDOSCOPIES } from "src/app/data/secretariat/activities/endoscopies.data";
-import { HEMODIALYSES } from "src/app/data/secretariat/activities/hemodialyses.data";
-import { MRIS } from "src/app/data/secretariat/activities/mris.data";
-import { SCANNERS } from "src/app/data/secretariat/activities/scanners.data";
 import {
   IPatient,
   Patient,
@@ -62,6 +56,8 @@ export class PatientActivityComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
+  isPatientInfoCollapsed = false;
+
   isMedicalProceduresSelected = true;
 
   // To set date min
@@ -92,12 +88,12 @@ export class PatientActivityComponent implements OnInit {
   table2: IPrestationSelect[] = [];
 
   table1Page = 1;
-  table1PageSize = 5;
+  table1PageSize = 10;
   table1CollectionSize = this.table1.length;
   activities: IPrestation[] = [];
 
   table2Page = 1;
-  table2PageSize = 5;
+  table2PageSize = 10;
   table2CollectionSize = this.table2.length;
   activitiesSelect: IPrestationSelect[] = [];
 
@@ -123,6 +119,8 @@ export class PatientActivityComponent implements OnInit {
 
   @ViewChildren(SelectComponent)
   selectFields!: QueryList<SelectComponent>;
+
+  table2Total = 0;
 
   constructor(
     public patientService: PatientService,
@@ -195,8 +193,6 @@ export class PatientActivityComponent implements OnInit {
       { label: "Activité", active: true },
     ];
 
-    // this.openInvoiceModal();
-
     this.activityForm = new FormGroup({
       sectorControl: this.sectorControl,
       consultingDoctorControl: this.consultingDoctorControl,
@@ -223,7 +219,7 @@ export class PatientActivityComponent implements OnInit {
       this.doctorService.getByType(value?.text).subscribe({
         next: (data) => {
           this.doctors = data.map((doctor) => ({
-            id: doctor.id,
+            id: doctor.matricule,
             text: doctor.fullName,
           }));
         },
@@ -252,7 +248,7 @@ export class PatientActivityComponent implements OnInit {
     this.sectorService.getAll().subscribe({
       next: (data) => {
         this.sectors = data.map((sector) => ({
-          id: sector.id,
+          id: sector.code,
           text: sector.libelle,
         }));
       },
@@ -264,7 +260,7 @@ export class PatientActivityComponent implements OnInit {
     this.doctorService.getAll().subscribe({
       next: (data) => {
         const mapped = data.map((doctor) => ({
-          id: doctor.id,
+          id: doctor.matricule,
           text: doctor.fullName,
         }));
 
@@ -412,21 +408,29 @@ export class PatientActivityComponent implements OnInit {
   }
 
   refreshActivities() {
-    this.activities = this.table1
-      // .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.table1Page - 1) * this.table1PageSize,
-        (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
-      );
+    this.activities = this.table1;
+    // .map((item, i) => ({ id: i + 1, ...item }))
+    // .slice(
+    //   (this.table1Page - 1) * this.table1PageSize,
+    //   (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+    // );
   }
 
+  // Refresh the second table
   refreshActivitiesSelect() {
-    this.activitiesSelect = this.table2
-      // .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.table2Page - 1) * this.table2PageSize,
-        (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
-      );
+    this.table2Total = 0;
+
+    // Calculate second table total
+    this.table2.forEach((value) => {
+      this.table2Total += value.total_price;
+    });
+
+    this.activitiesSelect = this.table2;
+    // .map((item, i) => ({ id: i + 1, ...item }))
+    // .slice(
+    //   (this.table2Page - 1) * this.table2PageSize,
+    //   (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
+    // );
   }
 
   searchTerm = "";
@@ -457,10 +461,11 @@ export class PatientActivityComponent implements OnInit {
 
     this.table1CollectionSize = searchedActs.length;
 
-    this.activities = searchedActs.slice(
-      (this.table1Page - 1) * this.table1PageSize,
-      (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
-    );
+    this.activities = searchedActs;
+    // .slice(
+    //   (this.table1Page - 1) * this.table1PageSize,
+    //   (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+    // );
   }
 
   add(item: IPrestation) {
@@ -631,42 +636,47 @@ export class PatientActivityComponent implements OnInit {
       const doctorText = this.doctorControl.value?.text as string;
       const spaceIndex = doctorText.indexOf(" ");
 
-      const id =
-        this.doctorControl.value?.id == -1 ? 0 : this.doctorControl.value?.id;
+      const doctorRegistrationNumber =
+        this.doctorControl.value?.id == -1
+          ? undefined
+          : (this.doctorControl.value?.id as string);
 
-      if (spaceIndex !== -1) {
+      if (!doctorRegistrationNumber && spaceIndex !== -1) {
         const lastname = doctorText.substring(0, spaceIndex);
         const firstname = doctorText.substring(spaceIndex + 1);
         doctor = new DoctorRequest({
-          id: id,
+          matricule: doctorRegistrationNumber, // Should be "undefined" if new doctor
           nom: lastname,
           prenoms: firstname,
           type: this.doctorTypeControl.value.text,
         });
       } else {
         doctor = new DoctorRequest({
-          id: id,
-          nom: this.doctorControl.value?.text as string,
+          matricule: doctorRegistrationNumber,
+          nom: "",
           prenoms: "",
           type: this.doctorTypeControl.value.text,
         });
       }
 
-      console.log("HERE");
+      console.log(JSON.stringify(doctor, null, 2));
     }
 
     const prestation = new PrestationRequest({
       patient_id: this.patientService.getActivePatient().id,
-      consulteur_id:
-        (this.consultingDoctorControl.value?.id ??
-        this.performedByControl.value?.id) ?? this.doctors[0].id,
+
+      consulteur:
+        this.consultingDoctorControl.value?.id ??
+        this.performedByControl.value?.id ??
+        undefined,
+
       date_prestation: new Date(this.activityDateControl.value),
       tarifs: this.table2.map((item) => ({
         tarif_id: item.id,
         quantite: item.quantity,
       })),
       demandeur: doctor,
-      secteur_id: 1, // this.sectorControl.value?.id,
+      secteur_code: this.sectorControl.value?.id,
       provenance: this.originControl.value,
     });
 
@@ -750,33 +760,14 @@ export class PatientActivityComponent implements OnInit {
     );
   }
 
-  // displayReport() {
-  //   this.checkoutService.loadPdf().subscribe({
-  //     next: (data) => {
-  //       this.toastService.show({
-  //         messages: ["Génération de la fiche de compte."],
-  //         type: ToastType.Success,
-  //       });
+  // @ViewChild("activityFirstField", { read: ElementRef })
+  // activityFirstField!: ElementRef;
 
-  //       const pdfModalRef = this.modalService.open(PdfModalComponent, {
-  //         size: "xl",
-  //         centered: true,
-  //         scrollable: true,
-  //         backdrop: "static",
-  //       });
-
-  //       pdfModalRef.componentInstance.title = "Fiche de comptes";
-  //       pdfModalRef.componentInstance.pdfSrc = data;
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-
-  //       this.toastService.show({
-  //         messages: ["Echec de la génération de la fiche de comptes."],
-  //         delay: 10000,
-  //         type: ToastType.Error,
-  //       });
-  //     },
-  //   });
-  // }
+  scrollTo(element: any) {
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "start",
+    });
+  }
 }

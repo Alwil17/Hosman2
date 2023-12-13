@@ -44,6 +44,7 @@ import { WarningMessages } from "src/app/helpers/messages";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { forkJoin } from "rxjs";
 import { parseIntOrZero } from "src/app/helpers/parsers";
+import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 @Component({
   selector: "app-patient-form",
   templateUrl: "./patient-form.component.html",
@@ -75,7 +76,7 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
   hasInsuranceControl = new FormControl(null, [Validators.required]);
 
   insuranceControl = new FormControl({ value: null, disabled: true });
-  insuranceTypeControl = new FormControl({ value: null, disabled: true });
+  // insuranceTypeControl = new FormControl({ value: null, disabled: true });
   insuranceRateControl = new FormControl({ value: "", disabled: true });
 
   patientEmployerControl = new FormControl(null);
@@ -103,8 +104,9 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
   isPatientInfoFormSubmitted = false;
 
   // Form selects data
-  insurances!: SelectOption[];
-  insuranceTypes!: SelectOption[];
+  insurances: Insurance[] = [];
+  insurancesFiltered: SelectOption[] = [];
+  // insuranceTypes!: SelectOption[];
   countries!: SelectOption[];
   nationalities!: SelectOption[];
   professions!: SelectOption[];
@@ -170,7 +172,7 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
       hasInsuranceControl: this.hasInsuranceControl,
 
       insuranceControl: this.insuranceControl,
-      insuranceTypeControl: this.insuranceTypeControl,
+      // insuranceTypeControl: this.insuranceTypeControl,
       insuranceRateControl: this.insuranceRateControl,
 
       patientEmployerControl: this.patientEmployerControl,
@@ -242,17 +244,17 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
       if (value.id < 2) {
         this.insuranceControl.clearValidators();
         this.insuranceControl.updateValueAndValidity();
-        // this.insuranceControl.setValue(null);
+        this.insuranceControl.setValue(null);
         this.insuranceControl.disable();
 
-        this.insuranceTypeControl.clearValidators();
-        this.insuranceTypeControl.updateValueAndValidity();
+        // this.insuranceTypeControl.clearValidators();
+        // this.insuranceTypeControl.updateValueAndValidity();
         // this.insuranceTypeControl.setValue(null);
-        this.insuranceTypeControl.disable();
+        // this.insuranceTypeControl.disable();
 
         this.insuranceRateControl.clearValidators();
         this.insuranceRateControl.updateValueAndValidity();
-        // this.insuranceRateControl.setValue("");
+        this.insuranceRateControl.setValue(null);
         this.insuranceRateControl.disable();
 
         // this.patientEmployerControl.clearValidators();
@@ -276,9 +278,9 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
         this.insuranceControl.updateValueAndValidity();
         this.insuranceControl.enable();
 
-        this.insuranceTypeControl.addValidators([Validators.required]);
-        this.insuranceTypeControl.updateValueAndValidity();
-        this.insuranceTypeControl.enable();
+        // this.insuranceTypeControl.addValidators([Validators.required]);
+        // this.insuranceTypeControl.updateValueAndValidity();
+        // this.insuranceTypeControl.enable();
 
         this.insuranceRateControl.addValidators([
           Validators.required,
@@ -303,6 +305,24 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
           this.isEmployerMandatory = true;
         }
       }
+
+      if (value.id < 2) {
+        this.insurancesFiltered = [];
+      } else if (value.id == 2) {
+        this.insurancesFiltered = this.insurances
+          .filter((insurance) => insurance.type_assurance.id === 1)
+          .map((value) => ({
+            id: value.id,
+            text: value.nom,
+          }));
+      } else if (value.id == 3) {
+        this.insurancesFiltered = this.insurances
+          .filter((insurance) => insurance.type_assurance.id === 2)
+          .map((value) => ({
+            id: value.id,
+            text: value.nom,
+          }));
+      }
     });
 
     this.insuranceControl.valueChanges.subscribe((value) => {
@@ -310,16 +330,24 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      const selectedIns = this.insuranceService.insurances.find(
-        (insurance) => value.id == insurance.id
-      );
+      // const selectedIns = this.insurances.find(
+      //   (insurance) => value.id == insurance.id
+      // );
 
-      const selectedInsuranceType = this.insuranceTypes.find(
-        (insuranceType) => selectedIns?.type_assurance.id == insuranceType.id
-      );
+      // const selectedInsuranceType = this.insuranceTypes.find(
+      //   (insuranceType) => selectedIns?.type_assurance.id == insuranceType.id
+      // );
 
-      this.insuranceTypeControl.setValue(selectedInsuranceType);
+      // this.insuranceTypeControl.setValue(selectedInsuranceType);
     });
+
+    // this.birthPlaceControl.valueChanges.subscribe((value) => {
+    //   const a = (value as string).match(
+    //     /(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)((\.|\,)[0-9]{1,2})?$)/g
+    //   );
+
+    //   console.log(a); // FIND WHY IT IS CALLED TWICE
+    // });
 
     this.homelandControl.valueChanges.subscribe((value) => {
       if (value) {
@@ -335,21 +363,22 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
   fetchSelectData() {
     forkJoin({
       insurances: this.insuranceService.getAll(),
-      insuranceTypes: this.insuranceTypeService.getAll(),
+      // insuranceTypes: this.insuranceTypeService.getAll(),
       countries: this.countryService.getAll(),
       professions: this.professionService.getAll(),
       employers: this.employerService.getAll(),
     }).subscribe({
       next: (data) => {
-        this.insurances = data.insurances.map((value) => ({
+        this.insurances = data.insurances;
+        this.insurancesFiltered = data.insurances.map((value) => ({
           id: value.id,
           text: value.nom,
         }));
 
-        this.insuranceTypes = data.insuranceTypes.map((value) => ({
-          id: value.id,
-          text: value.nom,
-        }));
+        // this.insuranceTypes = data.insuranceTypes.map((value) => ({
+        //   id: value.id,
+        //   text: value.nom,
+        // }));
 
         this.countries = data.countries.map((value) => ({
           id: value.id,
@@ -487,7 +516,7 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
       );
 
       this.insuranceControl.setValue(
-        this.insurances.find(
+        this.insurancesFiltered.find(
           (value) => this.patientInfos?.assurance?.nom == value.text
         )
       );
@@ -646,14 +675,6 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
   };
 
   getPatientFormData() {
-    console.log(this.insuranceControl.value);
-
-    // const computedProperties = {
-    //   // id: this.patientService.allPatients.length + 1,
-    //   // reference: "PAT" + (this.patientService.allPatients.length + 1),
-    //   hasInsurance: this.hasInsuranceControl.value < 3 ? false : true,
-    // };
-
     const selectInfos = {
       gender: this.genders[this.genderControl.value.id - 1].short,
       idType: this.idTypeControl.value
@@ -661,50 +682,6 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
           ? this.idTypes[this.idTypeControl.value.id - 1].text
           : undefined
         : "",
-      // hasInsurance: this.hasInsurances[this.hasInsuranceControl.value - 1].text,
-      // homeland: {
-      //   id: this.homelandControl.value,
-      //   nom: "",
-      //   nationalite: "",
-      // },
-      // nationality: {
-      //   id: this.nationalityControl.value,
-      //   nom: "",
-      //   nationalite: "",
-      // },
-      // profession: {
-      //   id: this.professionControl.value,
-      //   denomination: "",
-      // },
-      // insurance: {
-      //   id: this.insuranceControl.value,
-      //   reference: "",
-      //   nom: "",
-      //   type_assurance: {
-      //     id: this.insuranceTypeControl.value,
-      //     libelle: "",
-      //   },
-      // },
-      // insuranceType: {
-      //   id: 1, // this.insuranceTypeControl.value,
-      //   nom: "",
-      // },
-      // employer: {
-      //   id: this.patientEmployerControl.value,
-      //   nom: "",
-      // },
-      // city: {
-      //   id: this.cityControl.value,
-      //   nom: "",
-      // },
-      // neighborhood: {
-      //   id: this.neighborhoodControl.value,
-      //   nom: "",
-      // },
-      // hasInsurance: {
-      //   id: this.hasInsuranceControl.value,
-      //   code: HasInsuranceCode.NO_LOCAL,
-      // },
     };
 
     const profession: ProfessionRequest | undefined = this.professionControl
@@ -723,11 +700,19 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
         }
       : undefined;
 
+    let insuranceTypeId = 0;
+    if (this.hasInsuranceControl.value?.id == 2) {
+      insuranceTypeId = 1;
+    } else if (this.hasInsuranceControl.value?.id == 3) {
+      insuranceTypeId = 2;
+    }
+
     const insurance: InsuranceRequest | undefined = this.insuranceControl.value
       ? {
           id: this.insuranceControl.value.id,
           nom: this.insuranceControl.value.text,
-          type_assurance_id: this.insuranceTypeControl.value.id, // this.insuranceTypeControl.value,
+          type_assurance_id: insuranceTypeId,
+          // this.insuranceTypeControl.value.id,
         }
       : undefined;
 
@@ -901,6 +886,8 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
 
   registerModifications() {
     this.isPatientInfoFormSubmitted = true;
+
+    console.log(this.insuranceRateControl.value);
 
     if (this.patientInfoForm.invalid) {
       const notificationMessages = this.getInvalidFields();

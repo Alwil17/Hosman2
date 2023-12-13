@@ -18,7 +18,7 @@ export class TariffsComponent implements OnInit {
 
   table1: any[] = [];
 
-  table2: {}[] = [];
+  table2: any[] = [];
 
   table1Page = 1;
   table1PageSize = 5;
@@ -28,7 +28,9 @@ export class TariffsComponent implements OnInit {
   table2Page = 1;
   table2PageSize = 5;
   table2CollectionSize = this.table2.length;
-  activitiesSelect: {}[] = [];
+  activitiesSelect: any[] = [];
+
+  isProFormaInitiated = false;
 
   constructor(
     private actGroupService: ActGroupService,
@@ -129,5 +131,51 @@ export class TariffsComponent implements OnInit {
         (this.table2Page - 1) * this.table2PageSize,
         (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
       );
+  }
+
+  add(item: any) {
+    console.log(item);
+
+    const item2: any = {
+      id: item.id,
+      designation: item.designation,
+      quantity: 1,
+      no_local: item.no_local,
+      no_foreigner: item.no_foreigner,
+      yes_local: item.yes_local,
+      yes_foreigner: item.yes_foreigner,
+      description: item.description,
+    };
+    console.log(item2);
+
+    var index = this.table2.findIndex((value) => value.id == item.id);
+
+    if (index === -1) {
+      this.table2 = [...this.table2, item2];
+    }
+
+    this.table2CollectionSize = this.table2.length;
+    this.refreshActivitiesSelect();
+  }
+
+  remove(item: any) {
+    console.log(item);
+
+    this.table2 = [
+      ...this.table2.filter((value) => {
+        return value.id !== item.id;
+      }),
+    ];
+
+    this.table2CollectionSize = this.table2.length;
+    this.refreshActivitiesSelect();
+  }
+
+  initiateProForma() {
+    this.isProFormaInitiated = true;
+  }
+
+  cancelProForma() {
+    this.isProFormaInitiated = false;
   }
 }

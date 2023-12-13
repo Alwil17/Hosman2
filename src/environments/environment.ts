@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: "http://localhost:8081/",
+  medical_base: "http://hosman-apps.com:84/",
 
   defaultauth: "fackbackend",
   firebaseConfig: {

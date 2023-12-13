@@ -16,7 +16,7 @@
       }
     },
     "ACTIVITIES": {
-      "TEXT": "XF",
+      "TEXT": "Bilan financier",
       "LIST": {
         "EXPENSES": "Dépenses",
         "COLLECTIONS": "Encaissements",
@@ -27,7 +27,7 @@
     "INFORMATIONS": {
       "TEXT": "Renseignements",
       "LIST": {
-        "TARIFFS": "Tarifs",
+        "TARIFFS": "Tarifs et proforma",
         "CIM_11": "CIM-11",
         "TELEPHONE_BOOK": "Annuaire",
         "EXAMINATIONS": "Exams"
