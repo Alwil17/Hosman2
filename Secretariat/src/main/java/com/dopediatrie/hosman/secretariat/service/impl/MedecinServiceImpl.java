@@ -25,7 +25,7 @@ public class MedecinServiceImpl implements MedecinService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String baseUrl = "http://localhost:8085/employes";
+    private String baseUrl = "http://hosman-apps.com:8085/employes";
 
     @Override
     public List<MedecinResponse> getAllMedecins() {
