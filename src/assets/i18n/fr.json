@@ -44,6 +44,11 @@
         "MESSAGING": "Messagerie",
         "HOSPITALIZED_PATIENTS": "Patients hospitalisés"
       }
+    },
+    "hosp" : {
+      "title" : "Hospitalisation",
+      "new" : "Nouveau",
+      "beds" : "Lits"
     }
   }
 }

@@ -24,6 +24,8 @@ import { PagesRoutingModule } from "./pages-routing.module";
 import { SharedModule } from "../shared/shared.module";
 import { SecretariatModule } from "./secretariat/secretariat.module";
 import { MedicalBaseModule } from './medical-base/medical-base.module';
+import { HospitalisationModule } from "./hospitalisation/hospitalisation.module";
+
 import { AppsComponent } from './apps.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -49,6 +51,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     // LightboxModule,
     SecretariatModule,
     MedicalBaseModule,
+    HospitalisationModule,
   ],
   providers: [
     {

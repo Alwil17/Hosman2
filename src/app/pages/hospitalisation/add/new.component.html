@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Admission</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <app-select
+                  label="Patient"
+                  [isMandatory]="true"
+                  [options]="patients"
+                ></app-select>
+              </div>
+              <div class="col-md-12" *ngIf="patient !== undefined">
+                <label>Détails du patient</label>
+                <!-- <p>
+                  <b>Patient : </b> {{ summary.title }}
+                  <span class="text-secondary">{{ summary.fullName }}</span
+                  >, né(e) le
+                  <span class="text-secondary">{{ summary.birth }}</span>
+                </p>
+      
+                <p>
+                  <b>Contact : </b>
+                  {{ summary.tel1 + " / " + summary.tel2 }}
+                </p>
+      
+                <p>
+                  <b>Personne à prévenir : </b>
+                  {{ summary.personToContact }}
+                </p> -->
+              </div>
+            </div>
+            <div></div>
+          </div>
+          <div class="col-md-6"></div>
+          <div class="col-md-4">
+            <app-select
+              label="Patient"
+              [isMandatory]="true"
+              [options]="patients"
+            ></app-select>
+          </div>
+          <div class="col-md-4">
+            <app-select
+              label="Secteur"
+              [isMandatory]="true"
+              [options]="sectors"
+            ></app-select>
+          </div>
+          <div class="col-md-4">
+            <app-select
+              label="Lits"
+              [isMandatory]="true"
+              [options]="lits"
+              [textKey]="'name'"
+            ></app-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

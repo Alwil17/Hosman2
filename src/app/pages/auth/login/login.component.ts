@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
 
   isLoginFormSubmitted = false;
 
-  usernameControl = new FormControl(null, [Validators.required]);
-  passwordControl = new FormControl(null, [Validators.required]);
+  usernameControl = new FormControl('PISJO', [Validators.required]);
+  passwordControl = new FormControl('PISJO1234', [Validators.required]);
 
   constructor(private authService: AuthService, private router: Router) {}
 
