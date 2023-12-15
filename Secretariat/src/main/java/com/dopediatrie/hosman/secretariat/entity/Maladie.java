@@ -23,4 +23,13 @@ public class Maladie {
     @ManyToMany(mappedBy = "maladies")
     @JsonIgnore
     private List<Patient> patients;
+
+    @Override
+    public String toString() {
+        return "Maladie{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", slug='" + slug + '\'' +
+                '}';
+    }
 }

@@ -40,5 +40,8 @@ public class PatientResponse {
     private double taux_assurance;
     private Date date_debut_assurance;
     private Date date_fin_assurance;
+    private List<Maladie> maladies;
+    private String commentaire;
+    private String antecedent;
     private long structure_id;
 }
