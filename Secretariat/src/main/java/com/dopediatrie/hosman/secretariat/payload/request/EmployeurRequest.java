@@ -10,8 +10,4 @@ public class EmployeurRequest {
     private String tel1;
     private String tel2;
     private String email;
-
-    public EmployeurRequest(String nom) {
-        this.nom = nom;
-    }
 }

@@ -38,7 +38,8 @@ public class PatientMaladieServiceImpl implements PatientMaladieService {
     public PatientMaladiePK addPatientMaladie(PatientMaladieRequest patientMaladieRequest) {
         log.info("PatientMaladieServiceImpl | addPatientMaladie is called");
 
-        long maladie_id = maladieService.addMaladie(new NameRequest(patientMaladieRequest.getMaladie()));
+        NameRequest nameRequest = NameRequest.builder().nom(patientMaladieRequest.getMaladie()).build();
+        long maladie_id = maladieService.addMaladie(nameRequest);
 
         PatientMaladiePK pk = new PatientMaladiePK();
         pk.patient_id = patientMaladieRequest.getPatient_id();
@@ -63,7 +64,8 @@ public class PatientMaladieServiceImpl implements PatientMaladieService {
         log.info("PatientMaladieServiceImpl | addPatientMaladie is called");
 
         for (PatientMaladieRequest patientMaladieRequest : patientMaladieRequests) {
-            long maladie_id = maladieService.addMaladie(new NameRequest(patientMaladieRequest.getMaladie()));
+            NameRequest nameRequest = NameRequest.builder().nom(patientMaladieRequest.getMaladie()).build();
+            long maladie_id = maladieService.addMaladie(nameRequest);
 
             PatientMaladiePK pk = new PatientMaladiePK();
             pk.patient_id = patientMaladieRequest.getPatient_id();
@@ -111,7 +113,9 @@ public class PatientMaladieServiceImpl implements PatientMaladieService {
                         NOT_FOUND
                 ));
 
-        long maladie_id = maladieService.addMaladie(new NameRequest(patientMaladieRequest.getMaladie()));
+        NameRequest nameRequest = NameRequest.builder().nom(patientMaladieRequest.getMaladie()).build();
+        long maladie_id = maladieService.addMaladie(nameRequest);
+
         patientMaladie.setPatient(patientRepository.findById(patientMaladieRequest.getPatient_id()).orElseThrow());
         patientMaladie.setMaladie(maladieRepository.findById(maladie_id).orElseThrow());
         patientMaladieRepository.save(patientMaladie);

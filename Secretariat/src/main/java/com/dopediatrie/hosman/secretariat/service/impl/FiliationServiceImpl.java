@@ -47,9 +47,12 @@ public class FiliationServiceImpl implements FiliationService {
             filiation = filiationRepository.findByFiliationByPatientIdAndType(filiationRequest.getPatient_id(), filiationRequest.getType()).orElseThrow();
             editFiliation(filiationRequest, filiation.getId());
         }else {
-            long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(new AssuranceRequest(filiationRequest.getAssurance())) : 0;
-            long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(new ProfessionRequest(filiationRequest.getProfession())) : 0;
-            long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(new EmployeurRequest(filiationRequest.getEmployeur())) : 0;
+            AssuranceRequest assuranceRequest = AssuranceRequest.builder().nom(filiationRequest.getAssurance()).build();
+            ProfessionRequest professionRequest = ProfessionRequest.builder().denomination(filiationRequest.getProfession()).build();
+            EmployeurRequest employeurRequest = EmployeurRequest.builder().nom(filiationRequest.getEmployeur()).build();
+            long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(assuranceRequest) : 0;
+            long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(professionRequest) : 0;
+            long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(employeurRequest) : 0;
 
 
             filiation = Filiation.builder()
@@ -102,9 +105,12 @@ public class FiliationServiceImpl implements FiliationService {
     public void editFiliation(FiliationRequest filiationRequest, long filiationId) {
         log.info("FiliationServiceImpl | editFiliation is called");
 
-        long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(new AssuranceRequest(filiationRequest.getAssurance())) : 0;
-        long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(new ProfessionRequest(filiationRequest.getProfession())) : 0;
-        long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(new EmployeurRequest(filiationRequest.getEmployeur())) : 0;
+        AssuranceRequest assuranceRequest = AssuranceRequest.builder().nom(filiationRequest.getAssurance()).build();
+        ProfessionRequest professionRequest = ProfessionRequest.builder().denomination(filiationRequest.getProfession()).build();
+        EmployeurRequest employeurRequest = EmployeurRequest.builder().nom(filiationRequest.getEmployeur()).build();
+        long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(assuranceRequest) : 0;
+        long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(professionRequest) : 0;
+        long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(employeurRequest) : 0;
 
         Filiation filiation
                 = filiationRepository.findById(filiationId)

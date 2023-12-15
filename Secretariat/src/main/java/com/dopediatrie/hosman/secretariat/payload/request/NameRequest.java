@@ -15,8 +15,4 @@ import lombok.extern.jackson.Jacksonized;
 public class NameRequest {
     private String nom;
     private String slug;
-
-    public NameRequest(String nom) {
-        this.nom = nom;
-    }
 }

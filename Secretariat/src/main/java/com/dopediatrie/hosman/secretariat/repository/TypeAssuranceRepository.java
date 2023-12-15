@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface TypeAssuranceRepository extends JpaRepository<TypeAssurance,Long> {
     Boolean existsByNom(String nom);
     Optional<TypeAssurance> findByNom(String nom);
+    Optional<TypeAssurance> findBySlug(String slug);
 }

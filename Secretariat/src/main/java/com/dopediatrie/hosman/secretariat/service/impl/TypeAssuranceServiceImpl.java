@@ -31,13 +31,17 @@ public class TypeAssuranceServiceImpl implements TypeAssuranceService {
     public long addTypeAssurance(NameRequest typeAssuranceRequest) {
         log.info("TypeAssuranceServiceImpl | addTypeAssurance is called");
 
-        TypeAssurance typeAssurance
-                = TypeAssurance.builder()
-                .nom(typeAssuranceRequest.getNom())
-                .slug(Str.slug(typeAssuranceRequest.getNom()))
-                .build();
-
-        typeAssurance = typeAssuranceRepository.save(typeAssurance);
+        TypeAssurance typeAssurance;
+        if(typeAssuranceRepository.existsByNom(typeAssuranceRequest.getNom())){
+            typeAssurance = typeAssuranceRepository.findByNom(typeAssuranceRequest.getNom()).orElseThrow();
+        }else {
+            typeAssurance
+                    = TypeAssurance.builder()
+                    .nom(typeAssuranceRequest.getNom())
+                    .slug(Str.slug(typeAssuranceRequest.getNom()))
+                    .build();
+            typeAssurance = typeAssuranceRepository.save(typeAssurance);
+        }
 
         log.info("TypeAssuranceServiceImpl | addTypeAssurance | TypeAssurance Created");
         log.info("TypeAssuranceServiceImpl | addTypeAssurance | TypeAssurance Id : " + typeAssurance.getId());
