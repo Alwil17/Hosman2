@@ -80,6 +80,9 @@ public class Patient implements Serializable {
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Attente> attentes;
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Filiation> parents;
     @ManyToOne
     @JoinColumn(name = "assurance_id")
     private Assurance assurance;

@@ -31,6 +31,7 @@ public class PatientRequest {
     private AdresseRequest adresse;
     private AssuranceRequest assurance;
     private List<PatientMaladieRequest> maladies;
+    private List<FiliationRequest> parents;
 
     private double taux_assurance = 0;
     private Date date_debut_assurance;

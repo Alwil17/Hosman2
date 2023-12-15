@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.FiliationRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientMaladieRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
@@ -34,6 +35,7 @@ public class PatientServiceImpl implements PatientService {
     private final ProfessionService professionService;
     private final EmployeurService employeurService;
     private final PatientMaladieService patientMaladieService;
+    private final FiliationService filiationService;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -219,6 +221,13 @@ public class PatientServiceImpl implements PatientService {
             for (PatientMaladieRequest maladieRequest : patientRequest.getMaladies()) {
                 maladieRequest.setPatient_id(patientId);
                 patientMaladieService.addPatientMaladie(maladieRequest);
+            }
+        }
+
+        if((patientRequest.getParents()) != null && (patientRequest.getParents().size() > 0)){
+            for (FiliationRequest filiationRequest : patientRequest.getParents()) {
+                filiationRequest.setPatient_id(patientId);
+                filiationService.addFiliation(filiationRequest);
             }
         }
 

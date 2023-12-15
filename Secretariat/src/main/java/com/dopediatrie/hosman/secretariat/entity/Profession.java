@@ -23,6 +23,9 @@ public class Profession {
     @OneToMany(mappedBy = "profession")
     @JsonIgnore
     private List<Patient> patients;
+    @OneToMany(mappedBy = "profession")
+    @JsonIgnore
+    private List<Filiation> filiations;
 
     @Override
     public String toString() {

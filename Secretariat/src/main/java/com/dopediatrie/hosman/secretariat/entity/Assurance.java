@@ -31,6 +31,9 @@ public class Assurance {
     private List<Patient> patients;
     @OneToMany(mappedBy = "assurance")
     @JsonIgnore
+    private List<Filiation> filiations;
+    @OneToMany(mappedBy = "assurance")
+    @JsonIgnore
     private List<PEC> pecs;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "assurance_tarif",

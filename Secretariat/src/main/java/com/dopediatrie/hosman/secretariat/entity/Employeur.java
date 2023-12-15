@@ -25,6 +25,9 @@ public class Employeur {
     @OneToMany(mappedBy = "employeur")
     @JsonIgnore
     private List<Patient> patients;
+    @OneToMany(mappedBy = "employeur")
+    @JsonIgnore
+    private List<Filiation> filiations;
 
     @Override
     public String toString() {

@@ -12,4 +12,8 @@ public class AssuranceRequest {
     private String tel1;
     private String tel2;
     private long type_assurance_id;
+
+    public AssuranceRequest(String nom) {
+        this.nom = nom;
+    }
 }
