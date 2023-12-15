@@ -1,0 +1,105 @@
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <div class="row">
+        <div class="col-md-6 mb-3 mb-">
+          <app-select
+            label="Statut"
+            [isMandatory]="true"
+            [options]="[]"
+          ></app-select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <app-select
+            label="Sexe"
+            [isMandatory]="true"
+            [options]="[]"
+          ></app-select>
+        </div>
+        <div class="col-md-12 mb-3">
+          <app-input label="Nom" [isMandatory]="true"></app-input>
+        </div>
+        <div class="col-md-12 mb-3">
+          <app-input label="Prénom(s)" [isMandatory]="true"></app-input>
+        </div>
+        <div class="col-md-6 mb-3">
+          <app-input
+            label="Date de naissance"
+            type="date"
+            [isMandatory]="true"
+            [maxDate]="today"
+          ></app-input>
+        </div>
+        <div class="col-md-6 mb-3">
+          <app-input
+            label="Date d'entrée"
+            type="date"
+            [isMandatory]="true"
+            [maxDate]="today"
+          ></app-input>
+        </div>
+      </div>
+      <div></div>
+    </div>
+    <div class="col-md-6 border-start mb-3">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <app-select
+            label="Secteur"
+            [isMandatory]="true"
+            [options]="sectors"
+          ></app-select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <app-select
+            label="Chambres"
+            [isMandatory]="true"
+            [options]="lits"
+            [textKey]="'name'"
+          ></app-select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <app-select
+            label="Lits"
+            [isMandatory]="true"
+            [options]="lits"
+            [textKey]="'name'"
+          ></app-select>
+        </div>
+        <div class="col-md-12 mb-3">
+          <app-input label="Motif" [isMandatory]="true"></app-input>
+        </div>
+        <div class="col-md-12 mb-3">
+          <app-input label="Diagnostic d'entrée" [isMandatory]="true"></app-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="form-group">
+            <label for="exampleTextarea">Histoire de la maladie</label>
+            <textarea
+              class="form-control"
+              rows="3"
+            ></textarea>
+          </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="form-group">
+            <label for="exampleTextarea">A l'arrivée</label>
+            <textarea
+              class="form-control"
+              rows="3"
+            ></textarea>
+          </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button
+        type="button"
+        class="btn btn-success btn-label right"
+      >
+        <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+        Enrégistrer
+      </button>
+    </div>
+  </div>
+

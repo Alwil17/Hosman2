@@ -9,13 +9,7 @@ export const MENU: MenuItem[] = [
   {
     id: 2,
     label: "MENUITEMS.hosp.new",
-    link: "/hospitalisation/new",
+    link: "/hospitalisation/",
     icon: "ri-user-add-fill",
   },
-  {
-    id: 2,
-    label: "MENUITEMS.hosp.beds",
-    link: "/hospitalisation/beds",
-    icon: "ri-user-add-fill",
-  }
 ]

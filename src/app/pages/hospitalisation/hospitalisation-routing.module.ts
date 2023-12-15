@@ -4,8 +4,7 @@ import { NewBedComponent } from './add/new.component';
 import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "beds", pathMatch: "full" },
-  { path: "new", component: NewBedComponent, },
+  { path: "", component: NewBedComponent, },
   { path: "beds", component: ListComponent },
 ];
 

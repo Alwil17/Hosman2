@@ -47,8 +47,7 @@
     },
     "hosp" : {
       "title" : "Hospitalisation",
-      "new" : "Nouveau",
-      "beds" : "Lits"
+      "new" : "Nouveau"
     }
   }
 }
