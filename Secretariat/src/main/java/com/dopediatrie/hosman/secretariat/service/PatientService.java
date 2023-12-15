@@ -22,6 +22,8 @@ public interface PatientService {
 
     void editPatient(PatientRequest patientRequest, long patientId);
 
+    void editPatientCaracs(PatientRequest patientRequest, long patientId);
+
     public void deletePatientById(long patientId);
 
     List<Patient> getPatientByDateNaissance(LocalDateTime dateNaissance, LocalDateTime dateNaissanceLimit);

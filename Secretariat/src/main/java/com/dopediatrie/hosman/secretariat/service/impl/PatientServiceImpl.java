@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.PatientMaladieRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
@@ -32,6 +33,7 @@ public class PatientServiceImpl implements PatientService {
     private final AssuranceService assuranceService;
     private final ProfessionService professionService;
     private final EmployeurService employeurService;
+    private final PatientMaladieService patientMaladieService;
     private final String NOT_FOUND = "PATIENT_NOT_FOUND";
 
     @Override
@@ -196,6 +198,32 @@ public class PatientServiceImpl implements PatientService {
 
         log.info("PatientServiceImpl | editPatient | Patient Updated");
         log.info("PatientServiceImpl | editPatient | Patient Id : " + patient.getId());
+    }
+
+    @Override
+    public void editPatientCaracs(PatientRequest patientRequest, long patientId) {
+        log.info("PatientServiceImpl | editPatientCaracs is called");
+
+        Patient patient
+                = patientRepository.findById(patientId)
+                .orElseThrow(() -> new SecretariatCustomException(
+                        "Patient with given Id not found",
+                        NOT_FOUND
+                ));
+
+        patient.setCommentaire(patientRequest.getCommentaire());
+        patient.setAntecedent(patientRequest.getAntecedent());
+        patientRepository.save(patient);
+
+        if((patientRequest.getMaladies()) != null && (patientRequest.getMaladies().size() > 0)){
+            for (PatientMaladieRequest maladieRequest : patientRequest.getMaladies()) {
+                maladieRequest.setPatient_id(patientId);
+                patientMaladieService.addPatientMaladie(maladieRequest);
+            }
+        }
+
+        log.info("PatientServiceImpl | editPatientCaracs | Patient Updated");
+        log.info("PatientServiceImpl | editPatientCaracs | Patient Id : " + patient.getId());
     }
 
     @Override

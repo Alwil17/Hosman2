@@ -86,6 +86,13 @@ public class Patient implements Serializable {
     private double taux_assurance;
     private Date date_debut_assurance;
     private Date date_fin_assurance;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "maladie_patient",
+            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "maladie_id", referencedColumnName = "id"))
+    private List<Maladie> maladies;
+    private String commentaire;
+    private String antecedent;
 
     @Override
     public String toString() {

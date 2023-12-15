@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -29,10 +30,14 @@ public class PatientRequest {
     private PersonneAPrevenirRequest personne_a_prevenir;
     private AdresseRequest adresse;
     private AssuranceRequest assurance;
+    private List<PatientMaladieRequest> maladies;
 
     private double taux_assurance = 0;
     private Date date_debut_assurance;
     private Date date_fin_assurance;
+
+    private String commentaire;
+    private String antecedent;
 
     private long structure_id = 1;
 }

@@ -96,6 +96,18 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/{id}/bm")
+    public ResponseEntity<Void> editPatientCaracs(@RequestBody PatientRequest patientRequest,
+                                            @PathVariable("id") long patientId
+    ) {
+
+        log.info("PatientController | editPatientCaracs is called");
+        log.info("PatientController | editPatientCaracs | patientId : " + patientId);
+
+        patientService.editPatientCaracs(patientRequest, patientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public void deletePatientById(@PathVariable("id") long patientId) {
         patientService.deletePatientById(patientId);
