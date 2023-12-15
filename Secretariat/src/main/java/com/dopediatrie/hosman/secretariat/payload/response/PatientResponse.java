@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -35,6 +36,7 @@ public class PatientResponse {
     private Assurance assurance;
     private Employeur employeur;
     private PersonneAPrevenir personne_a_prevenir;
+    private List<Filiation> parents;
     private double taux_assurance;
     private Date date_debut_assurance;
     private Date date_fin_assurance;

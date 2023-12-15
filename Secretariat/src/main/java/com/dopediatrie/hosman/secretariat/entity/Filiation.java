@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.secretariat.entity;
 
 import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.SecteurResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +37,19 @@ public class Filiation {
     private Assurance assurance;
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 
-
+    @Override
+    public String toString() {
+        return "Filiation{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenoms='" + prenoms + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", sexe=" + sexe +
+                ", type='" + type + '\'' +
+                ", annee_naissance=" + annee_naissance +
+                '}';
+    }
 }
