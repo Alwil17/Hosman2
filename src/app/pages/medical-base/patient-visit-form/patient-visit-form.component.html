@@ -6,7 +6,11 @@
 <!-- End Breadcrumbs -->
 
 <!-- FIRST FORM CARD -->
-<app-card>
+<app-card
+  [hasHeader]="true"
+  [hasBody]="!isPatientInfoCollapsed"
+  [hasFooter]="true"
+>
   <!-- HEADER -->
   <ng-container customCardHeader>
     <div class="d-flex justify-content-between align-items-end">
@@ -35,6 +39,7 @@
         >
           <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
           <span *ngIf="isPatientInfoCollapsed; else seeLess">Voir plus</span>
+
           <ng-template #seeLess>
             <span> Voir moins </span>
           </ng-template>
@@ -137,10 +142,42 @@
       </div>
     </form>
   </ng-container>
+
+  <!-- FOOTER -->
+  <ng-container customCardFooter>
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-label waves-effect waves-light me-3"
+        [ngClass]="{
+          'btn-secondary': isVisitFormCollapsed,
+          'btn-warning': !isVisitFormCollapsed
+        }"
+        (click)="isVisitFormCollapsed = !isVisitFormCollapsed"
+        [attr.aria-expanded]="!isVisitFormCollapsed"
+        aria-controls="collapseExample"
+      >
+        <i
+          class="label-icon align-middle fs-16 me-2"
+          [ngClass]="{
+            'ri-arrow-down-line': isVisitFormCollapsed,
+            'ri-close-fill': !isVisitFormCollapsed
+          }"
+        ></i>
+        <span *ngIf="isVisitFormCollapsed; else cancelVisit"
+          >Démarrer la consultation</span
+        >
+
+        <ng-template #cancelVisit>
+          <span> Annuler la consultation </span>
+        </ng-template>
+      </button>
+    </div>
+  </ng-container>
 </app-card>
 
 <!-- SECOND FORM CARD -->
-<app-card>
+<app-card *ngIf="!isVisitFormCollapsed" [hasHeader]="true" [hasBody]="true">
   <!-- HEADER -->
   <ng-container customCardHeader>
     <div class="d-flex justify-content-between align-items-end">
@@ -153,19 +190,17 @@
           type="button"
           class="btn btn-info btn-label waves-effect waves-light me-3"
         >
-          <!-- (click)="openPatientModificationModal()" -->
           <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
           Voir les anciennes consultations
         </button>
 
-        <button
+        <!-- <button
           type="button"
           class="btn btn-danger btn-label waves-effect waves-light"
         >
-          <!-- (click)="openPatientModificationModal()" -->
           <i class="ri-close-fill label-icon align-middle fs-16 me-2"></i>
           Annuler la consultation
-        </button>
+        </button> -->
       </div>
     </div>
   </ng-container>

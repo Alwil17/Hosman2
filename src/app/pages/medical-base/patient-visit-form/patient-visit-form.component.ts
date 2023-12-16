@@ -16,7 +16,8 @@ export class PatientVisitFormComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  isPatientInfoCollapsed = true;
+  isPatientInfoCollapsed = false;
+  isVisitFormCollapsed = true;
 
   // To set date min
   today = new Date();
