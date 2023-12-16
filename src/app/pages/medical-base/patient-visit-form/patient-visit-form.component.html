@@ -241,48 +241,44 @@
       <div class="row mb-2">
         <div class="col-md-2">
           <app-input
+            type="number"
             label="Poids (kg)"
-            maskFormat="999"
             [control]="weightControl"
           ></app-input>
         </div>
 
         <div class="col-md-2">
           <app-input
+            type="number"
             label="Taille (cm)"
-            maskFormat="999"
             [control]="sizeControl"
           ></app-input>
         </div>
 
         <div class="col-md-1">
           <app-input
+            type="number"
             label="PC (cm)"
-            maskFormat="999"
             [control]="pcControl"
           ></app-input>
         </div>
 
         <div class="col-md-2">
           <app-input
+            type="number"
             label="Température (°C)"
-            maskFormat="999"
             [control]="temperatureControl"
           ></app-input>
         </div>
 
         <div class="col-md-1">
-          <app-input
-            label="FR"
-            maskFormat="999"
-            [control]="frControl"
-          ></app-input>
+          <app-input type="number" label="FR" [control]="frControl"></app-input>
         </div>
 
         <div class="col-md-2">
           <app-input
+            type="number"
             label="Pouls"
-            maskFormat="999"
             [control]="pulseControl"
           ></app-input>
         </div>
@@ -290,7 +286,7 @@
         <div class="col-md-2">
           <app-input
             label="Tension (mmHg)"
-            maskFormat="999"
+            placeholder="___ / ___"
             [control]="tensionControl"
           ></app-input>
         </div>
