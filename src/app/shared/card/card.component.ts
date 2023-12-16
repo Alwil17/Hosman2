@@ -12,6 +12,15 @@ export class CardComponent implements OnInit {
   @Input()
   separator = false;
 
+  @Input()
+  hasHeader = false;
+
+  @Input()
+  hasBody = false;
+
+  @Input()
+  hasFooter = false;
+
   constructor() {}
 
   ngOnInit(): void {}

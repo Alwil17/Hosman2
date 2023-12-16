@@ -1,17 +1,27 @@
 <div class="card">
-  <div class="card-header">
-    <h4 class="card-title mb-0" *ngIf="title">{{ title }}</h4>
+  <ng-container *ngIf="hasHeader">
+    <div class="card-header">
+      <h4 class="card-title mb-0" *ngIf="title">{{ title }}</h4>
 
-    <hr *ngIf="separator" />
+      <hr *ngIf="separator" />
 
-    <ng-content select="[customCardHeader]"></ng-content>
-  </div>
-  <!-- end card header -->
-  <div class="card-body">
-    <ng-content select="[customCardBody]"></ng-content>
-  </div>
+      <ng-content select="[customCardHeader]"></ng-content>
+    </div>
+  </ng-container>
 
-  <ng-content select="[customCardBody2]"></ng-content>
+  <ng-container *ngIf="hasBody">
+    <div class="card-body">
+      <ng-content select="[customCardBody]"></ng-content>
+    </div>
 
-  <ng-content select="[customCardBody3]"></ng-content>
+    <ng-content select="[customCardBody2]"></ng-content>
+
+    <ng-content select="[customCardBody3]"></ng-content>
+  </ng-container>
+
+  <ng-container *ngIf="hasFooter">
+    <div class="card-footer">
+      <ng-content select="[customCardFooter]"></ng-content>
+    </div>
+  </ng-container>
 </div>
