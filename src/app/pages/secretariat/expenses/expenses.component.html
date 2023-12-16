@@ -160,7 +160,7 @@
                     *ngFor="let item of expenseListCut"
                     class="user-select-none"
                   >
-                    <td>{{ item.date_depense | date : "hh:mm" }}</td>
+                    <td>{{ item.date_depense | date : "HH:mm" }}</td>
                     <td>{{ item.motif }}</td>
                     <td>{{ item.montant | mask : "separator" }}</td>
                     <td>-</td>
