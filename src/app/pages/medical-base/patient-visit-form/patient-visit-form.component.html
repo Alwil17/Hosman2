@@ -18,11 +18,11 @@
         <span class="badge bg-primary me-3"
           ><i class="mdi mdi-circle-medium"></i>
           {{
-            patientService.getActivePatient().reference +
+            activePatient.reference +
               " - " +
-              patientService.getActivePatient().nom +
+              activePatient.nom +
               " " +
-              patientService.getActivePatient().prenoms
+              activePatient.prenoms
           }}</span
         >
       </h4>

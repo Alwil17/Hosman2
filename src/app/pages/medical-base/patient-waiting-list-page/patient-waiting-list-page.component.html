@@ -148,7 +148,7 @@
                 <tr
                   *ngFor="let item of waitingListCut"
                   class="user-select-none"
-                  (dblclick)="goToPatientVisits(item.patient)"
+                  (dblclick)="goToPatientVisits(item)"
                 >
                   <td>{{ item.num_attente }}</td>
                   <td>{{ item.patient.reference }}</td>

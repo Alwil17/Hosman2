@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 
@@ -89,7 +90,8 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
 
   constructor(
     private medicalBaseRouter: MedicalBaseRouterService,
-    private patientService: PatientService
+    // private patientService: PatientService,
+    private patientVisitService: PatientVisitService
   ) {}
 
   ngOnInit(): void {
@@ -101,18 +103,28 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       { label: "Consultations antérieures", active: true },
     ];
 
-    this.lastNameControl.setValue(this.patientService.getActivePatient().nom);
+    if (!this.patientVisitService.selectedWaitingListItem) {
+      this.medicalBaseRouter.navigateToPatientWaitingList();
+
+      return;
+    }
+
+    this.lastNameControl.setValue(
+      this.patientVisitService.selectedWaitingListItem.patient.nom
+    );
     this.firstNameControl.setValue(
-      this.patientService.getActivePatient().prenoms
+      this.patientVisitService.selectedWaitingListItem.patient.prenoms
     );
     this.dateOfBirthControl.setValue(
       new Date(
-        this.patientService.getActivePatient().date_naissance
+        this.patientVisitService.selectedWaitingListItem.patient.date_naissance
       ).toLocaleDateString("fr-ca")
     );
     this.genderControl.setValue(
       this.genders.find(
-        (value) => value.short == this.patientService.getActivePatient().sexe
+        (value) =>
+          value.short ==
+          this.patientVisitService.selectedWaitingListItem!.patient.sexe
       )
     );
 
@@ -158,7 +170,5 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       );
   }
 
-  openPreviousVisitsModal() {
-    
-  }
+  openPreviousVisitsModal() {}
 }

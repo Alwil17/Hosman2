@@ -6,6 +6,9 @@ import { AppointmentFormComponent } from "../appointment-form/appointment-form.c
 import { MbService } from "../mb.service";
 import { forkJoin } from "rxjs";
 import { SelectOption } from "src/app/models/extras/select.model";
+import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -46,10 +49,14 @@ export class PatientVisitFormComponent implements OnInit {
 
   isFormSubmitted = false;
 
+  activePatient!: Patient;
+
   constructor(
-    public patientService: PatientService,
+    // public patientService: PatientService,
     private modalService: NgbModal,
-    private mbService: MbService
+    private mbService: MbService,
+    private medicalBaseRouter: MedicalBaseRouterService,
+    private patientVisitService: PatientVisitService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +67,15 @@ export class PatientVisitFormComponent implements OnInit {
       { label: "Base médicale" },
       { label: "Navette", active: true },
     ];
+
+    if (!this.patientVisitService.selectedWaitingListItem) {
+      this.medicalBaseRouter.navigateToPatientWaitingList();
+
+      return;
+    }
+
+    this.activePatient =
+      this.patientVisitService.selectedWaitingListItem.patient;
 
     this.patientVisitForm1 = new FormGroup({
       // chronicDiseaseControl: this.chronicDiseaseControl,

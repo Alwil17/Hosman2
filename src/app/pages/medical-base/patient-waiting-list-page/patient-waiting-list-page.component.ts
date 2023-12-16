@@ -13,6 +13,7 @@ import { DoctorService } from "src/app/services/secretariat/shared/doctor.servic
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { InvoiceDetailsModalComponent } from "./invoice-details-modal/invoice-details-modal.component";
 import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
+import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 
 @Component({
   selector: "app-patient-waiting-list-page",
@@ -43,9 +44,10 @@ export class PatientWaitingListPageComponent implements OnInit {
     private waitingListService: WaitingListService,
     private toastService: ToastService,
     private medicalBaseRouter: MedicalBaseRouterService,
-    private patientService: PatientService,
+    // private patientService: PatientService,
     private doctorService: DoctorService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private patientVisitService: PatientVisitService
   ) {}
 
   ngOnInit(): void {
@@ -64,11 +66,15 @@ export class PatientWaitingListPageComponent implements OnInit {
     this.refreshWaitingList();
   }
 
-  goToPatientVisits(patient: Patient) {
-    this.patientService.setActivePatient(patient.id).subscribe({
-      next: () => this.medicalBaseRouter.navigateToPatientVisitsSummary(),
-      error: (e) => console.log(e),
-    });
+  goToPatientVisits(waitingListItem: WaitingListItem) {
+    this.patientVisitService.selectWaitingListItem(waitingListItem);
+
+    this.medicalBaseRouter.navigateToPatientVisitsSummary();
+
+    // this.patientService.setActivePatient(patient.id).subscribe({
+    //   next: () => this.medicalBaseRouter.navigateToPatientVisitsSummary(),
+    //   error: (e) => console.log(e),
+    // });
   }
 
   refreshWaitingList() {
