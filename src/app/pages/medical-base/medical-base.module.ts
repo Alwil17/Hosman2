@@ -14,6 +14,7 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page/patient-visits-summary-page.component";
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
+import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoice-details-modal/invoice-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AppointmentFormComponent } from './appointment-form/appointment-form.co
     PatientVisitsSummaryPageComponent,
     PatientVisitFormComponent,
     AppointmentFormComponent,
+    InvoiceDetailsModalComponent,
   ],
   imports: [
     CommonModule,

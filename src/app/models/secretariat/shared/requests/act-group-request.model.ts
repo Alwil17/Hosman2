@@ -6,7 +6,7 @@ export interface IActGroupRequest {
   code: string;
   position: number;
   couleur: string;
-  actes: ActRequest[];
+  // actes: ActRequest[];
 }
 
 export class ActGroupRequest {
@@ -15,7 +15,7 @@ export class ActGroupRequest {
   code: string;
   position: number;
   couleur: string;
-  actes: ActRequest[];
+  // actes: ActRequest[];
 
   constructor(iActGroup: IActGroupRequest) {
     this.id = iActGroup.id;
@@ -23,6 +23,6 @@ export class ActGroupRequest {
     this.code = iActGroup.code;
     this.position = iActGroup.position;
     this.couleur = iActGroup.couleur;
-    this.actes = iActGroup.actes;
+    // this.actes = iActGroup.actes;
   }
 }

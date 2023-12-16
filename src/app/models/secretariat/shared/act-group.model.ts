@@ -7,7 +7,7 @@ export interface IActGroup {
   code: string;
   position: number;
   couleur: string;
-  actes: Act[];
+  // actes: Act[];
 }
 
 export class ActGroup {
@@ -16,7 +16,7 @@ export class ActGroup {
   code: string;
   position: number;
   couleur: string;
-  actes: Act[];
+  // actes: Act[];
 
   constructor(iActGroup: IActGroup) {
     this.id = iActGroup.id;
@@ -24,7 +24,7 @@ export class ActGroup {
     this.code = iActGroup.code;
     this.position = iActGroup.position;
     this.couleur = iActGroup.couleur;
-    this.actes = iActGroup.actes;
+    // this.actes = iActGroup.actes;
   }
 
   static fromResponse(actGroup: ActGroupResponse) {
@@ -34,7 +34,7 @@ export class ActGroup {
       code: actGroup.code,
       position: actGroup.position,
       couleur: actGroup.couleur,
-      actes: actGroup.actes,
+      // actes: actGroup.actes,
     });
   }
 }

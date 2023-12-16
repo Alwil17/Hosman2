@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { WaitingListFilter } from "src/app/models/enums/waiting-list-filter.enum";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { ToastType } from "src/app/models/extras/toast-type.model";
@@ -10,6 +11,8 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 import { WaitingListService } from "src/app/services/secretariat/patients/waiting-list.service";
 import { DoctorService } from "src/app/services/secretariat/shared/doctor.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { InvoiceDetailsModalComponent } from "./invoice-details-modal/invoice-details-modal.component";
+import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
 
 @Component({
   selector: "app-patient-waiting-list-page",
@@ -41,7 +44,8 @@ export class PatientWaitingListPageComponent implements OnInit {
     private toastService: ToastService,
     private medicalBaseRouter: MedicalBaseRouterService,
     private patientService: PatientService,
-    private doctorService: DoctorService
+    private doctorService: DoctorService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -151,24 +155,37 @@ export class PatientWaitingListPageComponent implements OnInit {
     });
   }
 
-  deleteWaitingListItem(id: any) {
-    this.waitingListService.delete(id).subscribe({
-      next: (data) => {
-        this.toastService.show({
-          messages: ["Patient retiré de la liste d'attente."],
-          type: ToastType.Success,
-        });
+  openInvoiceDetailsModal(invoice: Invoice) {
+    const invoiceModalRef = this.modalService.open(
+      InvoiceDetailsModalComponent,
+      {
+        size: "md",
+        centered: true,
+        scrollable: true,
+      }
+    );
 
-        this.refreshWaitingList();
-      },
-      error: (e) => {
-        console.error(e);
-
-        this.toastService.show({
-          delay: 10000,
-          type: ToastType.Error,
-        });
-      },
-    });
+    invoiceModalRef.componentInstance.invoice = invoice;
   }
+
+  // deleteWaitingListItem(id: any) {
+  //   this.waitingListService.delete(id).subscribe({
+  //     next: (data) => {
+  //       this.toastService.show({
+  //         messages: ["Patient retiré de la liste d'attente."],
+  //         type: ToastType.Success,
+  //       });
+
+  //       this.refreshWaitingList();
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+
+  //       this.toastService.show({
+  //         delay: 10000,
+  //         type: ToastType.Error,
+  //       });
+  //     },
+  //   });
+  // }
 }

@@ -6,5 +6,5 @@ export interface ActGroupResponse {
   code: string;
   position: number;
   couleur: string;
-  actes: ActResponse[];
+  // actes: ActResponse[];
 }
