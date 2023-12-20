@@ -1,0 +1,29 @@
+<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+    <h4 class="mb-sm-0">Administration</h4>
+</div>
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#nav-bed" role="tab" aria-selected="false">
+                    Chambres / Lits
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content text-muted">
+            <div class="tab-pane active" id="nav-border-top-home" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-select
+                        [label]="'Chambre'"
+                        [readOnly]="false"
+                        [options]="[]"
+                        [canAddOption]="true"
+                      ></app-select>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end card-body -->
+</div>

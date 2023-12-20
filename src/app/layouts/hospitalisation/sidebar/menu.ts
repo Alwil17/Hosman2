@@ -12,4 +12,10 @@ export const MENU: MenuItem[] = [
     link: "/hospitalisation/",
     icon: "ri-user-add-fill",
   },
+  // {
+  //   id: 2,
+  //   label: "MENUITEMS.hosp.admin",
+  //   link: "/hospitalisation/administration",
+  //   icon: "ri-list",
+  // },
 ]
