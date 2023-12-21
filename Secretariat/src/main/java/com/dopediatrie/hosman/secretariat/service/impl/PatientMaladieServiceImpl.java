@@ -38,21 +38,27 @@ public class PatientMaladieServiceImpl implements PatientMaladieService {
     public PatientMaladiePK addPatientMaladie(PatientMaladieRequest patientMaladieRequest) {
         log.info("PatientMaladieServiceImpl | addPatientMaladie is called");
 
-        NameRequest nameRequest = NameRequest.builder().nom(patientMaladieRequest.getMaladie()).build();
-        long maladie_id = maladieService.addMaladie(nameRequest);
+        PatientMaladie patientMaladie;
+        if(!patientMaladieRepository.existsByPatient_IdAndMaladie(patientMaladieRequest.getPatient_id(), patientMaladieRequest.getMaladie())){
+            NameRequest nameRequest = NameRequest.builder().nom(patientMaladieRequest.getMaladie()).build();
+            long maladie_id = maladieService.addMaladie(nameRequest);
 
-        PatientMaladiePK pk = new PatientMaladiePK();
-        pk.patient_id = patientMaladieRequest.getPatient_id();
-        pk.maladie_id = maladie_id;
+            PatientMaladiePK pk = new PatientMaladiePK();
+            pk.patient_id = patientMaladieRequest.getPatient_id();
+            pk.maladie_id = maladie_id;
 
-        PatientMaladie patientMaladie
-                = PatientMaladie.builder()
-                .id(pk)
-                .patient(patientRepository.findById(patientMaladieRequest.getPatient_id()).orElseThrow())
-                .maladie(maladieRepository.findById(maladie_id).orElseThrow())
-                .build();
+            patientMaladie
+                    = PatientMaladie.builder()
+                    .id(pk)
+                    .patient(patientRepository.findById(patientMaladieRequest.getPatient_id()).orElseThrow())
+                    .maladie(maladieRepository.findById(maladie_id).orElseThrow())
+                    .build();
 
-        patientMaladie = patientMaladieRepository.save(patientMaladie);
+            patientMaladie = patientMaladieRepository.save(patientMaladie);
+        }else {
+            patientMaladie = patientMaladieRepository.findByPatient_IdAndMaladie(patientMaladieRequest.getPatient_id(), patientMaladieRequest.getMaladie()).orElseThrow();
+        }
+
 
         log.info("PatientMaladieServiceImpl | addPatientMaladie | PatientMaladie Created");
         log.info("PatientMaladieServiceImpl | addPatientMaladie | PatientMaladie Id : " + patientMaladie.getId());
@@ -136,5 +142,11 @@ public class PatientMaladieServiceImpl implements PatientMaladieService {
         }
         log.info("Deleting PatientMaladie with id: {}", patientMaladieId);
         patientMaladieRepository.deleteById(patientMaladieId);
+    }
+
+    @Override
+    public void deleteAllForPatientId(long patientId) {
+        log.info("PatientMaladie delete all");
+        patientMaladieRepository.deleteByPatientId(patientId);
     }
 }

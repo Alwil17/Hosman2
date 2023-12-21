@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TarifRepository extends JpaRepository<Tarif,Long> {
+    Optional<Tarif> findByCodeEquals(String code);
 
     @Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.id = :gid")
     List<Tarif> findTarifsByGroupeId(@Param("gid") long groupeId);

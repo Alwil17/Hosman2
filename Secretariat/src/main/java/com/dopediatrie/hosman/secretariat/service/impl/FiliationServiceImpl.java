@@ -120,14 +120,19 @@ public class FiliationServiceImpl implements FiliationService {
                 ));
         filiation.setNom(filiationRequest.getNom());
         filiation.setPrenoms(filiationRequest.getPrenoms());
-        filiation.setProfession(professionRepository.findById(profession_id).orElseThrow());
-        filiation.setEmployeur(employeurRepository.findById(employeur_id).orElseThrow());
-        filiation.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
         filiation.setTelephone(filiationRequest.getTelephone());
         filiation.setSexe(filiationRequest.getSexe());
         filiation.setType(filiationRequest.getType());
         filiation.setAnnee_naissance(filiationRequest.getAnnee_naissance());
         filiation.setPatient(patientRepository.findById(filiationRequest.getPatient_id()).orElseThrow());
+
+        if(profession_id != 0)
+            filiation.setProfession(professionRepository.findById(profession_id).orElseThrow());
+        if(employeur_id != 0)
+            filiation.setEmployeur(employeurRepository.findById(employeur_id).orElseThrow());
+        if(assurance_id != 0)
+            filiation.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
+
         filiationRepository.save(filiation);
 
         log.info("FiliationServiceImpl | editFiliation | Filiation Updated");

@@ -87,6 +87,24 @@ public class ActeServiceImpl implements ActeService {
     }
 
     @Override
+    public ActeResponse getActeByCode(String acteCode) {
+        log.info("ActeServiceImpl | getActeById is called");
+
+        Acte acte
+                = acteRepository.findByCodeEquals(acteCode)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("Acte with given Id not found", NOT_FOUND));
+
+        ActeResponse acteResponse = new ActeResponse();
+
+        copyProperties(acte, acteResponse);
+
+        log.info("ActeServiceImpl | getActeById | acteResponse :" + acteResponse.toString());
+
+        return acteResponse;
+    }
+
+    @Override
     public void editActe(ActeRequest acteRequest, long acteId) {
         log.info("ActeServiceImpl | editActe is called");
 

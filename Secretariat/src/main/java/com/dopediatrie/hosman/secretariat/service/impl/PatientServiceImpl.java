@@ -110,7 +110,7 @@ public class PatientServiceImpl implements PatientService {
 
         copyProperties(patient, patientResponse);
 
-        log.info("PatientServiceImpl | getPatientById | patientResponse :" + patientResponse.toString());
+//        log.info("PatientServiceImpl | getPatientById | patientResponse :" + patientResponse.toString());
 
         return patientResponse;
     }
@@ -127,6 +127,22 @@ public class PatientServiceImpl implements PatientService {
         log.info("PatientServiceImpl | getPatientByReference is called");
 
         return patientRepository.findByReferenceLike(reference);
+    }
+
+    @Override
+    public PatientResponse getPatientByReferenceUnique(String reference) {
+        log.info("PatientServiceImpl | getPatientByReference is called");
+
+        Patient patient
+                = patientRepository.findByReferenceEquals(reference)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("Patient with given Id not found", NOT_FOUND));
+
+        PatientResponse patientResponse = new PatientResponse();
+
+        copyProperties(patient, patientResponse);
+
+        return patientResponse;
     }
 
     @Override
@@ -218,6 +234,7 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.save(patient);
 
         if((patientRequest.getMaladies()) != null && (patientRequest.getMaladies().size() > 0)){
+            patientMaladieService.deleteAllForPatientId(patientId);
             for (PatientMaladieRequest maladieRequest : patientRequest.getMaladies()) {
                 maladieRequest.setPatient_id(patientId);
                 patientMaladieService.addPatientMaladie(maladieRequest);
@@ -248,6 +265,4 @@ public class PatientServiceImpl implements PatientService {
         log.info("Deleting Patient with id: {}", patientId);
         patientRepository.deleteById(patientId);
     }
-
-
 }

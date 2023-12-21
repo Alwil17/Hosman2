@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiagnosticResponse {
-    private long id;
-    private String libelle;
-    private String slug;
+    private String id;
+    private String title;
+    private String stemId;
+    private boolean hasCodingNote;
+    private String chapter;
+    private String theCode;
+    private String description;
 }

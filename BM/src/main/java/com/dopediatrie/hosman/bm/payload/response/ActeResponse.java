@@ -14,7 +14,11 @@ public class ActeResponse {
     private String libelle;
     private String slug;
     private String code;
-    private int position = 0;
+    private String description;
+    private double tarif_non_assure;
+    private double tarif_etr_non_assure;
+    private double tarif_assur_locale;
+    private double tarif_assur_hors_zone;
     private long structure_id;
-    private long groupe_id;
+    private long acte_id;
 }

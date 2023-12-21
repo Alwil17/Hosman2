@@ -73,6 +73,16 @@ public class AttenteController {
         return new ResponseEntity<>(attenteResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/num/{id}")
+    public ResponseEntity<AttenteResponse> getAttenteByNum(@PathVariable("id") long attenteNum) {
+        log.info("AttenteController | getAttenteByNum is called");
+        log.info("AttenteController | getAttenteByNum | attenteNum : " + attenteNum);
+
+        AttenteResponse attenteResponse
+                = attenteService.getAttenteByNum(attenteNum);
+        return new ResponseEntity<>(attenteResponse, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> editAttente(@RequestBody AttenteRequest attenteRequest,
             @PathVariable("id") long attenteId
@@ -83,6 +93,16 @@ public class AttenteController {
         log.info("AttenteController | editAttente | attenteId : " + attenteId);
 
         attenteService.editAttente(attenteRequest, attenteId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/updateStatus")
+    public ResponseEntity<Void> editAttenteStatus(@RequestHeader(value = "user_id", required = false) Long user_id, @RequestBody AttenteRequest attenteRequest,
+                                            @PathVariable("id") long attenteNum) {
+        log.info("AttenteController | editAttente is called");
+        long userId = (user_id != null && user_id != 0) ? user_id : 1;
+
+        attenteService.updateStatus(attenteNum, attenteRequest, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -15,6 +15,8 @@ public interface TarifService {
 
     TarifResponse getTarifById(long tarifId);
 
+    TarifResponse getTarifByCode(String code);
+
     List<Tarif> getTarifForGroupe(String groupeCode);
 
     List<Tarif> getTarifForGroupeAndActe(String groupeCode, String acte);

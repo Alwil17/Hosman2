@@ -89,6 +89,25 @@ public class AttenteServiceImpl implements AttenteService {
     }
 
     @Override
+    public AttenteResponse getAttenteByNum(long attenteNum) {
+        log.info("AttenteServiceImpl | getAttenteById is called");
+        log.info("AttenteServiceImpl | getAttenteById | Get the attente for attenteNum: {}", attenteNum);
+
+        Attente attente
+                = attenteRepository.findByNum_attente(attenteNum)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("Attente with given num not found", NOT_FOUND));
+
+        AttenteResponse attenteResponse = new AttenteResponse();
+
+        copyProperties(attente, attenteResponse);
+
+        log.info("AttenteServiceImpl | getAttenteById | attenteResponse :" + attenteResponse.toString());
+
+        return attenteResponse;
+    }
+
+    @Override
     public void editAttente(AttenteRequest attenteRequest, long attenteId) {
         log.info("AttenteServiceImpl | editAttente is called");
 
@@ -172,5 +191,24 @@ public class AttenteServiceImpl implements AttenteService {
             attente.setSecteur(secteur);
         }
         return attentes;
+    }
+
+    @Override
+    public void updateStatus(long attenteNum, AttenteRequest attenteRequest, long userId) {
+        log.info("AttenteServiceImpl | updateStatus is called {}", attenteNum);
+        MedecinResponse receveur = medecinService.getMedecinForUser(userId);
+        Attente attente
+                = attenteRepository.findByNum_attente(attenteNum)
+                .orElseThrow(() -> new SecretariatCustomException(
+                        "Attente with given Id not found",
+                        NOT_FOUND
+                ));
+        attente.setEn_cours(attenteRequest.isEn_cours());
+        if(receveur != null)
+            attente.setReceveur(receveur.getMatricule());
+        if(!attenteRequest.isEn_cours()){
+            attente.setReceveur(null);
+        }
+        attenteRepository.save(attente);
     }
 }

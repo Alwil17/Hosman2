@@ -19,4 +19,6 @@ public interface PatientMaladieService {
     void editPatientMaladie(PatientMaladieRequest maladieRequest, long maladieId);
 
     public void deletePatientMaladieById(long maladieId);
+
+    void deleteAllForPatientId(long patientId);
 }

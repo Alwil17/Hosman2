@@ -112,6 +112,24 @@ public class TarifServiceImpl implements TarifService {
     }
 
     @Override
+    public TarifResponse getTarifByCode(String code) {
+        log.info("TarifServiceImpl | getTarifById is called");
+
+        Tarif tarif
+                = tarifRepository.findByCodeEquals(code)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("Tarif with given Id not found", NOT_FOUND));
+
+        TarifResponse tarifResponse = new TarifResponse();
+
+        copyProperties(tarif, tarifResponse);
+
+        log.info("TarifServiceImpl | getTarifById | tarifResponse :" + tarifResponse.toString());
+
+        return tarifResponse;
+    }
+
+    @Override
     public List<Tarif> getTarifForGroupeAndActe(String groupeCode, String acte) {
         log.info("TarifServiceImpl | getTarifForGroupeAndActe is called");
         List<Tarif> tarifs = Collections.emptyList();

@@ -22,5 +22,5 @@ public class Motif {
     private String slug;
     @ManyToMany(mappedBy = "motifs")
     @JsonIgnore
-    private List<Intervention> interventions;
+    private List<Consultation> consultations;
 }

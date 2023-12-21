@@ -1,7 +1,5 @@
 package com.dopediatrie.hosman.bm.controller;
 
-import com.dopediatrie.hosman.bm.entity.Diagnostic;
-import com.dopediatrie.hosman.bm.payload.request.DiagnosticRequest;
 import com.dopediatrie.hosman.bm.payload.response.DiagnosticResponse;
 import com.dopediatrie.hosman.bm.service.DiagnosticService;
 import lombok.RequiredArgsConstructor;
@@ -21,50 +19,15 @@ public class DiagnosticController {
 
     private final DiagnosticService diagnosticService;
 
-    @GetMapping
-    public ResponseEntity<List<Diagnostic>> getAllDiagnostics() {
+    @GetMapping("/search")
+    public ResponseEntity<List<DiagnosticResponse>> getDiagnosticBySearch(@RequestParam(value = "libelle") String libelle) {
 
-        log.info("DiagnosticController | getAllDiagnostics is called");
-        return new ResponseEntity<>(diagnosticService.getAllDiagnostics(), HttpStatus.OK);
-    }
+        log.info("DiagnosticController | getDiagnosticBySearch is called");
+        List<DiagnosticResponse> diagnosticResponse = Collections.emptyList();
 
-    @PostMapping
-    public ResponseEntity<Long> addDiagnostic(@RequestBody DiagnosticRequest diagnosticRequest) {
+        if(libelle != null && !libelle.isBlank())
+            diagnosticResponse = diagnosticService.getDiagnosticByLibelle(libelle);
 
-        log.info("DiagnosticController | addDiagnostic is called");
-        log.info("DiagnosticController | addDiagnostic | diagnosticRequest : " + diagnosticRequest.toString());
-
-        long diagnosticId = diagnosticService.addDiagnostic(diagnosticRequest);
-        return new ResponseEntity<>(diagnosticId, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DiagnosticResponse> getDiagnosticById(@PathVariable("id") long diagnosticId) {
-
-        log.info("DiagnosticController | getDiagnosticById is called");
-
-        log.info("DiagnosticController | getDiagnosticById | diagnosticId : " + diagnosticId);
-
-        DiagnosticResponse diagnosticResponse
-                = diagnosticService.getDiagnosticById(diagnosticId);
         return new ResponseEntity<>(diagnosticResponse, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> editDiagnostic(@RequestBody DiagnosticRequest diagnosticRequest,
-            @PathVariable("id") long diagnosticId
-    ) {
-
-        log.info("DiagnosticController | editDiagnostic is called");
-
-        log.info("DiagnosticController | editDiagnostic | diagnosticId : " + diagnosticId);
-
-        diagnosticService.editDiagnostic(diagnosticRequest, diagnosticId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteDiagnosticById(@PathVariable("id") long diagnosticId) {
-        diagnosticService.deleteDiagnosticById(diagnosticId);
     }
 }

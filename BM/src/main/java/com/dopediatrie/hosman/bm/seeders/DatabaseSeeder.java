@@ -1,6 +1,7 @@
 package com.dopediatrie.hosman.bm.seeders;
 
 import com.dopediatrie.hosman.bm.entity.Motif;
+import com.dopediatrie.hosman.bm.payload.ICDAPIclient;
 import com.dopediatrie.hosman.bm.payload.request.MotifRequest;
 import com.dopediatrie.hosman.bm.service.MotifService;
 import lombok.extern.log4j.Log4j2;
@@ -60,6 +61,14 @@ public class DatabaseSeeder {
 
             log.info("Motif table seeded");
         }else {
+            /*try {
+            String uri = "https://id.who.int/icd/entity";
+                ICDAPIclient api = new ICDAPIclient();
+                String token = api.getToken();
+                System.out.println("URI Response JSON : \n" + api.getURI(token, uri));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
             log.info("Motif Seeding Not Required");
         }
     }

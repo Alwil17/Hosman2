@@ -50,6 +50,16 @@ public class ActeController {
         return new ResponseEntity<>(acteResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/code/{id}")
+    public ResponseEntity<ActeResponse> getActeByCode(@PathVariable("id") String acteCode) {
+        log.info("ActeController | getActeByCode is called");
+        log.info("ActeController | getActeByCode | acteCode : " + acteCode);
+
+        ActeResponse acteResponse
+                = acteService.getActeByCode(acteCode);
+        return new ResponseEntity<>(acteResponse, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> editActe(@RequestBody ActeRequest acteRequest,
             @PathVariable("id") long acteId

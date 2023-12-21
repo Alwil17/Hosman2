@@ -24,5 +24,5 @@ public class Constante {
     private double perimetre_cranien;
     @OneToOne(mappedBy = "constante")
     @JsonIgnore
-    private Intervention intervention;
+    private Consultation consultation;
 }

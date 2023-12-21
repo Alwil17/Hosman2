@@ -41,6 +41,7 @@ public class Attente {
     @JoinColumn(name = "facture_id")
     private Facture facture;
     private boolean urgence = false;
+    private boolean en_cours = false;
     private long structure_id;
 
     @Override

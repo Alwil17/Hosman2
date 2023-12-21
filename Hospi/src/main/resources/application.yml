@@ -1,0 +1,22 @@
+server:
+  port: 8083
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+spring:
+  datasource:
+    url: jdbc:mysql://91.234.194.31:3306/c0hosman_hospi
+    username: c0hosman
+    password: hosman123
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/hosman_stock
+#    username: root
+#    password:
+  profiles:
+    active: debug
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: Hospi

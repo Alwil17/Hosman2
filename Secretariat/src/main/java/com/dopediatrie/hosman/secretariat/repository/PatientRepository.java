@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientRepository extends JpaRepository<Patient,Long> {
 
@@ -16,6 +17,9 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query("SELECT p from Patient p where p.reference like concat('%',:reference,'%') ")
     List<Patient> findByReferenceLike(@Param("reference") String reference);
+
+    @Query("SELECT p from Patient p where p.reference = :reference")
+    Optional<Patient> findByReferenceEquals(@Param("reference") String reference);
 
     @Query("SELECT p from Patient p where p.prenoms like concat('%',:prenoms,'%')")
     List<Patient> findByPrenomsLike(@Param("prenoms") String prenoms);

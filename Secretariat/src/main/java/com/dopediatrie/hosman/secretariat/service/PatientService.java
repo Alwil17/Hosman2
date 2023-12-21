@@ -18,6 +18,8 @@ public interface PatientService {
 
     List<Patient> getPatientByReference(String reference);
 
+    PatientResponse getPatientByReferenceUnique(String reference);
+
     List<Patient> getPatientByPrenoms(String prenoms);
 
     void editPatient(PatientRequest patientRequest, long patientId);

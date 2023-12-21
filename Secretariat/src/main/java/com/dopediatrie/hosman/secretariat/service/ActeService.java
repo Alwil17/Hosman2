@@ -15,6 +15,8 @@ public interface ActeService {
 
     ActeResponse getActeById(long acteId);
 
+    ActeResponse getActeByCode(String acteCode);
+
     void editActe(ActeRequest acteRequest, long acteId);
 
     public void deleteActeById(long acteId);

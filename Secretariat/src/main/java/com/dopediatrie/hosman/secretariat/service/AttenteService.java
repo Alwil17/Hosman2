@@ -13,6 +13,8 @@ public interface AttenteService {
 
     AttenteResponse getAttenteById(long attenteId);
 
+    AttenteResponse getAttenteByNum(long attenteNum);
+
     void editAttente(AttenteRequest attenteRequest, long attenteId);
 
     public void deleteAttenteById(long attenteId);
@@ -22,4 +24,6 @@ public interface AttenteService {
     List<Attente> getAttenteForMe(long userId);
 
     List<Attente> getAttenteForMedecin(String medecin_matricule);
+
+    void updateStatus(long attenteNum, AttenteRequest attenteRequest, long userId);
 }

@@ -52,6 +52,16 @@ public class PatientController {
         return new ResponseEntity<>(patientResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/ref/{ref}")
+    public ResponseEntity<PatientResponse> getPatientById(@PathVariable("ref") String patientRef) {
+
+        log.info("PatientController | getPatientById is called");
+
+        PatientResponse patientResponse
+                = patientService.getPatientByReferenceUnique(patientRef);
+        return new ResponseEntity<>(patientResponse, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<Patient>> getPatientBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "prenoms", required = false) String prenoms, @RequestParam(value = "reference", required = false) String reference, @RequestParam(value = "naissance", required = false) String dateNaiss, @RequestParam(value = "entree", required = false) String dateEntr) {
 

@@ -17,6 +17,7 @@ public class AttenteRequest {
     private String receveur;
     private String secteur_code;
     private long facture_id;
+    private boolean en_cours;
     private boolean urgence;
     private long structure_id = 1;
 }
