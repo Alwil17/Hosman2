@@ -42,6 +42,8 @@ import { HospAdminComponent } from './admin/admin.component';
     CommonModule,
     SharedModule,
     HospitalisationRoutingModule
+  ],
+  providers: [
   ]
 })
 export class HospitalisationModule { }
