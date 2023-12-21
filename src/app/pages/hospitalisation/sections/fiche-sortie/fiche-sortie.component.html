@@ -1,1 +1,56 @@
-<p>fiche-sortie works!</p>
+<div class="row">
+    <div class="col-md-12"><h5 class="fw-semibold">Sortie</h5></div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Diagnostic de sortie 1"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Diagnostic de sortie 2"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Diagnostic de sortie 3"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+
+          <div class="col-md-12 mb-3">
+            <app-select
+              label="Femme enceinte"
+              type="text"
+              [options]="[]"
+              [isMandatory]="true"
+            ></app-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Date"
+              type="date"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

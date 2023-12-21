@@ -1,1 +1,72 @@
-<p>fiche-scam works!</p>
+<div class="row">
+    <div class="col-md-12"><h5 class="fw-semibold">Sortie contre avis médical</h5></div>
+    <div class="col-md-2 mb-3">
+      <app-select
+        [isMandatory]="true"
+        [clearable]="false"
+        [options]="displayOptions"
+        [bindValue]="'value'"
+        [control]="showControl"
+      ></app-select>
+    </div>
+    <div class="col-md-12" *ngIf="showControl.value">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            
+          <div class="col-md-3 form-check mb-4 mx-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="ordonnance"
+              id="ordonnance"
+            />
+            <label class="form-check-label fw-semibold" for="ordonnance">
+              Ordonnance
+            </label>
+          </div>
+
+          <div class="col-md-3 form-check mb-2 mx-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="decharge"
+              id="decharge"
+            />
+            <label class="form-check-label fw-semibold" for="decharge">
+              Décharge
+            </label>
+          </div>
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <app-input
+                label="Date"
+                type="date"
+                [isMandatory]="true"
+              ></app-input>
+            </div>
+            <div class="col-md-12 mb-3">
+              <app-input
+                label="Motif"
+                type="text"
+                [isMandatory]="true"
+              ></app-input>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="comments" class="form-label">Commentaires </label>
+              <textarea
+                class="form-control"
+                placeholder="..."
+                rows="5"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -20,7 +20,8 @@ export class SelectComponent implements OnInit {
   @Input() clearable = true;
   @Input() searchable = true;
   @Input() readOnly = false;
-  @Input() textKey = "text";
+  @Input() bindLabel = "text";
+  @Input() bindValue = "value";
 
   @Input() isLayoutHorizontal = false;
 

@@ -1,1 +1,64 @@
-<p>medecin-externe works!</p>
+<div class="row">
+  <div class="col-md-12"><h5 class="fw-semibold">Visites Médécins externes</h5></div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <app-select
+          label="Type d'opération"
+          [isMandatory]="true"
+          [options]="[]"
+        ></app-select>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-3">
+      <app-select
+        label="Médecin"
+        [isMandatory]="true"
+        [options]="[]"
+      ></app-select>
+    </div>
+
+    <div class="col-md-12 mb-3">
+      <app-input label="Date" type="date" [isMandatory]="true"></app-input>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <label for="comments" class="form-label"> Note </label>
+        <textarea class="form-control" placeholder="..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="col-md-12">
+        <div class="table-responsive fiche-comptable">
+            <table class="table table-bordered align-middle mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Médecin</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-start">
+    <button
+    type="button"
+    class="btn btn-success btn-label right"
+  >
+    <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+    Enrégistrer
+  </button>
+</div>
+</div>

@@ -1,1 +1,105 @@
-<p>fiche-adresse works!</p>
+<div class="row">
+    <div class="col-md-12"><h5 class="fw-semibold">Adressé(e)</h5></div>
+  <div class="col-md-2 mb-3">
+    <app-select
+      [isMandatory]="true"
+      [searchable]="false"
+      [clearable]="false"
+      [options]="displayOptions"
+      [bindValue]="'value'"
+      [control]="showControl"
+    ></app-select>
+
+    
+  </div>
+  <div class="col-md-12" *ngIf="showControl.value">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Médecin"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Spécialité"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Institution"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+
+          <div class="col-md-3 form-check mb-4 mx-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="medical_letter"
+              id="medical_letter"
+            />
+            <label class="form-check-label fw-semibold" for="medical_letter">
+              Lettre médicale
+            </label>
+          </div>
+
+          <div class="col-md-3 form-check mb-2 mx-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="medical_report"
+              id="medical_report"
+            />
+            <label class="form-check-label fw-semibold" for="medical_report">
+              Rapport médical
+            </label>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Moyen de transport"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Date"
+              type="date"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <app-input
+              label="Motif"
+              type="text"
+              [isMandatory]="true"
+            ></app-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="comments" class="form-label">Commentaires </label>
+            <textarea
+              class="form-control"
+              placeholder="..."
+              rows="5"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

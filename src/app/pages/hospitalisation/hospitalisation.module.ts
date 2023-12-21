@@ -18,6 +18,7 @@ import { FicheSortieComponent } from './sections/fiche-sortie/fiche-sortie.compo
 import { FicheSyntheseComponent } from './sections/fiche-synthese/fiche-synthese.component';
 import { ComptableTableClassicComponent } from './sections/fiche-comptable/comptable-table-classic/comptable-table-classic.component';
 import { HospAdminComponent } from './admin/admin.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -41,9 +42,8 @@ import { HospAdminComponent } from './admin/admin.component';
   imports: [
     CommonModule,
     SharedModule,
-    HospitalisationRoutingModule
-  ],
-  providers: [
+    HospitalisationRoutingModule,
+    ReactiveFormsModule,
   ]
 })
 export class HospitalisationModule { }

@@ -50,6 +50,9 @@
                 <div class="tab-pane fade show active" id="v-pills-comptable" role="tabpanel" aria-labelledby="v-pills-comptable-tab">
                     <app-fiche-comptable> </app-fiche-comptable>
                 </div>
+                <div class="tab-pane fade" id="v-pills-synthese" role="tabpanel" aria-labelledby="v-pills-synthese-tab">
+                  <app-fiche-synthese></app-fiche-synthese>
+                </div>
                 <div class="tab-pane fade" id="v-pills-externes" role="tabpanel" aria-labelledby="v-pills-externes-tab">
                   <app-medecin-externe> </app-medecin-externe>
                 </div>
@@ -74,14 +77,14 @@
                 <div class="tab-pane fade" id="v-pills-sortie" role="tabpanel" aria-labelledby="v-pills-sortie-tab">
                   <app-fiche-sortie></app-fiche-sortie>
                 </div>
-                <div class="tab-pane fade" id="v-pills-synthese" role="tabpanel" aria-labelledby="v-pills-synthese-tab">
-                  <app-fiche-synthese></app-fiche-synthese>
-                </div>
+                
             </div>
             </div>
             <div class="col-md-2 border-start">
               <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link mb-2 active border-bottom" id="v-pills-comptable-tab" data-bs-toggle="pill" href="#v-pills-comptable" role="tab" aria-controls="v-pills-comptable" aria-selected="true">Fiche comptable</a>
+                <a class="nav-link" id="v-pills-synthese-tab" data-bs-toggle="pill" href="#v-pills-synthese" role="tab" aria-controls="v-pills-synthese" aria-selected="false">Fiche de synthèse</a>
+        
                 <a class="nav-link mb-2  border-bottom" id="v-pills-externes-tab" data-bs-toggle="pill" href="#v-pills-externes" role="tab" aria-controls="v-pills-externes" aria-selected="false">Médecins externes</a>
                 <a class="nav-link mb-2  border-bottom" id="v-pills-interventions-tab" data-bs-toggle="pill" href="#v-pills-interventions" role="tab" aria-controls="v-pills-interventions" aria-selected="false">Interventions chirurgicales</a>
                 <a class="nav-link mb-2  border-bottom" id="v-pills-adresse-tab" data-bs-toggle="pill" href="#v-pills-adresse" role="tab" aria-controls="v-pills-adresse" aria-selected="false">Adressé(e)</a>
@@ -90,8 +93,7 @@
                 <a class="nav-link mb-2 border-bottom" id="v-pills-scam-tab" data-bs-toggle="pill" href="#v-pills-scam" role="tab" aria-controls="v-pills-scam" aria-selected="false">SCAM</a>
                 <a class="nav-link mb-2  border-bottom" id="v-pills-decede-tab" data-bs-toggle="pill" href="#v-pills-decede" role="tab" aria-controls="v-pills-decede" aria-selected="false">Décédé(e)</a>
                 <a class="nav-link mb-2 border-bottom" id="v-pills-sortie-tab" data-bs-toggle="pill" href="#v-pills-sortie" role="tab" aria-controls="v-pills-sortie" aria-selected="false">Sortie</a>
-                <a class="nav-link" id="v-pills-synthese-tab" data-bs-toggle="pill" href="#v-pills-synthese" role="tab" aria-controls="v-pills-synthese" aria-selected="false">Fiche de synthèse</a>
-            </div>
+              </div>
             </div>
           </div>
       </div>

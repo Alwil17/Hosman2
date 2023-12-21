@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Patient } from 'src/app/models/secretariat/patients/patient.model';
+import { Subject, takeUntil } from 'rxjs';
+import { Lit } from 'src/app/models/hospitalisation/lit';
+import { Chambre } from 'src/app/models/hospitalisation/chambre';
+import { ChambreStore } from 'src/app/stores/chambres-store';
+import { LitStore  } from 'src/app/stores/lits-store';
 
 @Component({
   selector: 'app-hosp-admission',
@@ -8,32 +12,41 @@ import { Patient } from 'src/app/models/secretariat/patients/patient.model';
 })
 export class AdmissionComponent implements OnInit {
 
-  
-  sectors = [
-    { id: 0, text: 'MEDECINE INTERNE ET GENERALE' },
-    { id: 1, text: 'PEDIATRIE' },
-    { id: 2, text: 'CARDIOLOGIE' },
-    { id: 3, text: 'NEUROLOGIE' }
-  ]
+  constructor(private chambreStore: ChambreStore, private litStore : LitStore) {}
 
-patients: Patient[] = []
+  lits : Lit[] = [];
+  chambres : Chambre[] = [];
+  sectors = []
 
-  lits = [
-    {id: "1", name: "Lit P, Chambre 01"},
-    {id: "1", name: "Lit F, Chambre 01"},
-    {id: "1", name: "Lit P, Chambre 02"},
-    {id: "1", name: "Lit F, Chambre 02"},
-    {id: "1", name: "Lit P, Chambre 03"},
-    {id: "1", name: "Lit F, Chambre 03"},
-  ]
+  private destroy$ = new Subject<void>();
 
-  patient : any = null
 
-  today = new Date().toLocaleDateString("fr-ca");
-
-  constructor() { }
+  today = new Date().toLocaleDateString("fr-FR");
 
   ngOnInit(): void {
+    this.litStore.getLitsObservable()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((lits: Lit[]) => {
+      this.lits = lits;
+    });
+
+    this.chambreStore.getChambresObservable()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((chambres: Chambre[]) => {
+      this.chambres = chambres;
+    });
+  
+
+    this.getData()
   }
 
+  getData(){
+    this.chambreStore.getAll()  
+    this.litStore.getAll()  
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

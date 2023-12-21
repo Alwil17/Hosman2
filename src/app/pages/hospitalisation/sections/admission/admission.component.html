@@ -54,8 +54,8 @@
           <app-select
             label="Chambres"
             [isMandatory]="true"
-            [options]="lits"
-            [textKey]="'name'"
+            [options]="chambres"
+            [bindLabel]="'nom'"
           ></app-select>
         </div>
         <div class="col-md-6 mb-3">
@@ -63,7 +63,7 @@
             label="Lits"
             [isMandatory]="true"
             [options]="lits"
-            [textKey]="'name'"
+            [bindLabel]="'nom'"
           ></app-select>
         </div>
         <div class="col-md-12 mb-3">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-fiche-transfuse',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./fiche-transfuse.component.scss']
 })
 export class FicheTransfuseComponent implements OnInit {
+
+  showControl = new FormControl(false); 
+  displayOptions = [{text : "Oui", value: true}, {text : "Non", value: false}]
 
   constructor() { }
 
