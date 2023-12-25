@@ -19,7 +19,7 @@ import { FicheSyntheseComponent } from './sections/fiche-synthese/fiche-synthese
 import { ComptableTableClassicComponent } from './sections/fiche-comptable/comptable-table-classic/comptable-table-classic.component';
 import { HospAdminComponent } from './admin/admin.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'src/app/services/messages/confirmation-message.service';
+import { MessageService } from '@services/messages/message.service';
 import { ToastrModule } from 'ngx-toastr';
 
 

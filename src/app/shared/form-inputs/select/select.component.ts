@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { AbstractControl, FormControl } from "@angular/forms";
 import { SelectOption } from "../../../models/extras/select.model";
-import { Subject } from "rxjs";
 
 @Component({
   selector: "app-select",
   templateUrl: "./select.component.html",
   styleUrls: ["./select.component.scss"],
+  encapsulation: ViewEncapsulation.None
 })
 export class SelectComponent implements OnInit {
   @Input() label = "";

@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Lit } from 'src/app/models/hospitalisation/lit';
 import { Chambre } from 'src/app/models/hospitalisation/chambre';
-import { ChambreStore } from 'src/app/stores/chambres-store';
-import { LitStore  } from 'src/app/stores/lits-store';
-import { MessageService } from '../../../../services/messages/confirmation-message.service'
+import { ChambreStore } from '@stores/chambres-store';
+import { LitStore  } from '@stores/lits-store';
+import { HospitalisationStore } from '@stores/hospitalisation';
+import { MessageService } from '@services/messages/message.service'
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
@@ -15,11 +17,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdmissionComponent implements OnInit {
 
-  constructor(private chambreStore: ChambreStore, private litStore : LitStore, private message: MessageService, private toast: ToastrService) {}
+  constructor(private chambreStore: ChambreStore, private litStore : LitStore,
+              private hospitalisationStore : HospitalisationStore,
+              private message: MessageService, private toast: ToastrService,
+              private route: ActivatedRoute) {}
 
   lits : Lit[] = [];
   chambres : Chambre[] = [];
   sectors = []
+  consultation = null;
 
   private destroy$ = new Subject<void>();
 
@@ -27,6 +33,10 @@ export class AdmissionComponent implements OnInit {
   today = new Date().toLocaleDateString("fr-FR");
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      console.log(params)
+    });
+
     this.litStore.getLitsObservable()
     .pipe(takeUntil(this.destroy$))
     .subscribe((lits: Lit[]) => {
@@ -38,20 +48,21 @@ export class AdmissionComponent implements OnInit {
     .subscribe((chambres: Chambre[]) => {
       this.chambres = chambres;
     });
-  
+
 
     this.getData()
   }
 
   getData(){
-    this.chambreStore.getAll()  
-    this.litStore.getAll()  
+    this.chambreStore.getAll()
+    this.litStore.getAll()
+    this.hospitalisationStore.fetchConsultation(100)
   }
 
 async confirmAction() {
   // this.toast.success('Hello world!', 'Toastr fun!');
-    // const confirm = await this.message.confirmDialog('Custom confirmation message');
-    // console.log(confirm)
+  //   const confirm = await this.message.confirmDialog('Custom confirmation message');
+  //   console.log(confirm)
     // if (confirm) {
     //   // Continue with your action
     //   console.log('Action confirmed');
