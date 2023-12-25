@@ -20,6 +20,7 @@ import { ComptableTableClassicComponent } from './sections/fiche-comptable/compt
 import { HospAdminComponent } from './admin/admin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'src/app/services/messages/confirmation-message.service';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { MessageService } from 'src/app/services/messages/confirmation-message.s
     SharedModule,
     HospitalisationRoutingModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     MessageService

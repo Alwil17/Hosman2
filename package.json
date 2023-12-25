@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "docker": "ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json --disable-host-check ",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -72,7 +72,7 @@
     "ngx-mask": "^13.1.1",
     "ngx-nestable": "^0.9.4",
     "ngx-swiper-wrapper": "^10.0.0",
-    "ngx-toastr": "^18.0.0",
+    "ngx-toastr": "14.3.0",
     "ngx-ui-switch": "^13.0.2",
     "prismjs": "^1.27.0",
     "rxjs": "~7.5.0",
