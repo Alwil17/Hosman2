@@ -4,6 +4,8 @@ import { Lit } from 'src/app/models/hospitalisation/lit';
 import { Chambre } from 'src/app/models/hospitalisation/chambre';
 import { ChambreStore } from 'src/app/stores/chambres-store';
 import { LitStore  } from 'src/app/stores/lits-store';
+import { MessageService } from '../../../../services/messages/confirmation-message.service'
+
 
 @Component({
   selector: 'app-hosp-admission',
@@ -12,7 +14,7 @@ import { LitStore  } from 'src/app/stores/lits-store';
 })
 export class AdmissionComponent implements OnInit {
 
-  constructor(private chambreStore: ChambreStore, private litStore : LitStore) {}
+  constructor(private chambreStore: ChambreStore, private litStore : LitStore, private message: MessageService) {}
 
   lits : Lit[] = [];
   chambres : Chambre[] = [];
@@ -43,6 +45,18 @@ export class AdmissionComponent implements OnInit {
   getData(){
     this.chambreStore.getAll()  
     this.litStore.getAll()  
+  }
+
+async confirmAction() {
+    const confirm = await this.message.openConfirmationDialog('Custom confirmation message');
+    console.log(confirm)
+    // if (confirm) {
+    //   // Continue with your action
+    //   console.log('Action confirmed');
+    // } else {
+    //   // Handle the case when the user clicks "No" or closes the dialog
+    //   console.log('Action canceled');
+    // }
   }
 
   ngOnDestroy(): void {

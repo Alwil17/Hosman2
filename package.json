@@ -72,6 +72,7 @@
     "ngx-mask": "^13.1.1",
     "ngx-nestable": "^0.9.4",
     "ngx-swiper-wrapper": "^10.0.0",
+    "ngx-toastr": "^18.0.0",
     "ngx-ui-switch": "^13.0.2",
     "prismjs": "^1.27.0",
     "rxjs": "~7.5.0",

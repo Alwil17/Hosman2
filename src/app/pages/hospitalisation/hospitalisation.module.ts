@@ -19,6 +19,7 @@ import { FicheSyntheseComponent } from './sections/fiche-synthese/fiche-synthese
 import { ComptableTableClassicComponent } from './sections/fiche-comptable/comptable-table-classic/comptable-table-classic.component';
 import { HospAdminComponent } from './admin/admin.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'src/app/services/messages/confirmation-message.service';
 
 
 @NgModule({
@@ -44,6 +45,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     HospitalisationRoutingModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class HospitalisationModule { }
