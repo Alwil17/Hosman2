@@ -85,10 +85,10 @@ export class PatientWaitingListPageComponent implements OnInit {
       })
       .subscribe({
         next: (data) => {
-          this.toastService.show({
-            messages: ["Rafraîchissement de la liste."],
-            type: ToastType.Success,
-          });
+          // this.toastService.show({
+          //   messages: ["Rafraîchissement de la liste."],
+          //   type: ToastType.Success,
+          // });
 
           this.waitingList = data;
 
