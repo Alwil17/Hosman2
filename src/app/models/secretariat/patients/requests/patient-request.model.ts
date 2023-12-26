@@ -1,7 +1,9 @@
 import { AddressRequest } from "./address-request.model";
+import { ChronicDiseaseRequest } from "./chronic-disease-request.model";
 import { CountryRequest } from "./country-request.model";
 import { EmployerRequest } from "./employer-request.model";
 import { InsuranceRequest } from "./insurance-request.model";
+import { ParentRequest } from "./parent-request.model";
 import { PatientInsuranceRequest } from "./patient-insurance-request.model";
 import { PersonToContactRequest } from "./person-to-contact-request.model";
 import { ProfessionRequest } from "./profession-request.model";
@@ -33,6 +35,12 @@ export interface IPatientRequest {
   // employeur?: EmployerRequest;
   profession?: ProfessionRequest;
   employeur?: EmployerRequest;
+
+  // Visit/Medical base fileds
+  maladies?: ChronicDiseaseRequest[];
+  parents?: ParentRequest[];
+  commentaire?: string;
+  antecedent?: string;
 }
 export class PatientRequest {
   nom: string;
@@ -62,6 +70,12 @@ export class PatientRequest {
   profession?: ProfessionRequest;
   employeur?: EmployerRequest;
 
+  // Visit/Medical base fileds
+  maladies?: ChronicDiseaseRequest[];
+  parents?: ParentRequest[];
+  commentaire?: string;
+  antecedent?: string;
+
   constructor(iPatientRequest: IPatientRequest) {
     this.nom = iPatientRequest.nom;
     this.prenoms = iPatientRequest.prenoms;
@@ -85,5 +99,11 @@ export class PatientRequest {
     this.no_piece = iPatientRequest.no_piece;
     this.profession = iPatientRequest.profession;
     this.employeur = iPatientRequest.employeur;
+
+    // Visit/Medical base fileds
+    this.maladies = iPatientRequest.maladies;
+    this.parents = iPatientRequest.parents;
+    this.commentaire = iPatientRequest.commentaire;
+    this.antecedent = iPatientRequest.antecedent;
   }
 }

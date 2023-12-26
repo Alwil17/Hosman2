@@ -1,7 +1,9 @@
 import { AddressResponse } from "./address-response.model";
+import { ChronicDiseaseResponse } from "./chronic-disease-response.model";
 import { CountryResponse } from "./country-response.model";
 import { EmployerResponse } from "./employer-response.model";
 import { InsuranceResponse } from "./insurance-response.model";
+import { ParentResponse } from "./parent-response.model";
 import { PatientInsuranceResponse } from "./patient-insurance-response.model";
 import { PersonToContactResponse } from "./person-to-contact-response.model";
 import { ProfessionResponse } from "./profession-response.model";
@@ -31,4 +33,10 @@ export interface PatientResponse {
   no_piece?: string;
   profession?: ProfessionResponse;
   employeur?: EmployerResponse;
+
+  // Visit/Medical base fileds
+  maladies?: ChronicDiseaseResponse[];
+  parents?: ParentResponse[];
+  commentaire?: string;
+  antecedent?: string;
 }

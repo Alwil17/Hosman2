@@ -26,6 +26,7 @@ import { InsuranceService } from "./insurance.service";
 import { NeighborhoodService } from "./neighborhood.service";
 import { ProfessionService } from "./profession.service";
 import { environment } from "src/environments/environment";
+import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
 
 const apiEndpoint = environment.baseUrl + "patients";
 
@@ -125,6 +126,10 @@ export class PatientService {
 
   update(id: any, data: PatientRequest): Observable<any> {
     return this.http.put(`${apiEndpoint}/${id}`, data);
+  }
+
+  updateVisitInfo(id: any, data: PatientVisitInfoRequest): Observable<any> {
+    return this.http.put(`${apiEndpoint}/${id}/bm`, data);
   }
 
   // getPatient(patientId: number) {

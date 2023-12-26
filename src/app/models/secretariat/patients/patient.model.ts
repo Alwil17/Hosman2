@@ -11,6 +11,8 @@ import { PatientRequest } from "./requests/patient-request.model";
 import { PatientResponse } from "./responses/patient-response.model";
 import { City } from "./city.model";
 import { Neighborhood } from "./neighborhood.model";
+import { ChronicDisease } from "./chronic-disease.model";
+import { Parent } from "./parent.model";
 
 export interface IPatient {
   id: number;
@@ -37,6 +39,12 @@ export interface IPatient {
   no_piece?: string;
   profession?: Profession;
   employeur?: Employer;
+
+  // Visit/Medical base fileds
+  maladies?: ChronicDisease[];
+  parents?: Parent[];
+  commentaire?: string;
+  antecedent?: string;
 }
 export class Patient {
   id: number;
@@ -64,6 +72,12 @@ export class Patient {
   profession?: Profession;
   employeur?: Employer;
 
+  // Visit/Medical base fileds
+  maladies?: ChronicDisease[];
+  parents?: Parent[];
+  commentaire?: string;
+  antecedent?: string;
+
   constructor(iPatient: IPatient) {
     this.id = iPatient.id;
     this.reference = iPatient.reference;
@@ -89,6 +103,12 @@ export class Patient {
     this.no_piece = iPatient.no_piece;
     this.profession = iPatient.profession;
     this.employeur = iPatient.employeur;
+
+    // Visit/Medical base fileds
+    this.maladies = iPatient.maladies;
+    this.parents = iPatient.parents;
+    this.commentaire = iPatient.commentaire;
+    this.antecedent = iPatient.antecedent;
   }
 
   static emptyPatient(): Patient {
@@ -157,6 +177,12 @@ export class Patient {
       employeur: patient.employeur
         ? Employer.fromResponse(patient.employeur)
         : undefined,
+
+      // Visit/Medical base fileds
+      maladies: patient.maladies ? patient.maladies : undefined,
+      parents: patient.parents ? patient.parents : undefined,
+      commentaire: patient.commentaire,
+      antecedent: patient.antecedent,
     });
   }
 
