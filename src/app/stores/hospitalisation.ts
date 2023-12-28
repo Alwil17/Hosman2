@@ -11,7 +11,7 @@ const hospitalisationEndpoint = "/api/consultations";
 export class HospitalisationStore extends ObservableStore<any> {
     public consultation : any = new Subject<null>();
     initial_state = {
-        consultation : null
+        consultation : null,
     }
 
     constructor(private http: HttpClient) {

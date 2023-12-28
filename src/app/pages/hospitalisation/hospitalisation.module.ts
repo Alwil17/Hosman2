@@ -39,7 +39,7 @@ import { ToastrModule } from 'ngx-toastr';
     FicheSortieComponent,
     FicheSyntheseComponent,
     ComptableTableClassicComponent,
-    HospAdminComponent
+    HospAdminComponent,
   ],
   imports: [
     CommonModule,

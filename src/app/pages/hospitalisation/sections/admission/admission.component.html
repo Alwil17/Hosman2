@@ -1,106 +1,120 @@
-
-  <div class="row">
-    <div class="col-md-6 mb-3">
-      <div class="row">
-        <div class="col-md-6 mb-3 mb-">
-          <app-select
-            label="Statut"
-            [isMandatory]="true"
-            [options]="[]"
-          ></app-select>
+<form [formGroup]="admissionFormGroup">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-">
+                    <app-select
+                            label="Statut"
+                            [isMandatory]="true"
+                            [options]="statuts"
+                            [control]="statut"
+                            [clearable]="false"
+                            [bindValue]="'text'"
+                            [readOnly]="hasPatient"
+                    ></app-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <app-select
+                            label="Sexe"
+                            [isMandatory]="true"
+                            [options]="genders"
+                            [control]="gender"
+                            [bindValue]="'short'"
+                            [clearable]="false"
+                            [readOnly]="hasPatient"
+                    ></app-select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <app-input label="Nom" [isMandatory]="true" [readOnly]="hasPatient" [control]="firstname"></app-input>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <app-input label="Prénom(s)" [isMandatory]="true" [readOnly]="hasPatient" [control]="lastname"></app-input>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <app-input
+                            label="Date de naissance"
+                            type="date"
+                            [isMandatory]="true"
+                            [maxDate]="today"
+                            [readOnly]="hasPatient"
+                            [control]="birth_date"
+                    ></app-input>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <app-input
+                            label="Date d'hospitalisation"
+                            type="date"
+                            [isMandatory]="true"
+                            [maxDate]="today"
+                            [control]="hospit_date"
+                    ></app-input>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="col-md-6 border-start mb-3">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <app-select
+                            label="Secteur"
+                            [isMandatory]="true"
+                            [options]="sectors"
+                            [control]="sector"
+                            [bindLabel]="'libelle'"
+                            [bindValue]="'id'"
+                            [clearable]="false"
+                    ></app-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <app-select
+                            label="Chambres"
+                            [isMandatory]="true"
+                            [options]="chambres"
+                            [bindLabel]="'nom'"
+                            [bindValue]="'id'"
+                            [control]="chambre"
+                            [clearable]="false"
+                    ></app-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <app-select
+                            label="Lits"
+                            [isMandatory]="true"
+                            [options]="lits"
+                            [bindLabel]="'nom'"
+                            [bindValue]="'id'"
+                            [control]="lit"
+                            [clearable]="false"
+                    ></app-select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <app-input label="Motif" [isMandatory]="true" [control]="motif"></app-input>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <app-input label="Diagnostic d'entrée" [isMandatory]="true" [control]="diagnostic"></app-input>
+                </div>
+            </div>
         </div>
         <div class="col-md-6 mb-3">
-          <app-select
-            label="Sexe"
-            [isMandatory]="true"
-            [options]="[]"
-          ></app-select>
-        </div>
-        <div class="col-md-12 mb-3">
-          <app-input label="Nom" [isMandatory]="true"></app-input>
-        </div>
-        <div class="col-md-12 mb-3">
-          <app-input label="Prénom(s)" [isMandatory]="true"></app-input>
+            <div class="form-group">
+                <app-text [rows]="3" label="Histoire de la maladie"  [control]="hdm"></app-text>   
+            </div>
         </div>
         <div class="col-md-6 mb-3">
-          <app-input
-            label="Date de naissance"
-            type="date"
-            [isMandatory]="true"
-            [maxDate]="today"
-          ></app-input>
+            <div class="form-group">
+                <app-text [rows]="3" label="A l'arrivée"  [control]="arrive"></app-text>                
+            </div>
         </div>
-        <div class="col-md-6 mb-3">
-          <app-input
-            label="Date d'entrée"
-            type="date"
-            [isMandatory]="true"
-            [maxDate]="today"
-          ></app-input>
+        <div class="d-flex justify-content-end">
+            <button
+                    type="button"
+                    class="btn btn-success btn-label right"
+                    (click)="confirmAction()"
+            >
+                <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+                Enrégistrer
+            </button>
         </div>
-      </div>
-      <div></div>
     </div>
-    <div class="col-md-6 border-start mb-3">
-      <div class="row">
-        <div class="col-md-12 mb-3">
-          <app-select
-            label="Secteur"
-            [isMandatory]="true"
-            [options]="sectors"
-          ></app-select>
-        </div>
-        <div class="col-md-6 mb-3">
-          <app-select
-            label="Chambres"
-            [isMandatory]="true"
-            [options]="chambres"
-            [bindLabel]="'nom'"
-          ></app-select>
-        </div>
-        <div class="col-md-6 mb-3">
-          <app-select
-            label="Lits"
-            [isMandatory]="true"
-            [options]="lits"
-            [bindLabel]="'nom'"
-          ></app-select>
-        </div>
-        <div class="col-md-12 mb-3">
-          <app-input label="Motif" [isMandatory]="true"></app-input>
-        </div>
-        <div class="col-md-12 mb-3">
-          <app-input label="Diagnostic d'entrée" [isMandatory]="true"></app-input>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 mb-3">
-        <div class="form-group">
-            <label for="exampleTextarea">Histoire de la maladie</label>
-            <textarea
-              class="form-control"
-              rows="3"
-            ></textarea>
-          </div>
-    </div>
-    <div class="col-md-6 mb-3">
-        <div class="form-group">
-            <label for="exampleTextarea">A l'arrivée</label>
-            <textarea
-              class="form-control"
-              rows="3"
-            ></textarea>
-          </div>
-    </div>
-    <div class="d-flex justify-content-end">
-        <button
-        type="button"
-        class="btn btn-success btn-label right"
-        (click)="confirmAction()"
-      >
-        <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
-        Enrégistrer
-      </button>
-    </div>
-  </div>
+</form>
 

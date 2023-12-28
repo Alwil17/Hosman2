@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-// CSS styles to apply when custom select compnent is invalid
+.display {
+    display: block !important;
+}
+
 .custom-select-invalid {
     .ng-select-container {
         border-color: #f06548 !important; // #dc3545
@@ -11,6 +14,16 @@
 .swal2-popup {
     .swal2-title, .swal2-html-container {
         color: #495057 !important;
+    }
+}
+
+.ng-select {
+    .ng-select-container {
+        .ng-value-container {
+            .ng-input > input {
+                color: var(--vz-body-color);
+            }
+        }
     }
 }
 
