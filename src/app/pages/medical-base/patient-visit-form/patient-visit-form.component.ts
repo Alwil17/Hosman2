@@ -4,12 +4,21 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { AppointmentFormComponent } from "../appointment-form/appointment-form.component";
 import { MbService } from "../mb.service";
-import { forkJoin } from "rxjs";
+import {
+  Subject,
+  catchError,
+  concat,
+  distinctUntilChanged,
+  forkJoin,
+  of,
+  switchMap,
+  tap,
+} from "rxjs";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
-import { calculateExactAge } from "src/app/helpers/age-calculator";
+import { calculateExactAge, isAdult } from "src/app/helpers/age-calculator";
 import { parseIntOrZero } from "src/app/helpers/parsers";
 import { ProfessionService } from "src/app/services/secretariat/patients/profession.service";
 import { EmployerService } from "src/app/services/secretariat/patients/employer.service";
@@ -20,6 +29,16 @@ import { ChronicDiseaseRequest } from "src/app/models/secretariat/patients/reque
 import { Parent } from "src/app/models/secretariat/patients/parent.model";
 import { MotifService } from "src/app/services/medical-base/motif.service";
 import { DiagnosticService } from "src/app/services/medical-base/diagnostic.service";
+import { ConsultationRequest } from "src/app/models/medical-base/requests/consultation-request.model";
+import { ConstanteRequest } from "src/app/models/medical-base/requests/constante-request.model";
+import { ActRequest } from "src/app/models/medical-base/requests/act-request.model";
+import { MotifRequest } from "src/app/models/medical-base/requests/motif-request.model";
+import { DiagnosticRequest } from "src/app/models/medical-base/requests/diagnostic-request.model";
+import { SectorService } from "src/app/services/secretariat/shared/sector.service";
+import { LoadingSpinnerService } from "src/app/services/secretariat/shared/loading-spinner.service";
+import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -30,8 +49,8 @@ export class PatientVisitFormComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  isPatientInfoCollapsed = false;
-  isVisitFormCollapsed = true;
+  isPatientInfoCollapsed = true;
+  isVisitFormCollapsed = false;
 
   // To set date min
   today = new Date();
@@ -65,6 +84,10 @@ export class PatientVisitFormComponent implements OnInit {
   fatherAgeControl = new FormControl(null);
 
   // Visit form 2 controls
+  visitDateControl = new FormControl(null);
+  visitDoctorControl = new FormControl(null);
+  visitSectorControl = new FormControl(null);
+
   weightControl = new FormControl(null);
   sizeControl = new FormControl(null);
   temperatureControl = new FormControl(null);
@@ -72,6 +95,7 @@ export class PatientVisitFormComponent implements OnInit {
   frControl = new FormControl(null);
   pulseControl = new FormControl(null);
   tensionControl = new FormControl(null);
+
   diseaseHistoryControl = new FormControl(null);
   prescribedMedicationControl = new FormControl(null);
 
@@ -87,18 +111,40 @@ export class PatientVisitFormComponent implements OnInit {
   professions!: SelectOption[];
   employers!: SelectOption[];
   insurances!: SelectOption[];
+
   chronicDiseases: SelectOption[] = [];
+
+  sectors!: SelectOption[];
+  acts!: SelectOption[];
+  motifs: SelectOption[] = [];
+  diagnostics: SelectOption[] = [];
+
+  motifsAreLoading = false;
+  motifsTypeahead$ = new Subject<any>();
+
+  diagnosticsAreLoading = false;
+  diagnosticsTypeahead$ = new Subject<any>();
+
+  waitingDetails = {
+    visitActs: "",
+    visitTotalCost: 0,
+    visitDate: new Date(),
+  };
 
   constructor(
     public patientService: PatientService,
     private modalService: NgbModal,
+    private professionService: ProfessionService,
+    private employerService: EmployerService,
+    private insuranceService: InsuranceService,
+    private sectorService: SectorService,
+    private tariffService: TariffService,
     private motifService: MotifService,
     private diagnosticService: DiagnosticService,
     private medicalBaseRouter: MedicalBaseRouterService,
     private patientVisitService: PatientVisitService,
-    private professionService: ProfessionService,
-    private employerService: EmployerService,
-    private insuranceService: InsuranceService
+    private loadingSpinnerService: LoadingSpinnerService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -110,26 +156,27 @@ export class PatientVisitFormComponent implements OnInit {
       { label: "Navette", active: true },
     ];
 
-    // this.activePatient = this.patientService.getActivePatient();
-    if (!this.patientVisitService.selectedWaitingListItem) {
-      this.medicalBaseRouter.navigateToPatientWaitingList();
+    this.activePatient = this.patientService.getActivePatient();
+    // if (!this.patientVisitService.selectedWaitingListItem) {
+    //   this.medicalBaseRouter.navigateToPatientWaitingList();
 
-      return;
-    }
+    //   return;
+    // }
 
-    this.activePatient =
-      this.patientVisitService.selectedWaitingListItem.patient;
+    // this.activePatient =
+    //   this.patientVisitService.selectedWaitingListItem.patient;
 
-    const activePatientExactAge = calculateExactAge(
-      new Date(this.activePatient.date_naissance)
-    );
-    const activePatientAge = parseIntOrZero(
-      activePatientExactAge.split(" ")[0]
-    );
-    console.log(activePatientAge);
-    if (activePatientAge < 18) {
-      this.isActivePatientAdult = true;
-    }
+    this.isActivePatientAdult = isAdult(this.activePatient.date_naissance);
+    // const activePatientExactAge = calculateExactAge(
+    //   new Date(this.activePatient.date_naissance)
+    // );
+    // const activePatientAge = parseIntOrZero(
+    //   activePatientExactAge.split(" ")[0]
+    // );
+    // console.log(activePatientAge);
+    // if (activePatientAge < 18) {
+    //   this.isActivePatientAdult = true;
+    // }
 
     this.patientVisitForm1 = new FormGroup({
       // chronicDiseaseControl: this.chronicDiseaseControl,
@@ -174,7 +221,11 @@ export class PatientVisitFormComponent implements OnInit {
     this.fetchPatientSelectData();
 
     this.fetchVisitSelectData();
+
+    this.onFormInputsChanges();
   }
+
+  // GET SELECTS DATA-------------------------------------------------------------------------------------------------------------------------
 
   fetchPatientSelectData() {
     forkJoin({
@@ -198,7 +249,7 @@ export class PatientVisitFormComponent implements OnInit {
           text: value.nom,
         }));
 
-        this.setFieldsInitialValues();
+        this.setPatientInfoFieldsInitialValues();
       },
       error: (error) => {
         console.log(error);
@@ -206,7 +257,118 @@ export class PatientVisitFormComponent implements OnInit {
     });
   }
 
-  setFieldsInitialValues() {
+  fetchVisitSelectData() {
+    forkJoin({
+      sectors: this.sectorService.getAll(),
+      acts: this.tariffService.getByGroupCode("GRP001"),
+      // motifs: this.motifService.getAll(),
+      // diagnostics: this.diagnosticService.getAllDiagnostics(),
+    }).subscribe({
+      next: (data) => {
+        this.sectors = data.sectors.map((value) => ({
+          id: value.code,
+          text: value.libelle,
+        }));
+
+        this.acts = data.acts.map((value) => ({
+          id: value.code,
+          text: value.libelle,
+        }));
+
+        // this.motifs = data.motifs.map((value) => ({
+        //   id: value.id,
+        //   text: value.libelle,
+        // }));
+
+        // this.diagnostics = data.diagnostics.map((value) => ({
+        //   id: value.id,
+        //   text: value.libelle,
+        // }));
+
+        this.setVisitInfoFieldsInitialValues();
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    // MOTIFS
+    const motifs$ = concat(
+      of([]), // default items
+      this.motifsTypeahead$.pipe(
+        distinctUntilChanged(),
+        tap(() => {
+          this.motifsAreLoading = true;
+          this.loadingSpinnerService.hideLoadingSpinner();
+        }),
+        switchMap((term) =>
+          this.motifService.search(term).pipe(
+            catchError((err) => {
+              console.log(err);
+
+              return of([]);
+            }), // empty list on error
+            tap(() => {
+              this.motifsAreLoading = false;
+              // this.loadingSpinnerService.showLoadingSpinner();
+            })
+          )
+        )
+      )
+    );
+
+    motifs$.subscribe({
+      next: (data) => {
+        this.motifs = data.map((value) => ({
+          id: value.id,
+          text: value.libelle,
+        }));
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+
+    // DIAGNOSTICS
+    const diagnostics$ = concat(
+      of([]), // default items
+      this.diagnosticsTypeahead$.pipe(
+        distinctUntilChanged(),
+        tap(() => {
+          this.diagnosticsAreLoading = true;
+          this.loadingSpinnerService.hideLoadingSpinner();
+        }),
+        switchMap((term) =>
+          this.diagnosticService.search(term).pipe(
+            catchError((err) => {
+              console.log(err);
+
+              return of([]);
+            }), // empty list on error
+            tap(() => {
+              this.diagnosticsAreLoading = false;
+              // this.loadingSpinnerService.showLoadingSpinner();
+            })
+          )
+        )
+      )
+    );
+
+    diagnostics$.subscribe({
+      next: (data) => {
+        this.diagnostics = data.map((value) => ({
+          id: value.theCode,
+          text: value.theCode + " - " + value.title,
+        }));
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+  }
+
+  // SET FIELDS INITIAL VALUES --------------------------------------------------------------------------------------------------------------
+  setPatientInfoFieldsInitialValues() {
     const cdLength = this.activePatient.maladies?.length ?? 0;
     console.log(this.activePatient);
 
@@ -241,7 +403,7 @@ export class PatientVisitFormComponent implements OnInit {
     // const cd = this.activePatient.maladies!
 
     if (
-      this.activePatient.maladies !== null &&
+      this.activePatient.maladies != null &&
       this.activePatient.maladies?.length !== 0
     ) {
       this.chronicDiseasesFields.controls.forEach((control, index) => {
@@ -310,6 +472,33 @@ export class PatientVisitFormComponent implements OnInit {
     }
   }
 
+  setVisitInfoFieldsInitialValues() {
+    this.waitingDetails.visitActs = "C";
+    this.waitingDetails.visitTotalCost = 0;
+    this.waitingDetails.visitDate = new Date(
+      this.patientVisitService.selectedWaitingListItem!.date_attente
+    );
+
+    this.visitDateControl.setValue(
+      new Date(
+        this.patientVisitService.selectedWaitingListItem?.date_attente!
+      ).toLocaleDateString("fr-ca")
+    );
+
+    this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+
+    this.visitSectorControl.setValue({
+      id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
+      text: this.patientVisitService.selectedWaitingListItem?.secteur?.libelle,
+    });
+  }
+
+  // ON FORM INPUTS CHANGES -----------------------------------------------------------------------------------------------------------
+  onFormInputsChanges() {
+    this.visitDateControl.valueChanges.subscribe((value) => {});
+  }
+
+  // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
   savePatientInfo() {
     let chronicDiseases: ChronicDiseaseRequest[] = [];
     this.chronicDiseasesFields.controls.map((control) =>
@@ -359,6 +548,112 @@ export class PatientVisitFormComponent implements OnInit {
           console.log(error);
         },
       });
+  }
+
+  // SAVE CONSULTATION/VISIT INFOS --------------------------------------------------------------------------------------------------
+  saveVisitInfos() {
+    if (this.patientVisitForm2.invalid) {
+      return;
+    }
+
+    let acts: ActRequest[] = [];
+    let motifs: MotifRequest[] = [];
+    let diagnostics: DiagnosticRequest[] = [];
+
+    this.actsFields.controls.forEach((control, index) => {
+      if (control.value) {
+        acts.push(new ActRequest({ acte: control.value?.id }));
+      }
+    });
+
+    this.motifsFields.controls.forEach((control, index) => {
+      if (control.value) {
+        motifs.push(
+          new MotifRequest({ motif_id: control.value?.id, caractere: "cara" })
+        );
+      }
+    });
+
+    this.diagnosticsFields.controls.forEach((control, index) => {
+      if (control.value) {
+        diagnostics.push(
+          new DiagnosticRequest({
+            diagnostic: control.value?.id,
+            commentaire: "com",
+          })
+        );
+      }
+    });
+
+    const visitDate = new Date(this.visitDateControl.value);
+    if (this.visitDateControl.dirty) {
+      console.log("visit date dirty");
+
+      visitDate.setHours(new Date(Date.now()).getHours());
+      visitDate.setMinutes(new Date(Date.now()).getMinutes());
+      visitDate.setSeconds(new Date(Date.now()).getSeconds());
+    } else {
+      visitDate.setHours(
+        new Date(
+          this.patientVisitService.selectedWaitingListItem!.date_attente
+        ).getHours()
+      );
+      visitDate.setMinutes(
+        new Date(
+          this.patientVisitService.selectedWaitingListItem!.date_attente
+        ).getMinutes()
+      );
+      visitDate.setSeconds(
+        new Date(
+          this.patientVisitService.selectedWaitingListItem!.date_attente
+        ).getSeconds()
+      );
+    }
+
+    const consultation = new ConsultationRequest({
+      patient_ref: this.activePatient.reference,
+      secteur_code: this.visitSectorControl.value.id,
+      attente_num:
+        this.patientVisitService.selectedWaitingListItem?.num_attente!,
+      date_consultation: visitDate,
+      // new Date(this.visitDateControl.value),
+      hdm: this.diseaseHistoryControl.value,
+      constante: new ConstanteRequest({
+        poids: this.weightControl.value,
+        taille: this.sizeControl.value,
+        perimetre_cranien: this.pcControl.value,
+        temperature: this.temperatureControl.value,
+        frequence_respiratoire: this.frControl.value,
+        poul: this.pulseControl.value,
+        tension: this.tensionControl.value,
+      }),
+      actes: acts,
+      motifs: motifs,
+      diagnostics: diagnostics,
+    });
+
+    console.log(JSON.stringify(consultation, null, 2));
+
+    this.patientVisitService.create(consultation).subscribe({
+      next: async (data) => {
+        console.log(data, "\nHere");
+
+        this.toastService.show({
+          messages: ["La consultation a été enregistrée avec succès."],
+          type: ToastType.Success,
+        });
+
+        // await this.medicalBaseRouter.navigateToPatientWaitingList();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+      },
+    });
   }
 
   // CHRONIC DISEASES FIELDS --------------------------------------------------------------------------------------------------------
@@ -419,34 +714,6 @@ export class PatientVisitFormComponent implements OnInit {
   removeDiagnosticsField(index: number) {
     this.diagnosticsFields.removeAt(index);
     console.log(this.diagnosticsFields);
-  }
-
-  // GET -------------------------------------------------------------------------------------------------------------------------
-  motifs: SelectOption[] = [];
-  diagnostics: SelectOption[] = [];
-
-  fetchVisitSelectData() {
-    forkJoin({
-      motifs: this.motifService.getAllMotifs(),
-      // diagnostics: this.diagnosticService.getAllDiagnostics(),
-    }).subscribe({
-      next: (data) => {
-        this.motifs = data.motifs.map((value) => ({
-          id: value.id,
-          text: value.libelle,
-        }));
-
-        // this.diagnostics = data.diagnostics.map((value) => ({
-        //   id: value.id,
-        //   text: value.libelle,
-        // }));
-
-        // this.setFieldsInitialValues();
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
   }
 
   // OPEN APPOINTMENT MODAL ------------------------------------------------------------------------------------------------------

@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { ToastType } from "src/app/models/extras/toast-type.model";
+import { Consultation } from "src/app/models/medical-base/consultation.model";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 type Visit = {
   number: string;
@@ -74,13 +77,13 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
   // Activity form group
   patientVisitsForm: FormGroup = new FormGroup({});
 
-  visitsList: Visit[] = VISITS;
+  visitsList: Consultation[] = [];
 
   // Pagination handling variables
   page = 1;
   pageSize = 10;
   collectionSize = this.visitsList.length;
-  visitsListCut: Visit[] = [];
+  visitsListCut: Consultation[] = [];
 
   genders = [
     { id: 1, text: "Masculin", short: "M" },
@@ -91,7 +94,8 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
   constructor(
     private medicalBaseRouter: MedicalBaseRouterService,
     // private patientService: PatientService,
-    private patientVisitService: PatientVisitService
+    private patientVisitService: PatientVisitService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -128,8 +132,29 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       )
     );
 
+    this.patientVisitService
+      .getConsultationsByPatientReference(
+        this.patientVisitService.selectedWaitingListItem.patient.reference
+      )
+      .subscribe({
+        next: async (data) => {
+          console.log(data, "\nHere");
+
+          this.visitsList = data;
+
+          this.refreshVisitsListTable();
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
     // this.refreshVisitsList();
-    this.refreshVisitsListTable();
+    // this.refreshVisitsListTable();
   }
 
   goToPatientVisitForm() {

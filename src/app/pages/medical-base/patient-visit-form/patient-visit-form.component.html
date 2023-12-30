@@ -376,19 +376,25 @@
       >
         <div class="me-5">
           <h5 class="m-0">
-            <b>Acte: </b> <span class="text-secondary"><b>RL</b></span>
+            <b>Acte: </b>
+            <span class="text-secondary"
+              ><b>{{ waitingDetails.visitActs }}</b></span
+            >
           </h5>
         </div>
         <div>
           <h5 class="m-0">
-            <b>Frais: </b> <span class="text-secondary"><b>0</b></span>
+            <b>Frais: </b>
+            <span class="text-secondary"
+              ><b>{{ waitingDetails.visitTotalCost }}</b></span
+            >
           </h5>
         </div>
         <div class="ms-5">
           <h5 class="m-0">
             <b>Heure: </b>
             <span class="text-secondary"
-              ><b>{{ today | date : "HH:mm:ss" }}</b></span
+              ><b>{{ waitingDetails.visitDate | date : "HH:mm:ss" }}</b></span
             >
           </h5>
         </div>
@@ -399,6 +405,37 @@
 
     <form [formGroup]="patientVisitForm2">
       <!-- FIRST PART -->
+      <div class="row mb-2">
+        <div class="col-md-4">
+          <app-input
+            type="date"
+            label="Date de consultation"
+            [control]="visitDateControl"
+          ></app-input>
+        </div>
+
+        <div class="col-md-4">
+          <app-input
+            [readOnly]="true"
+            label="Médecin consulteur"
+            [control]="visitDoctorControl"
+          >
+          </app-input>
+        </div>
+
+        <div class="col-md-4">
+          <app-select
+            label="Secteur"
+            [clearable]="false"
+            [options]="sectors"
+            [control]="visitSectorControl"
+          ></app-select>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- SECOND PART -->
       <div class="row mb-2">
         <div class="col-md-2">
           <app-input
@@ -455,7 +492,7 @@
 
       <hr />
 
-      <!-- SECOND PART -->
+      <!-- THIRD PART -->
       <div class="row mb-2">
         <div class="col-md-4">
           <div class="row g-2">
@@ -473,7 +510,7 @@
                 <div class="col-md-8">
                   <app-select
                     [label]="'Acte ' + (i + 1)"
-                    [options]="[]"
+                    [options]="acts"
                     [control]="act"
                   ></app-select>
                 </div>
@@ -515,6 +552,8 @@
                     <app-select
                       [label]="'Motif ' + (i + 1)"
                       [options]="motifs"
+                      [isLoading]="motifsAreLoading"
+                      [typeahead]="motifsTypeahead$"
                       [control]="motif"
                     ></app-select>
                   </div>
@@ -565,8 +604,9 @@
                   <app-select
                     [label]="'Diagnostic ' + (i + 1)"
                     [options]="diagnostics"
+                    [isLoading]="diagnosticsAreLoading"
+                    [typeahead]="diagnosticsTypeahead$"
                     [control]="diagnostic"
-                    [canAddOption]="true"
                   ></app-select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
@@ -616,9 +656,10 @@
               [formControl]="diseaseHistoryControl"
               [ngClass]="{
                 'is-invalid':
-                  ((commentsControl.touched && commentsControl.dirty) ||
+                  ((diseaseHistoryControl.touched &&
+                    diseaseHistoryControl.dirty) ||
                     isFormSubmitted) &&
-                  commentsControl.errors
+                  diseaseHistoryControl.errors
               }"
             ></textarea>
           </div>
@@ -635,9 +676,10 @@
               [formControl]="prescribedMedicationControl"
               [ngClass]="{
                 'is-invalid':
-                  ((commentsControl.touched && commentsControl.dirty) ||
+                  ((prescribedMedicationControl.touched &&
+                    prescribedMedicationControl.dirty) ||
                     isFormSubmitted) &&
-                  commentsControl.errors
+                  prescribedMedicationControl.errors
               }"
             ></textarea>
           </div>
@@ -672,6 +714,7 @@
               <button
                 type="button"
                 class="btn btn-outline-secondary btn-label btn-sm"
+                (click)="saveVisitInfos()"
               >
                 <i
                   class="ri-save-2-line label-icon align-middle fs-16 me-2"
@@ -684,6 +727,7 @@
               <button
                 type="button"
                 class="btn btn-outline-success btn-label btn-sm"
+                (click)="saveVisitInfos()"
               >
                 <i
                   class="ri-save-2-fill label-icon align-middle fs-16 me-2"

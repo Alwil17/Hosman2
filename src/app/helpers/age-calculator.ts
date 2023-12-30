@@ -3,7 +3,9 @@
  * @param dateOfBirth A variable of type `Date` from which the calculation is made
  * @returns A string in the form : `x` an(s), `y` mois, `z` jour(s)
  */
-export function calculateExactAge(dateOfBirth: Date) {
+export function calculateExactAge(dateOfBirth: Date): string {
+  dateOfBirth = new Date(dateOfBirth);
+
   const actualDate = new Date();
 
   const diffDay = actualDate.getDate() - dateOfBirth.getDate();
@@ -49,7 +51,7 @@ export function calculateExactAge(dateOfBirth: Date) {
     day = calculateMonthDaysCount(actualDate, true) - Math.abs(diffDay);
   }
 
-//   console.log(day, month, year);
+  //   console.log(day, month, year);
 
   return `${year} ${year < 2 ? " an" : " ans"}, ${month} mois, ${day} ${
     day < 2 ? " jour" : " jours"
@@ -57,7 +59,7 @@ export function calculateExactAge(dateOfBirth: Date) {
 }
 
 /**
- * A function to calculate the count of days in the month given by `date`. 
+ * A function to calculate the count of days in the month given by `date`.
  * @param date A variable of type `Date` from which the calculation is made
  * @param previous If set to `true`, will make calculation based on the past month
  * @returns The count of days in the month based on the year given by `date`
@@ -71,4 +73,25 @@ function calculateMonthDaysCount(date: Date, previous: boolean = false) {
   }
   tmp.setDate(0);
   return tmp.getDate();
+}
+
+export function isAdult(dateOfBirth: Date): boolean {
+  dateOfBirth = new Date(dateOfBirth);
+
+  const actualDate = new Date();
+
+  const diffDay = actualDate.getDate() - dateOfBirth.getDate();
+  const diffMonth = actualDate.getMonth() - dateOfBirth.getMonth();
+  const diffYear = actualDate.getFullYear() - dateOfBirth.getFullYear();
+
+  var year: number = 0;
+
+  // Year calculation
+  if (diffMonth > 0 || (diffMonth == 0 && diffDay >= 0)) {
+    year = diffYear;
+  } else if (diffMonth < 0 || (diffMonth == 0 && diffDay < 0)) {
+    year = diffYear - 1;
+  }
+
+  return year >= 18;
 }

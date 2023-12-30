@@ -17,6 +17,8 @@
   [addTag]="canAddOption ? addTagFn : false"
   [placeholder]="placeholder"
   [selectOnTab]="true"
+  [loading]="isLoading"
+  [typeahead]="typeahead"
   [formControl]="formControl"
   [ngClass]="{
     'is-invalid custom-select-invalid':
@@ -44,32 +46,3 @@
     Veuillez sélectionner une valeur.
   </div>
 </ng-container>
-
-<!-- OLD -->
-
-<!-- <label class="form-label"
-  >{{ label }}
-  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
-    >*</span
-  ></label
->
-
-<select
-  class="form-select"
-  [formControl]="control"
-  [ngClass]="{
-    'is-invalid':
-      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
-  }"
->
-  <option value="" [disabled]="isMandatory">{{ defaultOption }}</option>
-  <option *ngFor="let option of options; index as i" [value]="option.id">
-    {{ option.text }}
-  </option>
-</select>
-
-<ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
-  <div *ngIf="control.errors?.['required']" class="invalid-feedback">
-    Veuillez sélectionner une valeur.
-  </div>
-</ng-container> -->

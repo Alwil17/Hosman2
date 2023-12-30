@@ -69,7 +69,23 @@ export class PatientWaitingListPageComponent implements OnInit {
   goToPatientVisits(waitingListItem: WaitingListItem) {
     this.patientVisitService.selectWaitingListItem(waitingListItem);
 
-    this.medicalBaseRouter.navigateToPatientVisitsSummary();
+    this.patientVisitService
+      .startVisit(waitingListItem.patient.reference)
+      .subscribe({
+        next: async (data) => {
+          console.log(data, "\nHere");
+
+          await this.medicalBaseRouter.navigateToPatientVisitsSummary();
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
 
     // this.patientService.setActivePatient(patient.id).subscribe({
     //   next: () => this.medicalBaseRouter.navigateToPatientVisitsSummary(),

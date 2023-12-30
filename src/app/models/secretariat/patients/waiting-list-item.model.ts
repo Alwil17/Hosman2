@@ -51,3 +51,28 @@ export class WaitingListItem {
     this.facture = iWaitingListItem.facture;
   }
 }
+
+// Models for consultation model
+export interface IWaitingListItemShort {
+  id: number;
+  num_attente: number;
+  ordre: number;
+  attente: boolean;
+  date_attente: Date;
+}
+
+export class WaitingListItemShort {
+  id: number;
+  num_attente: number;
+  ordre: number;
+  attente: boolean;
+  date_attente: Date;
+
+  constructor(iWaitingListItemShort: IWaitingListItemShort) {
+    this.id = iWaitingListItemShort.id;
+    this.num_attente = iWaitingListItemShort.num_attente;
+    this.ordre = iWaitingListItemShort.ordre;
+    this.attente = iWaitingListItemShort.attente;
+    this.date_attente = iWaitingListItemShort.date_attente;
+  }
+}

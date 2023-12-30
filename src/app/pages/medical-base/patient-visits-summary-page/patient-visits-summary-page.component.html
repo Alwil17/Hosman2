@@ -97,7 +97,11 @@
 
         <div class="row">
           <div class="col-12">
-            <button type="button" class="btn btn-secondary" (click)="goToPatientVisitForm()">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="goToPatientVisitForm()"
+            >
               <b>Ouvrir la navette</b>
             </button>
           </div>
@@ -128,21 +132,24 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of visitsListCut" class="user-select-none"
-              (dblclick)="openPreviousVisitsModal()">
-                <td>{{ item.number }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.time }}</td>
-                <td>{{ item.weight }}</td>
+              <tr
+                *ngFor="let item of visitsListCut"
+                class="user-select-none"
+                (dblclick)="openPreviousVisitsModal()"
+              >
+                <td>{{ item.reference }}</td>
+                <td>{{ item.date_consultation | date : "dd/MM/yyyy" }}</td>
+                <td>{{ item.date_consultation | date : "HH:mm:ss" }}</td>
+                <td>{{ item.constante?.poids }}</td>
                 <td>
-                  {{ item.size }}
+                  {{ item.constante?.taille }}
                 </td>
-                <td>{{ item.tension }}</td>
-                <td>{{ item.temperature }}</td>
-                <td>{{ item.pc }}</td>
+                <td>{{ item.constante?.tension }}</td>
+                <td>{{ item.constante?.temperature }}</td>
+                <td>{{ item.constante?.perimetre_cranien }}</td>
                 <td>
-                  <span *ngFor="let act of item.acts">
-                    {{ act + " " }}
+                  <span *ngFor="let act of item.actes">
+                    {{ act.libelle + " " }}
                   </span>
                 </td>
 

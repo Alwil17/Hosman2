@@ -8,12 +8,19 @@ export class LoadingSpinnerService {
   count = 0;
   visibility: BehaviorSubject<boolean>;
 
+  // Used to override loading spinner visibility
+  isLoadingSpinnerDisplayed = true;
+
   constructor() {
     this.visibility = new BehaviorSubject<boolean>(false);
+    // this.visibility.subscribe((value) =>
+    //   console.log("Loading spinner visibility : " + value + ' ' + this.count)
+    // );
   }
 
   show() {
-    this.visibility.next(true);
+    this.visibility.next(this.isLoadingSpinnerDisplayed);
+    // this.visibility.next(true);
     this.count++;
   }
 
@@ -22,5 +29,14 @@ export class LoadingSpinnerService {
     if (this.count === 0) {
       this.visibility.next(false);
     }
+  }
+
+  // Used to override loading spinner visibility -----------------------------------------------------------------------------------------
+  showLoadingSpinner() {
+    this.isLoadingSpinnerDisplayed = true;
+  }
+
+  hideLoadingSpinner() {
+    this.isLoadingSpinnerDisplayed = false;
   }
 }
