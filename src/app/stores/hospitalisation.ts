@@ -5,7 +5,8 @@ import {Observable, Subject} from "rxjs";
 import {Lit, LitResponse} from "../models/hospitalisation/lit";
 import {map} from "rxjs/operators";
 
-const hospitalisationEndpoint = "/api/consultations";
+const consultationEndpoint = "/api/consultations";
+const hospitalisationEndpoint = "/api/hospits?repeat=1";
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -27,7 +28,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
     fetchConsultation(id: number): void {
         const res: Observable<any> = this.http
-            .get<LitResponse[]>(hospitalisationEndpoint + "/" + id)
+            .get<LitResponse[]>(consultationEndpoint + "/" + id)
 
         res.subscribe({
             next: (data: any) => {
@@ -42,6 +43,10 @@ export class HospitalisationStore extends ObservableStore<any> {
                 console.log("Error: " + response);
             },
         });
+    }
+
+    post(data: any) : Observable<any> {
+        return this.http.post(hospitalisationEndpoint, data);
     }
 
 }

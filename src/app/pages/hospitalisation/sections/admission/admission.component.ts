@@ -3,18 +3,18 @@ import { Subject, takeUntil, Subscription } from "rxjs";
 import { Lit } from "src/app/models/hospitalisation/lit";
 import { Chambre } from "src/app/models/hospitalisation/chambre";
 import { ChambreStore } from "@stores/chambres";
-import { LitStore } from "@stores/lits";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { MessageService } from "@services/messages/message.service";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { SectorStore } from "@stores/sectors";
 import { Sector } from "src/app/models/secretariat/shared/sector.model";
 import { validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
+import { Status } from 'src/app/models/secretariat/patients/status.model';
 
 @Component({
   selector: "app-hosp-admission",
@@ -40,7 +40,8 @@ export class AdmissionComponent implements OnInit {
   patient: any = null;
   hasPatient: boolean = false;
 
-  consultiation_id: number = -1;
+  consultation_id: number = -1;
+  hospitation_id: number | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -51,7 +52,6 @@ export class AdmissionComponent implements OnInit {
   constructor(
     private chambreStore: ChambreStore,
     private sectorStore: SectorStore,
-    private litStore: LitStore,
     private hospitalisationStore: HospitalisationStore,
     private message: MessageService,
     private toast: ToastrService,
@@ -109,7 +109,7 @@ export class AdmissionComponent implements OnInit {
   sector = new FormControl(
     null,
     [],
-    [validateYupSchema(Yup.number().required(ErrorMessages.REQUIRED))]
+    [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
   lit = new FormControl(
     null,
@@ -145,8 +145,7 @@ export class AdmissionComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      this.consultiation_id = params["consultation"];
-      // console.log(params);
+      this.consultation_id = params["consultation"];
     });
 
     this.sectorStore
@@ -163,12 +162,6 @@ export class AdmissionComponent implements OnInit {
         this.chambres = chambres;
       });
 
-    this.litStore
-      .getLitsObservable()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((lits: Lit[]) => {
-        this.all_lits = lits;
-      });
 
     this.hospitalisationStore
       .getConsultation()
@@ -187,16 +180,16 @@ export class AdmissionComponent implements OnInit {
     this.chambreChanges = this.admissionFormGroup
       .get("chambre")
       ?.valueChanges.subscribe((n) => {
-        this.lits = this.all_lits.filter((lit) => lit.chambre.id == n);
+         this.lit.setValue(null)
+         this.lits = this.chambres.find((c) => c.id === n)!['lits'];
       });
   }
 
   getData() {
     this.chambreStore.getAll();
-    this.litStore.getAll();
     this.sectorStore.getAll();
-    if (this.consultiation_id !== undefined) {
-      this.hospitalisationStore.fetchConsultation(this.consultiation_id);
+    if (this.consultation_id !== undefined) {
+      this.hospitalisationStore.fetchConsultation(this.consultation_id);
     }
   }
 
@@ -216,7 +209,9 @@ export class AdmissionComponent implements OnInit {
 
   loadHospitalisation(hospitalisation: any) {
     if (hospitalisation == null) {
-      this.sector.setValue(this.consultation["secteur"]["id"]);
+      this.sector.setValue(this.consultation["secteur"]["code"]);
+      this.motif.setValue(this.consultation.motifs.map(function(c : any) {return c['libelle']}).join(','))
+      this.diagnostic.setValue(this.consultation.diagnostics.map(function(c : any) {return c['theCode']}).join(','))
     }
   }
 
@@ -232,7 +227,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   async confirmAction() {
-    console.log(this.admissionFormGroup.value);
     if (!this.admissionFormGroup.valid) {
       this.markAllControlsAsTouched();
     } else {
@@ -240,9 +234,33 @@ export class AdmissionComponent implements OnInit {
         WarningMessages.SURE_TO_CONTINUE
       );
       if (confirm) {
-        console.log(this.admissionFormGroup.value);
 
-        this.toast.success("Hello world!", "Toastr fun!");
+        // console.log(this.admissionFormGroup.value);
+        // console.log(this.patient);
+        // console.log(this.consultation);
+
+        const data = {
+          "motif": this.admissionFormGroup.value.motif,
+          "diagnostic": this.admissionFormGroup.value.diagnostic,
+          "hdm": this.admissionFormGroup.value.hdm,
+          "patient_ref": this.patient.reference,
+          "secteur_code": this.admissionFormGroup.value.sector,
+          "consultation_ref": this.consultation.reference,
+          "date_hospit": new Date(this.admissionFormGroup.value.hospit_date)
+        }
+
+
+        // console.log(data)
+        this.hospitalisationStore.post(data).subscribe(
+          (response) => {
+              const responseData = response;
+              this.toast.success("Hospitalisation", "Admission effectuée");
+              this.hospitation_id = responseData;
+            },
+          (error) => {
+            console.error('POST request failed:', error);
+          }
+        );        
       }
     }
   }
