@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 
 @Component({
@@ -16,11 +17,21 @@ export class PatientFormModalComponent implements OnInit {
   @Output()
   isPatientModified = new EventEmitter<boolean>();
 
-  constructor() {}
+  @Output()
+  isPatientCreated = new EventEmitter<boolean>();
+
+  @Input()
+  showSimpleCreateButtons = false;
+  
+  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit(): void {}
 
   onPatientModification(isModified: boolean) {
     this.isPatientModified.emit(isModified);
+  }
+
+  onPatientCreation(isModified: boolean) {
+    this.isPatientCreated.emit(isModified);
   }
 }

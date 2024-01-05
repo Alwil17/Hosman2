@@ -46,10 +46,24 @@
             type="button"
             class="btn btn-success btn-label ms-auto"
             (click)="goToPatientNew()"
+            *ngIf="!isInMedicalBase; else patientNewModalButton"
           >
             <i class="ri-user-add-fill label-icon align-middle fs-16 me-2"></i>
             Nouveau patient
           </button>
+
+          <ng-template #patientNewModalButton>
+            <button
+              type="button"
+              class="btn btn-secondary btn-label ms-auto"
+              (click)="openPatientNewModal()"
+            >
+              <i
+                class="ri-user-add-fill label-icon align-middle fs-16 me-2"
+              ></i>
+              Nouveau patient
+            </button>
+          </ng-template>
         </div>
       </div>
     </div>

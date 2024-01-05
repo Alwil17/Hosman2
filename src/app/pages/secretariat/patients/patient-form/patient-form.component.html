@@ -382,22 +382,35 @@
 
 <ng-container *ngIf="!patientInfos; else modificationButton"
   ><div class="d-flex align-items-start gap-3 mt-4">
-    <button
-      type="button"
-      class="btn btn-secondary btn-label ms-auto"
-      (click)="registerPatientAndLeave()"
-    >
-      <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
-      Enregistrer et quitter
-    </button>
-    <button
-      type="button"
-      class="btn btn-success btn-label right"
-      (click)="registerPatientAndContinue()"
-    >
-      <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
-      Continuer vers Activités/Prestations
-    </button>
+    <ng-container *ngIf="!showSimpleCreateButtons">
+      <button
+        type="button"
+        class="btn btn-secondary btn-label ms-auto"
+        (click)="registerPatientAndLeave()"
+      >
+        <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+        Enregistrer et quitter
+      </button>
+      <button
+        type="button"
+        class="btn btn-success btn-label right"
+        (click)="registerPatientAndContinue()"
+      >
+        <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
+        Continuer vers Activités/Prestations
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="showSimpleCreateButtons">
+      <button
+        type="button"
+        class="btn btn-secondary btn-label ms-auto"
+        (click)="registerPatient()"
+      >
+        <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+        Enregistrer
+      </button>
+    </ng-container>
   </div></ng-container
 >
 

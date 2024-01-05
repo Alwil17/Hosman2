@@ -57,6 +57,12 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
   @Output()
   isPatientModified = new EventEmitter<boolean>();
 
+  @Output()
+  isPatientCreated = new EventEmitter<boolean>();
+
+  @Input()
+  showSimpleCreateButtons = false;
+
   lastNameControl = new FormControl("", [Validators.required]);
   firstNameControl = new FormControl("", [Validators.required]);
   genderControl = new FormControl(null, [Validators.required]);
@@ -916,7 +922,6 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
         this.patientService.setActivePatient(this.patientInfos!.id).subscribe({
           next: (data) => {
             this.isPatientModified.emit(true);
-            // await this.secretariatRouter.navigateToPatientActivity();
           },
           error: (e) => {
             console.error(e);
@@ -932,6 +937,48 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
         });
 
         this.isPatientModified.emit(false);
+      },
+    });
+  }
+
+  registerPatient() {
+    this.isPatientInfoFormSubmitted = true;
+
+    if (this.patientInfoForm.invalid) {
+      const notificationMessages = this.getInvalidFields();
+
+      this.toastService.show({
+        messages: notificationMessages,
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
+    const patientData = this.getPatientFormData();
+
+    console.log(JSON.stringify(patientData));
+
+    this.patientService.create(patientData).subscribe({
+      next: async (data) => {
+        console.log(data, "\nHere");
+
+        this.toastService.show({
+          messages: ["Le patient a été enregistré avec succès."],
+          type: ToastType.Success,
+        });
+
+        this.isPatientCreated.emit(true);
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.toastService.show({
+          delay: 10000,
+          type: ToastType.Error,
+        });
+
+        this.isPatientCreated.emit(false);
       },
     });
   }

@@ -175,6 +175,11 @@ export class PatientListComponent implements OnInit, AfterViewInit {
 
     // console.log(JSON.stringify(patient, null, 2));
   }
+
+  async goToPatientNew() {
+    await this.secretariatRouter.navigateToPatientCreate();
+  }
+
   onRowItemDoubleClick(patient: Patient) {
     if (!this.isInMedicalBase) {
       this.goToPatientActivity(patient);
@@ -183,17 +188,13 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async goToPatientNew() {
-    await this.secretariatRouter.navigateToPatientCreate();
-  }
-
   openPatientModificationModal(patient: Patient) {
     const patientModifyModalRef = this.modalService.open(
       PatientFormModalComponent,
       {
         size: "xl",
         centered: true,
-        // scrollable: true,
+        scrollable: true,
         backdrop: "static",
         keyboard: false,
       }
@@ -208,6 +209,35 @@ export class PatientListComponent implements OnInit, AfterViewInit {
         console.log("Patient modified : " + isPatientModified);
 
         if (isPatientModified) {
+          patientModifyModalRef.close();
+          this.searchPatients();
+        }
+      }
+    );
+  }
+
+  openPatientNewModal() {
+    const patientModifyModalRef = this.modalService.open(
+      PatientFormModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
+
+    patientModifyModalRef.componentInstance.title =
+      "Enregistrer un nouveau patient";
+
+    patientModifyModalRef.componentInstance.showSimpleCreateButtons = true;
+
+    patientModifyModalRef.componentInstance.isPatientCreated.subscribe(
+      (isPatientCreated: boolean) => {
+        console.log("Patient created : " + isPatientCreated);
+
+        if (isPatientCreated) {
           patientModifyModalRef.close();
           this.searchPatients();
         }
