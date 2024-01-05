@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NewBedComponent } from './add/new.component';
+import { HospitHomeComponent } from './add/new.component';
 import { ListComponent } from './list/list.component';
 import { HospAdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  { path: "", component: NewBedComponent, },
+  { path: "", component: HospitHomeComponent, },
   { path: "list", component: ListComponent },
   { path: "administration", component: HospAdminComponent },
 ];

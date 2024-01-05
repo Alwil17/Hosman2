@@ -1,20 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { Subject, takeUntil, Subscription } from "rxjs";
+import { Subject, takeUntil, Subscription, map, Observable } from "rxjs";
 import { Lit } from "src/app/models/hospitalisation/lit";
 import { Chambre } from "src/app/models/hospitalisation/chambre";
-import { ChambreStore } from "@stores/chambres";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { MessageService } from "@services/messages/message.service";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
 import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
-import { SectorStore } from "@stores/sectors";
 import { Sector } from "src/app/models/secretariat/shared/sector.model";
 import { validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
-import { Status } from 'src/app/models/secretariat/patients/status.model';
 
 @Component({
   selector: "app-hosp-admission",
@@ -22,6 +19,9 @@ import { Status } from 'src/app/models/secretariat/patients/status.model';
   styleUrls: ["./admission.component.scss"],
 })
 export class AdmissionComponent implements OnInit {
+
+  subscription: Subscription | undefined;
+
   lits: Lit[] = [];
   all_lits: Lit[] = [];
   chambres: Chambre[] = [];
@@ -41,7 +41,7 @@ export class AdmissionComponent implements OnInit {
   hasPatient: boolean = false;
 
   consultation_id: number = -1;
-  hospitation_id: number | null = null;
+  hospitalisation_id: number | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -50,8 +50,6 @@ export class AdmissionComponent implements OnInit {
   private chambreChanges: Subscription | undefined;
 
   constructor(
-    private chambreStore: ChambreStore,
-    private sectorStore: SectorStore,
     private hospitalisationStore: HospitalisationStore,
     private message: MessageService,
     private toast: ToastrService,
@@ -144,57 +142,34 @@ export class AdmissionComponent implements OnInit {
       arrive: this.arrive,
     });
 
-    this.route.queryParams.subscribe((params) => {
-      this.consultation_id = params["consultation"];
-    });
-
-    this.sectorStore
-      .getSectorsObservable()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((sectors: Sector[]) => {
-        this.sectors = sectors;
-      });
-
-    this.chambreStore
-      .getChambresObservable()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((chambres: Chambre[]) => {
-        this.chambres = chambres;
-      });
-
-
-    this.hospitalisationStore
-      .getConsultation()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((consultation: any) => {
-        this.consultation = consultation;
-        this.patient = consultation["patient"];
-        this.hasPatient = this.patient != null && this.hasPatient != undefined;
+    this.subscription = this.hospitalisationStore.stateChanged.subscribe((state) => {
+      // console.log("''''''''''''''''''''''''''''''''''''''''''''''")
+      // console.log(state);
+      if (state) {
+        if (state.patient) this.patient = state.patient;
+        if (state.consultation) this.consultation = state.consultation;
+        if (state.chambres) this.chambres = state.chambres;
+        if (state.sectors) this.sectors = state.sectors;
 
         this.loadPatient(this.patient);
-        this.loadHospitalisation(null); // <== update if editing hospitalisation
-      });
 
-    this.getData();
+        this.loadHospitalisation(null);
+      }
+    });
+
 
     this.chambreChanges = this.admissionFormGroup
       .get("chambre")
       ?.valueChanges.subscribe((n) => {
-         this.lit.setValue(null)
-         this.lits = this.chambres.find((c) => c.id === n)!['lits'];
+        this.lit.setValue(null);
+        this.lits = this.chambres!.find((c) => c.id === n)!["lits"];
       });
   }
 
-  getData() {
-    this.chambreStore.getAll();
-    this.sectorStore.getAll();
-    if (this.consultation_id !== undefined) {
-      this.hospitalisationStore.fetchConsultation(this.consultation_id);
-    }
-  }
 
   loadPatient(patient: any) {
-    this.firstname.setValue(patient["nom"]);
+    if (this.patient !== null) {
+      this.firstname.setValue(patient["nom"]);
     this.lastname.setValue(patient["prenoms"]);
     this.gender.setValue(
       this.genders.find((g) => g["short"] == patient["sexe"])!.short
@@ -205,13 +180,29 @@ export class AdmissionComponent implements OnInit {
     this.birth_date.setValue(
       this.formatDate(patient["date_naissance"], "yyyy-MM-dd")
     );
+    }
+    
   }
 
   loadHospitalisation(hospitalisation: any) {
     if (hospitalisation == null) {
-      this.sector.setValue(this.consultation["secteur"]["code"]);
-      this.motif.setValue(this.consultation.motifs.map(function(c : any) {return c['libelle']}).join(','))
-      this.diagnostic.setValue(this.consultation.diagnostics.map(function(c : any) {return c['theCode']}).join(','))
+      if (this.patient !== null) {
+         this.sector.setValue(this.consultation["secteur"]["code"]);
+      this.motif.setValue(
+        this.consultation.motifs
+          .map(function (c: any) {
+            return c["libelle"];
+          })
+          .join(",")
+      );
+      this.diagnostic.setValue(
+        this.consultation.diagnostics
+          .map(function (c: any) {
+            return c["theCode"];
+          })
+          .join(",")
+      );
+      }
     }
   }
 
@@ -234,33 +225,31 @@ export class AdmissionComponent implements OnInit {
         WarningMessages.SURE_TO_CONTINUE
       );
       if (confirm) {
-
         // console.log(this.admissionFormGroup.value);
         // console.log(this.patient);
         // console.log(this.consultation);
 
         const data = {
-          "motif": this.admissionFormGroup.value.motif,
-          "diagnostic": this.admissionFormGroup.value.diagnostic,
-          "hdm": this.admissionFormGroup.value.hdm,
-          "patient_ref": this.patient.reference,
-          "secteur_code": this.admissionFormGroup.value.sector,
-          "consultation_ref": this.consultation.reference,
-          "date_hospit": new Date(this.admissionFormGroup.value.hospit_date)
-        }
-
+          motif: this.admissionFormGroup.value.motif,
+          diagnostic: this.admissionFormGroup.value.diagnostic,
+          hdm: this.admissionFormGroup.value.hdm,
+          patient_ref: this.patient.reference,
+          secteur_code: this.admissionFormGroup.value.sector,
+          consultation_ref: this.consultation.reference,
+          date_hospit: new Date(this.admissionFormGroup.value.hospit_date),
+        };
 
         // console.log(data)
         this.hospitalisationStore.post(data).subscribe(
           (response) => {
-              const responseData = response;
-              this.toast.success("Hospitalisation", "Admission effectuée");
-              this.hospitation_id = responseData;
-            },
+            const responseData = response;
+            this.toast.success("Hospitalisation", "Admission effectuée");
+            this.hospitalisation_id = responseData;
+          },
           (error) => {
-            console.error('POST request failed:', error);
+            console.error("POST request failed:", error);
           }
-        );        
+        );
       }
     }
   }
@@ -269,5 +258,6 @@ export class AdmissionComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
     this.chambreChanges!.unsubscribe();
+    this.subscription?.unsubscribe
   }
 }

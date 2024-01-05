@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-comptable-table-classic',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComptableTableClassicComponent implements OnInit {
 
+  @Input() typeData : string | null | undefined;
+  @Input() tableData : any[] = []
+
+
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

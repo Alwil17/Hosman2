@@ -10,25 +10,15 @@
         <thead>
             <tr>
                 <th scope="col">Désignation</th>
-                <th scope="col" class="text-center">J1</th>
-                <th scope="col" class="text-center">J2</th>
-                <th scope="col" class="text-center">J3</th>
-                <th scope="col" class="text-center">J3</th>
-                <th scope="col" class="text-center">J3</th>
-                <th scope="col" class="text-center">J3</th>
+                <!-- <th scope="col" class="text-center" *ngFor="let item of tableData; let i = index">{{ item.name }}</th> -->
                 <th scope="col" class="text-center">Total</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Nom médicament</td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
-                <td class="text-center  cursor-pointer"></td>
+            <tr *ngFor="let item of tableData; let i = index">
+                <td *ngIf="typeData === 'examens'">{{ item.libelle }}</td>
+                <td *ngIf="typeData === 'chambres'">{{ item.nom }}</td>
+                <td *ngIf="typeData !== 'examens'">{{ item.nom_officiel }}</td>
             </tr>
         </tbody>
     </table>
