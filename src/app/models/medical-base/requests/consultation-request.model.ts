@@ -7,7 +7,7 @@ export interface IConsultationRequest {
   // reference: string;
   patient_ref: string;
   secteur_code: string;
-  attente_num: number;
+  attente_num?: number;
   date_consultation: Date;
   //   type: string;
   //   commentaire: string;
@@ -22,7 +22,7 @@ export class ConsultationRequest {
   //   reference: string;
   patient_ref: string;
   secteur_code: string;
-  attente_num: number;
+  attente_num?: number;
   date_consultation: Date;
   //   type: string;
   //   commentaire: string;

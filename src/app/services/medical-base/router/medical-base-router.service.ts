@@ -13,6 +13,7 @@ export class MedicalBaseRouterService {
     patientWaitingList: this.patientsPath + "/patient-waiting-list",
     patientVisitsSummary: this.patientsPath + "/patient-visits-summary",
     patientVisitForm: this.patientsPath + "/patient-visit-form",
+    patientList: this.patientsPath + "/patient-list",
   };
 
   constructor(private router: Router) {}
@@ -27,5 +28,9 @@ export class MedicalBaseRouterService {
 
   async navigateToPatientVisitForm() {
     await this.router.navigateByUrl(this.routesPath.patientVisitForm);
+  }
+
+  async navigateToPatientList() {
+    await this.router.navigateByUrl(this.routesPath.patientList);
   }
 }

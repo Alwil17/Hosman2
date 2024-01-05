@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { WaitingListFilter } from "src/app/models/enums/waiting-list-filter.enum";
@@ -14,13 +14,14 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 import { InvoiceDetailsModalComponent } from "./invoice-details-modal/invoice-details-modal.component";
 import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
+import { Observable, Subscription, repeat } from "rxjs";
 
 @Component({
   selector: "app-patient-waiting-list-page",
   templateUrl: "./patient-waiting-list-page.component.html",
   styleUrls: ["./patient-waiting-list-page.component.scss"],
 })
-export class PatientWaitingListPageComponent implements OnInit {
+export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -40,6 +41,8 @@ export class PatientWaitingListPageComponent implements OnInit {
   viewFilter: WaitingListFilter = WaitingListFilter.ME;
   doctorFilter?: string;
 
+  waitingListFilterBy$!: Subscription
+
   constructor(
     private waitingListService: WaitingListService,
     private toastService: ToastService,
@@ -49,6 +52,7 @@ export class PatientWaitingListPageComponent implements OnInit {
     private modalService: NgbModal,
     private patientVisitService: PatientVisitService
   ) {}
+  
 
   ngOnInit(): void {
     /**
@@ -64,6 +68,10 @@ export class PatientWaitingListPageComponent implements OnInit {
     this.onInputsChanges();
 
     this.refreshWaitingList();
+  }
+
+  ngOnDestroy(): void {
+    this.waitingListFilterBy$.unsubscribe()
   }
 
   goToPatientVisits(waitingListItem: WaitingListItem) {
@@ -94,12 +102,15 @@ export class PatientWaitingListPageComponent implements OnInit {
   }
 
   refreshWaitingList() {
+    this.waitingListFilterBy$ =
     this.waitingListService
       .filterBy({
         view: this.viewFilter,
         doctorRegistrationNumber: this.doctorFilter,
       })
-      .subscribe({
+      .pipe(
+        repeat({delay: 20000})
+      ).subscribe({
         next: (data) => {
           // this.toastService.show({
           //   messages: ["Rafraîchissement de la liste."],

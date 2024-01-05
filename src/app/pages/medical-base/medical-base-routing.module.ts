@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { PatientWaitingListPageComponent } from "./patient-waiting-list-page/patient-waiting-list-page.component";
 import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page/patient-visits-summary-page.component";
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
+import { PatientListPageComponent } from "./patient-list-page/patient-list-page.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "patient-waiting-list", pathMatch: "full" },
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: "patient-visit-form",
     component: PatientVisitFormComponent,
+  },
+  {
+    path: "patient-list",
+    component: PatientListPageComponent,
   },
 ];
 

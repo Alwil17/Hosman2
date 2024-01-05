@@ -39,6 +39,8 @@ import { LoadingSpinnerService } from "src/app/services/secretariat/shared/loadi
 import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -49,8 +51,8 @@ export class PatientVisitFormComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  isPatientInfoCollapsed = true;
-  isVisitFormCollapsed = false;
+  isPatientInfoCollapsed = false;
+  isVisitFormCollapsed = true;
 
   // To set date min
   today = new Date();
@@ -144,7 +146,8 @@ export class PatientVisitFormComponent implements OnInit {
     private medicalBaseRouter: MedicalBaseRouterService,
     private patientVisitService: PatientVisitService,
     private loadingSpinnerService: LoadingSpinnerService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -156,15 +159,21 @@ export class PatientVisitFormComponent implements OnInit {
       { label: "Navette", active: true },
     ];
 
-    this.activePatient = this.patientService.getActivePatient();
-    // if (!this.patientVisitService.selectedWaitingListItem) {
-    //   this.medicalBaseRouter.navigateToPatientWaitingList();
+    // this.activePatient = this.patientService.getActivePatient();
+    if (
+      !this.patientVisitService.selectedWaitingListItem &&
+      !this.patientVisitService.selectedPatient
+    ) {
+      this.medicalBaseRouter.navigateToPatientWaitingList();
 
-    //   return;
-    // }
-
-    // this.activePatient =
-    //   this.patientVisitService.selectedWaitingListItem.patient;
+      return;
+    }
+    if (this.patientVisitService.selectedWaitingListItem) {
+      this.activePatient =
+        this.patientVisitService.selectedWaitingListItem.patient;
+    } else {
+      this.activePatient = this.patientVisitService.selectedPatient!;
+    }
 
     this.isActivePatientAdult = isAdult(this.activePatient.date_naissance);
     // const activePatientExactAge = calculateExactAge(
@@ -222,7 +231,7 @@ export class PatientVisitFormComponent implements OnInit {
 
     this.fetchVisitSelectData();
 
-    this.onFormInputsChanges();
+    // this.onFormInputsChanges();
   }
 
   // GET SELECTS DATA-------------------------------------------------------------------------------------------------------------------------
@@ -286,6 +295,8 @@ export class PatientVisitFormComponent implements OnInit {
         // }));
 
         this.setVisitInfoFieldsInitialValues();
+
+        this.onFormInputsChanges();
       },
       error: (error) => {
         console.log(error);
@@ -473,29 +484,81 @@ export class PatientVisitFormComponent implements OnInit {
   }
 
   setVisitInfoFieldsInitialValues() {
-    this.waitingDetails.visitActs = "C";
-    this.waitingDetails.visitTotalCost = 0;
-    this.waitingDetails.visitDate = new Date(
-      this.patientVisitService.selectedWaitingListItem!.date_attente
-    );
+    if (this.patientVisitService.selectedWaitingListItem) {
+      const actsLength =
+        this.patientVisitService.selectedWaitingListItem.facture.prestation
+          .tarifs.length ?? 0;
 
-    this.visitDateControl.setValue(
-      new Date(
-        this.patientVisitService.selectedWaitingListItem?.date_attente!
-      ).toLocaleDateString("fr-ca")
-    );
+      this.patientVisitService.selectedWaitingListItem.facture.prestation.tarifs.forEach(
+        (value) => {
+          this.waitingDetails.visitActs += value.libelle + " * ";
+        }
+      );
 
-    this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+      this.waitingDetails.visitTotalCost =
+        this.patientVisitService.selectedWaitingListItem.facture.total;
 
-    this.visitSectorControl.setValue({
-      id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
-      text: this.patientVisitService.selectedWaitingListItem?.secteur?.libelle,
-    });
+      for (let i = 0; i < actsLength - 1; i++) {
+        this.addActsField();
+      }
+
+      if (
+        this.patientVisitService.selectedWaitingListItem.facture.prestation
+          .tarifs != null &&
+        this.patientVisitService.selectedWaitingListItem.facture.prestation
+          .tarifs.length !== 0
+      ) {
+        this.actsFields.controls.forEach((control, index) => {
+          control.setValue({
+            id: this.patientVisitService.selectedWaitingListItem!.facture
+              .prestation.tarifs![index].code,
+            text: this.patientVisitService.selectedWaitingListItem!.facture
+              .prestation.tarifs![index].libelle,
+          });
+        });
+      }
+    }
+
+    // this.waitingDetails.visitActs = "C";
+    // this.waitingDetails.visitTotalCost = 0;
+
+    if (this.patientVisitService.selectedWaitingListItem) {
+      this.waitingDetails.visitDate = new Date(
+        this.patientVisitService.selectedWaitingListItem!.date_attente
+      );
+
+      this.visitDateControl.setValue(
+        new Date(
+          this.patientVisitService.selectedWaitingListItem?.date_attente!
+        ).toLocaleDateString("fr-ca")
+      );
+
+      this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+
+      this.visitSectorControl.setValue({
+        id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
+        text: this.patientVisitService.selectedWaitingListItem?.secteur
+          ?.libelle,
+      });
+    } else {
+      this.waitingDetails.visitDate = new Date();
+
+      this.visitDateControl.setValue(new Date().toLocaleDateString("fr-ca"));
+
+      this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+
+      // this.visitSectorControl.setValue({
+      //   id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
+      //   text: this.patientVisitService.selectedWaitingListItem?.secteur?.libelle,
+      // });
+    }
   }
 
   // ON FORM INPUTS CHANGES -----------------------------------------------------------------------------------------------------------
   onFormInputsChanges() {
-    this.visitDateControl.valueChanges.subscribe((value) => {});
+    this.visitDateControl.valueChanges.subscribe((value) => {
+      this.waitingDetails.visitDate = new Date();
+    });
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
@@ -593,28 +656,39 @@ export class PatientVisitFormComponent implements OnInit {
       visitDate.setMinutes(new Date(Date.now()).getMinutes());
       visitDate.setSeconds(new Date(Date.now()).getSeconds());
     } else {
-      visitDate.setHours(
-        new Date(
-          this.patientVisitService.selectedWaitingListItem!.date_attente
-        ).getHours()
-      );
-      visitDate.setMinutes(
-        new Date(
-          this.patientVisitService.selectedWaitingListItem!.date_attente
-        ).getMinutes()
-      );
-      visitDate.setSeconds(
-        new Date(
-          this.patientVisitService.selectedWaitingListItem!.date_attente
-        ).getSeconds()
-      );
+      if (this.patientVisitService.selectedWaitingListItem) {
+        visitDate.setHours(
+          new Date(
+            this.patientVisitService.selectedWaitingListItem!.date_attente
+          ).getHours()
+        );
+        visitDate.setMinutes(
+          new Date(
+            this.patientVisitService.selectedWaitingListItem!.date_attente
+          ).getMinutes()
+        );
+        visitDate.setSeconds(
+          new Date(
+            this.patientVisitService.selectedWaitingListItem!.date_attente
+          ).getSeconds()
+        );
+      } else {
+        visitDate.setHours(new Date(Date.now()).getHours());
+        visitDate.setMinutes(new Date(Date.now()).getMinutes());
+        visitDate.setSeconds(new Date(Date.now()).getSeconds());
+      }
+    }
+
+    let attente_num;
+    if (this.patientVisitService.selectedWaitingListItem) {
+      attente_num =
+        this.patientVisitService.selectedWaitingListItem?.num_attente!;
     }
 
     const consultation = new ConsultationRequest({
       patient_ref: this.activePatient.reference,
       secteur_code: this.visitSectorControl.value.id,
-      attente_num:
-        this.patientVisitService.selectedWaitingListItem?.num_attente!,
+      attente_num: attente_num,
       date_consultation: visitDate,
       // new Date(this.visitDateControl.value),
       hdm: this.diseaseHistoryControl.value,
@@ -643,7 +717,7 @@ export class PatientVisitFormComponent implements OnInit {
           type: ToastType.Success,
         });
 
-        // await this.medicalBaseRouter.navigateToPatientWaitingList();
+        await this.medicalBaseRouter.navigateToPatientWaitingList();
       },
       error: (e) => {
         console.error(e);
@@ -752,5 +826,9 @@ export class PatientVisitFormComponent implements OnInit {
     //     personToContactModal.close();
     //   }
     // );
+  }
+
+  goToPreviousPage() {
+    this.location.back();
   }
 }

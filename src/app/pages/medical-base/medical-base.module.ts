@@ -15,6 +15,9 @@ import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoice-details-modal/invoice-details-modal.component';
+import { PatientListPageComponent } from './patient-list-page/patient-list-page.component';
+import { PatientsModule } from "../secretariat/patients/patients.module";
+import { PatientVisitFormModalComponent } from './patient-visit-form-modal/patient-visit-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,8 @@ import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoic
     PatientVisitFormComponent,
     AppointmentFormComponent,
     InvoiceDetailsModalComponent,
+    PatientListPageComponent,
+    PatientVisitFormModalComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +39,7 @@ import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoic
     NgxMaskModule,
     NgbDropdownModule,
     NgbCollapseModule,
+    PatientsModule
   ],
 })
 export class MedicalBaseModule {}

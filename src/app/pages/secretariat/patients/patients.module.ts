@@ -26,6 +26,7 @@ import { DebtsComponent } from "./debts/debts.component";
 import { PatientCreatePageComponent } from "./patient-create-page/patient-create-page.component";
 import { PatientFormModalComponent } from "./patient-form-modal/patient-form-modal.component";
 import { DebtSettlingModalComponent } from './debts/debt-settling-modal/debt-settling-modal.component';
+import { PatientListPageComponent } from './patient-list-page/patient-list-page.component';
 // import { SimplebarAngularModule } from "simplebar-angular";
 
 @NgModule({
@@ -41,6 +42,7 @@ import { DebtSettlingModalComponent } from './debts/debt-settling-modal/debt-set
     PatientCreatePageComponent,
     PatientFormModalComponent,
     DebtSettlingModalComponent,
+    PatientListPageComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,9 @@ import { DebtSettlingModalComponent } from './debts/debt-settling-modal/debt-set
     NgbCollapseModule,
     // SimplebarAngularModule
   ],
-  exports: [],
+  exports: [
+    PatientListComponent
+  ],
   providers: [DatePipe],
 })
 export class PatientsModule {}

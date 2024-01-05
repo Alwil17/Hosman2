@@ -2,7 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
+  Input,
   OnInit,
+  Output,
   ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
@@ -19,8 +22,11 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./patient-list.component.scss"],
 })
 export class PatientListComponent implements OnInit, AfterViewInit {
-  // bread crumb items
-  breadCrumbItems!: Array<{}>;
+  @Input()
+  isInMedicalBase = false;
+
+  @Output()
+  doubleClickedPatient = new EventEmitter<Patient>();
 
   searchTerm = "";
 
@@ -88,14 +94,6 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    /**
-     * BreadCrumb
-     */
-    this.breadCrumbItems = [
-      { label: "Patients" },
-      { label: "Ancien patient", active: true },
-    ];
-
     this.searchCriterionControl.valueChanges.subscribe((value) => {
       if (
         value.id == this.searchCriteria[0].id ||
@@ -176,6 +174,13 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     });
 
     // console.log(JSON.stringify(patient, null, 2));
+  }
+  onRowItemDoubleClick(patient: Patient) {
+    if (!this.isInMedicalBase) {
+      this.goToPatientActivity(patient);
+    } else {
+      this.doubleClickedPatient.emit(patient);
+    }
   }
 
   async goToPatientNew() {

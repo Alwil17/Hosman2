@@ -1,59 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
-
-type Visit = {
-  number: string;
-  date: string;
-  time: string;
-  weight: number;
-  size: number;
-  tension: string;
-  temperature: number;
-  pc: any;
-  acts: any[];
-};
-
-const VISITS: Visit[] = [
-  {
-    number: "012345",
-    date: "01-03-2022",
-    time: "15:03:59",
-    weight: 75,
-    size: 178,
-    tension: "0/0",
-    temperature: 38,
-    pc: 0,
-    acts: ["RL"],
-  },
-  {
-    number: "015891",
-    date: "01-01-2023",
-    time: "11:31:46",
-    weight: 75,
-    size: 178,
-    tension: "0/0",
-    temperature: 38,
-    pc: 0,
-    acts: ["C"],
-  },
-  {
-    number: "017472",
-    date: "28-09-2023",
-    time: "17:43:02",
-    weight: 75,
-    size: 178,
-    tension: "0/0",
-    temperature: 38,
-    pc: 0,
-    acts: ["C"],
-  },
-];
+import { PatientVisitFormModalComponent } from "../patient-visit-form-modal/patient-visit-form-modal.component";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-patient-visits-summary-page",
@@ -66,6 +23,8 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
 
   // To set date min
   today = new Date().toLocaleDateString("fr-ca");
+
+  activePatient!: Patient;
 
   // Activity form controls
   lastNameControl = new FormControl(null);
@@ -95,7 +54,9 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
     private medicalBaseRouter: MedicalBaseRouterService,
     // private patientService: PatientService,
     private patientVisitService: PatientVisitService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: NgbModal,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -107,35 +68,36 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       { label: "Consultations antérieures", active: true },
     ];
 
-    if (!this.patientVisitService.selectedWaitingListItem) {
+    if (
+      !this.patientVisitService.selectedWaitingListItem &&
+      !this.patientVisitService.selectedPatient
+    ) {
       this.medicalBaseRouter.navigateToPatientWaitingList();
 
       return;
     }
 
-    this.lastNameControl.setValue(
-      this.patientVisitService.selectedWaitingListItem.patient.nom
-    );
-    this.firstNameControl.setValue(
-      this.patientVisitService.selectedWaitingListItem.patient.prenoms
-    );
+    if (this.patientVisitService.selectedWaitingListItem) {
+      this.activePatient =
+        this.patientVisitService.selectedWaitingListItem.patient;
+
+      // console.log('IS');
+    } else {
+      this.activePatient = this.patientVisitService.selectedPatient!;
+    }
+    // console.log('--- '+JSON.stringify(this.activePatient, null, 2));
+
+    this.lastNameControl.setValue(this.activePatient.nom);
+    this.firstNameControl.setValue(this.activePatient.prenoms);
     this.dateOfBirthControl.setValue(
-      new Date(
-        this.patientVisitService.selectedWaitingListItem.patient.date_naissance
-      ).toLocaleDateString("fr-ca")
+      new Date(this.activePatient.date_naissance).toLocaleDateString("fr-ca")
     );
     this.genderControl.setValue(
-      this.genders.find(
-        (value) =>
-          value.short ==
-          this.patientVisitService.selectedWaitingListItem!.patient.sexe
-      )
+      this.genders.find((value) => value.short == this.activePatient.sexe)
     );
 
     this.patientVisitService
-      .getConsultationsByPatientReference(
-        this.patientVisitService.selectedWaitingListItem.patient.reference
-      )
+      .getConsultationsByPatientReference(this.activePatient.reference)
       .subscribe({
         next: async (data) => {
           console.log(data, "\nHere");
@@ -195,5 +157,27 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       );
   }
 
-  openPreviousVisitsModal() {}
+  openPreviousVisitsModal(selectedIndex: number) {
+    const patientVisitFormModal = this.modalService.open(
+      PatientVisitFormModalComponent,
+      {
+        size: "lg",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    patientVisitFormModal.componentInstance.consultations = this.visitsList;
+    patientVisitFormModal.componentInstance.activeIndex = selectedIndex;
+
+    // setTimeout(() => {
+    //   patientVisitFormModal.componentInstance.consultation = this.visitsList[0];
+    //   console.log("Execeuted");
+    // }, 10_000);
+  }
+
+  goToPreviousPage() {
+    this.location.back();
+  }
 }

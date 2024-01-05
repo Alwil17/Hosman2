@@ -119,4 +119,10 @@ export const MEDICAL_BASE_MENU: MenuItem[] = [
     link: "/medical-base/patient-waiting-list",
     icon: "ri-file-list-3-fill",
   },
+  {
+    id: 3,
+    label: "Consulter",
+    link: "/medical-base/patient-list",
+    icon: "ri-user-search-fill",
+  },
 ];

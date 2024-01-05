@@ -16,8 +16,8 @@ export interface IConsultation {
   patient: Patient;
   secteur_code: string;
   secteur: Sector;
-  attente_num: number;
-  attente: WaitingListItemShort;
+  attente_num?: number;
+  attente?: WaitingListItemShort;
   constante?: Constante;
   actes: Tariff[];
   motifs: Motif[];
@@ -35,8 +35,8 @@ export class Consultation {
   patient: Patient;
   secteur_code: string;
   secteur: Sector;
-  attente_num: number;
-  attente: WaitingListItemShort;
+  attente_num?: number;
+  attente?: WaitingListItemShort;
   constante?: Constante;
   actes: Tariff[];
   motifs: Motif[];

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
 import { ConsultationRequest } from "src/app/models/medical-base/requests/consultation-request.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { environment } from "src/environments/environment";
 
@@ -13,8 +14,13 @@ const apiEndpoint = environment.medical_base + "consultations";
 })
 export class PatientVisitService {
   private _selectedWaitingListItem?: WaitingListItem;
+  private _selectedPatient?: Patient;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // if (this._selectedWaitingListItem && this._selectedPatient) {
+    //   throw new Error("Only one defined at a time");
+    // }
+  }
 
   getAll(): Observable<Consultation[]> {
     return this.http.get<Consultation[]>(apiEndpoint).pipe(
@@ -38,7 +44,7 @@ export class PatientVisitService {
     patientReference: string
   ): Observable<Consultation[]> {
     console.log(apiEndpoint + "/patient/" + patientReference);
-    
+
     return this.http.get<Consultation[]>(
       apiEndpoint + "/patient/" + patientReference
     );
@@ -68,9 +74,21 @@ export class PatientVisitService {
 
   selectWaitingListItem(waitingListItem: WaitingListItem) {
     this._selectedWaitingListItem = waitingListItem;
+
+    this._selectedPatient = undefined;
   }
 
   public get selectedWaitingListItem(): WaitingListItem | undefined {
     return this._selectedWaitingListItem;
+  }
+
+  selectPatient(patient: Patient) {
+    this._selectedPatient = patient;
+
+    this._selectedWaitingListItem = undefined;
+  }
+
+  public get selectedPatient(): Patient | undefined {
+    return this._selectedPatient;
   }
 }

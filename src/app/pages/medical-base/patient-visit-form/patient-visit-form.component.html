@@ -47,7 +47,7 @@
 
         <button
           type="button"
-          class="btn btn-warning btn-label waves-effect waves-light"
+          class="btn btn-warning btn-label waves-effect waves-light text-dark"
         >
           <!-- (click)="openPatientModificationModal()" -->
           <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
@@ -161,7 +161,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!isActivePatientAdult">
         <div class="col-md-6">
           <app-card title="MERE" [hasHeader]="true" [hasBody]="true">
             <ng-container customCardBody>
@@ -309,12 +309,16 @@
     <div class="d-flex justify-content-end">
       <button
         type="button"
-        class="btn btn-label waves-effect waves-light me-3"
+        class="btn btn-label waves-effect waves-light me-3 text-dark"
         [ngClass]="{
           'btn-secondary': isVisitFormCollapsed,
-          'btn-warning': !isVisitFormCollapsed
+          'btn-warning': !isVisitFormCollapsed,
+          'text-dark': !isVisitFormCollapsed
         }"
-        (click)="isVisitFormCollapsed = !isVisitFormCollapsed"
+        (click)="
+          isVisitFormCollapsed = !isVisitFormCollapsed;
+          isPatientInfoCollapsed = !isPatientInfoCollapsed
+        "
         [attr.aria-expanded]="!isVisitFormCollapsed"
         aria-controls="collapseExample"
       >
@@ -349,19 +353,22 @@
       <div>
         <button
           type="button"
-          class="btn btn-info btn-label waves-effect waves-light me-3"
+          class="btn btn-warning btn-label waves-effect waves-light me-2 text-dark"
+          (click)="goToPreviousPage()"
+        >
+          <i
+            class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+          ></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-info btn-label waves-effect waves-light"
         >
           <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
           Voir les anciennes consultations
         </button>
-
-        <!-- <button
-          type="button"
-          class="btn btn-danger btn-label waves-effect waves-light"
-        >
-          <i class="ri-close-fill label-icon align-middle fs-16 me-2"></i>
-          Annuler la consultation
-        </button> -->
       </div>
     </div>
   </ng-container>
