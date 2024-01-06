@@ -77,7 +77,7 @@ export class InsuranceDebtService {
       apiComplementary += "&slug=" + criteria.insuranceSlug;
     }
 
-    return this.http.post(`${apiEndpoint}/search?${apiComplementary}`, {
+    return this.http.get(`${apiEndpoint}/print?${apiComplementary}`, {
       headers: headers,
       responseType: "blob",
     });

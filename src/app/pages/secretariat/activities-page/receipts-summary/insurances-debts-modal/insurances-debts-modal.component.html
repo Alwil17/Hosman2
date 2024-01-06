@@ -92,11 +92,12 @@
         >
           <thead class="table-light text-muted">
             <tr>
+              <th scope="col">{{ "Numéro facture" | uppercase }}</th>
               <th scope="col">{{ "Assurance" | uppercase }}</th>
               <th scope="col">{{ "Nom" | uppercase }}</th>
               <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
               <th scope="col">{{ "Actes" | uppercase }}</th>
-              <th scope="col">{{ "Montant total" | uppercase }}</th>
+              <th scope="col">{{ "Montant facture" | uppercase }}</th>
               <th scope="col">{{ "Montant payé" | uppercase }}</th>
               <th scope="col">{{ "Prise en charge" | uppercase }}</th>
               <th scope="col">{{ "Date" | uppercase }}</th>
@@ -110,6 +111,9 @@
               class="user-select-none"
             >
               <td>
+                {{ insuranceDebt.facture.reference }}
+              </td>
+              <td>
                 {{ insuranceDebt.assurance.nom }}
               </td>
               <td>
@@ -119,18 +123,18 @@
                 {{ insuranceDebt.patient.prenoms }}
               </td>
               <td>
-                {{ insuranceDebt.acte.libelle }}
+                {{ insuranceDebt.tarif?.libelle ?? "" }}
               </td>
-              <td>
+              <td class="text-end">
                 {{ insuranceDebt.facture.total | mask : "separator" }}
               </td>
-              <td>
+              <td class="text-end">
                 {{
                   insuranceDebt.facture.a_payer -
                     insuranceDebt.facture.creance.montant | mask : "separator"
                 }}
               </td>
-              <td>
+              <td class="text-end">
                 {{ insuranceDebt.montant_pec | mask : "separator" }}
               </td>
               <td>
