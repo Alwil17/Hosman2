@@ -49,10 +49,9 @@ export class InsurancesDebtsModalComponent implements OnInit {
 
   searchTerm = "";
 
-  // activityTotal = 0;
-  // paidTotal = 0;
-  // scTotal = 0;
-  // generalTotal = 0;
+  actsAmountTotal = 0;
+  paidAmountTotal = 0;
+  scAmountTotal = 0;
 
   constructor(
     public modal: NgbActiveModal,
@@ -134,18 +133,16 @@ export class InsurancesDebtsModalComponent implements OnInit {
           //   type: ToastType.Success,
           // });
 
-          // this.activityTotal = 0;
-          // this.paidTotal = 0;
-          // this.scTotal = 0;
-          // this.generalTotal = 0;
+          this.actsAmountTotal = 0;
+          this.paidAmountTotal = 0;
+          this.scAmountTotal = 0;
 
-          // this.insurancesDebtsList.forEach((value) => {
-          //   this.activityTotal += value.total;
-          //   this.paidTotal += value.a_payer - value.creance.montant;
-          //   this.scTotal += value.montant_pec;
-          // });
-          // this.generalTotal =
-          //   this.activityTotal + this.paidTotal + this.scTotal;
+          this.insurancesDebtsList.forEach((value) => {
+            this.actsAmountTotal += value.facture.total;
+            this.paidAmountTotal +=
+              value.facture.a_payer - value.facture.creance.montant;
+            this.scAmountTotal += value.montant_pec;
+          });
 
           this.refreshInvoices();
         },

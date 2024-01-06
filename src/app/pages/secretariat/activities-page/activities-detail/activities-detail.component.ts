@@ -40,7 +40,7 @@ export class ActivitiesDetailComponent implements OnInit {
   activityTotal = 0;
   paidTotal = 0;
   scTotal = 0;
-  generalTotal = 0;
+  // generalTotal = 0;
 
   constructor(
     private actGroupService: ActGroupService,
@@ -115,7 +115,7 @@ export class ActivitiesDetailComponent implements OnInit {
           this.activityTotal = 0;
           this.paidTotal = 0;
           this.scTotal = 0;
-          this.generalTotal = 0;
+          // this.generalTotal = 0;
 
           this.invoicesList.forEach((value) => {
             this.activityTotal += value.total;
@@ -123,8 +123,8 @@ export class ActivitiesDetailComponent implements OnInit {
             this.scTotal += value.montant_pec;
           });
 
-          this.generalTotal =
-            this.activityTotal + this.paidTotal + this.scTotal;
+          // this.generalTotal =
+          //   this.activityTotal + this.paidTotal + this.scTotal;
 
           this.refreshInvoices();
         },

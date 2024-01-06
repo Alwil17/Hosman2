@@ -218,12 +218,18 @@
 
           <tfoot>
             <tr>
-              <!-- <th>Total</th>
-                <th colspan="3" class="text-end">{{ invoicesList.length }}</th>
-                <th class="text-end">{{ activityTotal | mask : "separator" }}</th>
-                <th class="text-end">{{ paidTotal | mask : "separator" }}</th>
-                <th class="text-end">{{ scTotal | mask : "separator" }}</th>
-                <th></th> -->
+              <th>Total</th>
+              <th colspan="4" class="text-end">
+                {{ insurancesDebtsList.length }}
+              </th>
+              <th class="text-end">
+                {{ actsAmountTotal | mask : "separator" }}
+              </th>
+              <th class="text-end">
+                {{ paidAmountTotal | mask : "separator" }}
+              </th>
+              <th class="text-end">{{ scAmountTotal | mask : "separator" }}</th>
+              <th></th>
             </tr>
           </tfoot>
         </table>
