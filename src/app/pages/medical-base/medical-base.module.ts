@@ -18,6 +18,7 @@ import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoic
 import { PatientListPageComponent } from './patient-list-page/patient-list-page.component';
 import { PatientsModule } from "../secretariat/patients/patients.module";
 import { PatientVisitFormModalComponent } from './patient-visit-form-modal/patient-visit-form-modal.component';
+import { CountdownModule } from 'ngx-countdown';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PatientVisitFormModalComponent } from './patient-visit-form-modal/patie
     NgxMaskModule,
     NgbDropdownModule,
     NgbCollapseModule,
-    PatientsModule
+    PatientsModule,
+    CountdownModule
   ],
 })
 export class MedicalBaseModule {}

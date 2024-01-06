@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { WaitingListFilter } from "src/app/models/enums/waiting-list-filter.enum";
@@ -15,6 +15,7 @@ import { InvoiceDetailsModalComponent } from "./invoice-details-modal/invoice-de
 import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { Observable, Subscription, repeat } from "rxjs";
+import { CountdownComponent } from "ngx-countdown";
 
 @Component({
   selector: "app-patient-waiting-list-page",
@@ -41,7 +42,11 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   viewFilter: WaitingListFilter = WaitingListFilter.ME;
   doctorFilter?: string;
 
-  waitingListFilterBy$!: Subscription
+  waitingListFilterBy$!: Subscription;
+
+  @ViewChild("countdown", { static: false })
+  private countdown!: CountdownComponent;
+  isFirstCountdown = true;
 
   constructor(
     private waitingListService: WaitingListService,
@@ -52,7 +57,6 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private patientVisitService: PatientVisitService
   ) {}
-  
 
   ngOnInit(): void {
     /**
@@ -71,7 +75,7 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.waitingListFilterBy$.unsubscribe()
+    this.waitingListFilterBy$.unsubscribe();
   }
 
   goToPatientVisits(waitingListItem: WaitingListItem) {
@@ -102,15 +106,17 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   }
 
   refreshWaitingList() {
-    this.waitingListFilterBy$ =
-    this.waitingListService
+    if (this.waitingListFilterBy$) {
+      this.waitingListFilterBy$.unsubscribe();
+    }
+
+    this.waitingListFilterBy$ = this.waitingListService
       .filterBy({
         view: this.viewFilter,
         doctorRegistrationNumber: this.doctorFilter,
       })
-      .pipe(
-        repeat({delay: 20000})
-      ).subscribe({
+      .pipe(repeat({ delay: 120000 }))
+      .subscribe({
         next: (data) => {
           // this.toastService.show({
           //   messages: ["Rafraîchissement de la liste."],
@@ -120,6 +126,16 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
           this.waitingList = data;
 
           this.refreshWaitingListTable();
+
+          if (this.isFirstCountdown) {
+            this.countdown.begin();
+            this.isFirstCountdown = false;
+          } else {
+            this.countdown.restart();
+
+            // have to call begin() again, because "demand" is "true" in countown config option
+            this.countdown.begin();
+          }
         },
         error: (e) => {
           console.error(e);
