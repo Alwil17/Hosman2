@@ -9,7 +9,8 @@ const INSURANCES: Insurance[] = [
     email: "ascoma@insurance.com",
     tel1: "99999999",
     tel2: "77777777",
-    representant: "REP"
+    representant: "REP",
+    slug: "",
   },
   {
     id: 2,
@@ -18,7 +19,8 @@ const INSURANCES: Insurance[] = [
     email: "gta@insurance.com",
     tel1: "99999999",
     tel2: "77777777",
-    representant: "REP"
+    representant: "REP",
+    slug: "",
   },
   {
     id: 3,
@@ -27,7 +29,8 @@ const INSURANCES: Insurance[] = [
     email: "etra@insurance.com",
     tel1: "99999999",
     tel2: "77777777",
-    representant: "REP"
+    representant: "REP",
+    slug: "",
   },
   {
     id: 4,
@@ -36,7 +39,8 @@ const INSURANCES: Insurance[] = [
     email: "grassavoye@insurance.com",
     tel1: "99999999",
     tel2: "77777777",
-    representant: "REP"
+    representant: "REP",
+    slug: "",
   },
 ];
 

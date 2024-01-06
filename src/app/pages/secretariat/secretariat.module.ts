@@ -17,8 +17,9 @@ import { PersonFormComponent } from "./expenses/person-form/person-form.componen
 import { ActivitiesPageComponent } from "./activities-page/activities-page.component";
 import { ReceiptsSummaryComponent } from "./activities-page/receipts-summary/receipts-summary.component";
 import { ActivitiesDetailComponent } from "./activities-page/activities-detail/activities-detail.component";
-import { TariffsComponent } from './tariffs/tariffs.component';
-import { ReportSearchCriteriaModalComponent } from './activities-page/receipts-summary/report-search-criteria-modal/report-search-criteria-modal.component';
+import { TariffsComponent } from "./tariffs/tariffs.component";
+import { ReportSearchCriteriaModalComponent } from "./activities-page/receipts-summary/report-search-criteria-modal/report-search-criteria-modal.component";
+import { InsurancesDebtsModalComponent } from "./activities-page/receipts-summary/insurances-debts-modal/insurances-debts-modal.component";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ReportSearchCriteriaModalComponent } from './activities-page/receipts-s
     ActivitiesDetailComponent,
     TariffsComponent,
     ReportSearchCriteriaModalComponent,
+    InsurancesDebtsModalComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,7 @@ import { ReportSearchCriteriaModalComponent } from './activities-page/receipts-s
     NgxMaskModule,
     NgbPaginationModule,
     NgbDropdownModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
     // NgbModalModule
   ],
 })

@@ -10,6 +10,7 @@ import { CheckoutService } from "src/app/services/secretariat/activities/checkou
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { ReportSearchCriteriaModalComponent } from "./report-search-criteria-modal/report-search-criteria-modal.component";
 import { SelectOption } from "src/app/models/extras/select.model";
+import { InsurancesDebtsModalComponent } from "./insurances-debts-modal/insurances-debts-modal.component";
 
 @Component({
   selector: "app-receipts-summary",
@@ -180,7 +181,19 @@ export class ReceiptsSummaryComponent implements OnInit {
         size: "xl",
         centered: true,
         scrollable: true,
-        backdrop: "static",
+        // backdrop: "static",
+      }
+    );
+  }
+
+  displayInsuranceRequestsModal() {
+    const insuranceRequestsModal = this.modalService.open(
+      InsurancesDebtsModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        // backdrop: "static",
       }
     );
   }

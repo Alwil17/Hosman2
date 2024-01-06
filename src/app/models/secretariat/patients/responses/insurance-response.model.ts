@@ -8,4 +8,5 @@ export interface InsuranceResponse {
   tel2?: string;
   representant?: string;
   type_assurance: InsuranceTypeResponse;
+  slug: string;
 }

@@ -1,0 +1,266 @@
+<div class="modal-header border-bottom border-1 border-dark">
+  <h5 class="modal-title">Requêtes des Prises En Charge</h5>
+  <button
+    type="button"
+    class="btn-close btn-danger"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="modal.close('Close click')"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <app-input
+            label="Date de début"
+            type="date"
+            [maxDate]="today"
+            [control]="startDateControl"
+          >
+          </app-input>
+        </div>
+
+        <div class="col-md-6">
+          <app-input
+            label="Date de fin"
+            type="date"
+            [maxDate]="today"
+            [control]="endDateControl"
+          >
+          </app-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <app-select
+            label="Type d'assurance"
+            [clearable]="false"
+            [editable]="false"
+            [options]="insuranceTypes"
+            [control]="insuranceTypeControl"
+          ></app-select>
+        </div>
+
+        <div class="col-md-6">
+          <app-select
+            label="Assurances"
+            [clearable]="false"
+            [options]="insurances"
+            [control]="insuranceControl"
+          ></app-select>
+        </div>
+
+        <!-- <div class="col-md-6">
+                    <div class="search-box mt-4">
+                      <input
+                        type="text"
+                        name="searchTerm"
+                        class="form-control"
+                        placeholder="Rechercher (nom et/ou prénoms)"
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="refreshInvoicesList()"
+                      />
+                      <i class="ri-search-line search-icon"></i>
+                    </div>
+                  </div> -->
+      </div>
+    </div>
+
+    <div class="d-flex align-items-end col-lg-4">
+      <button
+        type="button"
+        class="btn btn-info btn-label ms-auto"
+        (click)="printInsurancesDebt()"
+      >
+        <i class="ri-printer-fill label-icon align-middle fs-16 me-2"></i>
+        Imprimer
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive table-card">
+        <table
+          class="table table-hover table-striped table-bordered align-middle mb-0"
+        >
+          <thead class="table-light text-muted">
+            <tr>
+              <th scope="col">{{ "Assurance" | uppercase }}</th>
+              <th scope="col">{{ "Nom" | uppercase }}</th>
+              <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
+              <th scope="col">{{ "Actes" | uppercase }}</th>
+              <th scope="col">{{ "Montant total" | uppercase }}</th>
+              <th scope="col">{{ "Montant payé" | uppercase }}</th>
+              <th scope="col">{{ "Prise en charge" | uppercase }}</th>
+              <th scope="col">{{ "Date" | uppercase }}</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              *ngFor="let insuranceDebt of insurancesDebtsListCut"
+              class="user-select-none"
+            >
+              <td>
+                {{ insuranceDebt.assurance.nom }}
+              </td>
+              <td>
+                {{ insuranceDebt.patient.nom }}
+              </td>
+              <td>
+                {{ insuranceDebt.patient.prenoms }}
+              </td>
+              <td>
+                {{ insuranceDebt.acte.libelle }}
+              </td>
+              <td>
+                {{ insuranceDebt.facture.total | mask : "separator" }}
+              </td>
+              <td>
+                {{
+                  insuranceDebt.facture.a_payer -
+                    insuranceDebt.facture.creance.montant | mask : "separator"
+                }}
+              </td>
+              <td>
+                {{ insuranceDebt.montant_pec | mask : "separator" }}
+              </td>
+              <td>
+                {{ insuranceDebt.facture.date_facture | date : "dd/MM/yyyy" }}
+              </td>
+              <!-- <td>{{ invoice.prestation.patient.nom }}</td>
+                    <td>{{ invoice.prestation.patient.prenoms }}</td> -->
+              <!-- <td>
+                  <ngb-highlight
+                    [result]="invoice.prestation.patient.nom"
+                    [term]="searchTerm.split(' ')[0]"
+                  ></ngb-highlight>
+                </td>
+                <td>
+                  <ngb-highlight
+                    [result]="invoice.prestation.patient.prenoms"
+                    [term]="[searchTerm.split(' ')[1], searchTerm]"
+                  ></ngb-highlight>
+                </td> -->
+              <!-- <td>
+                  <ng-container
+                    *ngFor="
+                      let act of invoice.prestation.tarifs | slice : 0 : 5;
+                      index as i;
+                      count as c
+                    "
+                  >
+                    <span>
+                      {{ act.libelle }}
+                    </span>
+                    <span *ngIf="i < 4 && c !== i + 1"> <b>*</b> </span>
+                    <span *ngIf="i == 4 && c < invoice.prestation.tarifs.length"
+                      ><b> * ... </b></span
+                    >
+                  </ng-container>
+                </td> -->
+              <!-- <td class="text-end">{{ invoice.total | mask : "separator" }}</td> -->
+
+              <!-- <td>{{ invoice.date_facture | date : "dd/MM/yyyy" }}</td> -->
+
+              <td>
+                <div class="d-inline-block" ngbDropdown>
+                  <!-- container="body" -->
+                  <!-- <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
+                        ></i>
+                        Détails
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Duplicata
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Imprimer
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                        ></i>
+                        Supprimer
+                      </button>
+                    </div> -->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <!-- <th>Total</th>
+                <th colspan="3" class="text-end">{{ invoicesList.length }}</th>
+                <th class="text-end">{{ activityTotal | mask : "separator" }}</th>
+                <th class="text-end">{{ paidTotal | mask : "separator" }}</th>
+                <th class="text-end">{{ scTotal | mask : "separator" }}</th>
+                <th></th> -->
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination
+          [collectionSize]="collectionSize"
+          [(page)]="page"
+          [pageSize]="pageSize"
+          (pageChange)="refreshInvoices()"
+        >
+        </ngb-pagination>
+
+        <select
+          class="form-select"
+          style="width: auto"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="refreshInvoices()"
+        >
+          <option [ngValue]="10">10 éléments par page</option>
+          <option [ngValue]="15">15 éléments par page</option>
+          <option [ngValue]="20">20 éléments par page</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer py-1 border-top border-1 border-dark">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-link link-success fw-medium shadow-none"
+    data-bs-dismiss="modal"
+    (click)="modal.close('Close click')"
+    ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
+  >
+</div>
