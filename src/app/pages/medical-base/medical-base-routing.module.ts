@@ -4,6 +4,7 @@ import { PatientWaitingListPageComponent } from "./patient-waiting-list-page/pat
 import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page/patient-visits-summary-page.component";
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
 import { PatientListPageComponent } from "./patient-list-page/patient-list-page.component";
+import { IsNotDirtyGuard } from "src/app/guards/is-not-dirty.guard";
 
 const routes: Routes = [
   { path: "", redirectTo: "patient-waiting-list", pathMatch: "full" },
@@ -16,6 +17,7 @@ const routes: Routes = [
   {
     path: "patient-visit-form",
     component: PatientVisitFormComponent,
+    canDeactivate: [IsNotDirtyGuard],
   },
   {
     path: "patient-list",

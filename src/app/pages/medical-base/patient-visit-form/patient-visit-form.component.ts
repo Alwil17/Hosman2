@@ -5,10 +5,12 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 import { AppointmentFormComponent } from "../appointment-form/appointment-form.component";
 import { MbService } from "../mb.service";
 import {
+  Observable,
   Subject,
   catchError,
   concat,
   distinctUntilChanged,
+  firstValueFrom,
   forkJoin,
   of,
   switchMap,
@@ -41,13 +43,15 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { Location } from "@angular/common";
+import { IsNotDirty } from "src/app/guards/is-not-dirty.guard";
+import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
   templateUrl: "./patient-visit-form.component.html",
   styleUrls: ["./patient-visit-form.component.scss"],
 })
-export class PatientVisitFormComponent implements OnInit {
+export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -232,6 +236,35 @@ export class PatientVisitFormComponent implements OnInit {
     this.fetchVisitSelectData();
 
     // this.onFormInputsChanges();
+  }
+
+  async isNotDirty(): Promise<boolean> {
+    console.log("Form 1 is dirty : " + this.patientVisitForm1.dirty);
+    console.log("Form 2 is dirty : " + this.patientVisitForm2.dirty);
+
+    if (this.patientVisitForm1.dirty || this.patientVisitForm2.dirty) {
+      // OPEN CONFIRMATION MODAL
+      const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+        size: "md",
+        centered: true,
+        keyboard: false,
+        backdrop: "static",
+      });
+
+      confirmModalRef.componentInstance.message =
+        "Vous n'avez pas enregistré vos modifications. Voulez-vous vraiment quitter la page ?";
+
+      const isConfirmed = await firstValueFrom<boolean>(
+        confirmModalRef.componentInstance.isConfirmed.asObservable()
+      );
+
+      // CLOSE CONFIRMATION MODAL
+      confirmModalRef.close();
+
+      return Promise.resolve(isConfirmed);
+    } else {
+      return Promise.resolve(true);
+    }
   }
 
   // GET SELECTS DATA-------------------------------------------------------------------------------------------------------------------------
@@ -829,6 +862,7 @@ export class PatientVisitFormComponent implements OnInit {
   }
 
   goToPreviousPage() {
-    this.location.back();
+    this.medicalBaseRouter.navigateToPatientVisitsSummary();
+    // this.location.back(); // Some bug when using it with canDeactive guard. Would go back twice
   }
 }
