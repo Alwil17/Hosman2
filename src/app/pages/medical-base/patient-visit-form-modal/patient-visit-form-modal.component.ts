@@ -113,7 +113,16 @@ export class PatientVisitFormModalComponent implements OnInit {
     this.onFormInputsChanges();
   }
 
-  prev() {
+  firstVisit() {
+    this.activeIndex = this.consultations.length - 1;
+    // this.consultation = this.consultations[this.activeIndex];
+
+    console.log(JSON.stringify(this.consultation, null, 2));
+
+    this.setVisitInfoFieldsInitialValues();
+  }
+
+  previousVisit() {
     if (this.activeIndex < this.consultations.length - 1) {
       this.activeIndex++;
       // this.consultation = this.consultations[this.activeIndex];
@@ -124,7 +133,7 @@ export class PatientVisitFormModalComponent implements OnInit {
     }
   }
 
-  next() {
+  nextVisit() {
     if (this.activeIndex >= 1) {
       this.activeIndex--;
       // this.consultation = this.consultations[this.activeIndex];
@@ -133,6 +142,15 @@ export class PatientVisitFormModalComponent implements OnInit {
 
       this.setVisitInfoFieldsInitialValues();
     }
+  }
+
+  lastVisit() {
+    this.activeIndex = 0;
+    // this.consultation = this.consultations[this.activeIndex];
+
+    console.log(JSON.stringify(this.consultation, null, 2));
+
+    this.setVisitInfoFieldsInitialValues();
   }
 
   // GET SELECTS DATA-------------------------------------------------------------------------------------------------------------------------
