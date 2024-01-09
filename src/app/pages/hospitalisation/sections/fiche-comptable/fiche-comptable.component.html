@@ -1,20 +1,5 @@
 <div class="col-md-12"><h5 class="fw-semibold">Fiche comptable</h5></div>
 <ul class="nav nav-pills arrow-navtabs nav-success bg-light" role="tablist">
-    <!-- <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#arrow-overview" role="tab">
-            <span class="d-none d-sm-block">Consommables</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#arrow-profile" role="tab">
-            <span class="d-none d-sm-block">Médicaments</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#arrow-contact" role="tab">
-            <span class="d-none d-sm-block">Solutés</span>
-        </a>
-    </li> -->
     <li *ngFor="let item of tabs; let i = index" class="nav-item">
         <a [class]="'nav-link '+ (i === 0 ? 'active' : '')" data-bs-toggle="tab" [href]="'#arrow-'+item.type" role="tab">
             <span class="d-none d-sm-block">{{ item.name }}</span>
@@ -24,12 +9,8 @@
 <!-- Tab panes -->
 <div class="tab-content text-muted">
     <div *ngFor="let item of tabs; let i = index" [class]="'tab-pane ' + (i === 0 ? 'active' : '')" [id]="'arrow-'+item.type" role="tabpanel">
-        <app-comptable-table-classic [tableData]="item.data" [typeData]="item.type"></app-comptable-table-classic>
+        <app-comptable-table-classic 
+        [tableData]="item.data" [typeData]="item.type"
+        ></app-comptable-table-classic>
     </div>
-    <!-- <div class="tab-pane active" id="arrow-profile" role="tabpanel">
-        <app-comptable-table-classic></app-comptable-table-classic>
-    </div>
-    <div class="tab-pane" id="arrow-contact" role="tabpanel">
-        <app-comptable-table-classic></app-comptable-table-classic>
-    </div> -->
 </div>

@@ -19,7 +19,6 @@ import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
   styleUrls: ["./admission.component.scss"],
 })
 export class AdmissionComponent implements OnInit {
-
   subscription: Subscription | undefined;
 
   lits: Lit[] = [];
@@ -142,21 +141,29 @@ export class AdmissionComponent implements OnInit {
       arrive: this.arrive,
     });
 
-    this.subscription = this.hospitalisationStore.stateChanged.subscribe((state) => {
-      // console.log("''''''''''''''''''''''''''''''''''''''''''''''")
-      // console.log(state);
-      if (state) {
-        if (state.patient) this.patient = state.patient;
-        if (state.consultation) this.consultation = state.consultation;
-        if (state.chambres) this.chambres = state.chambres;
-        if (state.sectors) this.sectors = state.sectors;
+    this.subscription = this.hospitalisationStore.stateChanged.subscribe(
+      (state) => {
+        // console.log("''''''''''''''''''''''''''''''''''''''''''''''")
+        // console.log(state);
+        if (state) {
+          if (state.patient) this.patient = state.patient;
+          if (state.consultation) this.consultation = state.consultation;
+          if (state.chambres) this.chambres = state.chambres;
+          if (state.sectors) this.sectors = state.sectors;
 
-        this.loadPatient(this.patient);
+          this.loadPatient(this.patient);
 
-        this.loadHospitalisation(null);
+          if (
+            state.hospitalisation !== undefined &&
+            state.hospitalisation !== null
+          ) {
+            this.loadHospitalisation(state.hospitalisation);
+          } else {
+            this.loadHospitalisation(null);
+          }
+        }
       }
-    });
-
+    );
 
     this.chambreChanges = this.admissionFormGroup
       .get("chambre")
@@ -166,28 +173,25 @@ export class AdmissionComponent implements OnInit {
       });
   }
 
-
   loadPatient(patient: any) {
     if (this.patient !== null) {
       this.firstname.setValue(patient["nom"]);
-    this.lastname.setValue(patient["prenoms"]);
-    this.gender.setValue(
-      this.genders.find((g) => g["short"] == patient["sexe"])!.short
-    );
-    this.statut.setValue(
-      patient["sexe"] == "M" ? this.statuts[0].text : this.statuts[2].text
-    );
-    this.birth_date.setValue(
-      this.formatDate(patient["date_naissance"], "yyyy-MM-dd")
-    );
+      this.lastname.setValue(patient["prenoms"]);
+      this.gender.setValue(
+        this.genders.find((g) => g["short"] == patient["sexe"])!.short
+      );
+      this.statut.setValue(
+        patient["sexe"] == "M" ? this.statuts[0].text : this.statuts[2].text
+      );
+      this.birth_date.setValue(
+        this.formatDate(patient["date_naissance"], "yyyy-MM-dd")
+      );
     }
-    
   }
 
   loadHospitalisation(hospitalisation: any) {
-    if (hospitalisation == null) {
-      if (this.patient !== null) {
-         this.sector.setValue(this.consultation["secteur"]["code"]);
+    if (this.patient !== null) {
+      this.sector.setValue(this.consultation["secteur"]["code"]);
       this.motif.setValue(
         this.consultation.motifs
           .map(function (c: any) {
@@ -202,7 +206,14 @@ export class AdmissionComponent implements OnInit {
           })
           .join(",")
       );
-      }
+    }
+
+    if (hospitalisation != null) {
+      this.hdm.setValue(hospitalisation['hdm'])
+      this.motif.setValue(hospitalisation['motif'])
+      this.diagnostic.setValue(hospitalisation['diagnostic'])
+      this.arrive.setValue(hospitalisation['arrive'])
+      this.sector.setValue(hospitalisation["secteur_code"]);
     }
   }
 
@@ -240,11 +251,32 @@ export class AdmissionComponent implements OnInit {
         };
 
         // console.log(data)
-        this.hospitalisationStore.post(data).subscribe(
+        this.hospitalisationStore.saveHospitalisation(data).subscribe(
           (response) => {
             const responseData = response;
             this.toast.success("Hospitalisation", "Admission effectuée");
             this.hospitalisation_id = responseData;
+            this.hospitalisationStore.updateStore(
+              { hospitalisation_id: responseData },
+              "SET ID"
+            );
+            this.hospitalisationStore.commitSuivi({
+              "type": "chambres",
+              "type_id": this.chambre.value,
+              "qte": 1,
+              "apply_date": new Date(),
+              "hospit_id": this.hospitalisation_id
+            })
+            this.hospitalisationStore.fetchHospitalisation(responseData);
+
+            console.log("..................................")
+            console.log({
+              "type": "chambres",
+              "type_id": this.chambre.value,
+              "qte": 1,
+              "apply_date": new Date(),
+              "hospit_id": this.hospitalisation_id
+            })
           },
           (error) => {
             console.error("POST request failed:", error);
@@ -258,6 +290,6 @@ export class AdmissionComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
     this.chambreChanges!.unsubscribe();
-    this.subscription?.unsubscribe
+    this.subscription?.unsubscribe;
   }
 }

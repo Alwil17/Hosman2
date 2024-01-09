@@ -1,12 +1,12 @@
 <!-- Accordions with Icons -->
 <div class="accordion custom-accordionwithicon" id="accordionWithicon">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="accordionwithiconExample1">
+  <div class="accordion-item" id="accordion-admission">
+    <h2 class="accordion-header">
       <button
         class="accordion-button collapsed"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#accor_iconExamplecollapse1"
+        data-bs-target="#accordion-admission-content"
         aria-expanded="true"
         aria-controls="accor_iconExamplecollapse1"
       >
@@ -14,7 +14,7 @@
       </button>
     </h2>
     <div
-      id="accor_iconExamplecollapse1"
+      id="accordion-admission-content"
       class="accordion-collapse collapse show"
       aria-labelledby="accordionwithiconExample1"
       data-bs-parent="#accordionWithicon"
@@ -24,13 +24,13 @@
       </div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="accordionwithiconExample2">
+  <div class="accordion-item" id="accordion-fiches">
+    <h2 class="accordion-header" >
       <button
         class="accordion-button"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#accor_iconExamplecollapse2"
+        data-bs-target="#accordion-fiches-content"
         aria-expanded="false"
         aria-controls="accor_iconExamplecollapse2"
       >
@@ -38,14 +38,20 @@
       </button>
     </h2>
     <div
-      id="accor_iconExamplecollapse2"
+      id="accordion-fiches-content"
       class="accordion-collapse collapse"
       aria-labelledby="accordionwithiconExample2"
       data-bs-parent="#accordionWithicon"
     >
       <div class="accordion-body">
           <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-12 my-5" *ngIf="hospitalisation == null || hospitalisation.id == undefined">
+                <h4 class="text-center"> Vous devez hospitaliser le patient pour pouvoir continuer </h4>
+            </div>
+            
+            <div class="col-md-12" *ngIf="hospitalisation !== null && hospitalisation.id !== undefined">
+              <div class="row">
+                 <div class="col-md-10">
               <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-comptable" role="tabpanel" aria-labelledby="v-pills-comptable-tab">
                     <app-fiche-comptable> </app-fiche-comptable>
@@ -77,8 +83,7 @@
                 <div class="tab-pane fade" id="v-pills-sortie" role="tabpanel" aria-labelledby="v-pills-sortie-tab">
                   <app-fiche-sortie></app-fiche-sortie>
                 </div>
-
-            </div>
+              </div>
             </div>
             <div class="col-md-2 border-start">
               <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -95,6 +100,10 @@
                 <a class="nav-link mb-2 border-bottom" id="v-pills-sortie-tab" data-bs-toggle="pill" href="#v-pills-sortie" role="tab" aria-controls="v-pills-sortie" aria-selected="false">Sortie</a>
               </div>
             </div>
+              </div>
+            </div>
+            
+           
           </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ export class FicheComptableComponent implements OnInit {
         }
       }
     );
+
   }
 
   ngOnDestroy() {
