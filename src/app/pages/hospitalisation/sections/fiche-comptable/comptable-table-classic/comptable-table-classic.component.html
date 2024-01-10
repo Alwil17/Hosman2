@@ -20,13 +20,17 @@
     <thead>
       <tr>
         <th scope="col">Désignation</th>
-        <!-- <th scope="col" class="text-center" *ngFor="let item of tableData; let i = index">{{ item.name }}</th> -->
+        <th scope="col" class="text-center" *ngFor="let d of days">{{ "J" +  (d.i + 1) }}</th>
         <th scope="col" class="text-center">Total</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of filtered_list; let i = index">
         <td>{{ item.libelle || item.nom_officiel }}</td>
+        <td *ngFor="let d of days; let k = index" class="cursor-pointer t-content"
+        [class.active]="setActive(d.o, item.id, typeData === 'chambres' ? item.chambre : null )"
+        (dblclick)="selectItem(d.o, item.id)"></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

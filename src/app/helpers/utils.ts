@@ -1,6 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, catchError, from, map, of } from 'rxjs';
 import * as Yup from 'yup';
+import localeFr from '@angular/common/locales/fr';
 
 export function validateYupSchema<T>(
     yupSchema: Yup.Schema<T>

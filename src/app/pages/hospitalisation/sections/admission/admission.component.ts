@@ -37,10 +37,11 @@ export class AdmissionComponent implements OnInit {
   ];
   consultation: any = null;
   patient: any = null;
-  hasPatient: boolean = false;
+  hasPatient: boolean = true;
 
   consultation_id: number = -1;
   hospitalisation_id: number | null = null;
+  suivis: any | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -150,6 +151,7 @@ export class AdmissionComponent implements OnInit {
           if (state.consultation) this.consultation = state.consultation;
           if (state.chambres) this.chambres = state.chambres;
           if (state.sectors) this.sectors = state.sectors;
+          if (state.suivis) this.suivis = state.suivis;
 
           this.loadPatient(this.patient);
 
@@ -190,6 +192,8 @@ export class AdmissionComponent implements OnInit {
   }
 
   loadHospitalisation(hospitalisation: any) {
+    // console.log(hospitalisation);
+
     if (this.patient !== null) {
       this.sector.setValue(this.consultation["secteur"]["code"]);
       this.motif.setValue(
@@ -206,14 +210,28 @@ export class AdmissionComponent implements OnInit {
           })
           .join(",")
       );
+      this.hdm.setValue(this.consultation["hdm"]);
     }
 
     if (hospitalisation != null) {
-      this.hdm.setValue(hospitalisation['hdm'])
-      this.motif.setValue(hospitalisation['motif'])
-      this.diagnostic.setValue(hospitalisation['diagnostic'])
-      this.arrive.setValue(hospitalisation['arrive'])
+      this.hospitalisation_id = hospitalisation.id;
+      this.motif.setValue(hospitalisation["motif"]["libelle"]);
+      this.diagnostic.setValue(hospitalisation["diagnostic"]["theCode"]);
+      this.arrive.setValue(hospitalisation["arrive"]);
       this.sector.setValue(hospitalisation["secteur_code"]);
+      this.hospit_date.setValue(
+        this.formatDate(hospitalisation["date_hospit"], "yyyy-MM-dd")
+      );
+
+      // auto load chambre and bed from suivis
+      if (this.suivis !== null && this.suivis.length > 0) {
+        const litSuivi = this.suivis.filter((i : any) => i['type'] === "lits")[0]
+        const chambreSuivi = this.suivis.filter((i : any) => i['type'] === "chambres")[0]
+        if (chambreSuivi !== null && litSuivi !== null) {
+          this.chambre.setValue(chambreSuivi['type_id'])
+          this.lit.setValue(litSuivi['type_id'])
+        }
+      }
     }
   }
 
@@ -241,6 +259,7 @@ export class AdmissionComponent implements OnInit {
         // console.log(this.consultation);
 
         const data = {
+          id: this.hospitalisation_id,
           motif: this.admissionFormGroup.value.motif,
           diagnostic: this.admissionFormGroup.value.diagnostic,
           hdm: this.admissionFormGroup.value.hdm,
@@ -248,40 +267,55 @@ export class AdmissionComponent implements OnInit {
           secteur_code: this.admissionFormGroup.value.sector,
           consultation_ref: this.consultation.reference,
           date_hospit: new Date(this.admissionFormGroup.value.hospit_date),
+          arrive: this.arrive.value,
         };
 
         // console.log(data)
-        this.hospitalisationStore.saveHospitalisation(data).subscribe(
-          (response) => {
-            const responseData = response;
-            this.toast.success("Hospitalisation", "Admission effectuée");
-            this.hospitalisation_id = responseData;
-            this.hospitalisationStore.updateStore(
-              { hospitalisation_id: responseData },
-              "SET ID"
-            );
-            this.hospitalisationStore.commitSuivi({
-              "type": "chambres",
-              "type_id": this.chambre.value,
-              "qte": 1,
-              "apply_date": new Date(),
-              "hospit_id": this.hospitalisation_id
-            })
-            this.hospitalisationStore.fetchHospitalisation(responseData);
 
-            console.log("..................................")
-            console.log({
-              "type": "chambres",
-              "type_id": this.chambre.value,
-              "qte": 1,
-              "apply_date": new Date(),
-              "hospit_id": this.hospitalisation_id
-            })
-          },
-          (error) => {
-            console.error("POST request failed:", error);
-          }
-        );
+        if (this.hospitalisation_id == null) {
+          this.hospitalisationStore
+            .saveHospitalisation(data, this.hospitalisation_id)
+            .subscribe(
+              (response) => {
+                const responseData = response;
+                this.toast.success("Hospitalisation", "Admission effectuée");
+                this.hospitalisation_id = responseData;
+                this.hospitalisationStore.updateStore(
+                  { hospitalisation_id: responseData },
+                  "SET ID"
+                );
+
+                // add chambre
+                this.hospitalisationStore.commitSuivi({
+                  type: "chambres",
+                  type_id: this.chambre.value,
+                  qte: 1,
+                  apply_date: new Date(this.admissionFormGroup.value.hospit_date),
+                  hospit_id: this.hospitalisation_id
+                });
+
+                // add lit
+                this.hospitalisationStore.commitSuivi({
+                  type: "lits",
+                  type_id: this.lit.value,
+                  qte: 1,
+                  apply_date: new Date(this.admissionFormGroup.value.hospit_date),
+                  hospit_id: this.hospitalisation_id
+                });
+                this.hospitalisationStore.fetchHospitalisation(responseData);
+
+              },
+              (error) => {
+                console.error("POST request failed:", error);
+              }
+            );
+        } else {
+          this.hospitalisationStore
+            .saveHospitalisation(data, this.hospitalisation_id)
+            .subscribe((response) => {
+              this.toast.success("Hospitalisation", "Mise à jour effectuée");
+            });
+        }
       }
     }
   }

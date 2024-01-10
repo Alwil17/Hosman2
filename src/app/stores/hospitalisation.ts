@@ -8,7 +8,7 @@ import { Sector } from "../models/secretariat/shared/sector.model";
 import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
 
 const consultationEndpoint = "/api/consultations";
-const hospitalisationEndpoint = "/api/hospits?repeat=1";
+const hospitalisationEndpoint = "/api/hospits";
 const getHospitalisationEndpoint = "/api/hospits";
 const tabsEndpoint = "/api/produits";
 const suiviEndpoint = "/api/suivis";
@@ -23,6 +23,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     sectors: null,
     chambres: null,
     tabs: null,
+    suivi: null
   };
 
   constructor(private http: HttpClient) {
@@ -51,7 +52,7 @@ export class HospitalisationStore extends ObservableStore<any> {
   /* API CALLS */
   fetchHospitalisation(id: number): void {
     const res: Observable<any> = this.http.get<any>(
-      getHospitalisationEndpoint + "/" + id
+      getHospitalisationEndpoint  + "/" + id
     );
 
     res.subscribe({
@@ -61,7 +62,28 @@ export class HospitalisationStore extends ObservableStore<any> {
         this.updateStore({consultation : hospitalisation['consultation']}, "SET CONSULTATION")
         this.updateStore({patient : hospitalisation["patient"]}, "SET Patient")
 
+        // get suivis
+        this.fetchHospitalisationSuivi(id)
+
         return hospitalisation;
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
+  fetchHospitalisationSuivi(id: number): void {
+    const res: Observable<any> = this.http.get<any>(
+      getHospitalisationEndpoint  + "/" + id + "/suivis"
+    );
+
+    res.subscribe({
+      next: (suivis: any) => {
+
+        this.updateStore({suivis}, "FETCH SUIVIS")
+
+        return suivis;
       },
       error: (response) => {
         console.log("Error: " + response);
@@ -135,12 +157,20 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
 
-  saveHospitalisation(data: any): Observable<any> {
-    return this.http.post(hospitalisationEndpoint, data);
+  saveHospitalisation(data: any, id : any): Observable<any> {
+    console.log(id)
+    if (id == null) {
+      return this.http.post(hospitalisationEndpoint+ "?repeat=1", data);
+    } else {
+      return this.http.put(hospitalisationEndpoint + "/" + id, data);
+    }
+    
   }
 
-  commitSuivi(data: any) {
-    console.log('Add suivi')
-    this.http.post(suiviEndpoint, data);
+  commitSuivi(data: any){
+    this.http.post(suiviEndpoint, data).subscribe({
+      next: (v) => console.log(v),
+      error: (e) => console.error(e),
+    })
   }
 }

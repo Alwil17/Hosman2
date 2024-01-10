@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { Patient } from "../../../../../models/secretariat/patients/patient.model";
 import { FormControl } from "@angular/forms";
+import * as moment from 'moment'
 
 @Component({
   selector: "app-comptable-table-classic",
@@ -20,7 +21,7 @@ export class ComptableTableClassicComponent implements OnInit {
 
   patient: any;
   hospitalisation: any;
-  days: number = 1;
+  days: any[] = [];
 
   search = new FormControl();
 
@@ -30,6 +31,7 @@ export class ComptableTableClassicComponent implements OnInit {
   searchResults: any[] = [];
   rowsPerPage: number = 10;
   currentPage: number = 1;
+  suivis: any[] = [];
 
   constructor(private hospitalisationStore: HospitalisationStore) {
     this.search.valueChanges.subscribe((value) => {
@@ -43,7 +45,8 @@ export class ComptableTableClassicComponent implements OnInit {
         if (state) {
           this.patient = state.patient;
           this.hospitalisation = state.hospitalisation;
-          this.days = this.getDiffDays(this.hospitalisation["date_hospit"]);
+          this.suivis = state.suivis;
+          // this.days = this.getDiffDays(this.hospitalisation["date_hospit"]);
         }
       }
     );
@@ -64,6 +67,7 @@ export class ComptableTableClassicComponent implements OnInit {
             if (litValue !== null && litValue !== undefined) {
               d.push({
                 id: litValue.id,
+                chambre: chambre.id,
                 libelle: `${chambre.nom} - ${litValue.nom}`,
               });
             }
@@ -88,21 +92,33 @@ export class ComptableTableClassicComponent implements OnInit {
 
     this.calculateNumberOfPages();
     this.setCurrentPage(1);
+
+    this.genDays()
   }
 
   get numberOfPagesArray(): number[] {
     return new Array(this.numberOfPages).fill(0).map((_, index) => index + 1);
   }
 
-  getDiffDays(sDate: string) {
-    var startDate = new Date(sDate);
-    var endDate = new Date();
 
-    // console.log(startDate);
-    // console.log(endDate);
+  genDays(){
+    const res = [];
+    let date = new Date(this.hospitalisation["date_hospit"]);
+    let currentDate = new Date();
+    let days = Math.floor(
+      (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
+    );
+    let r = moment(this.hospitalisation["date_hospit"]);
+    for (let i = 0; i <= days; i++) {
+      let currentDate = moment(date).add(i, 'days');
+      res.push({
+        o: currentDate.format('yyyy-MM-DD'),
+        i: i,
+      });
+    }
 
-    var Time = endDate.getTime() - startDate.getTime();
-    return Time / (1000 * 3600 * 24);
+    this.days = res;
+
   }
 
   private calculateNumberOfPages(): void {
@@ -232,6 +248,47 @@ export class ComptableTableClassicComponent implements OnInit {
     } catch (e) {
       console.log("filtering : " + e);
     }
+  }
+
+  setActive(day: moment.Moment, type_id: number, sub_id?: number) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      if (this.typeData == "chambres") {
+
+        const ch = this.suivis.find(
+          (t) =>
+            t["type"] === 'chambres' &&
+            t["type_id"] === sub_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+        const li = this.suivis.find(
+          (t) =>
+            t["type"] === 'lits' &&
+            t["type_id"] === type_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+
+        // console.log(ch);
+        // console.log(li);
+
+        return (
+          ch !== null && ch !== undefined && li !== null && li !== undefined
+        );
+      } else {
+        const res = this.suivis.find(
+          (t) =>
+            t["type"] === this.typeData &&
+            t["type_id"] === type_id &&
+            day === moment(t["apply_date"])
+        );
+        return res !== null && res !== undefined;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  selectItem(day: moment.Moment, type_id: number){
+      alert('doucble click')
   }
 
   ngOnChanges(): void {
