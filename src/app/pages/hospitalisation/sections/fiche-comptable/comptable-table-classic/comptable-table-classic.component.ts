@@ -3,7 +3,7 @@ import { Subscription } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { Patient } from "../../../../../models/secretariat/patients/patient.model";
 import { FormControl } from "@angular/forms";
-import * as moment from 'moment'
+import * as moment from "moment";
 
 @Component({
   selector: "app-comptable-table-classic",
@@ -46,7 +46,6 @@ export class ComptableTableClassicComponent implements OnInit {
           this.patient = state.patient;
           this.hospitalisation = state.hospitalisation;
           this.suivis = state.suivis;
-          // this.days = this.getDiffDays(this.hospitalisation["date_hospit"]);
         }
       }
     );
@@ -93,15 +92,14 @@ export class ComptableTableClassicComponent implements OnInit {
     this.calculateNumberOfPages();
     this.setCurrentPage(1);
 
-    this.genDays()
+    this.genDays();
   }
 
   get numberOfPagesArray(): number[] {
     return new Array(this.numberOfPages).fill(0).map((_, index) => index + 1);
   }
 
-
-  genDays(){
+  genDays() {
     const res = [];
     let date = new Date(this.hospitalisation["date_hospit"]);
     let currentDate = new Date();
@@ -110,15 +108,14 @@ export class ComptableTableClassicComponent implements OnInit {
     );
     let r = moment(this.hospitalisation["date_hospit"]);
     for (let i = 0; i <= days; i++) {
-      let currentDate = moment(date).add(i, 'days');
+      let currentDate = moment(date).add(i, "days");
       res.push({
-        o: currentDate.format('yyyy-MM-DD'),
+        o: currentDate.format("yyyy-MM-DD"),
         i: i,
       });
     }
 
     this.days = res;
-
   }
 
   private calculateNumberOfPages(): void {
@@ -253,22 +250,18 @@ export class ComptableTableClassicComponent implements OnInit {
   setActive(day: moment.Moment, type_id: number, sub_id?: number) {
     if (this.suivis !== null && this.suivis !== undefined) {
       if (this.typeData == "chambres") {
-
         const ch = this.suivis.find(
           (t) =>
-            t["type"] === 'chambres' &&
+            t["type"] === "chambres" &&
             t["type_id"] === sub_id &&
             moment(day).isSame(moment(t["apply_date"]))
         );
         const li = this.suivis.find(
           (t) =>
-            t["type"] === 'lits' &&
+            t["type"] === "lits" &&
             t["type_id"] === type_id &&
             moment(day).isSame(moment(t["apply_date"]))
         );
-
-        // console.log(ch);
-        // console.log(li);
 
         return (
           ch !== null && ch !== undefined && li !== null && li !== undefined
@@ -278,7 +271,7 @@ export class ComptableTableClassicComponent implements OnInit {
           (t) =>
             t["type"] === this.typeData &&
             t["type_id"] === type_id &&
-            day === moment(t["apply_date"])
+            moment(day).isSame(moment(t["apply_date"]))
         );
         return res !== null && res !== undefined;
       }
@@ -287,8 +280,41 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  selectItem(day: moment.Moment, type_id: number){
-      alert('doucble click')
+  selectItem(day: moment.Moment, type_id: number, extra? : any) {
+    if (this.typeData == "chambres") {
+      const c = {
+        type: "chambres",
+        type_id: extra,
+        qte: 1,
+        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+        hospit_id: this.hospitalisation.id,
+      };
+
+      const l = {
+        type: "lits",
+        type_id: type_id,
+        qte: 1,
+        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+        hospit_id: this.hospitalisation.id,
+      };
+
+      this.hospitalisationStore.commitSuivi(c);
+      this.suivis.push(c);
+      this.hospitalisationStore.commitSuivi(l);
+      this.suivis.push(l);
+
+    } else {
+      const data = {
+        type: this.typeData,
+        type_id: type_id,
+        qte: 1,
+        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+        hospit_id: this.hospitalisation.id,
+      };
+
+      this.hospitalisationStore.commitSuivi(data);
+      this.suivis.push(data);
+    }
   }
 
   ngOnChanges(): void {

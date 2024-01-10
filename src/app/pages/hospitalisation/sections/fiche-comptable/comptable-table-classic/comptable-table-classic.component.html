@@ -29,7 +29,7 @@
         <td>{{ item.libelle || item.nom_officiel }}</td>
         <td *ngFor="let d of days; let k = index" class="cursor-pointer t-content"
         [class.active]="setActive(d.o, item.id, typeData === 'chambres' ? item.chambre : null )"
-        (dblclick)="selectItem(d.o, item.id)"></td>
+        (dblclick)="selectItem(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"></td>
         <td></td>
       </tr>
     </tbody>
