@@ -280,7 +280,34 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  selectItem(day: moment.Moment, type_id: number, extra? : any) {
+  getTotal(type_id: number, sub_id?: any) {
+    let res = 0;
+
+    if (this.suivis !== null && this.suivis !== undefined) {
+      if (this.typeData == "chambres") {
+    
+        const li = this.suivis.filter(
+          (t) =>
+            t["type"] === "lits" &&
+            t["type_id"] === type_id
+        );
+
+        res = li.reduce((total : any, item : any) => total + item.qte, 0)
+        
+      } else {
+        const arr = this.suivis.filter(
+          (t) => t["type"] === this.typeData && t["type_id"] === type_id
+        );
+
+        const v = arr.reduce((total, item) => total + item.qte, 0);
+        res = v;
+      }
+    }
+
+    return res !== 0 ? res : '' ;
+  }
+
+  selectItem(day: moment.Moment, type_id: number, extra?: any) {
     if (this.typeData == "chambres") {
       const c = {
         type: "chambres",
@@ -302,7 +329,6 @@ export class ComptableTableClassicComponent implements OnInit {
       this.suivis.push(c);
       this.hospitalisationStore.commitSuivi(l);
       this.suivis.push(l);
-
     } else {
       const data = {
         type: this.typeData,

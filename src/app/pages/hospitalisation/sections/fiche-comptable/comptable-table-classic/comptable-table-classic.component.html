@@ -19,18 +19,18 @@
   >
     <thead>
       <tr>
-        <th scope="col">Désignation</th>
+        <th scope="col" class="fixed-column des-title">Désignation</th>
         <th scope="col" class="text-center" *ngFor="let d of days">{{ "J" +  (d.i + 1) }}</th>
-        <th scope="col" class="text-center">Total</th>
+        <th scope="col" class="fixed-column text-right">Total</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of filtered_list; let i = index">
-        <td>{{ item.libelle || item.nom_officiel }}</td>
+        <td class="fixed-column des-title">{{ item.libelle || item.nom_officiel }}</td>
         <td *ngFor="let d of days; let k = index" class="cursor-pointer t-content"
         [class.active]="setActive(d.o, item.id, typeData === 'chambres' ? item.chambre : null )"
         (dblclick)="selectItem(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"></td>
-        <td></td>
+        <td class="fixed-column text-right">{{ getTotal(item.id, typeData === 'chambres' ? item.chambre : null) }}</td>
       </tr>
     </tbody>
   </table>
