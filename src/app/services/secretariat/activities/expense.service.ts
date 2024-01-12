@@ -36,7 +36,7 @@ export class ExpenseService {
 
   getExpenseRubrics(): Observable<ExpenseRubricResponse[]> {
     return this.http.get<ExpenseRubricResponse[]>(
-      "http://localhost:8081/rubrique-depenses"
+      environment.baseUrl + "rubrique-depenses"
     );
   }
 
