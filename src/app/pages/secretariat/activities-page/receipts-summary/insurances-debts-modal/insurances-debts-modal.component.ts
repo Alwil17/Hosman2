@@ -44,7 +44,7 @@ export class InsurancesDebtsModalComponent implements OnInit {
 
   startDateControl = new FormControl(this.today);
   endDateControl = new FormControl();
-  insuranceTypeControl = new FormControl(this.insuranceFirstOption);
+  insuranceTypeControl = new FormControl(this.insuranceTypeFirstOption);
   insuranceControl = new FormControl(this.insuranceFirstOption);
 
   searchTerm = "";
