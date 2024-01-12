@@ -20,6 +20,8 @@ import { ActivitiesDetailComponent } from "./activities-page/activities-detail/a
 import { TariffsComponent } from "./tariffs/tariffs.component";
 import { ReportSearchCriteriaModalComponent } from "./activities-page/receipts-summary/report-search-criteria-modal/report-search-criteria-modal.component";
 import { InsurancesDebtsModalComponent } from "./activities-page/receipts-summary/insurances-debts-modal/insurances-debts-modal.component";
+import { PhoneBookPageComponent } from "./phone-book-page/phone-book-page.component";
+import { PhoneBookFormModalComponent } from './phone-book-page/phone-book-form-modal/phone-book-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { InsurancesDebtsModalComponent } from "./activities-page/receipts-summar
     TariffsComponent,
     ReportSearchCriteriaModalComponent,
     InsurancesDebtsModalComponent,
+    PhoneBookPageComponent,
+    PhoneBookFormModalComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,7 @@ import { ExpensesComponent } from "./expenses/expenses.component";
 import { CollectionsComponent } from "./collections/collections.component";
 import { ActivitiesPageComponent } from "./activities-page/activities-page.component";
 import { TariffsComponent } from "./tariffs/tariffs.component";
+import { PhoneBookPageComponent } from "./phone-book-page/phone-book-page.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "patients", pathMatch: "full" },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: "expenses", component: ExpensesComponent },
   { path: "collections", component: CollectionsComponent },
   { path: "activities/all", component: ActivitiesPageComponent },
-  { path: "secretariat/tariffs", component: TariffsComponent },
+  { path: "tariffs", component: TariffsComponent },
+  { path: "informations/phone_book", component: PhoneBookPageComponent },
 ];
 
 @NgModule({

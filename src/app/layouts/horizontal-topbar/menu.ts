@@ -21,7 +21,7 @@ export const SECRETARIAT_MENU: MenuItem[] = [
   {
     id: 4,
     label: "MENUITEMS.INFORMATIONS.LIST.TELEPHONE_BOOK",
-    link: "/secretariat/informations/telephone_book",
+    link: "/secretariat/informations/phone_book",
     icon: "ri-contacts-book-2-fill",
   },
   {
