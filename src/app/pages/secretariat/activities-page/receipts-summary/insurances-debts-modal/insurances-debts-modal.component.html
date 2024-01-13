@@ -108,7 +108,13 @@
           <tbody>
             <tr
               *ngFor="let insuranceDebt of insurancesDebtsListCut"
-              class="user-select-none"
+              [class]="
+                'user-select-none' +
+                ' ' +
+                (insuranceDebt.switchBackgroundColor
+                  ? 'bg-secondary bg-opacity-50'
+                  : 'bg-info bg-opacity-50')
+              "
             >
               <!--  bg-secondary bg-info bg-opacity-50 -->
               <td>
@@ -192,9 +198,9 @@
               <th class="text-end">
                 {{ actsAmountTotal | mask : "separator" }}
               </th>
-              <th class="text-end">
+              <!-- <th class="text-end">
                 {{ paidAmountTotal | mask : "separator" }}
-              </th>
+              </th> -->
               <th class="text-end">{{ scAmountTotal | mask : "separator" }}</th>
               <th></th>
             </tr>

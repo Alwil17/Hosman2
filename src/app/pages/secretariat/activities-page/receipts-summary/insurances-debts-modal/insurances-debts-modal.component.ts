@@ -9,6 +9,8 @@ import { InsuranceService } from "src/app/services/secretariat/patients/insuranc
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 
+type InsuranceDebtSwitch = InsuranceDebt & { switchBackgroundColor: boolean };
+
 @Component({
   selector: "app-insurances-debts-modal",
   templateUrl: "./insurances-debts-modal.component.html",
@@ -31,13 +33,13 @@ export class InsurancesDebtsModalComponent implements OnInit {
   ];
   insurances: SelectOption[] = [];
 
-  insurancesDebtsList: InsuranceDebt[] = [];
+  insurancesDebtsList: InsuranceDebtSwitch[] = [];
 
   // Pagination handling variables
   page = 1;
   pageSize = 10;
   collectionSize = this.insurancesDebtsList.length;
-  insurancesDebtsListCut: InsuranceDebt[] = [];
+  insurancesDebtsListCut: InsuranceDebtSwitch[] = [];
 
   // To set date max
   today = new Date().toLocaleDateString("fr-ca");
@@ -127,22 +129,49 @@ export class InsurancesDebtsModalComponent implements OnInit {
       })
       .subscribe({
         next: (data) => {
-          this.insurancesDebtsList = data;
+          this.actsAmountTotal = 0;
+          this.paidAmountTotal = 0;
+          this.scAmountTotal = 0;
+
+          let switchBG = false;
+
+          this.insurancesDebtsList = data.map((value, index, array) => {
+            this.actsAmountTotal += value.facture.total;
+            this.paidAmountTotal +=
+              value.facture.a_payer - value.facture.creance.montant;
+            this.scAmountTotal += value.montant_pec;
+
+            // To determine when to switch background (when invoices are different)
+            if (index === 0) {
+              switchBG = false;
+              return { ...value, switchBackgroundColor: false };
+            } else {
+              if (
+                array[index - 1].facture.reference !==
+                array[index].facture.reference
+              ) {
+                switchBG = !switchBG;
+              }
+              return {
+                ...value,
+                switchBackgroundColor: switchBG,
+              };
+            }
+          });
+
+          // console.log(this.insurancesDebtsList);
+
           // this.toastService.show({
           //   messages: ["Rafraîchissement de la liste."],
           //   type: ToastType.Success,
           // });
 
-          this.actsAmountTotal = 0;
-          this.paidAmountTotal = 0;
-          this.scAmountTotal = 0;
-
-          this.insurancesDebtsList.forEach((value) => {
-            this.actsAmountTotal += value.facture.total;
-            this.paidAmountTotal +=
-              value.facture.a_payer - value.facture.creance.montant;
-            this.scAmountTotal += value.montant_pec;
-          });
+          // this.insurancesDebtsList.forEach((value) => {
+          //   this.actsAmountTotal += value.facture.total;
+          //   this.paidAmountTotal +=
+          //     value.facture.a_payer - value.facture.creance.montant;
+          //   this.scAmountTotal += value.montant_pec;
+          // });
 
           this.refreshInvoices();
         },
