@@ -55,6 +55,10 @@ export class TopbarComponent implements OnInit {
     }
   }
 
+  goToAppsList() {
+    this.router.navigateByUrl("apps");
+  }
+
   /**
    * Toggle the menu bar when having mobile screen
    */
