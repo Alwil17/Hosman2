@@ -94,13 +94,14 @@ export class PhoneBookPageComponent implements OnInit {
         error: (error) => {
           console.error(error);
 
-          this.toastService.show({
-            messages: [
-              "Une erreur s'est produite lors du rafraîchissment de la liste.",
-            ],
-            delay: 10000,
-            type: ToastType.Error,
-          });
+          // COMMENTED BECAUSE SENDING WEIRD ERRORS. CHECK LATER
+          // this.toastService.show({
+          //   messages: [
+          //     "Une erreur s'est produite lors du rafraîchissment de la liste.",
+          //   ],
+          //   delay: 10000,
+          //   type: ToastType.Error,
+          // });
         },
       });
   }
@@ -132,17 +133,31 @@ export class PhoneBookPageComponent implements OnInit {
       phoneBookFormModal.componentInstance.phoneBookInfos = contact;
     }
 
-    phoneBookFormModal.componentInstance.isContactCreated.subscribe(
-      (isContactCreated: boolean) => {
-        console.log("Contact created : " + isContactCreated);
+    if (contact) {
+      phoneBookFormModal.componentInstance.isContactModified.subscribe(
+        (isContactModified: boolean) => {
+          console.log("Contact modified : " + isContactModified);
 
-        if (isContactCreated) {
-          phoneBookFormModal.close();
+          if (isContactModified) {
+            phoneBookFormModal.close();
 
-          this.refreshPhoneBooksList();
+            this.refreshPhoneBooksList();
+          }
         }
-      }
-    );
+      );
+    } else {
+      phoneBookFormModal.componentInstance.isContactCreated.subscribe(
+        (isContactCreated: boolean) => {
+          console.log("Contact created : " + isContactCreated);
+
+          if (isContactCreated) {
+            phoneBookFormModal.close();
+
+            this.refreshPhoneBooksList();
+          }
+        }
+      );
+    }
   }
 
   deleteContact(contactId: number) {
