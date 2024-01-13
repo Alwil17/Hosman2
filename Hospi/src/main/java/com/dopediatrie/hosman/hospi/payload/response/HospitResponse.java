@@ -13,14 +13,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HospitResponse {
     private long id;
-    private String motif;
-    private String diagnostic;
+    private String motif_code;
+    private MotifResponse motif;
+    private String diagnostic_code;
+    private DiagnosticResponse diagnostic;
     private String hdm;
-    private long patient_id;
+    private String patient_ref;
     private PatientResponse patient;
-    private long secteur_id;
+    private String secteur_code;
     private SecteurResponse secteur;
-    private long consultation_id;
+    private String arrive;
+    private String consultation_ref;
+    private ConsultationResponse consultation;
     private LocalDateTime date_hospit;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

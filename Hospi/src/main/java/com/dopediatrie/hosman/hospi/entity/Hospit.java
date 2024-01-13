@@ -19,12 +19,13 @@ public class Hospit {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-    private String motif;
-    private String diagnostic;
+    private String motif_libelle;
+    private String diagnostic_code;
     private String hdm;
-    private long patient_id;
-    private long secteur_id;
-    private long consultation_id;
+    private String patient_ref;
+    private String secteur_code;
+    private String consultation_ref;
+    private String arrive;
     private LocalDateTime date_hospit;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
@@ -34,17 +35,38 @@ public class Hospit {
     @OneToMany(mappedBy = "hospit")
     @JsonIgnore
     private List<Suivi> suivis;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> addressed_list;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> transfused_list;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> deceded_list;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> chirurgies;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> medexternes;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> scams;
+    @OneToMany(mappedBy = "hospit")
+    @JsonIgnore
+    private List<Suivi> sorties;
 
     @Override
     public String toString() {
         return "Hospit{" +
                 "id=" + id +
-                ", motif='" + motif + '\'' +
-                ", diagnostic='" + diagnostic + '\'' +
+                ", motif_libelle='" + motif_libelle + '\'' +
+                ", diagnostic_code='" + diagnostic_code + '\'' +
                 ", hdm='" + hdm + '\'' +
-                ", patient_id=" + patient_id +
-                ", secteur_id=" + secteur_id +
-                ", consultation_id=" + consultation_id +
+                ", patient_ref='" + patient_ref + '\'' +
+                ", secteur_code='" + secteur_code + '\'' +
+                ", consultation_ref='" + consultation_ref + '\'' +
                 ", date_hospit=" + date_hospit +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +

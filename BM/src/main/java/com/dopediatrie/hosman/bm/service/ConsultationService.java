@@ -18,4 +18,6 @@ public interface ConsultationService {
     void editConsultation(ConsultationRequest consultationRequest, long interventionId);
 
     public void deleteConsultationById(long interventionId);
+
+    ConsultationResponse getConsultationByRef(String consultationRef);
 }

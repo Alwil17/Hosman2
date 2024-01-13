@@ -117,9 +117,13 @@ public class EmployeServiceImpl implements EmployeService {
                 .type_piece(employeRequest.getType_piece())
                 .no_piece(employeRequest.getNo_piece())
                 .provenance(employeRequest.getProvenance())
+                .bureau(employeRequest.getBureau())
                 .tel1(employeRequest.getTel1())
                 .tel2(employeRequest.getTel2())
+                .domicile(employeRequest.getDomicile())
                 .localisation(employeRequest.getLocalisation())
+                .bip(employeRequest.getBip())
+                .no_poste(employeRequest.getNo_poste())
                 .autres(employeRequest.getAutres())
                 .date_debut(employeRequest.getDate_debut())
                 .date_fin(employeRequest.getDate_fin())
@@ -172,9 +176,13 @@ public class EmployeServiceImpl implements EmployeService {
                     .type_piece(employeRequest.getType_piece())
                     .no_piece(employeRequest.getNo_piece())
                     .provenance(employeRequest.getProvenance())
+                    .bureau(employeRequest.getBureau())
                     .tel1(employeRequest.getTel1())
                     .tel2(employeRequest.getTel2())
+                    .domicile(employeRequest.getDomicile())
                     .localisation(employeRequest.getLocalisation())
+                    .bip(employeRequest.getBip())
+                    .no_poste(employeRequest.getNo_poste())
                     .autres(employeRequest.getAutres())
                     .date_debut(employeRequest.getDate_debut())
                     .date_fin(employeRequest.getDate_fin())
@@ -231,10 +239,14 @@ public class EmployeServiceImpl implements EmployeService {
         employe.setDate_naissance(employeRequest.getDate_naissance());
         employe.setAdresse(employeRequest.getAdresse());
         employe.setLieu_naissance(employeRequest.getLieu_naissance());
+        employe.setBureau(employeRequest.getBureau());
         employe.setTel1(employeRequest.getTel1());
         employe.setTel2(employeRequest.getTel2());
+        employe.setDomicile(employeRequest.getDomicile());
         employe.setLocalisation(employeRequest.getLocalisation());
         employe.set_medecin(employeRequest.is_medecin());
+        employe.setBip(employeRequest.getBip());
+        employe.setNo_poste(employeRequest.getNo_poste());
         employe.setAutres(employeRequest.getAutres());
         employe.setType_piece(employeRequest.getType_piece());
         employe.setNo_piece(employeRequest.getNo_piece());

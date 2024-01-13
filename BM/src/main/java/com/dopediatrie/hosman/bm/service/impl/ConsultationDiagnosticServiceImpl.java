@@ -36,6 +36,7 @@ public class ConsultationDiagnosticServiceImpl implements ConsultationDiagnostic
                 = ConsultationDiagnostic.builder()
                 .consultation(consultationRepository.findById(consultationDiagnosticRequest.getConsultation_id()).orElseThrow())
                 .diagnostic(consultationDiagnosticRequest.getDiagnostic())
+                .commentaire(consultationDiagnosticRequest.getCommentaire())
                 .build();
 
         consultationDiagnostic = consultationDiagnosticRepository.save(consultationDiagnostic);
@@ -76,6 +77,7 @@ public class ConsultationDiagnosticServiceImpl implements ConsultationDiagnostic
                 ));
         consultationDiagnostic.setConsultation(consultationRepository.findById(consultationDiagnosticRequest.getConsultation_id()).orElseThrow());
         consultationDiagnostic.setDiagnostic(consultationDiagnosticRequest.getDiagnostic());
+        consultationDiagnostic.setCommentaire(consultationDiagnosticRequest.getCommentaire());
         consultationDiagnosticRepository.save(consultationDiagnostic);
 
         log.info("ConsultationDiagnosticServiceImpl | editConsultationDiagnostic | ConsultationDiagnostic Updated");

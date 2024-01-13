@@ -1,0 +1,154 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>ETAT DES CREANCES PAR ASSURANCE</title>
+    <style>
+        @page {
+            /* dimensions for the whole page */
+            size: A4 landscape;
+            margin: 0;
+            background: #fff;
+        }
+
+        html {
+            /* off-white, so body edge is visible in browser */
+            background: #fff;
+        }
+
+        body {
+            /* A5 dimensions */
+            width: 285mm;
+            /*height: 190mm;*/
+
+
+            margin: auto;
+            background: #fff;
+            padding: 2%;
+            /*border: solid 1mm;*/
+
+        }
+
+
+        table,
+        th,
+        td {
+            border: solid 0.2mm;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        tr {
+            line-height: 26px;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .t0 {
+            border-top: solid white;
+        }
+
+        .b0 {
+            border-bottom: solid white;
+        }
+
+        .l0 {
+            border-left: solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <h2><u>ETAT DES CREANCES DE L'ASSURANCE: <i th:text="${assurance}">GTA</i></u></h2>
+</div>
+<div class="content">
+    <table style="width: 100%;">
+        <tbody>
+        <tr style="background: #fff; border: solid white !important;">
+            <td style="width: 50%; text-align: start; border: solid white !important;">Période du: <b th:text="${date_debut}">01/07/2023</b> au <b th:text="${date_fin}">01/07/2023</b> </td>
+<!--            <td style="width: 50%; right: 0; text-align: right; border: solid white !important;">Rendu par: SE</td>-->
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom(s)</th>
+                <th scope="col">Né(e) le</th>
+                <th scope="col">Sexe</th>
+                <th scope="col">Date activité</th>
+                <th scope="col">Secteur</th>
+                <th scope="col">N° facture</th>
+                <th scope="col">Montant facture</th>
+                <th scope="col">Montant versé</th>
+                <th scope="col">Montant assureur</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recap: ${recaps}">
+                <th scope="row" th:text="${recap.nom_patient}" style="width: 13%; font-size: 14px; text-align: left;">ABALO</th>
+                <th scope="row" th:text="${recap.prenom_patient}" style="width: 13%; font-size: 14px; text-align: left;">Désiré</th>
+                <th scope="row" th:text="${recap.date_naissance}" style="width: 9%; font-size: 14px; text-align: center;">23/05/1997</th>
+                <th scope="row" th:text="${recap.sexe}" style="width: 4%; font-size: 14px; text-align: center;">M</th>
+                <th scope="row" th:text="${recap.date_operation}" style="width: 9%; font-size: 14px; text-align: center;">10/11/2023</th>
+                <th scope="row" th:text="${recap.secteur}" style="width: 14%; font-size: 13px; text-align: left;">PEDIATRIE</th>
+                <th scope="row" th:text="${recap.no_facture}" style="width: 8%; font-size: 14px; text-align: center;">000258</th>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_facture, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_verse, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            <tr>
+                <th scope="row" style="width: 10%; font-size: 16px; text-align: right;" colspan="7">TOTAUX</th>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(total_facture, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(total_verse, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="bottom: 0px; width: 285mm; margin-top: 15px;">
+        <div style="float: left; width: 40%; padding: 5px;">
+            <table style="width: 100%">
+                <tbody>
+                <tr>
+                    <th scope="row" class="title" style="border-left: solid white; border-bottom: solid white; border-top: solid white;">Nombre d'opérations :</th>
+                    <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 30%;" th:text="${#numbers.formatDecimal(total_activite, 0, 'WHITESPACE', 0, 'POINT')} ">0 </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="float: right; width: 40%; padding: 5px;">
+            <table style="width: 100%">
+                <tbody>
+                <tr>
+                    <th scope="row" class="title" style="font-size: 13px; border-left: solid white; border-bottom: solid white; border-top: solid white;">TOTAL CREANCES :</th>
+                    <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 50%;" th:text="${#numbers.formatDecimal(total_creance, 0, 'WHITESPACE', 0, 'POINT')}">0 CFA</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

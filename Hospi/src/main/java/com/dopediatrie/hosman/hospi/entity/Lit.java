@@ -25,6 +25,7 @@ public class Lit {
     private LocalDateTime updated_at;
     @ManyToOne
     @JoinColumn(name = "chambre_id")
+    @JsonIgnore
     private Chambre chambre;
     /*@OneToMany(mappedBy = "lit")
     @JsonIgnore

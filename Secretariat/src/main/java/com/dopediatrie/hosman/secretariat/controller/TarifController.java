@@ -71,6 +71,13 @@ public class TarifController {
         return new ResponseEntity<>(tarifResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/examens")
+    public ResponseEntity<List<TarifResponse>> getTarifForExamen() {
+        log.info("TarifController | getTarifForExamen is called");
+        List<TarifResponse> tarifResponses = tarifService.getTarifForExamen();
+        return new ResponseEntity<>(tarifResponses, HttpStatus.OK);
+    }
+
     @Deprecated(forRemoval = true)
     @GetMapping("/groupe/{code}/all")
     public ResponseEntity<List<Tarif>> getTarifForGroupe(@PathVariable("code") String groupeCode) {

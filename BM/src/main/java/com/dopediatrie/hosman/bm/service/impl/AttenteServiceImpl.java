@@ -87,9 +87,9 @@ public class AttenteServiceImpl implements AttenteService {
     }
 
     @Override
-    public void deleteAttenteById(long attenteId) {
-        log.info("Attente id: {}", attenteId);
-        restTemplate.delete(baseUrl+"/"+attenteId);
+    public void deleteAttenteByNum(long attenteNum) {
+        log.info("Attente num: {}", attenteNum);
+        restTemplate.delete(baseUrl+"/num/"+attenteNum);
     }
 
     @Override

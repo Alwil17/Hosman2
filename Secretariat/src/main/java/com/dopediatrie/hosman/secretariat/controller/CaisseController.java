@@ -198,7 +198,7 @@ public class CaisseController {
         String creancesql = "select * from creance join etat e on creance.etat_id = e.id " +
                 "where e.slug = 'payee' " +
                 "and creance.date_reglement >= '"+ datemin +"' " +
-                "and creance.date_reglement <= '"+ datemax +"'";
+                "and creance.date_reglement <= '"+ datemax +"'  and montant >0";
         /*List<Creance> creances = jdbcTemplate.query(sql, (resultSet, rowNum) -> new Creance(
                 resultSet.getLong("id"),
                 resultSet.getDouble("montant"),
@@ -221,7 +221,7 @@ public class CaisseController {
 
         String majorationsql = "select * from majoration " +
                 "where date_operation >= '"+ datemin +"' " +
-                "and date_operation <= '"+ datemax +"'";
+                "and date_operation <= '"+ datemax +"'  and montant >0";
         FicheRecap majoration = new FicheRecap("Majoration",
                 0, 0, 0, 0, 0, 0, 0, 0, 0);
         List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> new Majoration(
@@ -405,7 +405,8 @@ public class CaisseController {
         context.setVariable("reliquats", reliquatsc);
         context.setVariable("ca_total", ca_total);
 
-        String htmlContentToRender = templateEngine.process("ficherecapperiod", context);
+        String fiche = vue.equals("compact") ? "ficherecapperiod" : "ficherecapperiod_portrait";
+        String htmlContentToRender = templateEngine.process(fiche, context);
         String xHtml = Utils.xhtmlConvert(htmlContentToRender);
 
         ITextRenderer renderer = new ITextRenderer();
@@ -498,7 +499,7 @@ public class CaisseController {
         String creancesql = "select * from creance join etat e on creance.etat_id = e.id " +
                 "where e.slug = 'payee' " +
                 "and creance.date_reglement >= '"+ datemin +"' " +
-                "and creance.date_reglement <= '"+ datemax +"'";
+                "and creance.date_reglement <= '"+ datemax +"'  and montant >0";
         /*List<Creance> creances = jdbcTemplate.query(sql, (resultSet, rowNum) -> new Creance(
                 resultSet.getLong("id"),
                 resultSet.getDouble("montant"),
@@ -521,7 +522,7 @@ public class CaisseController {
 
         String majorationsql = "select * from majoration " +
                 "where date_operation >= '"+ datemin +"' " +
-                "and date_operation <= '"+ datemax +"'";
+                "and date_operation <= '"+ datemax +"'  and montant >0";
         FicheRecap majoration = new FicheRecap("Majoration",
                 0, 0, 0, 0, 0, 0, 0, 0, 0);
         List<Majoration> majorations = jdbcTemplate.query(majorationsql, (resultSet, rowNum) -> new Majoration(
@@ -678,13 +679,13 @@ public class CaisseController {
             System.out.println(reliquats.size());
             for (Reliquat c : reliquats) {
                 if(c != null){
-                    System.out.println(datemin + " "+ datemax + " "+c.getMontant());
+                    //System.out.println(datemin + " "+ datemax + " "+c.getMontant());
                     reliquatsc += c.getMontant();
                 }
             }
         }
 
-        System.out.println(datemin + " "+ datemax + " "+reliquatsc);
+        //System.out.println(datemin + " "+ datemax + " "+reliquatsc);
         double ca_total = total_montant_total - depensesc - reliquatsc;
 
         Context context = new Context();

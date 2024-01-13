@@ -9,6 +9,7 @@ import com.dopediatrie.hosman.bm.service.MotifService;
 import com.dopediatrie.hosman.bm.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +21,11 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Log4j2
 public class MotifServiceImpl implements MotifService {
     private final MotifRepository motifRepository;
-    private final String NOT_FOUND = "AGENCE_NOT_FOUND";
+    private final String NOT_FOUND = "MOTIF_NOT_FOUND";
 
     @Override
     public List<Motif> getAllMotifs() {
-        return motifRepository.findAll();
+        return motifRepository.findAll(PageRequest.of(0, 200)).toList();
     }
 
     @Override
@@ -80,10 +81,22 @@ public class MotifServiceImpl implements MotifService {
     }
 
     @Override
-    public List<Motif> getMotifByLibelle(String libelle) {
+    public MotifResponse getMotifByLibelle(String libelle) {
         log.info("MotifServiceImpl | getMotifByLibelle is called");
+        log.info("MotifServiceImpl | getMotifByLibelle | Get the motif for motifId: {}", libelle);
 
-        return motifRepository.findByLibelleLike(libelle);
+        Motif motif
+                = motifRepository.findBySlugEquals(Str.slug(libelle))
+                .orElseThrow(
+                        () -> new BMCustomException("Motif with given Slug not found", NOT_FOUND));
+
+        MotifResponse motifResponse = new MotifResponse();
+
+        copyProperties(motif, motifResponse);
+
+        log.info("MotifServiceImpl | getMotifById | motifResponse :" + motifResponse.toString());
+
+        return motifResponse;
     }
 
     @Override
@@ -116,5 +129,12 @@ public class MotifServiceImpl implements MotifService {
         }
         log.info("Deleting Motif with id: {}", motifId);
         motifRepository.deleteById(motifId);
+    }
+
+    @Override
+    public List<Motif> getMotifByLibelleLike(String libelle) {
+        log.info("MotifServiceImpl | getMotifByLibelle is called");
+
+        return motifRepository.findByLibelleLike(libelle);
     }
 }

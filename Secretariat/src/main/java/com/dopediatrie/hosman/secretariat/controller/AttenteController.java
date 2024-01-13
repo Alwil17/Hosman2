@@ -110,4 +110,9 @@ public class AttenteController {
     public void deleteAttenteById(@PathVariable("id") long attenteId) {
         attenteService.deleteAttenteById(attenteId);
     }
+
+    @DeleteMapping("/num/{id}")
+    public void deleteAttenteByNum(@PathVariable("id") long attenteNum) {
+        attenteService.deleteAttenteByNum(attenteNum);
+    }
 }

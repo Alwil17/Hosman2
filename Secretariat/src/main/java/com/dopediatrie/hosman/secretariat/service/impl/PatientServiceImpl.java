@@ -8,6 +8,8 @@ import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -107,8 +109,10 @@ public class PatientServiceImpl implements PatientService {
                         () -> new SecretariatCustomException("Patient with given Id not found", NOT_FOUND));
 
         PatientResponse patientResponse = new PatientResponse();
-
-        copyProperties(patient, patientResponse);
+        //copyProperties(patient, patientResponse, PatientResponse.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        patientResponse = mapper.convertValue(patient, PatientResponse.class);
 
 //        log.info("PatientServiceImpl | getPatientById | patientResponse :" + patientResponse.toString());
 
@@ -131,17 +135,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponse getPatientByReferenceUnique(String reference) {
-        log.info("PatientServiceImpl | getPatientByReference is called");
+        log.info("PatientServiceImpl | getPatientByReference is called "+reference);
 
         Patient patient
                 = patientRepository.findByReferenceEquals(reference)
                 .orElseThrow(
-                        () -> new SecretariatCustomException("Patient with given Id not found", NOT_FOUND));
+                        () -> new SecretariatCustomException("Patient with given ref not found", NOT_FOUND));
 
         PatientResponse patientResponse = new PatientResponse();
 
-        copyProperties(patient, patientResponse);
-
+        //copyProperties(patient, patientResponse, PatientResponse.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        patientResponse = mapper.convertValue(patient, PatientResponse.class);
         return patientResponse;
     }
 

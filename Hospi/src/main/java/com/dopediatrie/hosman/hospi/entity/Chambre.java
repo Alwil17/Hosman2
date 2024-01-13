@@ -24,7 +24,6 @@ public class Chambre {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
     @OneToMany(mappedBy = "chambre")
-    @JsonIgnore
     private List<Lit> lits;
 
     @Override

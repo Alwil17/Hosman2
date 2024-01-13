@@ -15,6 +15,8 @@ public interface SuiviService {
 
     SuiviResponse getSuiviById(long suiviId);
 
+    List<SuiviResponse> getSuiviByHospitId(long hospitId);
+
     void editSuivi(SuiviRequest suiviRequest, long suiviId);
 
     public void deleteSuiviById(long suiviId);

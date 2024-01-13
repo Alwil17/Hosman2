@@ -45,8 +45,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponse getPatientByRef(String patientRef) {
-        log.info("PatientServiceImpl | getPatientById is called");
-        log.info("PatientServiceImpl | getPatientById | Get the patient for patientId: {}", patientRef);
+        log.info("PatientServiceImpl | getPatientByRef is called");
+        log.info("PatientServiceImpl | getPatientByRef | Get the patient for patientRef: {}", patientRef);
 
         ResponseEntity<PatientResponse> responseEntity = restTemplate
                 .getForEntity(baseUrl + "/ref/" + patientRef,

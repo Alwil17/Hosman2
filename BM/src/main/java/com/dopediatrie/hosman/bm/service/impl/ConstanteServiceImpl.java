@@ -39,6 +39,7 @@ public class ConstanteServiceImpl implements ConstanteService {
                 .temperature(constanteRequest.getTemperature())
                 .poul(constanteRequest.getPoul())
                 .perimetre_cranien(constanteRequest.getPerimetre_cranien())
+                .frequence_respiratoire(constanteRequest.getFrequence_respiratoire())
                 .build();
 
         constante = constanteRepository.save(constante);
@@ -61,6 +62,7 @@ public class ConstanteServiceImpl implements ConstanteService {
                     .temperature(constanteRequest.getTemperature())
                     .poul(constanteRequest.getPoul())
                     .perimetre_cranien(constanteRequest.getPerimetre_cranien())
+                    .frequence_respiratoire(constanteRequest.getFrequence_respiratoire())
                     .build();
             constanteRepository.save(constante);
         }
@@ -103,6 +105,7 @@ public class ConstanteServiceImpl implements ConstanteService {
         constante.setTemperature(constanteRequest.getTemperature());
         constante.setPoul(constanteRequest.getPoul());
         constante.setPerimetre_cranien(constanteRequest.getPerimetre_cranien());
+        constante.setFrequence_respiratoire(constanteRequest.getFrequence_respiratoire());
         constanteRepository.save(constante);
 
         log.info("ConstanteServiceImpl | editConstante | Constante Updated");

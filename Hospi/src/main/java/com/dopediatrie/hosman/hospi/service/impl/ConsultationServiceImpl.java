@@ -30,4 +30,16 @@ public class ConsultationServiceImpl implements ConsultationService {
 
         return responseEntity.getBody();
     }
+
+    @Override
+    public ConsultationResponse getConsultationByRef(String consultationRef) {
+        log.info("ConsultationServiceImpl | getConsultationByRef is called");
+        log.info("ConsultationServiceImpl | getConsultationByRef | Get the consultation for consultationRef: {}", consultationRef);
+
+        ResponseEntity<ConsultationResponse> responseEntity = restTemplate
+                .getForEntity(baseUrl + "/ref/" + consultationRef,
+                        ConsultationResponse.class);
+
+        return responseEntity.getBody();
+    }
 }

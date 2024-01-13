@@ -24,5 +24,5 @@ public class ConsultationMotif {
     @MapsId("motif_id")
     @JoinColumn(name = "motif_id")
     private Motif motif;
-    private double montant;
+    private String caractere;
 }

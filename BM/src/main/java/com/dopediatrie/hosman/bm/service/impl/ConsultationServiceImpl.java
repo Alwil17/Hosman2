@@ -23,7 +23,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @RequiredArgsConstructor
 @Log4j2
 public class ConsultationServiceImpl implements ConsultationService {
-    private final String NOT_FOUND = "INTERVENTION_NOT_FOUND";
+    private final String NOT_FOUND = "CONSULTATION_NOT_FOUND";
     private final ConsultationRepository consultationRepository;
     private final ConstanteRepository constanteRepository;
 
@@ -64,6 +64,8 @@ public class ConsultationServiceImpl implements ConsultationService {
             consultation.setConstante(constanteRepository.findById(constante_id).orElseThrow());
 
         consultation = consultationRepository.save(consultation);
+        consultation.setReference(String.format("%06d", consultation.getId()));
+        consultation = consultationRepository.save(consultation);
 
         if((consultationRequest.getMotifs() != null) && (consultationRequest.getMotifs().size() > 0)){
             consultationMotifService.deleteAllForConsultationId(consultation.getId());
@@ -88,6 +90,11 @@ public class ConsultationServiceImpl implements ConsultationService {
                 consultationActeService.addConsultationActe(iActe);
             }
         }
+
+        if((consultationRequest.getAttente_num() != null) && (consultationRequest.getAttente_num() != 0)){
+            attenteService.deleteAttenteByNum(consultationRequest.getAttente_num());
+        }
+
         log.info("ConsultationServiceImpl | addConsultation | Consultation Created");
 //        log.info("ConsultationServiceImpl | addConsultation | Consultation Id : " + consultation.getId());
         return consultation.getId();
@@ -107,7 +114,61 @@ public class ConsultationServiceImpl implements ConsultationService {
         copyProperties(consultation, consultationResponse);
         consultationResponse.setPatient(patientService.getPatientByRef(consultation.getPatient_ref()));
         consultationResponse.setSecteur(secteurService.getSecteurByCode(consultation.getSecteur_code()));
-        consultationResponse.setAttente(attenteService.getAttenteByNum(consultation.getAttente_num()));
+        if(consultation.getAttente_num() != null && consultation.getAttente_num() != 0)
+            consultationResponse.setAttente(attenteService.getAttenteByNum(consultation.getAttente_num()));
+        if(consultation.getConstante() != null)
+            consultationResponse.setConstante(constanteService.getConstanteById(consultation.getConstante().getId()));
+
+        if(consultation.getActes() != null && consultation.getActes().size() > 0){
+            List<ActeResponse> acteResponses = new ArrayList<ActeResponse>();
+            for (ConsultationActe consultationActe : consultation.getActes()) {
+                ActeResponse acteResponse = acteService.getActeByCode(consultationActe.getActe());
+                acteResponses.add(acteResponse);
+            }
+            consultationResponse.setActes(acteResponses);
+        }
+        if(consultation.getDiagnostics() != null && consultation.getDiagnostics().size() > 0){
+            List<DiagnosticResponse> diagnosticResponses = new ArrayList<DiagnosticResponse>();
+            for (ConsultationDiagnostic consultationDiagnostic : consultation.getDiagnostics()) {
+                DiagnosticResponse diagnosticResponse = diagnosticService.getDiagnosticByCode(consultationDiagnostic.getDiagnostic());
+                diagnosticResponses.add(diagnosticResponse);
+            }
+            consultationResponse.setDiagnostics(diagnosticResponses);
+        }
+
+        if(consultation.getMotifs() != null && consultation.getMotifs().size() > 0){
+            List<MotifResponse> motifResponses = new ArrayList<MotifResponse>();
+            for (Motif consultationMotif : consultation.getMotifs()) {
+                MotifResponse motifResponse = new MotifResponse();
+                copyProperties(consultationMotif, motifResponse);
+                motifResponses.add(motifResponse);
+            }
+            consultationResponse.setMotifs(motifResponses);
+        }
+
+        log.info("ConsultationServiceImpl | getConsultationById" );
+        return consultationResponse;
+    }
+
+    @Override
+    public ConsultationResponse getConsultationByRef(String consultationRef) {
+        log.info("ConsultationServiceImpl | getConsultationByRef is called");
+        log.info("ConsultationServiceImpl | getConsultationByRef | Get the consultation for consultationId: {}", consultationRef);
+
+        Consultation consultation
+                = consultationRepository.findByRef(consultationRef)
+                .orElseThrow(
+                        () -> new BMCustomException("Consultation with given Id not found", NOT_FOUND));
+
+        ConsultationResponse consultationResponse = new ConsultationResponse();
+        copyProperties(consultation, consultationResponse);
+        consultationResponse.setPatient(patientService.getPatientByRef(consultation.getPatient_ref()));
+        consultationResponse.setSecteur(secteurService.getSecteurByCode(consultation.getSecteur_code()));
+        if(consultation.getAttente_num() != null && consultation.getAttente_num() != 0)
+            consultationResponse.setAttente(attenteService.getAttenteByNum(consultation.getAttente_num()));
+        if(consultation.getConstante() != null)
+            consultationResponse.setConstante(constanteService.getConstanteById(consultation.getConstante().getId()));
+
         if(consultation.getActes() != null && consultation.getActes().size() > 0){
             List<ActeResponse> acteResponses = new ArrayList<ActeResponse>();
             for (ConsultationActe consultationActe : consultation.getActes()) {
@@ -145,9 +206,44 @@ public class ConsultationServiceImpl implements ConsultationService {
         List<Consultation> consultations = consultationRepository.findAllByPatient_ref(patientRef);
         List<ConsultationResponse> consultationResponses = new ArrayList<ConsultationResponse>();
         if ((consultations != null && consultations.size() >0)){
+            PatientResponse patient = patientService.getPatientByRef(consultations.get(0).getPatient_ref());
+
             for (Consultation consultation : consultations) {
                 ConsultationResponse consultationResponse = new ConsultationResponse();
                 copyProperties(consultation, consultationResponse);
+                consultationResponse.setPatient(patient);
+                consultationResponse.setSecteur(secteurService.getSecteurByCode(consultation.getSecteur_code()));
+                if(consultation.getAttente_num() != null && consultation.getAttente_num() != 0)
+                    consultationResponse.setAttente(attenteService.getAttenteByNum(consultation.getAttente_num()));
+                if(consultation.getConstante() != null)
+                    consultationResponse.setConstante(constanteService.getConstanteById(consultation.getConstante().getId()));
+                if(consultation.getActes() != null && consultation.getActes().size() > 0){
+                    List<ActeResponse> acteResponses = new ArrayList<ActeResponse>();
+                    for (ConsultationActe consultationActe : consultation.getActes()) {
+                        ActeResponse acteResponse = acteService.getActeByCode(consultationActe.getActe());
+                        acteResponses.add(acteResponse);
+                    }
+                    consultationResponse.setActes(acteResponses);
+                }
+                if(consultation.getDiagnostics() != null && consultation.getDiagnostics().size() > 0){
+                    List<DiagnosticResponse> diagnosticResponses = new ArrayList<DiagnosticResponse>();
+                    for (ConsultationDiagnostic consultationDiagnostic : consultation.getDiagnostics()) {
+                        DiagnosticResponse diagnosticResponse = diagnosticService.getDiagnosticByCode(consultationDiagnostic.getDiagnostic());
+                        diagnosticResponses.add(diagnosticResponse);
+                    }
+                    consultationResponse.setDiagnostics(diagnosticResponses);
+                }
+
+                if(consultation.getMotifs() != null && consultation.getMotifs().size() > 0){
+                    List<MotifResponse> motifResponses = new ArrayList<MotifResponse>();
+                    for (Motif consultationMotif : consultation.getMotifs()) {
+                        MotifResponse motifResponse = new MotifResponse();
+                        copyProperties(consultationMotif, motifResponse);
+                        motifResponses.add(motifResponse);
+                    }
+                    consultationResponse.setMotifs(motifResponses);
+                }
+
                 consultationResponses.add(consultationResponse);
             }
         }

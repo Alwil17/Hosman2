@@ -53,9 +53,9 @@ public class PatientController {
     }
 
     @GetMapping("/ref/{ref}")
-    public ResponseEntity<PatientResponse> getPatientById(@PathVariable("ref") String patientRef) {
+    public ResponseEntity<PatientResponse> getPatientByRef(@PathVariable("ref") String patientRef) {
 
-        log.info("PatientController | getPatientById is called");
+        log.info("PatientController | getPatientByRef is called");
 
         PatientResponse patientResponse
                 = patientService.getPatientByReferenceUnique(patientRef);

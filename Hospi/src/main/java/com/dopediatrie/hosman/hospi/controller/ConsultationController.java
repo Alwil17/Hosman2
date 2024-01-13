@@ -30,4 +30,14 @@ public class ConsultationController {
         return new ResponseEntity<>(consultationResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/ref/{id}")
+    public ResponseEntity<ConsultationResponse> getConsultationByRef(@PathVariable("id") String consultationRef) {
+        log.info("ConsultationController | getConsultationByRef is called");
+        log.info("ConsultationController | getConsultationByRef | consultationRef : " + consultationRef);
+
+        ConsultationResponse consultationResponse
+                = consultationService.getConsultationByRef(consultationRef);
+        return new ResponseEntity<>(consultationResponse, HttpStatus.OK);
+    }
+
 }

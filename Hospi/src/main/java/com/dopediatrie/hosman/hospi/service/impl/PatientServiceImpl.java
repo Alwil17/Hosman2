@@ -2,6 +2,7 @@ package com.dopediatrie.hosman.hospi.service.impl;
 
 import com.dopediatrie.hosman.hospi.payload.response.PatientResponse;
 import com.dopediatrie.hosman.hospi.service.PatientService;
+import com.dopediatrie.hosman.hospi.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,18 @@ public class PatientServiceImpl implements PatientService {
 
         ResponseEntity<PatientResponse> responseEntity = restTemplate
                 .getForEntity(baseUrl + "/" + patientId,
+                        PatientResponse.class);
+
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public PatientResponse getPatientByRef(String patientRef) {
+        log.info("PatientServiceImpl | getPatientByRef is called");
+        log.info("PatientServiceImpl | getPatientByRef | Get the patient for patientRef: {}", patientRef);
+
+        ResponseEntity<PatientResponse> responseEntity = restTemplate
+                .getForEntity(baseUrl + "/ref/" + patientRef,
                         PatientResponse.class);
 
         return responseEntity.getBody();

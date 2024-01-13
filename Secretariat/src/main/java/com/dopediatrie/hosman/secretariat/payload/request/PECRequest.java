@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class PECRequest {
     private long assurance_id;
-    private long acte_id;
+    private long tarif_id;
     private long facture_id;
     private long patient_id;
     private double montant_pec;

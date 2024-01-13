@@ -4,12 +4,15 @@ import com.dopediatrie.hosman.secretariat.entity.Acte;
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.ProduitResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
 import com.dopediatrie.hosman.secretariat.service.TarifService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -256,5 +259,22 @@ public class TarifServiceImpl implements TarifService {
         }
         log.info("Deleting Tarif with id: {}", tarifId);
         tarifRepository.deleteById(tarifId);
+    }
+
+    @Override
+    public List<TarifResponse> getTarifForExamen() {
+        log.info("TarifServiceImpl | getTarifForExamen is called");
+        List<Tarif> tarifs = tarifRepository.getAllExamens();
+        List<TarifResponse> tarifResponses = new ArrayList<TarifResponse>();
+        if(tarifs != null && tarifs.size() > 0){
+            for (Tarif t : tarifs) {
+                TarifResponse tarifResponse = new TarifResponse();
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                tarifResponse = mapper.convertValue(t, TarifResponse.class);
+                tarifResponses.add(tarifResponse);
+            }
+        }
+        return tarifResponses;
     }
 }

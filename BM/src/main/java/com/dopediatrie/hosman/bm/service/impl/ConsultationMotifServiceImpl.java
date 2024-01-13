@@ -23,8 +23,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class ConsultationMotifServiceImpl implements ConsultationMotifService {
     private final ConsultationMotifRepository consultationMotifRepository;
     private final ConsultationRepository consultationRepository;
-    private final MotifRepository modeRepository;
-    private final String NOT_FOUND = "INTERVENTION_MOTIF_NOT_FOUND";
+    private final MotifRepository motifRepository;
+    private final String NOT_FOUND = "CONSULTATION_MOTIF_NOT_FOUND";
 
     @Override
     public List<ConsultationMotif> getAllConsultationMotifs() {
@@ -43,7 +43,8 @@ public class ConsultationMotifServiceImpl implements ConsultationMotifService {
                 = ConsultationMotif.builder()
                 .id(pk)
                 .consultation(consultationRepository.findById(consultationMotifRequest.getConsultation_id()).orElseThrow())
-                .motif(modeRepository.findById(consultationMotifRequest.getMotif_id()).orElseThrow())
+                .motif(motifRepository.findById(consultationMotifRequest.getMotif_id()).orElseThrow())
+                .caractere(consultationMotifRequest.getCaractere())
                 .build();
 
         consultationMotif = consultationMotifRepository.save(consultationMotif);
@@ -83,7 +84,8 @@ public class ConsultationMotifServiceImpl implements ConsultationMotifService {
                         NOT_FOUND
                 ));
         consultationMotif.setConsultation(consultationRepository.findById(consultationMotifRequest.getConsultation_id()).orElseThrow());
-        consultationMotif.setMotif(modeRepository.findById(consultationMotifRequest.getMotif_id()).orElseThrow());
+        consultationMotif.setMotif(motifRepository.findById(consultationMotifRequest.getMotif_id()).orElseThrow());
+        consultationMotif.setCaractere(consultationMotifRequest.getCaractere());
         consultationMotifRepository.save(consultationMotif);
 
         log.info("ConsultationMotifServiceImpl | editConsultationMotif | ConsultationMotif Updated");

@@ -5,9 +5,7 @@ import com.dopediatrie.hosman.hospi.exception.HospiCustomException;
 import com.dopediatrie.hosman.hospi.payload.request.HospitRequest;
 import com.dopediatrie.hosman.hospi.payload.response.HospitResponse;
 import com.dopediatrie.hosman.hospi.repository.HospitRepository;
-import com.dopediatrie.hosman.hospi.service.HospitService;
-import com.dopediatrie.hosman.hospi.service.PatientService;
-import com.dopediatrie.hosman.hospi.service.SecteurService;
+import com.dopediatrie.hosman.hospi.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,10 @@ public class HospitServiceImpl implements HospitService {
 
     private final HospitRepository hospitRepository;
     private final PatientService patientService;
+    private final MotifService motifService;
     private final SecteurService secteurService;
+    private final DiagnosticService diagnosticService;
+    private final ConsultationService consultationService;
 
     @Override
     public List<Hospit> getAllHospits() {
@@ -37,12 +38,13 @@ public class HospitServiceImpl implements HospitService {
         log.info("HospitServiceImpl | addHospit is called");
 
         Hospit hospit = Hospit.builder()
-                .motif(hospitRequest.getMotif())
-                .diagnostic(hospitRequest.getDiagnostic())
+                .motif_libelle(hospitRequest.getMotif())
+                .diagnostic_code(hospitRequest.getDiagnostic())
                 .hdm(hospitRequest.getHdm())
-                .patient_id(hospitRequest.getPatient_id())
-                .secteur_id(hospitRequest.getSecteur_id())
-                .consultation_id(hospitRequest.getConsultation_id())
+                .patient_ref(hospitRequest.getPatient_ref())
+                .secteur_code(hospitRequest.getSecteur_code())
+                .arrive(hospitRequest.getArrive())
+                .consultation_ref(hospitRequest.getConsultation_ref())
                 .date_hospit(hospitRequest.getDate_hospit())
                 .created_at(LocalDateTime.now())
                 .build();
@@ -60,12 +62,13 @@ public class HospitServiceImpl implements HospitService {
 
         for (HospitRequest hospitRequest : hospitRequests) {
             Hospit hospit = Hospit.builder()
-                    .motif(hospitRequest.getMotif())
-                    .diagnostic(hospitRequest.getDiagnostic())
+                    .motif_libelle(hospitRequest.getMotif())
+                    .diagnostic_code(hospitRequest.getDiagnostic())
                     .hdm(hospitRequest.getHdm())
-                    .patient_id(hospitRequest.getPatient_id())
-                    .secteur_id(hospitRequest.getSecteur_id())
-                    .consultation_id(hospitRequest.getConsultation_id())
+                    .patient_ref(hospitRequest.getPatient_ref())
+                    .secteur_code(hospitRequest.getSecteur_code())
+                    .arrive(hospitRequest.getArrive())
+                    .consultation_ref(hospitRequest.getConsultation_ref())
                     .date_hospit(hospitRequest.getDate_hospit())
                     .created_at(LocalDateTime.now())
                     .build();
@@ -87,10 +90,15 @@ public class HospitServiceImpl implements HospitService {
 
         HospitResponse hospitResponse = new HospitResponse();
         copyProperties(hospit, hospitResponse);
-        hospitResponse.setPatient(patientService.getPatientById(hospit.getPatient_id()));
-        hospitResponse.setSecteur(secteurService.getSecteurById(hospit.getSecteur_id()));
-
-
+        if(hospit.getMotif_libelle() != null && !hospit.getMotif_libelle().isBlank())
+            hospitResponse.setMotif(motifService.getMotifByLibelle(hospit.getMotif_libelle()));
+        if(hospit.getDiagnostic_code() != null && !hospit.getDiagnostic_code().isBlank())
+            hospitResponse.setDiagnostic(diagnosticService.getDiagnosticByCode(hospit.getDiagnostic_code()));
+        if(hospit.getPatient_ref() != null && !hospit.getPatient_ref().isBlank())
+            hospitResponse.setPatient(patientService.getPatientByRef(hospit.getPatient_ref()));
+        if(hospit.getSecteur_code() != null && !hospit.getSecteur_code().isBlank())
+            hospitResponse.setSecteur(secteurService.getSecteurByCode(hospit.getSecteur_code()));
+        hospitResponse.setConsultation(consultationService.getConsultationByRef(hospit.getConsultation_ref()));
         //log.info("HospitServiceImpl | getHospitById | hospitResponse :" + hospitResponse.toString());
 
         return hospitResponse;
@@ -106,12 +114,13 @@ public class HospitServiceImpl implements HospitService {
                         "Hospit with given Id not found",
                         NOT_FOUND
                 ));
-        hospit.setMotif(hospitRequest.getMotif());
-        hospit.setDiagnostic(hospitRequest.getDiagnostic());
+        hospit.setMotif_libelle(hospitRequest.getMotif());
+        hospit.setDiagnostic_code(hospitRequest.getDiagnostic());
         hospit.setHdm(hospitRequest.getHdm());
-        hospit.setPatient_id(hospitRequest.getPatient_id());
-        hospit.setSecteur_id(hospitRequest.getSecteur_id());
-        hospit.setConsultation_id(hospitRequest.getConsultation_id());
+        hospit.setPatient_ref(hospitRequest.getPatient_ref());
+        hospit.setSecteur_code(hospitRequest.getSecteur_code());
+        hospit.setArrive(hospitRequest.getArrive());
+        hospit.setConsultation_ref(hospitRequest.getConsultation_ref());
         hospit.setDate_hospit(hospitRequest.getDate_hospit());
         hospit.setUpdated_at(LocalDateTime.now());
         hospitRepository.save(hospit);

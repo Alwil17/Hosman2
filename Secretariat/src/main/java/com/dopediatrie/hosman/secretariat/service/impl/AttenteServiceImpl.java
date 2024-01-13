@@ -211,4 +211,17 @@ public class AttenteServiceImpl implements AttenteService {
         }
         attenteRepository.save(attente);
     }
+
+    @Override
+    public void deleteAttenteByNum(long attenteNum) {
+        log.info("Attente num: {}", attenteNum);
+        Attente attente
+                = attenteRepository.findByNum_attente(attenteNum)
+                .orElseThrow(
+                        () -> new SecretariatCustomException("Attente with given num not found", NOT_FOUND));
+        attente.setEn_cours(false);
+        attente.setAttente(false);
+        log.info("Removing from attente: {}", attenteNum);
+        attenteRepository.save(attente);
+    }
 }

@@ -24,4 +24,6 @@ public interface TarifService {
     void editTarif(TarifRequest tarifRequest, long tarifId);
 
     public void deleteTarifById(long tarifId);
+
+    List<TarifResponse> getTarifForExamen();
 }

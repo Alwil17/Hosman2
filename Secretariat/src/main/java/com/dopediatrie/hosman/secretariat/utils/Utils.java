@@ -50,12 +50,12 @@ public class Utils {
                 "    CASE WHEN m.slug = 'visa' THEN fm.montant ELSE 0 END\n" +
                 "  ) AS total_visa,\n" +
                 "  SUM(\n" +
-                "    CASE WHEN f.montant_pec>0 THEN 1 ELSE 0 END\n" +
+                "    CASE WHEN f.montant_pec is not null THEN 1 ELSE 0 END\n" +
                 "  ) AS nb_pec, \n" +
                 "  SUM(\n" +
-                "    CASE WHEN f.montant_pec>0 THEN pe.montant_pec ELSE 0 END\n" +
+                "    CASE WHEN f.montant_pec is not null THEN pe.montant_pec ELSE 0 END\n" +
                 "  ) AS total_pec,\n" +
-                "  SUM(fm.montant)+SUM(CASE WHEN f.montant_pec>0 THEN pe.montant_pec ELSE 0 END) AS montant_total \n" +
+                "  SUM(fm.montant)+SUM(CASE WHEN f.montant_pec is not null THEN pe.montant_pec ELSE 0 END) AS montant_total \n" +
                 "FROM \n" +
                 "  facture f \n" +
                 "  JOIN pec pe ON pe.facture_id = f.id \n" +

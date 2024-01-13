@@ -37,12 +37,14 @@ public class DatabaseSeeder {
     private final ModePayementService modePayementService;
     private final EtatService etatService;
     private final DeviseService deviseService;
+    private final AssuranceService assuranceService;
+    private final CategorieService categorieService;
 
     @Autowired
     public DatabaseSeeder(JdbcTemplate jdbcTemplate, ActeService acteService, GroupeService groupeService, ActeRepository acteRepository, TarifService tarifService,
                           PaysService paysService, VilleService villeService, QuartierService quartierService, ProfessionService professionService,
                           EmployeurService employeurService, TypeAssuranceService typeAssuranceService, ModePayementService modePayementService,
-                          EtatService etatService, DeviseService deviseService) {
+                          EtatService etatService, DeviseService deviseService, AssuranceService assuranceService, CategorieService categorieService) {
         this.jdbcTemplate = jdbcTemplate;
         this.acteService = acteService;
         this.acteRepository = acteRepository;
@@ -57,6 +59,8 @@ public class DatabaseSeeder {
         this.modePayementService = modePayementService;
         this.etatService = etatService;
         this.deviseService = deviseService;
+        this.assuranceService = assuranceService;
+        this.categorieService = categorieService;
     }
 
     @EventListener
@@ -73,6 +77,8 @@ public class DatabaseSeeder {
         seedModePayementTable();
         seedEtatTable();
         seedDeviseTable();
+        seedAssuranceTable();
+        seedCategorieTable();
     }
 
     private void seedActeTable() {
@@ -228,6 +234,26 @@ public class DatabaseSeeder {
         }
     }
 
+    private void seedCategorieTable() {
+        String sql = "SELECT c.nom FROM categorie c";
+        List<Categorie> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            NameRequest ar1 = NameRequest.builder().nom("PISJO").build();
+            NameRequest ar2 = NameRequest.builder().nom("MEDECINS").build();
+            NameRequest ar3 = NameRequest.builder().nom("CORPS MEDICAL").build();
+            NameRequest ar4 = NameRequest.builder().nom("AMBASSADES").build();
+            NameRequest ar5 = NameRequest.builder().nom("AGENCES DE VOYAGE").build();
+            NameRequest ar6 = NameRequest.builder().nom("BANQUES").build();
+            NameRequest ar7 = NameRequest.builder().nom("PHARMACIES").build();
+
+            categorieService.addCategorie(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6, ar7));
+
+            log.info("Categorie table seeded");
+        }else {
+            log.info("Categorie Seeding Not Required");
+        }
+    }
+
     private void seedQuartierTable() {
         String sql = "SELECT c.nom FROM quartier c";
         List<Quartier> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
@@ -359,6 +385,34 @@ public class DatabaseSeeder {
         }else {
             log.info("Devise Seeding Not Required");
 
+        }
+    }
+
+    private void seedAssuranceTable() {
+        String sql = "SELECT c.nom FROM assurance c";
+        List<Assurance> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+        if(rs == null || rs.size() <= 0) {
+            List<AssuranceRequest> assuranceRequests = new ArrayList<AssuranceRequest>();
+            InputStream in = getClass().getResourceAsStream("/com/dopediatrie/hosman/secretariat/assurances.csv");
+
+            assert in != null;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+
+            Stream<String> lines = bufferedReader.lines();
+            lines.forEach(s -> {
+                String[] cols = s.split(";");
+                AssuranceRequest sar = AssuranceRequest.builder()
+                        .nom(cols[0].toUpperCase(Locale.FRENCH))
+                        .type_assurance(cols[1].toLowerCase(Locale.FRENCH))
+                        .build();
+                assuranceRequests.add(sar);
+            });
+
+            assuranceService.addAssurance(assuranceRequests);
+
+            log.info("Assurance table seeded");
+        }else {
+            log.info("Assurance Seeding Not Required");
         }
     }
 }

@@ -26,4 +26,6 @@ public interface AttenteService {
     List<Attente> getAttenteForMedecin(String medecin_matricule);
 
     void updateStatus(long attenteNum, AttenteRequest attenteRequest, long userId);
+
+    void deleteAttenteByNum(long attenteNum);
 }

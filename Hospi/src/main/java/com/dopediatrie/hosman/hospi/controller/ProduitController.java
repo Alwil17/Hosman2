@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.hospi.controller;
 
+import com.dopediatrie.hosman.hospi.payload.response.GlobalProduitResponse;
 import com.dopediatrie.hosman.hospi.payload.response.ProduitResponse;
 import com.dopediatrie.hosman.hospi.service.ProduitService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ public class ProduitController {
     private final ProduitService produitService;
 
     @GetMapping
-    public ResponseEntity<List<ProduitResponse>> getAllProduits() {
+    public ResponseEntity<List<GlobalProduitResponse>> getAllProduits() {
         log.info("ProduitController | getAllProduits is called");
         return new ResponseEntity<>(produitService.getAllProduits(), HttpStatus.OK);
     }

@@ -168,7 +168,8 @@ public class ICDAPIclient {
             diagnosticResponse.setTitle(result.getTitle().getValue());
             diagnosticResponse.setStemId(result.getId());
             diagnosticResponse.setId(result.getId());
-            diagnosticResponse.setDescription(result.getDefinition().getValue());
+            if(result.getDefinition() != null)
+                diagnosticResponse.setDescription(result.getDefinition().getValue());
         }
         return diagnosticResponse;
     }

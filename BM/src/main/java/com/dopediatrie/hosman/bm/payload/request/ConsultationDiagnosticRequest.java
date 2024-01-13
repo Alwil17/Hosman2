@@ -8,4 +8,5 @@ import lombok.Data;
 public class ConsultationDiagnosticRequest {
     private long consultation_id;
     private String diagnostic;
+    private String commentaire;
 }

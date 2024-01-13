@@ -9,5 +9,7 @@ public interface PatientService {
 
     PatientResponse getPatientById(long patientId);
 
+    PatientResponse getPatientByRef(String patientRef);
+
     public void deletePatientById(long patientId);
 }

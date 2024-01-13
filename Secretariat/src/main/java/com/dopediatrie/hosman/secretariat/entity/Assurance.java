@@ -19,6 +19,7 @@ public class Assurance {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String nom;
+    private String slug;
     private String representant;
     private String email;
     private String tel1;

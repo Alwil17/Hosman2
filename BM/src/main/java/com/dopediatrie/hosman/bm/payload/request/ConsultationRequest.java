@@ -16,7 +16,7 @@ public class ConsultationRequest {
     private String hdm;
     private String patient_ref;
     private String secteur_code;
-    private long attente_num;
+    private Long attente_num;
     private ConstanteRequest constante;
     private List<ConsultationMotifRequest> motifs;
     private List<ConsultationActeRequest> actes;

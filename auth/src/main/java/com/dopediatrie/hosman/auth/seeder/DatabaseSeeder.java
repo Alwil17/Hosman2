@@ -80,7 +80,7 @@ public class DatabaseSeeder {
         List<Departement> rs = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if(rs == null || rs.size() <= 0) {
 
-            DepartementRequest ar1 = DepartementRequest.builder().libelle("Directeur Générale").couleur("bleu").code("DG").structure_id(1).build();
+            DepartementRequest ar1 = DepartementRequest.builder().libelle("Direction Générale").couleur("bleu").code("DG").structure_id(1).build();
             DepartementRequest ar2 = DepartementRequest.builder().libelle("Direction des Ressources humaines").couleur("bleu").code("DRH").structure_id(1).build();
             DepartementRequest ar3 = DepartementRequest.builder().libelle("Direction des Affaires Financières").couleur("bleu").code("DAF").structure_id(1).build();
             DepartementRequest ar4 = DepartementRequest.builder().libelle("Direction des Soins").couleur("bleu").code("DS").structure_id(1).build();

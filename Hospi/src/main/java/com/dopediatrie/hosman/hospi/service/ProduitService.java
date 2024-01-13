@@ -1,11 +1,12 @@
 package com.dopediatrie.hosman.hospi.service;
 
+import com.dopediatrie.hosman.hospi.payload.response.GlobalProduitResponse;
 import com.dopediatrie.hosman.hospi.payload.response.ProduitResponse;
 
 import java.util.List;
 
 public interface ProduitService {
-    List<ProduitResponse> getAllProduits();
+    List<GlobalProduitResponse> getAllProduits();
 
     ProduitResponse getProduitById(long produitId);
 

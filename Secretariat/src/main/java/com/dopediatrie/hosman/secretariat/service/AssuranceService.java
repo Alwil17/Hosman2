@@ -11,6 +11,8 @@ public interface AssuranceService {
 
     long addAssurance(AssuranceRequest assuranceRequest);
 
+    void addAssurance(List<AssuranceRequest> assuranceRequests);
+
     AssuranceResponse getAssuranceById(long assuranceId);
 
     void editAssurance(AssuranceRequest assuranceRequest, long assuranceId);

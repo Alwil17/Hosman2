@@ -49,10 +49,30 @@ public class ConsultationController {
         return new ResponseEntity<>(consultationResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/ref/{id}")
+    public ResponseEntity<ConsultationResponse> getConsultationByRef(@PathVariable("id") String consultationRef) {
+
+        log.info("ConsultationController | getConsultationByRef is called");
+        log.info("ConsultationController | getConsultationByRef | consultationId : " + consultationRef);
+
+        ConsultationResponse consultationResponse
+                = consultationService.getConsultationByRef(consultationRef);
+        return new ResponseEntity<>(consultationResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<List<ConsultationResponse>> getConsultationByPatientRef(@PathVariable("id") String patient_ref) {
+        log.info("ConsultationController | getConsultationByPatientRef is called");
+
+        List<ConsultationResponse> consultationResponses
+                = consultationService.getConsultationByPatientRef(patient_ref);
+
+        return new ResponseEntity<>(consultationResponses, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> editConsultation(@RequestBody ConsultationRequest consultationRequest,
-            @PathVariable("id") long consultationId
-    ) {
+            @PathVariable("id") long consultationId) {
 
         log.info("ConsultationController | editConsultation is called");
 

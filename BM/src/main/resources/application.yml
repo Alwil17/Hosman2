@@ -1,5 +1,11 @@
 server:
   port: 84
+  tomcat:
+    threads:
+      max: 10
+  jetty:
+    threads:
+      max: 10
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

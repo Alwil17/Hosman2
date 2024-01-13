@@ -21,8 +21,8 @@ public class PEC {
     @JoinColumn(name = "assurance_id")
     private Assurance assurance;
     @ManyToOne
-    @JoinColumn(name = "acte_id")
-    private Acte acte;
+    @JoinColumn(name = "tarif_id")
+    private Tarif tarif;
     @ManyToOne
     @JoinColumn(name = "facture_id")
     private Facture facture;

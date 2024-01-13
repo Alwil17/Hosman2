@@ -15,9 +15,11 @@ public interface MotifService {
 
     MotifResponse getMotifById(long agenceId);
 
-    List<Motif> getMotifByLibelle(String libelle);
+    MotifResponse getMotifByLibelle(String libelle);
 
     void editMotif(MotifRequest agenceRequest, long agenceId);
 
     public void deleteMotifById(long agenceId);
+
+    List<Motif> getMotifByLibelleLike(String libelle);
 }

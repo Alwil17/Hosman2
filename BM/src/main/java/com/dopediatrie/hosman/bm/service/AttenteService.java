@@ -16,7 +16,7 @@ public interface AttenteService {
 
     void editAttente(AttenteRequest secteurRequest, long secteurId);
 
-    public void deleteAttenteById(long secteurId);
+    public void deleteAttenteByNum(long attente_num);
 
     AttenteResponse getAttenteForUser(long userId);
 

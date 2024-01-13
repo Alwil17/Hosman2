@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -96,6 +97,19 @@ public class SuiviServiceImpl implements SuiviService {
         log.info("SuiviServiceImpl | getSuiviById | suiviResponse :" + suiviResponse.toString());
 
         return suiviResponse;
+    }
+
+    @Override
+    public List<SuiviResponse> getSuiviByHospitId(long hospitId) {
+        log.info("SuiviServiceImpl | getSuiviByHospitId is called");
+        List<Suivi> suivis = suiviRepository.findAllByHospitId(hospitId);
+        List<SuiviResponse> suiviResponses = new ArrayList<>();
+        for (Suivi s : suivis) {
+            SuiviResponse sr = new SuiviResponse();
+            copyProperties(s, sr);
+            suiviResponses.add(sr);
+        }
+        return suiviResponses;
     }
 
     @Override

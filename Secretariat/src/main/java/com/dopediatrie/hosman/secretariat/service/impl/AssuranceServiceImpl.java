@@ -9,6 +9,7 @@ import com.dopediatrie.hosman.secretariat.repository.AssuranceRepository;
 import com.dopediatrie.hosman.secretariat.repository.TypeAssuranceRepository;
 import com.dopediatrie.hosman.secretariat.service.AssuranceService;
 import com.dopediatrie.hosman.secretariat.service.TypeAssuranceService;
+import com.dopediatrie.hosman.secretariat.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class AssuranceServiceImpl implements AssuranceService {
             assurance
                     = Assurance.builder()
                     .nom(assuranceRequest.getNom())
+                    .slug(Str.slug(assuranceRequest.getNom()))
                     .representant(assuranceRequest.getRepresentant())
                     .email(assuranceRequest.getEmail())
                     .tel1(assuranceRequest.getTel1())
@@ -60,6 +62,40 @@ public class AssuranceServiceImpl implements AssuranceService {
         log.info("AssuranceServiceImpl | addAssurance | Assurance Created");
         log.info("AssuranceServiceImpl | addAssurance | Assurance Id : " + assurance.getId());
         return assurance.getId();
+    }
+
+    @Override
+    public void addAssurance(List<AssuranceRequest> assuranceRequests) {
+        log.info("AssuranceServiceImpl | addAssurances is called");
+        if (assuranceRequests != null && assuranceRequests.size()>0){
+            for (AssuranceRequest assuranceRequest : assuranceRequests) {
+                Assurance assurance;
+
+                if(!assuranceRepository.existsByNom(assuranceRequest.getNom())){
+                    String type_assurance = (assuranceRequest.getType_assurance() != null) ? assuranceRequest.getType_assurance() : "Locale";
+                    NameRequest nameRequest = NameRequest.builder().nom(type_assurance).build();
+                    long type_id = typeAssuranceService.addTypeAssurance(nameRequest);
+                    assurance
+                            = Assurance.builder()
+                            .nom(assuranceRequest.getNom())
+                            .slug(Str.slug(assuranceRequest.getNom()))
+                            .representant(assuranceRequest.getRepresentant())
+                            .email(assuranceRequest.getEmail())
+                            .tel1(assuranceRequest.getTel1())
+                            .tel2(assuranceRequest.getTel2())
+                            .type_assurance(typeAssuranceRepository.findById(type_id).get())
+                            .build();
+
+                    assurance = assuranceRepository.save(assurance);
+                }else{
+                    assurance = assuranceRepository.findByNom(assuranceRequest.getNom()).get();
+                    editAssurance(assuranceRequest, assurance.getId());
+                }
+
+
+                log.info("AssuranceServiceImpl | addAssurance | Assurance Created");
+            }
+        }
     }
 
     @Override
@@ -96,6 +132,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         long type_id = typeAssuranceService.addTypeAssurance(nameRequest);
 
         assurance.setNom(assuranceRequest.getNom());
+        assurance.setSlug(Str.slug(assuranceRequest.getNom()));
         assurance.setRepresentant(assuranceRequest.getRepresentant());
         assurance.setEmail(assuranceRequest.getEmail());
         assurance.setTel1(assuranceRequest.getTel1());

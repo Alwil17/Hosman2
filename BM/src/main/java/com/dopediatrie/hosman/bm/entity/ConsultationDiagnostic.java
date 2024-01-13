@@ -19,4 +19,5 @@ public class ConsultationDiagnostic {
     @JoinColumn(name = "consultation_id")
     private Consultation consultation;
     private String diagnostic;
+    private String commentaire;
 }

@@ -21,12 +21,22 @@ public class DiagnosticController {
 
     @GetMapping("/search")
     public ResponseEntity<List<DiagnosticResponse>> getDiagnosticBySearch(@RequestParam(value = "libelle") String libelle) {
-
         log.info("DiagnosticController | getDiagnosticBySearch is called");
         List<DiagnosticResponse> diagnosticResponse = Collections.emptyList();
 
         if(libelle != null && !libelle.isBlank())
             diagnosticResponse = diagnosticService.getDiagnosticByLibelle(libelle);
+
+        return new ResponseEntity<>(diagnosticResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{code}")
+    public ResponseEntity<DiagnosticResponse> getDiagnosticByCode(@PathVariable("code") String code) {
+        log.info("DiagnosticController | getDiagnosticBySearch is called");
+        DiagnosticResponse diagnosticResponse = new DiagnosticResponse();
+
+        if(code != null && !code.isBlank())
+            diagnosticResponse = diagnosticService.getDiagnosticByCode(code);
 
         return new ResponseEntity<>(diagnosticResponse, HttpStatus.OK);
     }

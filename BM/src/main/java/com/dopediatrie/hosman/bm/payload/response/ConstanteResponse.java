@@ -17,4 +17,5 @@ public class ConstanteResponse {
     private double temperature;
     private double poul;
     private double perimetre_cranien;
+    private double frequence_respiratoire;
 }

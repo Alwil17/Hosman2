@@ -17,6 +17,6 @@ public class AdresseResponse {
     private String no_maison;
     private String rue;
     private String bp;
-    private Ville ville;
-    private Quartier quartier;
+    private NameResponse ville;
+    private NameResponse quartier;
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -27,9 +28,19 @@ public class PatientResponse {
     private String no_piece;
     private LocalDateTime date_ajout;
     private int is_assure;
+    private AdresseResponse adresse;
+    private PaysResponse pays_origine;
+    private PaysResponse nationalite;
+    private ProfessionResponse profession;
+    private AssuranceResponse assurance;
+    private EmployeurResponse employeur;
+    private PersonneAPrevenirResponse personne_a_prevenir;
+    private List<FiliationResponse> parents;
     private double taux_assurance;
     private Date date_debut_assurance;
     private Date date_fin_assurance;
+    private List<NameResponse> maladies;
     private String commentaire;
     private String antecedent;
+    private long structure_id;
 }

@@ -11,5 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PECResponse {
     private long id;
+    private AssuranceResponse assurance;
+    private TarifResponse tarif;
+    private FactureResponse facture;
+    private PatientResponse patient;
     private double montant_pec;
 }

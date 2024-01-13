@@ -1,0 +1,245 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>Fiche récapitulative périodique</title>
+    <style>
+        @page {
+            /* dimensions for the whole page */
+            size: A4 portrait;
+            margin: 0;
+            background: #fff;
+        }
+
+        html {
+            /* off-white, so body edge is visible in browser */
+            background: #fff;
+        }
+
+        body {
+            /* A5 dimensions */
+            width: 190mm;
+            /*height: 190mm;*/
+
+
+            margin: auto;
+            background: #fff;
+            padding: 2%;
+            /*border: solid 1mm;*/
+
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /*.header-bottom > span:first-child {
+            align-self: flex-end;
+        }
+
+        .header-bottom > span:last-child {
+            align-self: flex-start;
+        }*/
+
+
+        .header-top-right {
+            display: flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: left;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .content-top {
+            border-top: solid 0.5mm;
+            border-bottom: solid 0.5mm;
+        }
+
+        table,
+        th,
+        td {
+            border: solid 0.2mm;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 10px;
+            text-align: center;
+        }
+
+        tr {
+            line-height: 23px;
+        }
+
+        .order-number {
+            float: left;
+            border: solid 0.5mm;
+            margin-top: 10mm;
+            padding: 2%;
+        }
+
+        .payment-table {
+            float: right;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .mr-8 {
+            margin-right: 32px
+        }
+
+        .text-sm {
+            font-size: 12px;
+        }
+
+        .text-2xl {
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        .py-2 {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .t0 {
+            border-top: solid white;
+        }
+
+        .b0 {
+            border-bottom: solid white;
+        }
+
+        .r0 {
+            border-right: solid white;
+        }
+
+        .l0 {
+            border-left: solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="text-center">
+    <h3><u>FICHE RECAPITULATIVE DES RECETTES SUR UNE PERIODE</u></h3>
+</div>
+
+<div class="content">
+    <table style="width: 100%;">
+        <tbody>
+        <tr style="background: #fff; border: solid white !important;">
+            <td style="width: 50%; text-align: start; border: solid white !important;">Période du: <b th:text="${date_debut}">01/07/2023</b> au <b th:text="${date_fin}">01/07/2023</b> </td>
+            <td style="width: 50%; right: 0; text-align: right; border: solid white !important;">Rendu par: SE</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <table style="width: 100%;">
+            <thead>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <colgroup span="2"></colgroup>
+            <tr>
+                <td rowspan="2" style="border-left: solid 1px white !important; border-top: solid 1px white"></td>
+                <th colspan="2" scope="colgroup">LIQUIDITES</th>
+                <th colspan="2" scope="colgroup">CHEQUES</th>
+                <th colspan="2" scope="colgroup">VISAS</th>
+                <th colspan="2" scope="colgroup">PRISE EN CHARGE</th>
+                <th rowspan="2">TOTAL PAR SECTEUR</th>
+            </tr>
+            <tr>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+                <th scope="col">NB</th>
+                <th scope="col">MONTANT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recap: ${recaps}">
+                <th scope="row" th:text="${recap.acte}" style="width: 130px; font-size: 16px; font-weight: bold; text-align: left;">Consultation</th>
+                <td th:text="${recap.nb_especes}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_especes, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_cheque}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_cheque, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_visa}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${recap.nb_pec}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(recap.total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="width: 100px; text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            <tr>
+                <th scope="row" style="width: 130px; font-size: 16px; font-weight: bold; text-align: left;">TOTAUX</th>
+                <td th:text="${total_nb_especes}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_especes, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_cheque}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_cheque, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_visa}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_visa, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td th:text="${total_nb_pec}" style="text-align: center !important;">0</td>
+                <td th:text="${#numbers.formatDecimal(total_total_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(total_montant_total, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <table style="width: 100%; margin-top: 10px;">
+            <tbody>
+            <tr>
+                <th scope="row" class="title t0 b0 l0" style="width: 90px;">Remises :</th>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(remises, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Créances :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(creances, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Dépenses :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(depenses, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+                <td class="title t0 b0" style="width: 90px; padding-left: 10px;">Réliquats :</td>
+                <td style="text-align: right !important; padding-right: 3px;" th:text="${#numbers.formatDecimal(reliquats, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%;">
+            <tbody>
+            <tr>
+                <th scope="row" class="title" >Chiffre d'affaire = Total général par secteur - Dépenses - Réliquats</th>
+                <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 150px;" th:text="${#numbers.formatDecimal(ca_total, 0, 'WHITESPACE', 0, 'POINT')}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

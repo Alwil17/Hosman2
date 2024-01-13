@@ -4,6 +4,7 @@ import com.dopediatrie.hosman.bm.entity.Motif;
 import com.dopediatrie.hosman.bm.payload.request.MotifRequest;
 import com.dopediatrie.hosman.bm.payload.response.MotifResponse;
 import com.dopediatrie.hosman.bm.service.MotifService;
+import com.dopediatrie.hosman.bm.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,17 @@ public class MotifController {
         return new ResponseEntity<>(motifResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/libelle/{libelle}")
+    public ResponseEntity<MotifResponse> getMotifByLibelle(@PathVariable("libelle") String libelle) {
+
+        log.info("MotifController | getMotifById is called");
+
+        MotifResponse motifResponse
+                = motifService.getMotifByLibelle(libelle);
+        return new ResponseEntity<>(motifResponse, HttpStatus.OK);
+    }
+
+
     @GetMapping("/search")
     public ResponseEntity<List<Motif>> getMotifBySearch(@RequestParam(value = "libelle") String libelle) {
 
@@ -57,7 +69,7 @@ public class MotifController {
         List<Motif> motifResponse = Collections.emptyList();
 
         if(libelle != null && !libelle.isBlank())
-            motifResponse = motifService.getMotifByLibelle(libelle);
+            motifResponse = motifService.getMotifByLibelleLike(libelle);
 
         return new ResponseEntity<>(motifResponse, HttpStatus.OK);
     }

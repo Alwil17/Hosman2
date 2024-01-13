@@ -1,0 +1,122 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>ETAT DES CREANCES</title>
+    <style>
+        @page {
+            /* dimensions for the whole page */
+            size: A4 portrait;
+            margin: 0;
+            background: #fff;
+        }
+
+        html {
+            /* off-white, so body edge is visible in browser */
+            background: #fff;
+        }
+
+        body {
+            /* A5 dimensions */
+            width: 190mm;
+            /*height: 190mm;*/
+
+
+            margin: auto;
+            background: #fff;
+            padding: 2%;
+            /*border: solid 1mm;*/
+
+        }
+
+
+        table,
+        th,
+        td {
+            border: solid 0.2mm;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        tr {
+            line-height: 26px;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .t0 {
+            border-top: solid white;
+        }
+
+        .b0 {
+            border-bottom: solid white;
+        }
+
+        .l0 {
+            border-left: solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <h2><u>ETAT DES CREANCES</u></h2>
+    <h4>ASSURANCES LOCALES ET ETRANGERES</h4>
+</div>
+<div class="content">
+    <table style="width: 100%;">
+        <tbody>
+        <tr style="background: #fff; border: solid white !important;">
+            <td style="width: 50%; text-align: start; border: solid white !important;">Période du: <b th:text="${date_debut}">01/07/2023</b> au <b th:text="${date_fin}">01/07/2023</b> </td>
+<!--            <td style="width: 50%; right: 0; text-align: right; border: solid white !important;">Rendu par: SE</td>-->
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th scope="col">NOM DE L'ASSURANCE</th>
+                <th scope="col">TYPE DE L'ASSURANCE</th>
+                <th scope="col">CREANCE (CFA)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recap: ${recaps}">
+                <th scope="row" th:text="${recap.assurance}" style="width: 45%; font-size: 16px; text-align: left;">GTA Assurances</th>
+                <th scope="row" th:text="${recap.type}" style="width: 30%; font-size: 16px; text-align: left;">Locale</th>
+                <td class="font-bold" th:text="${#numbers.formatDecimal(recap.montant_pec, 0, 'WHITESPACE', 0, 'POINT')}" style="text-align: right !important; padding-right: 3px;">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="bottom: 0px; width: 190mm; margin-top: 15px;">
+        <table style="width: 100%;">
+            <tbody>
+            <tr>
+                <th scope="row" class="title" >TOTAL DES CREANCES</th>
+                <td class="font-bold" style="text-align: right !important; padding-right: 3px; width: 50%;" th:text="${#numbers.formatDecimal(total, 0, 'WHITESPACE', 0, 'POINT')}">0 CFA</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

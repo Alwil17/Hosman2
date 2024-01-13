@@ -3,6 +3,7 @@ package com.dopediatrie.hosman.secretariat.repository;
 import com.dopediatrie.hosman.secretariat.entity.PersonneAPrevenir;
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,7 @@ public interface TarifRepository extends JpaRepository<Tarif,Long> {
 
     @Query("SELECT tarif FROM Tarif tarif JOIN tarif.acte acte JOIN acte.groupe groupe WHERE groupe.code = :gcode and concat(tarif.code,' ', tarif.libelle) like concat('%', :acte, '%') ")
     List<Tarif> findTarifsByGroupeAndActe(@Param("gcode") String groupeCode, @Param("acte") String acte);
+
+    @Query("select t from Tarif t JOIN t.acte a where a.code in ('kine', 'idr', 'radio', 'echo', 'ecg', 'eeg', 'scan', 'irm', 'ana', 'endo', 'hemo', 'kine')")
+    List<Tarif> getAllExamens();
 }

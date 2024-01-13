@@ -155,11 +155,11 @@ public class FactureServiceImpl implements FactureService {
                     break;
             }
 
-            if(assurance_id != 0){
+            if((assurance_id != 0) && (factureRequest.getMontant_pec() > 0)){
                 PECRequest pecRequest = PECRequest.builder()
                         .assurance_id(assurance_id)
                         .facture_id(facture.getId())
-                        .acte_id(ptt.getTarif().getActe().getId())
+                        .tarif_id(ptt.getTarif().getId())
                         .patient_id(factureRequest.getPatient_id())
                         .montant_pec(montant_pec)
                         .build();

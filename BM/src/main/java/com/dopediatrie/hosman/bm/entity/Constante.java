@@ -21,6 +21,7 @@ public class Constante {
     private String tension;
     private double temperature;
     private double poul;
+    private double frequence_respiratoire;
     private double perimetre_cranien;
     @OneToOne(mappedBy = "constante")
     @JsonIgnore

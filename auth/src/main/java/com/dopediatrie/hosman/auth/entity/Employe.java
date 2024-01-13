@@ -25,14 +25,18 @@ public class Employe {
     private LocalDateTime date_naissance;
     private char sexe;
     private String lieu_naissance;
+    private String bureau;
     private String tel1;
     private String tel2;
+    private String domicile;
     private String email;
     private String adresse;
     private String localisation;
     private String type_piece;
     private String no_piece;
     private String provenance;
+    private String bip;
+    private String no_poste;
     private String autres;
     private LocalDateTime date_debut;
     private LocalDateTime date_fin;
