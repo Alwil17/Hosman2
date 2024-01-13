@@ -6,14 +6,17 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
   selector: "app-toasts-container",
   template: `
     <ngb-toast
+      #notificationToast
       *ngFor="let toast of toastService.toasts"
       [class]="toast.classname"
       [autohide]="autohide"
       (mouseenter)="autohide = false"
-      (mouseleave)="autohide = true"
-      [delay]="toast.delay || 7500"
+      (mouseleave)="notificationToast.hide()"
+      [delay]="toast.delay || 5000"
       (hidden)="toastService.remove(toast)"
     >
+      <!-- (mouseleave)="autohide = true" -->
+
       <!-- Header of the toast -->
       <ng-template ngbToastHeader>
         <!-- TITLE. Change depending on the type of the toast -->
