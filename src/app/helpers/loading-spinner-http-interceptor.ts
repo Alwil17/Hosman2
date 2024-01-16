@@ -11,47 +11,45 @@ import { LoadingSpinnerService } from "../services/secretariat/shared/loading-sp
 
 @Injectable()
 export class LoadingSpinnerHttpInterceptor implements HttpInterceptor {
-  constructor(private spinnerService: LoadingSpinnerService) {}
+  constructor(private loadingSpinnerService: LoadingSpinnerService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    setTimeout(() => {
-      this.spinnerService.show();
-    });
-    console.log("LOADING... - " + this.spinnerService.count);
+    // First check if loading spinner is being forcibly/manually hidden or not.
 
-    return next.handle(req).pipe(
-      finalize(() => {
-        this.spinnerService.hide();
-          console.log("FINALIZED - " + this.spinnerService.count);
+    // Executed if loading spinner has been forcibly/manually displayed
+    if (this.loadingSpinnerService.isLoadingSpinnerDisplayed) {
+      // Executed on request start
+      setTimeout(() => {
+        // Will display global loading spinner on UI
+        this.loadingSpinnerService.show();
+      });
+      console.log(
+        "LOADING... - " + this.loadingSpinnerService.pendingRequestsCount
+      );
 
-          this.spinnerService.showLoadingSpinner();
-      }),
-      // delay(5000),
-      // tap({
-      //   next: (event) => {
-      //     if (event instanceof HttpResponse) {
-      //       this.spinnerService.hide();
-      //       console.log("LOADED - " + this.spinnerService.count);
+      // Executed on request completion (success, fail or unsubscription from an observable)
+      return next.handle(req).pipe(
+        finalize(() => {
+          // Will hide global loading spinner on UI
+          this.loadingSpinnerService.hide();
+          console.log(
+            "FINALIZED - " + this.loadingSpinnerService.pendingRequestsCount
+          );
 
-      //       this.spinnerService.showLoadingSpinner();
-      //     }
-      //   },
-      //   error: (error) => {
-      //     this.spinnerService.hide();
-      //     console.log("FAILED - " + this.spinnerService.count);
+          // this.loadingSpinnerService.showLoadingSpinner();
+        })
+      );
 
-      //     this.spinnerService.showLoadingSpinner();
-      //   },
-      //   // complete: () => {
-      //   //   this.spinnerService.hide();
-      //   //   console.log("COMPLETE - " + this.spinnerService.count);
-      //   //     this.spinnerService.showLoadingSpinner();
+      // Executed if loading spinner has been forcibly/manually hidden
+    } else {
+      // Make loading spinner forcibly visible (for the next request)
+      this.loadingSpinnerService.showLoadingSpinner();
 
-      //   // }
-      // })
-    );
+      // Executed on request completion (success, fail or unsubscription from an observable)
+      return next.handle(req);
+    }
   }
 }
