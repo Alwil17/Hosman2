@@ -32,17 +32,19 @@
     <div class="row">
       <div class="col-md-6 mb-2">
         <app-input
-          label="Nom/Raison sociale"
+          label="Nom / Raison sociale"
           [control]="lastnameControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          [uppercased]="true"
         >
         </app-input>
       </div>
       <div class="col-md-6 mb-2">
         <app-input
-          label="Prénom/Dénomination"
+          label="Prénom / Dénomination"
           [control]="firstnameControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          [titlecased]="true"
         >
         </app-input>
       </div>
@@ -51,7 +53,7 @@
     <div class="row">
       <div class="col-md-6 mb-2">
         <app-input
-          label="Profession/Secteur"
+          label="Profession / Secteur"
           [control]="professionControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
         >
@@ -60,8 +62,11 @@
       <div class="col-md-6 mb-2">
         <app-input
           label="Num Bureau"
+          type="tel"
+          placeholder="XX XX XX XX"
           [control]="officeTelControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
         >
         </app-input>
       </div>
@@ -71,16 +76,22 @@
       <div class="col-md-6 mb-2">
         <app-input
           label="Cellulaire 1"
+          type="tel"
+          placeholder="XX XX XX XX"
           [control]="tel1Control"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
         >
         </app-input>
       </div>
       <div class="col-md-6 mb-2">
         <app-input
           label="Cellulaire 2"
+          type="tel"
+          placeholder="XX XX XX XX"
           [control]="tel2Control"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
         >
         </app-input>
       </div>
@@ -90,14 +101,18 @@
       <div class="col-md-6 mb-2">
         <app-input
           label="Num Domicile"
+          type="tel"
+          placeholder="XX XX XX XX"
           [control]="homeTelControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
         >
         </app-input>
       </div>
       <div class="col-md-6 mb-2">
         <app-input
           label="Email"
+          placeholder="contact@gmail.com"
           [control]="emailControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
         >
@@ -117,6 +132,7 @@
       <div class="col-md-6 mb-2">
         <app-input
           label="BIP"
+          type="tel"
           [control]="bipControl"
           [isFormSubmitted]="isPhoneBookFormSubmitted"
         >
@@ -125,13 +141,27 @@
     </div>
 
     <div class="d-flex align-items-start gap-3 mt-2">
-      <button
-        type="button"
-        class="btn btn-success ms-auto"
-        (click)="createContact()"
-      >
-        Enregistrer
-      </button>
+      <ng-container *ngIf="!phoneBookInfos; else modifyButton">
+        <button
+          type="button"
+          class="btn btn-secondary btn-label ms-auto"
+          (click)="createContact()"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer
+        </button>
+      </ng-container>
+
+      <ng-template #modifyButton>
+        <button
+          type="button"
+          class="btn btn-warning btn-label ms-auto text-dark"
+          (click)="modifyContact()"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer les modifications
+        </button>
+      </ng-template>
     </div>
   </form>
 </div>

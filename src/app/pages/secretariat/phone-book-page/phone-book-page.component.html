@@ -61,9 +61,9 @@
           >
             <thead class="table-light text-muted">
               <tr>
-                <th scope="col">{{ "Nom" | uppercase }}</th>
-                <th scope="col">{{ "Prénom" | uppercase }}</th>
-                <th scope="col">{{ "Profession" | uppercase }}</th>
+                <th scope="col">{{ "Nom / Raison sociale" | uppercase }}</th>
+                <th scope="col">{{ "Prénom / Dénomination" | uppercase }}</th>
+                <th scope="col">{{ "Profession / Secteur" | uppercase }}</th>
                 <th scope="col">{{ "Bureau" | uppercase }}</th>
                 <th scope="col">{{ "Cellulaire 1" | uppercase }}</th>
                 <th scope="col">{{ "Cellulaire 2" | uppercase }}</th>
@@ -83,10 +83,28 @@
                 <td>{{ contact.nom }}</td>
                 <td>{{ contact.prenom }}</td>
                 <td>{{ contact.profession }}</td>
-                <td>{{ contact.bureau }}</td>
-                <td>{{ contact.tel1 }}</td>
-                <td>{{ contact.tel2 }}</td>
-                <td>{{ contact.domicile }}</td>
+                <td>
+                  {{
+                    contact.bureau ?? ""
+                      | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.tel1 ?? "" | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.tel2 ?? "" | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.domicile ?? ""
+                      | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
                 <td>{{ contact.email }}</td>
                 <td>{{ contact.bip }}</td>
                 <td>{{ contact.no_poste }}</td>
@@ -111,10 +129,7 @@
                         Modifier
                       </button>
 
-                      <button
-                        ngbDropdownItem
-                        (click)="deleteContact(contact.id)"
-                      >
+                      <button ngbDropdownItem (click)="deleteContact(contact)">
                         <i
                           class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
                         ></i>
@@ -128,7 +143,9 @@
 
             <tfoot>
               <tr>
-                <th colspan="3">Total contacts : {{ phoneBooksList.length }}</th>
+                <th colspan="3">
+                  Total contacts : {{ phoneBooksList.length }}
+                </th>
                 <th class="text-end"></th>
                 <th colspan="7"></th>
               </tr>

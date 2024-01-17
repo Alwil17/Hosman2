@@ -1,8 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
+import { PhoneBookGroup } from "src/app/models/secretariat/informations/phone-book-group.model";
 import { PhoneBook } from "src/app/models/secretariat/informations/phone-book.model";
 import { PhoneBookRequest } from "src/app/models/secretariat/informations/requests/phone-book-request.model";
+import { PhoneBookGroupResponse } from "src/app/models/secretariat/informations/responses/phone-book-group-response.model";
 import { PhoneBookResponse } from "src/app/models/secretariat/informations/responses/phone-book-response.model";
 import { environment } from "src/environments/environment";
 
@@ -33,17 +35,16 @@ export class PhoneBookService {
       }
     }
 
-    
     const apiComplete = apiComplementary
-    ? `${apiEndpoint}/search?${apiComplementary}`
-    : `${apiEndpoint}/search`;
-    
+      ? `${apiEndpoint}/search?${apiComplementary}`
+      : `${apiEndpoint}/search`;
+
     // console.log(apiComplete);
 
     return this.http.get<PhoneBookResponse[]>(apiComplete).pipe(
       map((phoneBooks) => {
         // console.log(JSON.stringify(phoneBooks, null, 2));
-        
+
         const mapped: PhoneBook[] = phoneBooks.map((phoneBook) =>
           PhoneBook.fromResponse(phoneBook)
         );
@@ -59,6 +60,18 @@ export class PhoneBookService {
       .pipe(
         map((phoneBooks) =>
           phoneBooks.map((phoneBook) => PhoneBook.fromResponse(phoneBook))
+        )
+      );
+  }
+
+  getAllPhoneBookGroups(): Observable<PhoneBookGroup[]> {
+    return this.http
+      .get<PhoneBookGroupResponse[]>(apiEndpoint + "/categories")
+      .pipe(
+        map((phoneBookGroups) =>
+          phoneBookGroups.map((phoneBookGroup) =>
+            PhoneBookGroup.fromResponse(phoneBookGroup)
+          )
         )
       );
   }

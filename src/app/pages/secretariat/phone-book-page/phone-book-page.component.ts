@@ -7,6 +7,8 @@ import { PhoneBook } from "src/app/models/secretariat/informations/phone-book.mo
 import { PhoneBookService } from "src/app/services/secretariat/informations/phone-book.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { PhoneBookFormModalComponent } from "./phone-book-form-modal/phone-book-form-modal.component";
+import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: "app-phone-book-page",
@@ -17,23 +19,13 @@ export class PhoneBookPageComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  phoneBooksGroupsControl = new FormControl({
-    id: -1,
-    text: "Tout",
-  });
+  phoneGroupFirstOption = { id: -1, text: "Tous les groupes" };
+
+  phoneBooksGroupsControl = new FormControl(this.phoneGroupFirstOption);
 
   searchTerm = "";
 
-  phoneBooksGroups: SelectOption[] = [
-    {
-      id: -1,
-      text: "Tout",
-    },
-    {
-      id: "etc",
-      text: "Etc.",
-    },
-  ];
+  phoneBooksGroups: SelectOption[] = [];
 
   phoneBooksList: PhoneBook[] = [];
 
@@ -60,10 +52,31 @@ export class PhoneBookPageComponent implements OnInit {
 
     this.refreshPhoneBooksList();
 
+    this.fetchSelectData();
+
     this.phoneBooksGroupsControl.valueChanges.subscribe((value) => {
       if (value != null && value != "") {
         this.refreshPhoneBooksList();
       }
+    });
+  }
+
+  fetchSelectData() {
+    this.phoneBookService.getAllPhoneBookGroups().subscribe({
+      next: (data) => {
+        this.phoneBooksGroups = [
+          this.phoneGroupFirstOption,
+          ...data.map((phoneBookGroup) => ({
+            id: phoneBookGroup.slug,
+            text: phoneBookGroup.nom,
+          })),
+        ];
+
+        // this.setFieldsInitialValues();
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 
@@ -160,7 +173,40 @@ export class PhoneBookPageComponent implements OnInit {
     }
   }
 
-  deleteContact(contactId: number) {
+  async deleteContact(contact: PhoneBook) {
+    const contactId = contact.id;
+
+    // OPEN CONFIRMATION MODAL
+    const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+      // scrollable: true,
+    });
+
+    confirmModalRef.componentInstance.message =
+      "Êtes-vous sûr de vouloir supprimer le contact : " +
+      (contact.nom ?? "") +
+      " " +
+      (contact.prenom ?? "") +
+      " ?";
+    confirmModalRef.componentInstance.subMessage =
+      "Cette opération est irréversible.";
+    confirmModalRef.componentInstance.isDangerButton = true;
+
+    const isConfirmed = await firstValueFrom(
+      confirmModalRef.componentInstance.isConfirmed.asObservable()
+    );
+
+    // CLOSE CONFIRMATION MODAL
+    confirmModalRef.close();
+
+    // CHECK IF USER CONFIRMED OR NOT
+    if (!isConfirmed) {
+      return;
+    }
+
     this.phoneBookService.delete(contactId).subscribe({
       next: (data) => {
         this.toastService.show({

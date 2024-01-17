@@ -14,5 +14,5 @@ export interface PhoneBookResponse {
   bip?: string;
   no_poste?: string;
   categorie_slug: string;
-  categorie: PhoneBookGroupResponse;
+  categorie?: PhoneBookGroupResponse;
 }

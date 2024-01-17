@@ -15,7 +15,7 @@ export interface IPhoneBook {
   bip?: string;
   no_poste?: string;
   categorie_slug: string;
-  categorie: PhoneBookGroup;
+  categorie?: PhoneBookGroup;
 }
 
 export class PhoneBook {
@@ -32,7 +32,7 @@ export class PhoneBook {
   bip?: string;
   no_poste?: string;
   categorie_slug: string;
-  categorie: PhoneBookGroup;
+  categorie?: PhoneBookGroup;
 
   constructor(iPhoneBook: IPhoneBook) {
     this.id = iPhoneBook.id;
@@ -66,7 +66,9 @@ export class PhoneBook {
       bip: phoneBook.bip,
       no_poste: phoneBook.no_poste,
       categorie_slug: phoneBook.categorie_slug,
-      categorie: PhoneBookGroup.fromResponse(phoneBook.categorie),
+      categorie: phoneBook.categorie
+        ? PhoneBookGroup.fromResponse(phoneBook.categorie)
+        : undefined,
     });
   }
 }

@@ -6,16 +6,21 @@ import {
   Input,
   OnInit,
   Output,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { WarningMessages } from "src/app/helpers/messages";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { PhoneBook } from "src/app/models/secretariat/informations/phone-book.model";
 import { PhoneBookRequest } from "src/app/models/secretariat/informations/requests/phone-book-request.model";
 import { PhoneBookService } from "src/app/services/secretariat/informations/phone-book.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
+import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 
 @Component({
   selector: "app-phone-book-form-modal",
@@ -23,6 +28,12 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
   styleUrls: ["./phone-book-form-modal.component.scss"],
 })
 export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
+  @ViewChildren(InputComponent)
+  inputFields!: QueryList<InputComponent>;
+
+  @ViewChildren(SelectComponent)
+  selectFields!: QueryList<SelectComponent>;
+
   @ViewChild("firstField", { read: ElementRef })
   firstField!: ElementRef;
 
@@ -35,20 +46,11 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
   @Output()
   isContactModified = new EventEmitter<boolean>();
 
-  phoneBookGroups: SelectOption[] = [
-    {
-      id: -1,
-      text: "Tout",
-    },
-    {
-      id: "etc",
-      text: "Etc.",
-    },
-  ];
+  phoneBookGroups: SelectOption[] = [];
   // @Input()
   // showSimpleCreateButtons = false;
 
-  groupControl = new FormControl(this.phoneBookGroups[0]);
+  groupControl = new FormControl(null, Validators.required);
   lastnameControl = new FormControl(null);
   firstnameControl = new FormControl(null);
   professionControl = new FormControl(null);
@@ -56,7 +58,7 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
   tel1Control = new FormControl(null);
   tel2Control = new FormControl(null);
   homeTelControl = new FormControl(null);
-  emailControl = new FormControl(null);
+  emailControl = new FormControl(null, Validators.email);
   postControl = new FormControl(null);
   bipControl = new FormControl(null);
 
@@ -93,15 +95,29 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
   }
 
   fetchSelectData() {
-    this.setFieldsInitialValue();
+    this.phoneBookService.getAllPhoneBookGroups().subscribe({
+      next: (data) => {
+        (this.phoneBookGroups = data.map((phoneBookGroup) => ({
+          id: phoneBookGroup.slug,
+          text: phoneBookGroup.nom,
+        }))),
+          this.setFieldsInitialValues();
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
-  setFieldsInitialValue() {
+  setFieldsInitialValues() {
     if (this.phoneBookInfos) {
-      this.groupControl.setValue({
-        id: this.phoneBookInfos.categorie.slug,
-        text: this.phoneBookInfos.categorie.nom,
-      });
+      if (this.phoneBookInfos.categorie) {
+        this.groupControl.setValue({
+          id: this.phoneBookInfos.categorie.slug,
+          text: this.phoneBookInfos.categorie.nom,
+        });
+      }
+
       this.lastnameControl.setValue(this.phoneBookInfos.nom);
       this.firstnameControl.setValue(this.phoneBookInfos.prenom);
       this.professionControl.setValue(this.phoneBookInfos.profession);
@@ -131,16 +147,85 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getInvalidFields() {
+    // Get all invalid inputs (in the form of a text)
+    const invalidInputs: string[] = [];
+    this.inputFields.forEach((input) => {
+      if (input.control.invalid) {
+        invalidInputs.push("- " + input.label);
+      }
+    });
+
+    // Get all invalid selects (in the form of a text)
+    const invalidSelects: string[] = [];
+    this.selectFields.forEach((select) => {
+      if (select.control.invalid) {
+        invalidSelects.push("- " + select.label);
+      }
+    });
+
+    let notificationMessages: string[] = [];
+
+    // If there are invalid inputs, adds them to "notificationMessages"
+    if (invalidInputs.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_INPUT_FIELDS,
+        ...invalidInputs
+      );
+    }
+
+    // If "invalidInputs" is not empty, adds an empty string
+    if (invalidInputs.length !== 0) {
+      notificationMessages.push("");
+    }
+
+    // If there are invalid selects, add them to "notificationMessages"
+    if (invalidSelects.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_SELECT_FIELDS,
+        ...invalidSelects
+      );
+    }
+
+    // If "invalidSelects" is not empty, adds an empty string
+    if (invalidSelects.length !== 0) {
+      notificationMessages.push("");
+    }
+
+    if (!this.lastnameControl.value && !this.firstnameControl.value) {
+      notificationMessages.push(
+        "Veuillez renseigner au moins le nom / raison sociale OU le prénom / dénomination"
+      );
+    }
+
+    // If no value given to lastname and firstname, adds an empty string
+    if (!this.lastnameControl.value && !this.firstnameControl.value) {
+      notificationMessages.push("");
+    }
+
+    if (
+      !this.officeTelControl.value &&
+      !this.tel1Control.value &&
+      !this.tel2Control.value &&
+      !this.homeTelControl.value
+    ) {
+      notificationMessages.push(
+        "Veuillez renseigner au moins un numéro (bureau, cellulaire 1 ou 2, domicile)"
+      );
+    }
+
+    return notificationMessages;
+  }
+
   createContact() {
     this.isPhoneBookFormSubmitted = true;
 
-    if (this.phoneBookForm.invalid) {
-      // const notificationMessages = this.getInvalidFields();
-
-      // this.toastService.show({
-      //   messages: notificationMessages,
-      //   type: ToastType.Warning,
-      // });
+    const notificationMessages = this.getInvalidFields();
+    if (this.phoneBookForm.invalid || notificationMessages.length !== 0) {
+      this.toastService.show({
+        messages: notificationMessages,
+        type: ToastType.Warning,
+      });
 
       return;
     }
@@ -154,18 +239,22 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
         console.log(data, "\nHere");
 
         this.toastService.show({
-          messages: ["Le patient a été enregistré avec succès."],
+          messages: ["Le contact a été enregistré avec succès."],
           type: ToastType.Success,
         });
 
         this.isContactCreated.emit(true);
       },
       error: (e) => {
-        console.error(e);
+        console.log(e);
 
         this.toastService.show({
           delay: 10000,
           type: ToastType.Error,
+          messages: [
+            "Désolé, une erreur s'est produite lors de l'enregistrement du contact",
+            "Le contact n'a pas été enregistré.",
+          ],
         });
 
         this.isContactCreated.emit(false);
@@ -198,14 +287,14 @@ export class PhoneBookFormModalComponent implements OnInit, AfterViewInit {
           console.log(data, "\nHere");
 
           this.toastService.show({
-            messages: ["Le patient a été modifié avec succès."],
+            messages: ["Le contact a été modifié avec succès."],
             type: ToastType.Success,
           });
 
           this.isContactModified.emit(true);
         },
         error: (e) => {
-          console.error(e);
+          console.log(e);
 
           this.toastService.show({
             delay: 10000,
