@@ -14,7 +14,10 @@
       {{ cancelButtonText }}
     </button>
     <!-- ngbAutofocus -->
-    <button class="btn btn-secondary" (click)="confirm(true)">
+    <button
+      [class]="'btn' + ' ' + (isDangerButton ? 'btn-danger' : 'btn-secondary')"
+      (click)="confirm(true)"
+    >
       {{ confirmButtonText }}
     </button>
   </ng-container>

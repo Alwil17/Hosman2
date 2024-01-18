@@ -24,6 +24,8 @@ export class ConfirmModalComponent implements OnInit {
   @Output()
   isConfirmed = new EventEmitter<boolean>();
 
+  isDangerButton = false;
+
   constructor() {}
 
   ngOnInit(): void {}
