@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HospitHomeComponent } from './add/new.component';
 import { ListComponent } from './list/list.component';
-import { HospAdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  { path: "", component: HospitHomeComponent, },
+  { path: "",  redirectTo: "list", pathMatch: "full", },
   { path: "list", component: ListComponent },
-  { path: "administration", component: HospAdminComponent },
+  { path: "edit", component: HospitHomeComponent },
 ];
 
 @NgModule({

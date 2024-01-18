@@ -1,1 +1,29 @@
-<p>list works!</p>
+<div class="container hospit-list">
+
+    <div class="mb-2">
+        <h4 class="card-title">Patients hospitalisés</h4>
+    </div>
+
+    <div class="position-relative mb-3">
+        <app-input [placeholder]="'Recherche'">
+
+        </app-input>
+    </div>
+
+    <div *ngFor="let d of chambres; let k = index" class="row mb-4">
+        <div *ngFor="let m of d.lits; let i = index" class="col-md-4">
+            <button type="button" class="btn btn-outline-dark waves-effect waves-light p-0" (click)="openHospit(d.id, m.id)" [class.empty-bed]="getDateHospit(d.id, m.id) === null">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="" src="assets/app/images/hospibed.jpeg" alt="">
+                    </div>
+                    <div class="col-md-7 content pt-2">
+                        <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>
+                        <div>{{ getPatientAge(d.id, m.id) }}</div>
+                        <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

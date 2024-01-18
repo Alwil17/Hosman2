@@ -48,7 +48,7 @@
     "hosp" : {
       "title" : "Hospitalisation",
       "new" : "Nouveau",
-      "admin": "Administration"
+      "list": "Patients hospitalisés"
     }
   }
 }

@@ -8,9 +8,9 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 2,
-    label: "MENUITEMS.hosp.new",
-    link: "/hospitalisation/",
-    icon: "ri-user-add-fill",
+    label: "MENUITEMS.hosp.list",
+    link: "/hospitalisation/list",
+    icon: "ri-file-list-line",
   },
   // {
   //   id: 2,

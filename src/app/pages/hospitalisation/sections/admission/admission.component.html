@@ -63,6 +63,7 @@
                             [bindLabel]="'libelle'"
                             [bindValue]="'code'"
                             [clearable]="false"
+                            [readOnly]="hospitalisation_id !== null"
                     ></app-select>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -74,6 +75,7 @@
                             [bindValue]="'id'"
                             [control]="chambre"
                             [clearable]="false"
+                            [readOnly]="hospitalisation_id !== null"
                     ></app-select>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -85,6 +87,7 @@
                             [bindValue]="'id'"
                             [control]="lit"
                             [clearable]="false"
+                            [readOnly]="hospitalisation_id !== null"
                     ></app-select>
                 </div>
                 <div class="col-md-12 mb-3">

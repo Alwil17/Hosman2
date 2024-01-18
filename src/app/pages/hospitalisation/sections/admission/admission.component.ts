@@ -268,6 +268,7 @@ export class AdmissionComponent implements OnInit {
           consultation_ref: this.consultation.reference,
           date_hospit: new Date(this.admissionFormGroup.value.hospit_date),
           arrive: this.arrive.value,
+          extras : JSON.stringify({"patient" : this.patient, "chambre" : this.chambre.value, "lit" : this.lit.value})
         };
 
         // console.log(data)

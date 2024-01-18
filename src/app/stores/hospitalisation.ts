@@ -9,13 +9,14 @@ import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
 
 const consultationEndpoint = "/api/consultations";
 const hospitalisationEndpoint = "/api/hospits";
-const getHospitalisationEndpoint = "/api/hospits";
+// const getHospitalisationEndpoint = "/api/hospits";
 const tabsEndpoint = "/api/produits";
 const suiviEndpoint = "/api/suivis";
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
   init_state = {
+    list: null,
     hospitalisation: null,
     hospitalisation_id: null,
     patient: null,
@@ -50,13 +51,28 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   /* API CALLS */
-  fetchHospitalisation(id: number): void {
+  fetchHospitalisationList(): void {
     const res: Observable<any> = this.http.get<any>(
-      getHospitalisationEndpoint  + "/" + id
+      hospitalisationEndpoint
     );
 
     res.subscribe({
-      next: (hospitalisation: any) => {
+      next: (list: any) => {
+        this.updateStore({list}, "LIST")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
+  fetchHospitalisation(id: number): void {
+    const res: Observable<any> = this.http.get<any>(
+      hospitalisationEndpoint  + "/" + id
+    );
+
+    res.subscribe({
+      next: (hospitalisation: any) =>  {
 
         this.updateStore({hospitalisation}, "FETCH HOSPITALISATION")
         this.updateStore({consultation : hospitalisation['consultation']}, "SET CONSULTATION")
@@ -75,7 +91,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   fetchHospitalisationSuivi(id: number): void {
     const res: Observable<any> = this.http.get<any>(
-      getHospitalisationEndpoint  + "/" + id + "/suivis"
+      hospitalisationEndpoint  + "/" + id + "/suivis"
     );
 
     res.subscribe({
@@ -158,7 +174,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
 
   saveHospitalisation(data: any, id : any): Observable<any> {
-    console.log(id)
+    // console.log(id)
     if (id == null) {
       return this.http.post(hospitalisationEndpoint+ "?repeat=1", data);
     } else {

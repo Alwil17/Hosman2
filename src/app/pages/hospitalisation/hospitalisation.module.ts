@@ -17,7 +17,6 @@ import { FicheDecedeComponent } from './sections/fiche-decede/fiche-decede.compo
 import { FicheSortieComponent } from './sections/fiche-sortie/fiche-sortie.component';
 import { FicheSyntheseComponent } from './sections/fiche-synthese/fiche-synthese.component';
 import { ComptableTableClassicComponent } from './sections/fiche-comptable/comptable-table-classic/comptable-table-classic.component';
-import { HospAdminComponent } from './admin/admin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from '@services/messages/message.service';
 import { ToastrModule } from 'ngx-toastr';
@@ -39,7 +38,6 @@ import { ToastrModule } from 'ngx-toastr';
     FicheSortieComponent,
     FicheSyntheseComponent,
     ComptableTableClassicComponent,
-    HospAdminComponent,
   ],
   imports: [
     CommonModule,
