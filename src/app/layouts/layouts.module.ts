@@ -22,6 +22,8 @@ import { HorizontalComponent } from "./horizontal/horizontal.component";
 import { HorizontalTopbarComponent } from "./horizontal-topbar/horizontal-topbar.component";
 import { TwoColumnComponent } from "./two-column/two-column.component";
 import { TwoColumnSidebarComponent } from "./two-column-sidebar/two-column-sidebar.component";
+import { HospitalisationComponent } from './hospitalisation/hospitalisation.component';
+import { HospSidebarComponent } from './hospitalisation/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { TwoColumnSidebarComponent } from "./two-column-sidebar/two-column-sideb
     HorizontalTopbarComponent,
     TwoColumnComponent,
     TwoColumnSidebarComponent,
+    HospitalisationComponent,
+    HospSidebarComponent,
   ],
   imports: [
     CommonModule,

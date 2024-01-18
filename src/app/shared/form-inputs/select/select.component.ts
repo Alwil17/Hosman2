@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { AbstractControl, FormControl } from "@angular/forms";
 import { SelectOption } from "../../../models/extras/select.model";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-select",
