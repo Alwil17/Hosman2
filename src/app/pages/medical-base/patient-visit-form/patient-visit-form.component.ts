@@ -2,8 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
-import { AppointmentFormComponent } from "../appointment-form/appointment-form.component";
-import { MbService } from "../mb.service";
 import {
   Observable,
   Subject,
@@ -45,6 +43,7 @@ import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-lis
 import { Location } from "@angular/common";
 import { IsNotDirty } from "src/app/guards/is-not-dirty.guard";
 import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
+import { AppointmentFormModalComponent } from "../appointment-form-modal/appointment-form-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -826,7 +825,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   // OPEN APPOINTMENT MODAL ------------------------------------------------------------------------------------------------------
   openAppointmentModal() {
     const appointmentFormModal = this.modalService.open(
-      AppointmentFormComponent,
+      AppointmentFormModalComponent,
       {
         size: "xl",
         centered: true,
