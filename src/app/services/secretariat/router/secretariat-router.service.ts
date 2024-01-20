@@ -21,7 +21,8 @@ export class SecretariatRouterService {
     collections: this.secretariatPath + "/collections",
     activities: this.secretariatPath + "/activities/all",
     tariffs: this.secretariatPath + "/tariffs",
-    phone_book: this.secretariatPath + "informations/phone_book",
+    phone_book: this.secretariatPath + "/informations/phone_book",
+    appointment: this.secretariatPath + "/appointment",
   };
 
   constructor(private router: Router) {}
@@ -68,5 +69,9 @@ export class SecretariatRouterService {
 
   async navigateToPhoneBook() {
     await this.router.navigateByUrl(this.routesPath.phone_book);
+  }
+
+  async navigateToAppointment() {
+    await this.router.navigateByUrl(this.routesPath.appointment);
   }
 }

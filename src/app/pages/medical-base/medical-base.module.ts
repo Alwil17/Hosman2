@@ -13,12 +13,13 @@ import { NgxMaskModule } from "ngx-mask";
 import { SharedModule } from "src/app/shared/shared.module";
 import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page/patient-visits-summary-page.component";
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
-import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
-import { InvoiceDetailsModalComponent } from './patient-waiting-list-page/invoice-details-modal/invoice-details-modal.component';
-import { PatientListPageComponent } from './patient-list-page/patient-list-page.component';
+import { AppointmentFormComponent } from "./appointment-form/appointment-form.component";
+import { InvoiceDetailsModalComponent } from "./patient-waiting-list-page/invoice-details-modal/invoice-details-modal.component";
+import { PatientListPageComponent } from "./patient-list-page/patient-list-page.component";
 import { PatientsModule } from "../secretariat/patients/patients.module";
-import { PatientVisitFormModalComponent } from './patient-visit-form-modal/patient-visit-form-modal.component';
-import { CountdownModule } from 'ngx-countdown';
+import { PatientVisitFormModalComponent } from "./patient-visit-form-modal/patient-visit-form-modal.component";
+import { CountdownModule } from "ngx-countdown";
+import { AppointmentFormModalComponent } from "./appointment-form-modal/appointment-form-modal.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CountdownModule } from 'ngx-countdown';
     InvoiceDetailsModalComponent,
     PatientListPageComponent,
     PatientVisitFormModalComponent,
+    AppointmentFormModalComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { CountdownModule } from 'ngx-countdown';
     NgbDropdownModule,
     NgbCollapseModule,
     PatientsModule,
-    CountdownModule
+    CountdownModule,
   ],
+  exports: [AppointmentFormComponent],
 })
 export class MedicalBaseModule {}

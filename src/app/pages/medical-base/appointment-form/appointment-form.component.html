@@ -3,13 +3,16 @@
     <form [formGroup]="appointmentForm">
       <div class="row mb-2">
         <div class="col-lg-6 d-flex align-items-center">
-          <label class="form-label"> Nom médecin </label>
+          <label class="form-label">
+            Médecin <span class="text-danger">*</span></label
+          >
         </div>
         <div class="col-lg-6">
           <app-select
-            [readOnly]="true"
-            [options]="[]"
-            [control]="doctorNameControl"
+            #firstField
+            [isFormSubmitted]="isAppointmentFormSubmitted"
+            [options]="doctors"
+            [control]="doctorControl"
           ></app-select>
         </div>
       </div>
@@ -17,7 +20,9 @@
         <app-input
           [isLayoutHorizontal]="true"
           label="Nom patient"
-          [readOnly]="true"
+          [isMandatory]="true"
+          [isFormSubmitted]="isAppointmentFormSubmitted"
+          [uppercased]="true"
           [control]="patientLastnameControl"
         ></app-input>
       </div>
@@ -25,7 +30,9 @@
         <app-input
           [isLayoutHorizontal]="true"
           label="Prénoms patient"
-          [readOnly]="true"
+          [isMandatory]="true"
+          [isFormSubmitted]="isAppointmentFormSubmitted"
+          [titlecased]="true"
           [control]="patientFirstnameControl"
         ></app-input>
       </div>
@@ -35,8 +42,7 @@
         </div>
         <div class="col-md-6">
           <app-select
-            [readOnly]="true"
-            [options]="[]"
+            [options]="genders"
             [control]="patientGenderControl"
           ></app-select>
         </div>
@@ -46,7 +52,6 @@
           [isLayoutHorizontal]="true"
           label="Né(e) le"
           type="date"
-          [readOnly]="true"
           [control]="patientBirthdayControl"
         >
         </app-input>
@@ -56,6 +61,8 @@
           [isLayoutHorizontal]="true"
           label="Date RDV"
           type="date"
+          [isMandatory]="true"
+          [isFormSubmitted]="isAppointmentFormSubmitted"
           [minDate]="today"
           [control]="appointmentDateControl"
         >
@@ -66,6 +73,8 @@
           [isLayoutHorizontal]="true"
           label="Heure RDV"
           type="time"
+          [isMandatory]="true"
+          [isFormSubmitted]="isAppointmentFormSubmitted"
           [minDate]="today"
           [control]="appointmentTimeControl"
         >
@@ -73,20 +82,29 @@
       </div>
       <div class="row mb-2">
         <div class="col-md-6 d-flex align-items-center">
-          <label class="form-label"> Intervenant </label>
+          <label class="form-label">
+            Intervenant <span class="text-danger">*</span></label
+          >
         </div>
         <div class="col-md-6">
           <app-select
-            [options]="[]"
+            [isFormSubmitted]="isAppointmentFormSubmitted"
+            [options]="doctors"
             [control]="interveningDoctorControl"
           ></app-select>
         </div>
       </div>
       <div class="mb-2">
-        <app-input
-          label="Objet du RDV"
-          [control]="appointmentReasonControl"
-        ></app-input>
+        <div class="col-md-12">
+          <app-select
+            label="Objet du RDV"
+            [isMandatory]="true"
+            [isFormSubmitted]="isAppointmentFormSubmitted"
+            [canAddOption]="true"
+            [options]="appointmentReasons"
+            [control]="appointmentReasonControl"
+          ></app-select>
+        </div>
       </div>
 
       <div class="d-flex justify-content-end my-4">
@@ -106,17 +124,41 @@
             Imprimer
           </button> -->
 
-        <button type="button" class="btn btn-success btn-label ms-2">
-          <!-- (click)="validatePayment()" -->
+        <button
+          type="button"
+          class="btn btn-success btn-label ms-2"
+          (click)="registerAppointment()"
+        >
           <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
-          <!-- ri-check-double-fill -->
+
           Enregistrer
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-warning btn-label ms-auto text-dark"
+          (click)="registerModifications()"
+          *ngIf="selectedAppointmentId"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer les modifications
         </button>
       </div>
     </form>
   </div>
 
   <div class="col-lg-7">
+    <div class="row mb-2">
+      <div class="col-lg-auto d-flex align-items-center">
+        Voir les rendez-vous de :
+      </div>
+      <div class="col-lg-6">
+        <app-select
+          [options]="doctors"
+          [control]="doctorSearchControl"
+        ></app-select>
+      </div>
+    </div>
     <div class="table-responsive">
       <table
         class="table table-hover table-striped table-bordered align-middle mb-0"
@@ -128,19 +170,82 @@
             <th scope="col">Nom patient</th>
             <th scope="col">Prénoms patient</th>
             <th scope="col">Objet</th>
-            <!-- <th scope="col">Médecin</th> -->
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let item of patientActivities">
-                  <td>{{ item.rubrique }}</td>
-                  <td>{{ item.prestation }}</td>
-                  <td>{{ item.price }}</td>
-                  <td>{{ item.quantity }}</td>
-                  <td>{{ item.total_price }}</td>
-                </tr> -->
+          <tr
+            *ngFor="let appointment of appointmentsListCut"
+            class="user-select-none"
+          >
+            <td>{{ appointment.date_rdv | date : "dd/MM/yyyy" }}</td>
+            <td>{{ appointment.date_rdv | date : "HH:mm" }}</td>
+
+            <td>{{ appointment.patient_nom }}</td>
+            <td>{{ appointment.patient_prenoms }}</td>
+            <td>{{ appointment.objet }}</td>
+
+            <td>
+              <div class="d-inline-block" ngbDropdown container="body">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                  ngbDropdownToggle
+                >
+                  <i class="ri-more-fill fs-24"></i>
+                </button>
+                <div ngbDropdownMenu>
+                  <button
+                    ngbDropdownItem
+                    (click)="selectAppointment(appointment)"
+                  >
+                    <i
+                      class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                    ></i>
+                    Modifier
+                  </button>
+                  <button
+                    ngbDropdownItem
+                    (click)="cancelAppointment(appointment)"
+                  >
+                    <i
+                      class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                    ></i>
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
+    </div>
+
+    <hr />
+
+    <div class="row" *ngIf="appointmentsList.length !== 0">
+      <div class="col-12">
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshAppointmentsTable()"
+          >
+          </ngb-pagination>
+
+          <select
+            class="form-select"
+            style="width: auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="refreshAppointmentsTable()"
+          >
+            <option [ngValue]="10">10 éléments par page</option>
+            <option [ngValue]="15">15 éléments par page</option>
+            <option [ngValue]="20">20 éléments par page</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>

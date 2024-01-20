@@ -27,7 +27,7 @@ export const SECRETARIAT_MENU: MenuItem[] = [
   {
     id: 5,
     label: "MENUITEMS.EXTERN.LIST.APPOINTMENT",
-    link: "/extern/appointment",
+    link: "/secretariat/appointment",
     icon: "ri-calendar-event-fill",
     // icon: "mdi mdi-calendar-cursor",
   },

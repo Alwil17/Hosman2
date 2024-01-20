@@ -4,10 +4,15 @@ import { DoctorResponse } from "../../secretariat/shared/responses/doctor-respon
 
 export interface AppointmentResponse {
   id: number;
+  date_rdv: string;
+  medecin_ref: string;
   medecin: DoctorResponse;
+  intervenant_ref: string;
   intervenant: DoctorResponse;
-  patient: PatientResponse;
-  etat: StatusResponse;
-  date_rdv: Date;
+  patient_nom: string;
+  patient_prenoms: string;
+  patient_sexe?: string;
+  patient_naiss?: Date;
   objet: string;
+  // etat: StatusResponse;
 }

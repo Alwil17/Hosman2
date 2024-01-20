@@ -22,6 +22,8 @@ import { ReportSearchCriteriaModalComponent } from "./activities-page/receipts-s
 import { InsurancesDebtsModalComponent } from "./activities-page/receipts-summary/insurances-debts-modal/insurances-debts-modal.component";
 import { PhoneBookPageComponent } from "./phone-book-page/phone-book-page.component";
 import { PhoneBookFormModalComponent } from './phone-book-page/phone-book-form-modal/phone-book-form-modal.component';
+import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
+import { MedicalBaseModule } from "../medical-base/medical-base.module";
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { PhoneBookFormModalComponent } from './phone-book-page/phone-book-form-m
     InsurancesDebtsModalComponent,
     PhoneBookPageComponent,
     PhoneBookFormModalComponent,
+    AppointmentPageComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +51,7 @@ import { PhoneBookFormModalComponent } from './phone-book-page/phone-book-form-m
     NgbPaginationModule,
     NgbDropdownModule,
     NgbTypeaheadModule,
+    MedicalBaseModule
     // NgbModalModule
   ],
 })
