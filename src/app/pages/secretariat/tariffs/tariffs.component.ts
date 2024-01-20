@@ -1,8 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 import { ActGroupService } from "src/app/services/secretariat/shared/act-group.service";
 import { TariffService } from "src/app/services/secretariat/shared/tariff.service";
+import { TariffQuantityModalComponent } from "./tariff-quantity-modal/tariff-quantity-modal.component";
+import { firstValueFrom } from "rxjs";
+import { parseIntOrZero } from "src/app/helpers/parsers";
+import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  ActsProForma,
+  TariffProFormaRequest,
+} from "src/app/models/secretariat/shared/requests/tariff-pro-forma-request.model";
+import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
+import { ToastType } from "src/app/models/extras/toast-type.model";
+import { WarningMessages } from "src/app/helpers/messages";
+import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
+import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 
 @Component({
   selector: "app-tariffs",
@@ -10,8 +26,16 @@ import { TariffService } from "src/app/services/secretariat/shared/tariff.servic
   styleUrls: ["./tariffs.component.scss"],
 })
 export class TariffsComponent implements OnInit {
+  @ViewChildren(InputComponent)
+  inputFields!: QueryList<InputComponent>;
+
+  @ViewChildren(SelectComponent)
+  selectFields!: QueryList<SelectComponent>;
+
   // bread crumb items
   breadCrumbItems!: Array<{}>;
+
+  searchTerm = "";
 
   actGroups!: ActGroup[];
   selectedGroupTariffs!: Tariff[];
@@ -21,20 +45,33 @@ export class TariffsComponent implements OnInit {
   table2: any[] = [];
 
   table1Page = 1;
-  table1PageSize = 5;
+  table1PageSize = 10;
   table1CollectionSize = this.table1.length;
   activities: any[] = [];
 
   table2Page = 1;
-  table2PageSize = 5;
+  table2PageSize = 10;
   table2CollectionSize = this.table2.length;
   activitiesSelect: any[] = [];
 
   isProFormaInitiated = false;
 
+  patientFullnameControl = new FormControl(null, Validators.required);
+  hasInsuranceControl = new FormControl(null, Validators.required);
+
+  profFormaForm!: FormGroup;
+  isProFormaFormSubmitted = false;
+
+  hasInsurances = HAS_INSURANCES.map((hasInsurance) => ({
+    id: hasInsurance.code,
+    text: hasInsurance.text,
+  }));
+
   constructor(
     private actGroupService: ActGroupService,
-    private tariffService: TariffService
+    private tariffService: TariffService,
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +102,11 @@ export class TariffsComponent implements OnInit {
       error: (e) => {
         console.log(e);
       },
+    });
+
+    this.profFormaForm = new FormGroup({
+      patientFullnameControl: this.patientFullnameControl,
+      hasInsuranceControl: this.hasInsuranceControl,
     });
   }
 
@@ -99,7 +141,7 @@ export class TariffsComponent implements OnInit {
       // }
 
       return {
-        id: item.id,
+        id: item.code,
         designation: item.libelle,
         no_local: item.tarif_non_assure,
         no_foreigner: item.tarif_etr_non_assure,
@@ -116,34 +158,78 @@ export class TariffsComponent implements OnInit {
   }
 
   refreshActivities() {
-    this.activities = this.table1
-      // .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.table1Page - 1) * this.table1PageSize,
-        (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
-      );
+    this.activities = this.table1;
+    // .slice(
+    //   (this.table1Page - 1) * this.table1PageSize,
+    //   (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+    // );
   }
 
   refreshActivitiesSelect() {
-    this.activitiesSelect = this.table2
-      // .map((item, i) => ({ id: i + 1, ...item }))
-      .slice(
-        (this.table2Page - 1) * this.table2PageSize,
-        (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
-      );
+    this.activitiesSelect = this.table2;
+    // .slice(
+    //   (this.table2Page - 1) * this.table2PageSize,
+    //   (this.table2Page - 1) * this.table2PageSize + this.table2PageSize
+    // );
   }
 
-  add(item: any) {
+  searchActs() {
+    const searchedActs = this.searchTerm
+      ? this.table1.filter((act) => {
+          return act.designation
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase());
+        })
+      : this.table1;
+
+    this.table1CollectionSize = searchedActs.length;
+
+    this.activities = searchedActs;
+    // .slice(
+    //   (this.table1Page - 1) * this.table1PageSize,
+    //   (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
+    // );
+  }
+
+  async add(item: any) {
+    // Does not add if the user has not initiated the pro forma
+    if (!this.isProFormaInitiated) {
+      return;
+    }
+
     console.log(item);
+
+    // OPEN TARIFF QUANTITY MODAL
+    const tariffQuantityModal = this.modalService.open(
+      TariffQuantityModalComponent,
+      {
+        size: "sm",
+        centered: true,
+        keyboard: false,
+        // scrollable: true,
+      }
+    );
+
+    const tariffQuantity: number = await firstValueFrom(
+      tariffQuantityModal.componentInstance.quantityData.asObservable()
+    );
+
+    // CLOSE TARIFF QUANTITY MODAL
+    tariffQuantityModal.close();
+
+    // CHECK IF USER CONFIRMED OR NOT
+    if (!tariffQuantity) {
+      return;
+    }
 
     const item2: any = {
       id: item.id,
       designation: item.designation,
-      quantity: 1,
-      no_local: item.no_local,
-      no_foreigner: item.no_foreigner,
-      yes_local: item.yes_local,
-      yes_foreigner: item.yes_foreigner,
+      quantity: tariffQuantity,
+      no_local: item.no_local * tariffQuantity,
+      no_foreigner: item.no_foreigner * tariffQuantity,
+      yes_local: item.yes_local * tariffQuantity,
+      yes_foreigner: item.yes_foreigner * tariffQuantity,
       description: item.description,
     };
     console.log(item2);
@@ -177,5 +263,115 @@ export class TariffsComponent implements OnInit {
 
   cancelProForma() {
     this.isProFormaInitiated = false;
+  }
+
+  getInvalidFields() {
+    const invalidInputs: string[] = [];
+    this.inputFields.forEach((input) => {
+      if (input.control.invalid) {
+        invalidInputs.push("- " + input.label);
+      }
+    });
+
+    const invalidSelects: string[] = [];
+    this.selectFields.forEach((select) => {
+      if (select.control.invalid) {
+        invalidSelects.push("- " + select.label);
+      }
+    });
+
+    let notificationMessages: string[] = [];
+    if (invalidInputs.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_INPUT_FIELDS,
+        ...invalidInputs
+      );
+    }
+
+    if (notificationMessages.length !== 0) {
+      notificationMessages.push("");
+    }
+
+    if (invalidSelects.length !== 0) {
+      notificationMessages.push(
+        WarningMessages.MANDATORY_SELECT_FIELDS,
+        ...invalidSelects
+      );
+    }
+
+    return notificationMessages;
+  }
+
+  generateProForma() {
+    this.isProFormaFormSubmitted = true;
+
+    if (!this.profFormaForm.valid) {
+      const notificationMessages = this.getInvalidFields();
+
+      this.toastService.show({
+        messages: notificationMessages,
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
+    if (this.table2.length === 0) {
+      this.toastService.show({
+        messages: [
+          "Veuillez choisir au moins un élément dans le tableau de gauche.",
+        ],
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
+    const tariffProForma = new TariffProFormaRequest({
+      patient: this.patientFullnameControl.value,
+      actes: this.table2.map((value) => {
+        const actes: ActsProForma = {
+          code: value.id,
+          libelle: value.designation,
+          tarif_non_assure: value.no_local / value.quantity,
+          tarif_etr_non_assure: value.no_foreigner / value.quantity,
+          tarif_assur_locale: value.yes_local / value.quantity,
+          tarif_assur_hors_zone: value.yes_foreigner / value.quantity,
+          qte: value.quantity,
+        };
+        return actes;
+      }),
+      is_assure: this.hasInsuranceControl.value.id,
+    });
+
+    console.log(JSON.stringify(tariffProForma, null, 2));
+
+    this.tariffService.loadProFormaPdf(tariffProForma).subscribe({
+      next: (data) => {
+        // this.toastService.show({
+        //   messages: ["Génération du reçu."],
+        //   type: ToastType.Success,
+        // });
+
+        const pdfModalRef = this.modalService.open(PdfModalComponent, {
+          size: "xl",
+          centered: true,
+          // scrollable: true,
+          backdrop: "static",
+        });
+
+        pdfModalRef.componentInstance.title = "Pro Forma";
+        pdfModalRef.componentInstance.pdfSrc = data;
+      },
+      error: (e) => {
+        console.error(e);
+
+        // this.toastService.show({
+        //   messages: ["Echec de la génération du reçu."],
+        //   delay: 10000,
+        //   type: ToastType.Error,
+        // });
+      },
+    });
   }
 }

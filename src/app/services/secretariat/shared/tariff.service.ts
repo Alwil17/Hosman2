@@ -1,6 +1,7 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
+import { TariffProFormaRequest } from "src/app/models/secretariat/shared/requests/tariff-pro-forma-request.model";
 import { TariffResponse } from "src/app/models/secretariat/shared/responses/tariff-response.model";
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 import { environment } from "src/environments/environment";
@@ -25,18 +26,6 @@ export class TariffService {
     );
   }
 
-  // getByGroupId(id: any): Observable<Tariff[]> {
-  //   return this.http.get<TariffResponse[]>(`${apiEndpoint}/groupe/${id}`).pipe(
-  //     map((tariffs) => {
-  //       const mapped: Tariff[] = tariffs.map((tariff) =>
-  //         Tariff.fromResponse(tariff)
-  //       );
-
-  //       return mapped;
-  //     })
-  //   );
-  // }
-
   getByGroupCode(code: string): Observable<Tariff[]> {
     let apiComplementary = "groupe=" + code;
 
@@ -51,18 +40,16 @@ export class TariffService {
           return mapped;
         })
       );
+  }
 
-    // return this.http
-    //   .get<TariffResponse[]>(`${apiEndpoint}/groupe/${code}/all`)
-    //   .pipe(
-    //     map((tariffs) => {
-    //       const mapped: Tariff[] = tariffs.map((tariff) =>
-    //         Tariff.fromResponse(tariff)
-    //       );
+  loadProFormaPdf(tariffProForma: TariffProFormaRequest): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
 
-    //       return mapped;
-    //     })
-    //   );
+    return this.http.post(`${apiEndpoint}/proformat`, tariffProForma, {
+      headers: headers,
+      responseType: "blob",
+    });
   }
 
   // create(data: DoctorRequest): Observable<any> {

@@ -21,7 +21,7 @@
             [checked]="i === 0"
           />
           <label
-            class="btn btn-outline-secondary me-2 d-block"
+            class="btn btn-outline-secondary btn-sm me-2 d-block"
             [for]="'pType-' + i"
             (click)="updateTable(actGroup)"
             ><b>{{ actGroup.libelle | uppercase }}</b></label
@@ -33,18 +33,45 @@
 
   <ng-container customCardBody2>
     <div class="card-body border-top border-dark">
-      <button
-        class="btn btn-secondary"
-        (click)="initiateProForma()"
-        *ngIf="!isProFormaInitiated; else cancelPF"
-      >
-        <b>Initier pro forma</b>
-      </button>
-      <ng-template #cancelPF>
-        <button class="btn btn-warning text-black" (click)="cancelProForma()">
-          <b>Annuler pro forma</b>
-        </button>
-      </ng-template>
+      <div class="d-flex justify-content-between">
+        <div class="search-box">
+          <input
+            type="text"
+            name="searchTerm"
+            class="form-control"
+            placeholder="Rechercher par prestation"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="searchActs()"
+          />
+          <i class="ri-search-line search-icon"></i>
+        </div>
+        <div>
+          <button
+            class="btn btn-secondary"
+            (click)="initiateProForma()"
+            *ngIf="!isProFormaInitiated; else cancelPF"
+          >
+            <b>Initier le pro forma</b>
+          </button>
+          <ng-template #cancelPF>
+            <button
+              class="btn btn-warning text-black"
+              (click)="cancelProForma()"
+            >
+              <b>Annuler le pro forma</b>
+            </button>
+            <button
+              type="button"
+              class="btn btn-info btn-label ms-3"
+              (click)="generateProForma()"
+              *ngIf="isProFormaInitiated"
+            >
+              <i class="ri-printer-fill label-icon align-middle fs-16 me-2"></i>
+              <b>Générer le pro forma</b>
+            </button>
+          </ng-template>
+        </div>
+      </div>
     </div>
   </ng-container>
 
@@ -52,29 +79,55 @@
     <div class="card-body border-top border-dark">
       <div class="row">
         <div [class]="isProFormaInitiated ? 'col-md-6' : 'col-md-12'">
-          <div class="col-12 mb-3" *ngIf="isProFormaInitiated">
+          <div class="col-12" *ngIf="isProFormaInitiated">
             <em>Double-cliquer un élément pour l'ajouter</em>
           </div>
 
-          <div class="table-responsive mt-4 mt-xl-0 border">
+          <div
+            class="table-responsive mt-2 mt-xl-0 border"
+            style="max-height: 400px"
+          >
             <table
-              class="table table-hover table-striped table-bordered align-middle mb-0"
+              class="table table-hover table-striped table-bordered table-sm align-middle mb-0"
             >
-              <thead>
+              <!-- table-nowrap -->
+              <thead
+                style="
+                  position: sticky;
+                  top: -1px;
+                  background-color: whitesmoke;
+                "
+              >
                 <tr>
-                  <th scope="col">DESIGNATION</th>
-                  <th scope="col">NON ASSURE</th>
-                  <th scope="col">ETRANGER NON ASSURE</th>
-                  <th scope="col">ASSURANCES LOCALES</th>
-                  <th scope="col">ASSURANCES HORS ZONE</th>
-                  <th scope="col">DESCRIPTION</th>
+                  <th scope="col">{{ "Désignation" | uppercase }}</th>
+                  <th scope="col">
+                    <!-- class="text-wrap" -->
+                    {{ "Non assuré" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    <!-- class="text-wrap" -->
+                    {{ "étranger non assuré" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    <!-- class="text-wrap" -->
+                    {{ "Assurances locales" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    <!-- class="text-wrap" -->
+                    {{ "Assurnaces étrangères" | uppercase }}
+                  </th>
+                  <th scope="col">{{ "Description" | uppercase }}</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="user-select-none">
                 <tr *ngFor="let item of activities" (dblclick)="add(item)">
-                  <td>
+                  <!-- <td>
                     {{ item.designation }}
-                  </td>
+                  </td> -->
+                  <ngb-highlight
+                    [result]="item.designation"
+                    [term]="searchTerm"
+                  ></ngb-highlight>
                   <td class="text-end">
                     <b>
                       {{ item.no_local | mask : "separator" }}
@@ -100,10 +153,23 @@
                   </td>
                 </tr>
               </tbody>
+              <tfoot
+                style="
+                  position: sticky;
+                  bottom: -1px;
+                  background-color: whitesmoke;
+                "
+              >
+                <tr>
+                  <th colspan="6">
+                    Total des prestations : {{ activities.length }}
+                  </th>
+                </tr>
+              </tfoot>
             </table>
           </div>
 
-          <div class="d-flex justify-content-between p-2">
+          <!-- <div class="d-flex justify-content-between p-2">
             <ngb-pagination
               [(page)]="table1Page"
               [pageSize]="table1PageSize"
@@ -120,34 +186,43 @@
               [(ngModel)]="table1PageSize"
               (ngModelChange)="refreshActivities()"
             >
-              <option [ngValue]="5">5 éléments par page</option>
               <option [ngValue]="10">10 éléments par page</option>
               <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
             </select>
-          </div>
+          </div> -->
         </div>
 
         <div class="col-md-6" *ngIf="isProFormaInitiated">
-          <div class="col-12 mb-3">
+          <div class="col-12">
             <em>Double-cliquer un élément pour le retirer</em>
           </div>
 
-          <div class="table-responsive mt-4 mt-xl-0 border">
+          <div
+            class="table-responsive mt-2 mt-xl-0 border"
+            style="max-height: 400px"
+          >
             <table
-              class="table table-hover table-striped table-bordered align-middle mb-0"
+              class="table table-hover table-striped table-bordered table-sm align-middle mb-0"
             >
-              <thead>
+              <thead
+                style="
+                  position: sticky;
+                  top: -1px;
+                  background-color: whitesmoke;
+                "
+              >
                 <tr>
-                  <th scope="col">DESIGNATION</th>
-                  <th scope="col">QUANTITÉ</th>
-                  <th scope="col">NON ASSURE</th>
-                  <th scope="col">ETRANGER NON ASSURE</th>
-                  <th scope="col">ASSURANCES LOCALES</th>
-                  <th scope="col">ASSURANCES HORS ZONE</th>
-                  <th scope="col">DESCRIPTION</th>
+                  <th scope="col">{{ "Désignation" | uppercase }}</th>
+                  <th scope="col">{{ "Quantité" | uppercase }}</th>
+                  <th scope="col">{{ "Non assuré" | uppercase }}</th>
+                  <th scope="col">{{ "étranger non assuré" | uppercase }}</th>
+                  <th scope="col">{{ "Assurances locales" | uppercase }}</th>
+                  <th scope="col">{{ "Assurnaces étrangères" | uppercase }}</th>
+                  <th scope="col">{{ "Description" | uppercase }}</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="user-select-none">
                 <tr
                   *ngFor="let item of activitiesSelect"
                   (dblclick)="remove(item)"
@@ -191,7 +266,7 @@
             </table>
           </div>
 
-          <div
+          <!-- <div
             class="d-flex justify-content-between p-2"
             *ngIf="table2CollectionSize"
           >
@@ -211,10 +286,33 @@
               [(ngModel)]="table2PageSize"
               (ngModelChange)="refreshActivitiesSelect()"
             >
-              <option [ngValue]="5">5 éléments par page</option>
               <option [ngValue]="10">10 éléments par page</option>
               <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
             </select>
+          </div> -->
+
+          <hr />
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-input
+                label="Nom complet du patient"
+                [isMandatory]="true"
+                [control]="patientFullnameControl"
+                [isFormSubmitted]="isProFormaFormSubmitted"
+              >
+              </app-input>
+            </div>
+            <div class="col-md-6">
+              <app-select
+                label="Assuré(e)"
+                [isMandatory]="true"
+                [options]="hasInsurances"
+                [control]="hasInsuranceControl"
+                [isFormSubmitted]="isProFormaFormSubmitted"
+              ></app-select>
+            </div>
           </div>
         </div>
         <!--end col-->
