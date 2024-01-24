@@ -413,12 +413,15 @@ export class PatientInvoiceFormComponent implements OnInit {
     });
 
     this.paymentCheckCashControl.valueChanges.subscribe((value) => {
+      this.calculateDebt();
+
       if (value == true) {
         this.paymentCashControl.enable();
-        this.paymentCashControl.setValue("");
+        this.paymentCashControl.setValue(this.debtAmount);
 
         setTimeout(() => {
-          this.paymentCashField.nativeElement.querySelector("input").focus();
+          // this.paymentCashField.nativeElement.querySelector("input").focus();
+          this.paymentCashField.nativeElement.querySelector("input").select();
         });
       } else {
         this.paymentCashControl.disable();
@@ -426,12 +429,15 @@ export class PatientInvoiceFormComponent implements OnInit {
       }
     });
     this.paymentCheckCardControl.valueChanges.subscribe((value) => {
+      this.calculateDebt();
+
       if (value == true) {
         this.paymentCardControl.enable();
-        this.paymentCardControl.setValue("");
+        this.paymentCardControl.setValue(this.debtAmount);
 
         setTimeout(() => {
-          this.paymentCardField.nativeElement.querySelector("input").focus();
+          // this.paymentCardField.nativeElement.querySelector("input").focus();
+          this.paymentCardField.nativeElement.querySelector("input").select();
         });
       } else {
         this.paymentCardControl.disable();
@@ -439,49 +445,21 @@ export class PatientInvoiceFormComponent implements OnInit {
       }
     });
     this.paymentCheckChequeControl.valueChanges.subscribe((value) => {
+      this.calculateDebt();
+
       if (value == true) {
         this.paymentChequeControl.enable();
-        this.paymentChequeControl.setValue("");
+        this.paymentChequeControl.setValue(this.debtAmount);
 
         setTimeout(() => {
           this.paymentChequeField.nativeElement.querySelector("input").focus();
+          this.paymentChequeField.nativeElement.querySelector("input").select();
         });
       } else {
         this.paymentChequeControl.disable();
         this.paymentChequeControl.setValue("0");
       }
     });
-
-    // this.paymentRadioControl.valueChanges.subscribe((value) => {
-    //   if (value === "cash") {
-    //     this.paymentCashControl.enable();
-    //     this.paymentCashControl.setValue("");
-
-    //     this.paymentCardControl.disable();
-    //     this.paymentCardControl.setValue("0");
-
-    //     this.paymentChequeControl.disable();
-    //     this.paymentChequeControl.setValue("0");
-    //   } else if (value === "card") {
-    //     this.paymentCashControl.disable();
-    //     this.paymentCashControl.setValue("0");
-
-    //     this.paymentCardControl.enable();
-    //     this.paymentCardControl.setValue("");
-
-    //     this.paymentChequeControl.disable();
-    //     this.paymentChequeControl.setValue("0");
-    //   } else if (value === "cheque") {
-    //     this.paymentCashControl.disable();
-    //     this.paymentCashControl.setValue("0");
-
-    //     this.paymentCardControl.disable();
-    //     this.paymentCardControl.setValue("0");
-
-    //     this.paymentChequeControl.enable();
-    //     this.paymentChequeControl.setValue("");
-    //   }
-    // });
 
     this.paymentCashControl.valueChanges.subscribe((value) => {
       this.calculatePatientGivenAmount();
@@ -795,117 +773,5 @@ export class PatientInvoiceFormComponent implements OnInit {
         console.error(e);
       },
     });
-
-    // const invoice = new InvoiceRequest({
-    //   total: this.totalAmount,
-    //   montant_pec: parseIntOrZero(this.insuranceShareControl.value),
-    //   reduction: new DiscountRequest({
-    //     montant: this.discountValue,
-    //     motif: "",
-    //     date_operation: new Date(),
-    //     // patient_id: this.patientService.getActivePatient().id,
-    //   }),
-    //   majoration: new MarkupRequest({
-    //     montant: this.markupValue,
-    //     motif: "",
-    //     date_operation: new Date(),
-    //     // patient_id: this.patientService.getActivePatient().id,
-    //   }),
-
-    //   a_payer: this.patientShareAmount,
-    //   creance: new DebtRequest({
-    //     montant: this.debtAmount,
-    //     etat_id: this.debtAmount > 0 ? 1 : 2,
-    //     date_operation: new Date(),
-    //     // patient_id: this.patientService.getActivePatient().id,
-    //   }),
-    //   reliquat: new RemainderRequest({
-    //     montant: this.remainderAmount,
-    //     etat_id: this.remainderAmount > 0 ? 1 : 2,
-    //     date_operation: new Date(),
-    //     // patient_id: this.patientService.getActivePatient().id,
-    //   }),
-
-    //   date_facture: new Date(),
-    //   date_reglement: new Date(),
-    //   patient_id: this.patientService.getActivePatient().id,
-    //   prestation_id: this.preInvoiceInfos.prestation_id,
-    //   etat_id: this.debtAmount > 0 ? 1 : 2,
-    //   mode_payements: paymentModes,
-    // });
-
-    // this.invoiceService.create(invoice).subscribe({
-    //   next: (data) => {
-    //     console.log(data);
-
-    //     this.toastService.show({
-    //       messages: ["Paiement enregistré."],
-    //       type: ToastType.Success,
-    //     });
-
-    //     // this.waitingListService.create(wlItem).subscribe({
-    //     //   next: (data) => {
-    //     //     console.log(data, "\nHere");
-
-    //     //     this.toastService.show({
-    //     //       messages: ["Patient envoyé en liste d'attente."],
-    //     //       type: ToastType.Success,
-    //     //     });
-    //     //   },
-    //     //   error: (e) => {
-    //     //     console.error(e);
-
-    //     //     this.toastService.show({
-    //     //       messages: [
-    //     //         "Une erreur s'est produite lors de l'envoi du patient en liste d'attente.",
-    //     //       ],
-    //     //       delay: 10000,
-    //     //       type: ToastType.Error,
-    //     //     });
-    //     //   },
-    //     // });
-
-    //     this.invoiceService.loadPdf(data).subscribe({
-    //       next: (data) => {
-    //         this.toastService.show({
-    //           messages: ["Génération du reçu."],
-    //           type: ToastType.Success,
-    //         });
-
-    //         const pdfModalRef = this.modalService.open(PdfModalComponent, {
-    //           size: "xl",
-    //           centered: true,
-    //           // scrollable: true,
-    //           backdrop: "static",
-    //         });
-
-    //         pdfModalRef.componentInstance.title = "Reçu";
-    //         pdfModalRef.componentInstance.pdfSrc = data;
-    //       },
-    //       error: (e) => {
-    //         console.error(e);
-
-    //         this.toastService.show({
-    //           messages: ["Echec de la génération du reçu."],
-    //           delay: 10000,
-    //           type: ToastType.Error,
-    //         });
-    //       },
-    //     });
-    //   },
-    //   error: (e) => {
-    //     console.error(e);
-
-    //     this.toastService.show({
-    //       messages: ["Paiement non enregistré."],
-    //       delay: 10000,
-    //       type: ToastType.Error,
-    //     });
-    //   },
-    // });
   }
-
-  // openInvoiceModal(invoiceModal: any) {
-  //   this.modalService.open(invoiceModal, { size: 'xl', centered: true });
-  // }
 }
