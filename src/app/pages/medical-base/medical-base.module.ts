@@ -20,6 +20,7 @@ import { PatientsModule } from "../secretariat/patients/patients.module";
 import { PatientVisitFormModalComponent } from "./patient-visit-form-modal/patient-visit-form-modal.component";
 import { CountdownModule } from "ngx-countdown";
 import { AppointmentFormModalComponent } from "./appointment-form-modal/appointment-form-modal.component";
+import { AllAppointmentsModalComponent } from './appointment-form/all-appointments-modal/all-appointments-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AppointmentFormModalComponent } from "./appointment-form-modal/appointm
     PatientListPageComponent,
     PatientVisitFormModalComponent,
     AppointmentFormModalComponent,
+    AllAppointmentsModalComponent,
   ],
   imports: [
     CommonModule,
