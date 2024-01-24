@@ -1,75 +1,51 @@
 <div class="row">
-    <div class="col-md-12"><h5 class="fw-semibold">Adressé(e)</h5></div>
+  <div class="col-md-12">
+    <h5 class="fw-semibold">Adressé(e)</h5>
+  </div>
   <div class="col-md-2 mb-3">
-    <app-select
-      [isMandatory]="true"
-      [searchable]="false"
-      [clearable]="false"
-      [options]="displayOptions"
-      [bindValue]="'value'"
-      [control]="showControl"
-    ></app-select>
+    <app-select [isMandatory]="true" [searchable]="false" [clearable]="false" [options]="displayOptions"
+      [bindValue]="'value'" [control]="showControl"></app-select>
 
-    
+
   </div>
   <div class="col-md-12" *ngIf="showControl.value">
     <div class="row">
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Médecin"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+            <app-select label="Médecin" [isMandatory]="true" [options]="medecins" [control]="medecin" 
+            [bindLabel]="'fullname'"
+            [bindValue]="'matricule'"></app-select>  
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Spécialité"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Spécialité" type="text" [isMandatory]="true" [control]="specialite"></app-input>
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Institution"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Institution" type="text" [isMandatory]="true" [control]="institution"></app-input>
           </div>
 
           <div class="col-md-3 form-check mb-4 mx-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              name="medical_letter"
-              id="medical_letter"
-            />
+            <input class="form-check-input" type="checkbox" name="medical_letter" 
+            [formControl]="lettre" id="medical_letter" />
             <label class="form-check-label fw-semibold" for="medical_letter">
               Lettre médicale
             </label>
           </div>
 
           <div class="col-md-3 form-check mb-2 mx-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              name="medical_report"
-              id="medical_report"
-            />
+            <input class="form-check-input" type="checkbox" name="medical_report" 
+            [formControl]="report"
+            id="medical_report" />
             <label class="form-check-label fw-semibold" for="medical_report">
               Rapport médical
             </label>
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Moyen de transport"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Moyen de transport" type="text" [isMandatory]="true"
+            [control]="transport"></app-input>
           </div>
         </div>
       </div>
@@ -77,29 +53,30 @@
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Date"
-              type="date"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Date" type="date" [isMandatory]="true"
+            [control]="date_op"></app-input>
           </div>
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Motif"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Motif" type="text" [isMandatory]="true"
+            [control]="motif"></app-input>
           </div>
           <div class="col-md-12 mb-3">
-            <label for="comments" class="form-label">Commentaires </label>
-            <textarea
-              class="form-control"
-              placeholder="..."
-              rows="5"
-            ></textarea>
+            <app-text placeholder="..." [rows]="5"
+            [control]="comment" label="Commentaires"></app-text>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="d-flex justify-content-start">
+    <button
+    type="button"
+    class="btn btn-success btn-label right"
+    (click)="confirmAction()"
+  >
+    <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+    Enrégistrer
+  </button>
+</div>
 </div>

@@ -10,6 +10,7 @@ export class TextComponent implements OnInit {
   @Input() label = "";
   @Input() isMandatory = false;
   @Input() rows = 3;
+  @Input() placeholder = "";
   @Input() control = new FormControl();
 
   constructor() { }

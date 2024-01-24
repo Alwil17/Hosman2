@@ -12,6 +12,10 @@ const hospitalisationEndpoint = "/api/hospits";
 // const getHospitalisationEndpoint = "/api/hospits";
 const tabsEndpoint = "/api/produits";
 const suiviEndpoint = "/api/suivis";
+const medExterneEndpoint = "/api/med-externes";
+const chirurgieEndpoint = "/api/chirurgies";
+const adressedEndpoint = "/api/addressed";
+const medecinsListEndpoint = "/api/medecins";
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -24,8 +28,12 @@ export class HospitalisationStore extends ObservableStore<any> {
     sectors: null,
     chambres: null,
     tabs: null,
-    suivi: null
+    suivi: null,
+    medecins: null,
+    externes: null,
+    interventions: null
   };
+
 
   constructor(private http: HttpClient) {
     super({
@@ -172,6 +180,64 @@ export class HospitalisationStore extends ObservableStore<any> {
     });
   }
 
+  fetchMedecins(): void {
+    const res: Observable<any> = this.http.get<any[]>(medecinsListEndpoint);
+
+    res.subscribe({
+      next: (medecins: any) => {
+        const r = medecins.map((m : any) => {
+          m.fullname = m.nom + ' ' + m.prenoms
+          return m
+        })
+        this.updateStore({medecins : r}, "FETCH MEDECINS")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
+  fetchExternes(id: number): void {
+    const res: Observable<any> = this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/med-externes");
+
+    res.subscribe({
+      next: (externes: any) => {
+        
+        this.updateStore({externes}, "FETCH MEDECINS EXTERNES")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }  
+  
+  
+  fetchInterventions(id: number): void {
+    const res: Observable<any> = this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/chirurgies");
+
+    res.subscribe({
+      next: (interventions: any) => {
+        
+        this.updateStore({interventions}, "FETCH CHIRIGIES")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
+  fetchAdressed(id: number) {
+    this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/addressed").subscribe({
+      next: (addressed: any) => {
+        this.updateStore({addressed}, "FETCH ADRESSED")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });;
+
+  }
+
 
   saveHospitalisation(data: any, id : any): Observable<any> {
     // console.log(id)
@@ -185,8 +251,47 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   commitSuivi(data: any){
     this.http.post(suiviEndpoint, data).subscribe({
+      next: (v) => { data.id = v ; console.log(data) ; },
+      error: (e) => console.error(e),
+    })
+  }
+  
+  updateSuivi(data: any){
+    this.http.put(suiviEndpoint + "/" + data.id, data).subscribe({
+      next: (v) => { data.id = v ; console.log(data) ; },
+      error: (e) => console.error(e),
+    })
+  }
+
+  removeSuivi(id:any) {
+    this.http.delete(suiviEndpoint + "/" + id).subscribe({
       next: (v) => console.log(v),
       error: (e) => console.error(e),
     })
+  }
+
+  saveMedExterne(data: any, id? : any): Observable<any> {
+    if (id == null) {
+      return this.http.post(medExterneEndpoint, data);
+    } else {
+      return this.http.put(medExterneEndpoint + "/" + id, data);
+    }
+    
+  }
+  
+  saveIntervention(data: any, id? : any): Observable<any> {
+    if (id == null) {
+      return this.http.post(chirurgieEndpoint, data);
+    } else {
+      return this.http.put(chirurgieEndpoint + "/" + id, data);
+    }
+  }
+
+  saveAdressed(data: any): Observable<any> {
+    if (!('id' in data)) {
+      return this.http.post(adressedEndpoint, data);
+    } else {
+      return this.http.put(adressedEndpoint + "/" + data.id, data);
+    }
   }
 }

@@ -4,6 +4,10 @@ import { HospitalisationStore } from "@stores/hospitalisation";
 import { Patient } from "../../../../../models/secretariat/patients/patient.model";
 import { FormControl } from "@angular/forms";
 import * as moment from "moment";
+import { Chambre } from "../../../../../models/hospitalisation/chambre";
+
+var timer: any, // timer required to reset
+  timeout = 200;
 
 @Component({
   selector: "app-comptable-table-classic",
@@ -247,6 +251,41 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
+  getRowId(day: moment.Moment, type_id: number, sub_id?: number) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      if (this.typeData == "chambres") {
+        const ch = this.suivis.find(
+          (t) =>
+            t["type"] === "chambres" &&
+            t["type_id"] === sub_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+        const li = this.suivis.find(
+          (t) =>
+            t["type"] === "lits" &&
+            t["type_id"] === type_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+
+        return (
+          (ch !== null && ch !== undefined ? ch.id : null) +
+          "/" +
+          (li !== null && li !== undefined ? li.id : null)
+        );
+      } else {
+        const res = this.suivis.find(
+          (t) =>
+            t["type"] === this.typeData &&
+            t["type_id"] === type_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+        return res !== null && res !== undefined ? res.id : null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   setActive(day: moment.Moment, type_id: number, sub_id?: number) {
     if (this.suivis !== null && this.suivis !== undefined) {
       if (this.typeData == "chambres") {
@@ -285,15 +324,11 @@ export class ComptableTableClassicComponent implements OnInit {
 
     if (this.suivis !== null && this.suivis !== undefined) {
       if (this.typeData == "chambres") {
-    
         const li = this.suivis.filter(
-          (t) =>
-            t["type"] === "lits" &&
-            t["type_id"] === type_id
+          (t) => t["type"] === "lits" && t["type_id"] === type_id
         );
 
-        res = li.reduce((total : any, item : any) => total + item.qte, 0)
-        
+        res = li.reduce((total: any, item: any) => total + item.qte, 0);
       } else {
         const arr = this.suivis.filter(
           (t) => t["type"] === this.typeData && t["type_id"] === type_id
@@ -304,42 +339,128 @@ export class ComptableTableClassicComponent implements OnInit {
       }
     }
 
-    return res !== 0 ? res : '' ;
+    return res !== 0 ? res : "";
+  }
+
+  getRowQte(day: moment.Moment, type_id: number, sub_id?: number) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      if (this.typeData !== "chambres") {
+        const res = this.suivis.find(
+          (t) =>
+            t["type"] === this.typeData &&
+            t["type_id"] === type_id &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+        return res !== null && res !== undefined ? res.qte : '';
+      }
+    } else {
+      return '';
+    }
   }
 
   selectItem(day: moment.Moment, type_id: number, extra?: any) {
     if (this.typeData == "chambres") {
-      const c = {
-        type: "chambres",
-        type_id: extra,
-        qte: 1,
-        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
-        hospit_id: this.hospitalisation.id,
-      };
+      const row = this.getRowId(day, type_id, extra);
+      if (row.toString().includes('null')) {
+        const c = {
+          type: "chambres",
+          type_id: extra,
+          qte: 1,
+          apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+          hospit_id: this.hospitalisation.id,
+        };
 
-      const l = {
-        type: "lits",
-        type_id: type_id,
-        qte: 1,
-        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
-        hospit_id: this.hospitalisation.id,
-      };
+        const l = {
+          type: "lits",
+          type_id: type_id,
+          qte: 1,
+          apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+          hospit_id: this.hospitalisation.id,
+        };
 
-      this.hospitalisationStore.commitSuivi(c);
-      this.suivis.push(c);
-      this.hospitalisationStore.commitSuivi(l);
-      this.suivis.push(l);
+        this.hospitalisationStore.commitSuivi(c);
+        this.suivis.push(c);
+        this.hospitalisationStore.commitSuivi(l);
+        this.suivis.push(l);
+      }
     } else {
-      const data = {
-        type: this.typeData,
-        type_id: type_id,
-        qte: 1,
-        apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
-        hospit_id: this.hospitalisation.id,
-      };
+      const row = this.getRowId(day, type_id, extra);
 
-      this.hospitalisationStore.commitSuivi(data);
-      this.suivis.push(data);
+      if (row === null || row === undefined) {
+        const data = {
+          type: this.typeData,
+          type_id: type_id,
+          qte: 1,
+          apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
+          hospit_id: this.hospitalisation.id,
+        };
+        this.hospitalisationStore.commitSuivi(data);
+        this.suivis.push(data);
+      } else {
+        let rowValue = this.suivis.find((s) => s.id === row);
+        rowValue.qte++;
+
+        delete rowValue.created_at
+        delete rowValue.updated_at
+        delete rowValue.id
+
+        rowValue.hospit_id = this.hospitalisation.id
+        this.hospitalisationStore.commitSuivi(rowValue);
+      }
+    }
+  }
+
+  removeItem(day: moment.Moment, type_id: number, extra?: any) {
+    const row = this.getRowId(day, type_id, extra);
+
+    if (row !== null && row !== undefined) {
+      if (row.toString().includes("/")) {
+        const arr = row.split("/");
+        const ch = arr[0];
+        const li = arr[1];
+
+        if (ch !== "null" && li !== "null") {
+          this.hospitalisationStore.removeSuivi(ch);
+          this.hospitalisationStore.removeSuivi(li);
+          this.suivis = this.suivis.filter(
+            (s) => s.id.toString() !== li && s.id.toString() !== ch
+          );
+          // console.log(this.suivis);
+        }
+      } else {
+        // means its not room suivi
+        let rowValue = this.suivis.find((s) => s.id === row);
+        // console.log(rowValue)
+        if (rowValue.qte > 1) {
+          rowValue.qte--;
+
+          delete rowValue.created_at
+          delete rowValue.updated_at
+          delete rowValue.id
+
+          rowValue.hospit_id = this.hospitalisation.id
+          this.hospitalisationStore.commitSuivi(rowValue);
+        } else {
+          this.hospitalisationStore.removeSuivi(row);
+          this.suivis = this.suivis.filter((s) => s.id !== row);
+        }
+      }
+    }
+  }
+
+  dbClick(day: moment.Moment, type_id: number, extra?: any) {
+    let app = this;
+    timer = setTimeout(function () {
+      timer = null;
+      app.selectItem(day, type_id, extra);
+    }, timeout);
+  }
+
+  sClick(day: moment.Moment, type_id: number, extra?: any) {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+      this.removeItem(day, type_id, extra);
     }
   }
 

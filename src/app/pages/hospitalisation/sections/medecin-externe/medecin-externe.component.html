@@ -6,7 +6,8 @@
         <app-select
           label="Type d'opération"
           [isMandatory]="true"
-          [options]="[]"
+          [options]="type_ops"
+          [control]="type_op"
         ></app-select>
       </div>
     </div>
@@ -15,18 +16,20 @@
       <app-select
         label="Médecin"
         [isMandatory]="true"
-        [options]="[]"
+        [options]="medecins"
+        [control]="medecin"
+        [bindLabel]="'fullname'"
+        [bindValue]="'matricule'"
       ></app-select>
     </div>
 
     <div class="col-md-12 mb-3">
-      <app-input label="Date" type="date" [isMandatory]="true"></app-input>
+      <app-input label="Date" type="date" [isMandatory]="true" [control]="date_op"></app-input>
     </div>
 
     <div class="row mb-3">
       <div class="col-md-12">
-        <label for="comments" class="form-label"> Note </label>
-        <textarea class="form-control" placeholder="..." rows="3"></textarea>
+        <app-text [rows]="3" label="Note" [control]="comment" ></app-text>
       </div>
     </div>
   </div>
@@ -42,10 +45,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                <tr *ngFor="let item of externes; let i = index">
+                  <td> {{ item.date_op | date : "dd/MM/yyyy"}} </td>
+                  <td> {{ item.medecin.nom + ' ' + item.medecin.prenoms }}</td>
+                  <td> {{ item.comments }} </td>
                 </tr>
               </tbody>
             </table>
@@ -56,6 +59,7 @@
     <button
     type="button"
     class="btn btn-success btn-label right"
+    (click)="confirmAction()"
   >
     <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
     Enrégistrer

@@ -29,7 +29,6 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("INIT")
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
@@ -40,7 +39,7 @@ export class ListComponent implements OnInit {
             (chs: any) => chs.lits.length > 0
           );
         if (this.list.length == 0 || JSON.stringify(previous.list) !== JSON.stringify(current.list)) {
-          // console.log(current.list[0])
+          // console.log(current.list)
           for (let step = 0; step < current.list.length; step++) {
             this.extras.push({extra: JSON.parse(current.list[step].extras), 'hospit_id' : current.list[step].id, 'date_hospit' : current.list[step].date_hospit});
           }
