@@ -163,6 +163,21 @@
 
       <div class="row" *ngIf="!isActivePatientAdult">
         <div class="col-md-6">
+          <!-- 
+            <fieldset
+            style="
+              margin-bottom: 1em !important;
+              border: 1px solid #666 !important;
+              padding: 1px !important;
+            "
+          >
+            <legend
+              style="padding: 1px 10px !important; float: none; width: auto"
+            >
+              {{ "Mère" | uppercase }}
+            </legend>
+            ...
+           -->
           <app-card title="MERE" [hasHeader]="true" [hasBody]="true">
             <ng-container customCardBody>
               <div class="row mb-3">
@@ -218,7 +233,6 @@
                 </div>
                 <div class="col-md-6">
                   <app-input label="Âge" [control]="motherAgeControl">
-                    <!-- [readOnly]="true" -->
                   </app-input>
                 </div>
               </div>
