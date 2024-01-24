@@ -15,6 +15,7 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 import { SecretariatRouterService } from "src/app/services/secretariat/router/secretariat-router.service";
 import { PatientFormModalComponent } from "../patient-form-modal/patient-form-modal.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { LoadingSpinnerService } from "src/app/services/secretariat/shared/loading-spinner.service";
 
 @Component({
   selector: "app-patient-list",
@@ -73,7 +74,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   constructor(
     private secretariatRouter: SecretariatRouterService,
     private patientService: PatientService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {
     // this.patientService.getAll().subscribe({
     //   next: (data) => {
@@ -123,6 +125,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     //         .startsWith(this.searchTerm.toLowerCase())
     //     )
     //   : [];
+
+    // this.loadingSpinnerService.hideLoadingSpinner()
 
     let searchTerm = "";
     if (this.isTextTerm) {
