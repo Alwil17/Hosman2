@@ -4,7 +4,7 @@ import { DoctorResponse } from "../../secretariat/shared/responses/doctor-respon
 
 export interface AppointmentResponse {
   id: number;
-  date_rdv: string;
+  date_rdv: Date;
   medecin_ref: string;
   medecin: DoctorResponse;
   intervenant_ref: string;

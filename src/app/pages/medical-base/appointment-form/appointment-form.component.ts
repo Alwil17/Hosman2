@@ -22,6 +22,7 @@ import { AppointmentService } from "src/app/services/shared/appointment.service"
 import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
 import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
 import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
+import { AllAppointmentsModalComponent } from "./all-appointments-modal/all-appointments-modal.component";
 
 @Component({
   selector: "app-appointment-form",
@@ -103,20 +104,6 @@ export class AppointmentFormComponent implements OnInit, AfterViewInit {
         this.refreshAppointmentsList();
       }
     });
-
-    this.appointmentService
-      .getDoctorsAppointmentsByPeriod({
-        minDate: new Date("2024-01-18"),
-        maxDate: new Date("2024-01-25"),
-      })
-      .subscribe({
-        next: (data) => {
-          console.log(JSON.stringify(data, null, 2));
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
   }
 
   ngAfterViewInit(): void {
@@ -446,5 +433,17 @@ export class AppointmentFormComponent implements OnInit, AfterViewInit {
         });
       },
     });
+  }
+
+  openAllAppointmentsModal() {
+    const allAppointmentsModalRef = this.modalService.open(
+      AllAppointmentsModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        // backdrop: "static",
+      }
+    );
   }
 }

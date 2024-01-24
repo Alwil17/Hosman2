@@ -5,7 +5,7 @@ import { AppointmentResponse } from "./responses/appointment-response.model";
 
 export interface IAppointment {
   id: number;
-  date_rdv: string;
+  date_rdv: Date;
   medecin_ref: string;
   medecin: Doctor;
   intervenant_ref: string;
@@ -20,7 +20,7 @@ export interface IAppointment {
 
 export class Appointment {
   id: number;
-  date_rdv: string;
+  date_rdv: Date;
   medecin_ref: string;
   medecin: Doctor;
   intervenant_ref: string;

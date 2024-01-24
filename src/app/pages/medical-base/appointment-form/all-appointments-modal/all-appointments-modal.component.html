@@ -1,0 +1,77 @@
+<div class="modal-header border-bottom border-1 border-dark">
+  <h5 class="modal-title">Rendez-vous de tous les médecins</h5>
+  <button
+    type="button"
+    class="btn-close btn-danger"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="modal.close('Close click')"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <app-input
+            label="Date de début"
+            type="date"
+            [maxDate]="today"
+            [control]="startDateControl"
+          >
+          </app-input>
+        </div>
+
+        <div class="col-md-6">
+          <app-input
+            label="Date de fin"
+            type="date"
+            [minDate]="today"
+            [control]="endDateControl"
+          >
+          </app-input>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive table-card">
+        <table
+          class="table table-hover table-striped table-bordered align-middle mb-0"
+        >
+          <thead class="table-light text-muted">
+            <tr>
+              <th scope="col">{{ "Médecin" | uppercase }}</th>
+              <th scope="col" colspan="100">{{ "Rendez-vous" | uppercase }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let doctorAppointments of appointmentsList">
+              <th scope="row">{{ doctorAppointments.doctorFullname }}</th>
+              <td *ngFor="let appointment of doctorAppointments.appointments">
+                {{ appointment.date_rdv | date : "fullDate" }}
+                {{ appointment.date_rdv | date : "HH:mm" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer py-1 border-top border-1 border-dark">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-link link-success fw-medium shadow-none"
+    data-bs-dismiss="modal"
+    (click)="modal.close('Close click')"
+    ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
+  >
+</div>
