@@ -67,6 +67,13 @@ export class TariffsComponent implements OnInit {
     text: hasInsurance.text,
   }));
 
+  table2Totals = {
+    table2NoLocalTotal: 0,
+    table2YesLocalTotal: 0,
+    table2NoForeignerTotal: 0,
+    table2YesForeignerTotal: 0,
+  };
+
   constructor(
     private actGroupService: ActGroupService,
     private tariffService: TariffService,
@@ -166,6 +173,24 @@ export class TariffsComponent implements OnInit {
   }
 
   refreshActivitiesSelect() {
+    this.table2Totals = {
+      table2NoLocalTotal: 0,
+      table2YesLocalTotal: 0,
+      table2NoForeignerTotal: 0,
+      table2YesForeignerTotal: 0,
+    };
+
+    // Calculate second table totals
+    this.table2.forEach((value) => {
+      this.table2Totals.table2NoLocalTotal += value.no_local * value.quantity;
+      this.table2Totals.table2YesLocalTotal +=
+        value.no_foreigner * value.quantity;
+      this.table2Totals.table2NoForeignerTotal +=
+        value.yes_local * value.quantity;
+      this.table2Totals.table2YesForeignerTotal +=
+        value.yes_foreigner * value.quantity;
+    });
+
     this.activitiesSelect = this.table2;
     // .slice(
     //   (this.table2Page - 1) * this.table2PageSize,
@@ -226,10 +251,10 @@ export class TariffsComponent implements OnInit {
       id: item.id,
       designation: item.designation,
       quantity: tariffQuantity,
-      no_local: item.no_local * tariffQuantity,
-      no_foreigner: item.no_foreigner * tariffQuantity,
-      yes_local: item.yes_local * tariffQuantity,
-      yes_foreigner: item.yes_foreigner * tariffQuantity,
+      no_local: item.no_local,
+      no_foreigner: item.no_foreigner,
+      yes_local: item.yes_local,
+      yes_foreigner: item.yes_foreigner,
       description: item.description,
     };
     console.log(item2);
@@ -333,10 +358,10 @@ export class TariffsComponent implements OnInit {
         const actes: ActsProForma = {
           code: value.id,
           libelle: value.designation,
-          tarif_non_assure: value.no_local / value.quantity,
-          tarif_etr_non_assure: value.no_foreigner / value.quantity,
-          tarif_assur_locale: value.yes_local / value.quantity,
-          tarif_assur_hors_zone: value.yes_foreigner / value.quantity,
+          tarif_non_assure: value.no_local,
+          tarif_etr_non_assure: value.no_foreigner,
+          tarif_assur_locale: value.yes_local,
+          tarif_assur_hors_zone: value.yes_foreigner,
           qte: value.quantity,
         };
         return actes;
@@ -348,10 +373,10 @@ export class TariffsComponent implements OnInit {
 
     this.tariffService.loadProFormaPdf(tariffProForma).subscribe({
       next: (data) => {
-        // this.toastService.show({
-        //   messages: ["Génération du reçu."],
-        //   type: ToastType.Success,
-        // });
+        this.toastService.show({
+          messages: ["Génération du pro forma."],
+          type: ToastType.Success,
+        });
 
         const pdfModalRef = this.modalService.open(PdfModalComponent, {
           size: "xl",
@@ -366,11 +391,11 @@ export class TariffsComponent implements OnInit {
       error: (e) => {
         console.error(e);
 
-        // this.toastService.show({
-        //   messages: ["Echec de la génération du reçu."],
-        //   delay: 10000,
-        //   type: ToastType.Error,
-        // });
+        this.toastService.show({
+          messages: ["Echec de la génération du pro forma."],
+          delay: 10000,
+          type: ToastType.Error,
+        });
       },
     });
   }

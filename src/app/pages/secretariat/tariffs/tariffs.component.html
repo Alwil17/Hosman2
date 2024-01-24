@@ -124,10 +124,12 @@
                   <!-- <td>
                     {{ item.designation }}
                   </td> -->
-                  <ngb-highlight
-                    [result]="item.designation"
-                    [term]="searchTerm"
-                  ></ngb-highlight>
+                  <td>
+                    <ngb-highlight
+                      [result]="item.designation"
+                      [term]="searchTerm"
+                    ></ngb-highlight>
+                  </td>
                   <td class="text-end">
                     <b>
                       {{ item.no_local | mask : "separator" }}
@@ -233,22 +235,26 @@
                   <td class="text-end">{{ item.quantity }}</td>
                   <td class="text-end">
                     <b>
-                      {{ item.no_local | mask : "separator" }}
+                      {{ item.no_local * item.quantity | mask : "separator" }}
                     </b>
                   </td>
                   <td class="text-end">
                     <b>
-                      {{ item.no_foreigner | mask : "separator" }}
+                      {{
+                        item.no_foreigner * item.quantity | mask : "separator"
+                      }}
                     </b>
                   </td>
                   <td class="text-end">
                     <b>
-                      {{ item.yes_local | mask : "separator" }}
+                      {{ item.yes_local * item.quantity | mask : "separator" }}
                     </b>
                   </td>
                   <td class="text-end">
                     <b>
-                      {{ item.yes_foreigner | mask : "separator" }}
+                      {{
+                        item.yes_foreigner * item.quantity | mask : "separator"
+                      }}
                     </b>
                   </td>
                   <td>
@@ -256,13 +262,31 @@
                   </td>
                 </tr>
               </tbody>
-              <!-- <tfoot>
-                    <tr>
-                      <th>Total</th>
-                      <td colspan="3"></td>
-                      <th>Here</th>
-                    </tr>
-                  </tfoot> -->
+              <tfoot
+                style="
+                  position: sticky;
+                  bottom: -1px;
+                  background-color: whitesmoke;
+                "
+                *ngIf="activitiesSelect.length !== 0"
+              >
+                <tr>
+                  <th>Total : {{ table2.length }}</th>
+                  <th colspan="1"></th>
+                  <th class="text-end">
+                    {{ table2Totals.table2NoLocalTotal }}
+                  </th>
+                  <th class="text-end">
+                    {{ table2Totals.table2NoForeignerTotal }}
+                  </th>
+                  <th class="text-end">
+                    {{ table2Totals.table2YesLocalTotal }}
+                  </th>
+                  <th class="text-end">
+                    {{ table2Totals.table2YesForeignerTotal }}
+                  </th>
+                </tr>
+              </tfoot>
             </table>
           </div>
 
