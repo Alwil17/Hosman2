@@ -1,14 +1,11 @@
-import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MessageService } from "@services/messages/message.service";
 import { HospitalisationStore } from "@stores/hospitalisation";
-import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { Subscription, pairwise } from "rxjs";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { formatDate, validateYupSchema } from "src/app/helpers/utils";
-import { isArray } from "util";
 import * as Yup from "yup";
 
 @Component({
@@ -82,7 +79,6 @@ export class FicheAdresseComponent implements OnInit {
     private hospitalisationStore: HospitalisationStore,
     private message: MessageService,
     private toast: ToastrService,
-    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -168,9 +164,14 @@ export class FicheAdresseComponent implements OnInit {
           hospit_id: this.hospitalisation_id,
         };
 
+        if (this.adressed !== null && this.adressed !== undefined && 'id' in this.adressed) {
+          data.id = this.adressed.id
+        }
+
         this.hospitalisationStore.saveAdressed(data).subscribe({
           next: (v) => {
             data.id = v;
+            this.toast.success("Hospitalisation", "Enregistrement effectué");
             this.hospitalisationStore.fetchAdressed(this.hospitalisation_id!);
           },
           error: (e) => console.error(e),

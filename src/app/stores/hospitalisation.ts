@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ObservableStore } from "@codewithdan/observable-store";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subject, of } from "rxjs";
-import { Lit, LitResponse } from "../models/hospitalisation/lit";
+import { LitResponse } from "../models/hospitalisation/lit";
 import { map } from "rxjs/operators";
 import { Sector } from "../models/secretariat/shared/sector.model";
 import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
@@ -15,7 +15,10 @@ const suiviEndpoint = "/api/suivis";
 const medExterneEndpoint = "/api/med-externes";
 const chirurgieEndpoint = "/api/chirurgies";
 const adressedEndpoint = "/api/addressed";
+const scamsEndpoint = "/api/scams";
+const transfusedEndpoint = "/api/transfused";
 const medecinsListEndpoint = "/api/medecins";
+const patientsListEndpoint = "/api/patients";
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -197,6 +200,23 @@ export class HospitalisationStore extends ObservableStore<any> {
     });
   }
 
+  fetchPatients(): void {
+    const res: Observable<any> = this.http.get<any[]>(patientsListEndpoint);
+
+    res.subscribe({
+      next: (patients: any) => {
+        const r = patients.map((m : any) => {
+          m.fullname = m.nom + ' ' + m.prenoms
+          return m
+        })
+        this.updateStore({patients : r}, "FETCH PATIENTS")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
   fetchExternes(id: number): void {
     const res: Observable<any> = this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/med-externes");
 
@@ -230,6 +250,29 @@ export class HospitalisationStore extends ObservableStore<any> {
     this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/addressed").subscribe({
       next: (addressed: any) => {
         this.updateStore({addressed}, "FETCH ADRESSED")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });;
+
+  }
+
+  fetchTransfused(id: number) {
+    this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/transfused").subscribe({
+      next: (transfused: any) => {
+        this.updateStore({transfused}, "FETCH ADRESSED")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
+  fetchScam(id: number) {
+    this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/scams").subscribe({
+      next: (scams: any) => {
+        this.updateStore({scams}, "FETCH ADRESSED")
       },
       error: (response) => {
         console.log("Error: " + response);
@@ -292,6 +335,22 @@ export class HospitalisationStore extends ObservableStore<any> {
       return this.http.post(adressedEndpoint, data);
     } else {
       return this.http.put(adressedEndpoint + "/" + data.id, data);
+    }
+  }
+
+  saveTransfused(data: any): Observable<any> {
+    if (!('id' in data)) {
+      return this.http.post(transfusedEndpoint, data);
+    } else {
+      return this.http.put(transfusedEndpoint + "/" + data.id, data);
+    }
+  }
+
+  saveScams(data: any): Observable<any> {
+    if (!('id' in data)) {
+      return this.http.post(scamsEndpoint, data);
+    } else {
+      return this.http.put(scamsEndpoint + "/" + data.id, data);
     }
   }
 }

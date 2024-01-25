@@ -1,5 +1,5 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
 import { Observable, catchError, from, map, of } from 'rxjs';
 import * as Yup from 'yup';
 import localeFr from '@angular/common/locales/fr';
@@ -22,5 +22,12 @@ export function validateYupSchema<T>(
   export function formatDate(date: Date, format: string): string {
     const pipe = new DatePipe("fr-FR")
     return pipe.transform(date, format) ?? "";
+  }
+
+  export function markAllControlsAsTouched(fGroup : FormGroup): void {
+    Object.keys(fGroup.controls).forEach((controlName) => {
+      const control = fGroup.get(controlName);
+      control!.markAsTouched();
+    });
   }
   
