@@ -41,6 +41,9 @@ export class InputComponent implements OnInit {
   @Input() titlecased = false;
   @Input() firstLetterUppercased = false;
 
+  // Possible values are 'sm', '' and 'lg'
+  @Input() size = "sm";
+
   constructor(private titleCase: TitleCasePipe) {}
 
   ngOnInit(): void {

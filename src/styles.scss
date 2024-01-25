@@ -1,9 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
 
-
+// CSS styles to apply when custom select compnent is invalid
 .custom-select-invalid {
     .ng-select-container {
         border-color: #f06548 !important; // #dc3545
         // box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
     }
 }
+
+// .custom-select-sm {
+//     .ng-select .ng-select-container {
+//         min-height: 0px;
+//         max-height: 1px;
+//     }
+// }
+
+// .ng-select.custom-select-sm {
+//     border:0px;
+//     min-height: 0px;
+//     border-radius: 0;
+// }
+
+// Small size for input/select/textfield labels
+.custom-form-label-sm {
+    font-size: 0.7109375rem;
+    margin-bottom: 0 !important;
+}
+
+// Big size for input/select/textfield labels
+.custom-form-label-lg {
+    font-size: 1.015625rem;
+}
+
+// Small size for custom select component - Inspired by bootstrap form-control-sm
+.ng-select.custom-select-sm .ng-select-container {
+    min-height: calc(1.5em + 0.5rem + 2px);
+    max-height: calc(1.5em + 0.5rem + 2px);
+    font-size: 0.7109375rem;
+    border-radius: 0.2rem;
+}
+
+// Big size for custom select component - Inspired by bootstrap form-control-lg
+.ng-select.custom-select-lg .ng-select-container {
+    min-height: calc(1.5em + 1.4rem + 2px);
+    // height: calc(1.5em + 1.4rem + 2px);
+    // max-height: calc(1.5em + 1.4rem + 2px);
+    font-size: 1.015625rem;
+    border-radius: 0.3rem;
+}
+
+
+/* Bootstrap-default
+.form-control-sm {
+    min-height: calc(1.5em + 0.5rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7109375rem;
+    border-radius: 0.2rem;
+}
+
+.form-control-lg {
+    min-height: calc(1.5em + 1.4rem + 2px);
+    padding: 0.7rem 1.2rem;
+    font-size: 1.015625rem;
+    border-radius: 0.3rem;
+}
+*/

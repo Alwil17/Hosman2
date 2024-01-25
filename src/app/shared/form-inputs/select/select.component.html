@@ -1,4 +1,10 @@
-<label class="form-label" *ngIf="label"
+<label
+  *ngIf="label"
+  class="form-label"
+  [ngClass]="{
+    'custom-form-label-sm': size === 'sm',
+    'custom-form-label-lg': size === 'lg'
+  }"
   >{{ label }}
   <span *ngIf="isMandatory && !control.disabled" class="text-danger"
     >*</span
@@ -22,7 +28,9 @@
   [formControl]="formControl"
   [ngClass]="{
     'is-invalid custom-select-invalid':
-      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
+      ((control.touched && control.dirty) || isFormSubmitted) && control.errors,
+    'custom-select-sm': size === 'sm',
+    'custom-select-lg': size === 'lg'
   }"
 >
   <ng-template ng-label-tmp let-item="item">

@@ -24,13 +24,18 @@ export class SelectComponent implements OnInit {
   @Input() isLoading = false;
   @Input() typeahead = new Subject<any>();
 
+  // Possible values are 'sm', '' and 'lg'
+  @Input() size = "sm";
+
   formControl!: FormControl;
 
   constructor() {}
 
   ngOnInit(): void {
-    if (this.control instanceof AbstractControl)
+    // Due to some sort of typing problem ? Investigate later
+    if (this.control instanceof AbstractControl) {
       this.formControl = this.control as FormControl;
+    }
   }
 
   addTagFn(value: string) {
