@@ -44,9 +44,25 @@ export class InputComponent implements OnInit {
   // Possible values are 'sm', '' and 'lg'
   @Input() size = "sm";
 
+  // Possible values are '1', '2', '3', '4', '5'
+  @Input() bottomMargin = "";
+
+  bottomMarginClass = "";
+
   constructor(private titleCase: TitleCasePipe) {}
 
   ngOnInit(): void {
+    if (this.bottomMargin) {
+      this.bottomMarginClass = "mb-" + this.bottomMargin;
+    } else {
+      if (this.size === "sm") {
+        this.bottomMarginClass = "mb-2";
+      } else if (this.size === "lg") {
+        this.bottomMarginClass = "mb-3";
+      } else {
+        this.bottomMarginClass = "mb-2";
+      }
+    }
     // if (this.controlName.trim().length !== 0 && this.group) {
     //   this.control = this.group.get(this.controlName) as FormControl;
     // }

@@ -15,7 +15,7 @@
       <div class="card-body border-bottom">
         <div class="row">
           <!-- justify-content-center -->
-          <div class="col-md-4 mb-3">
+          <div class="col-md-4">
             <app-input
               label="Date de début"
               type="date"
@@ -24,7 +24,7 @@
             >
             </app-input>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-md-4">
             <app-input
               label="Date de fin"
               type="date"
@@ -37,11 +37,11 @@
 
         <div class="row">
           <!-- justify-content-center -->
-          <div class="col-md-4 mb-3">
+          <div class="col-md-4">
             <app-input label="Rechercher" [control]="searchControl">
             </app-input>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-md-4">
             <app-select
               label="Critère de recherche"
               [clearable]="false"
@@ -94,7 +94,10 @@
                           <i class="ri-more-fill fs-24"></i>
                         </button>
                         <div ngbDropdownMenu>
-                          <button ngbDropdownItem (click)="openDebtSettlingModal(item)">
+                          <button
+                            ngbDropdownItem
+                            (click)="openDebtSettlingModal(item)"
+                          >
                             <i
                               class="ri-edit-2-line label-icon align-middle fs-16 me-2 text-warning"
                             ></i>

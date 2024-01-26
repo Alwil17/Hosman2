@@ -13,56 +13,48 @@
 
 <app-simple-modal title="Receveur">
   <form [formGroup]="personToContactForm">
-    <div class="row g-3">
+    <div class="row">
       <div class="col-md-6">
-        <div class="mb-3">
-          <app-input
-            label="Nom"
-            placeholder="Sasir le nom"
-            [isMandatory]="true"
-            [control]="ptcLastnameControl"
-            [isFormSubmitted]="isPersonToContactFormSubmitted"
-          >
-          </app-input>
-        </div>
+        <app-input
+          label="Nom"
+          placeholder="Sasir le nom"
+          [isMandatory]="true"
+          [control]="ptcLastnameControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
       </div>
       <div class="col-md-6">
-        <div class="mb-3">
-          <app-input
-            label="Prénom(s)"
-            placeholder="Saisir le(s) prénom(s)"
-            [isMandatory]="true"
-            [control]="ptcFirstnameControl"
-            [isFormSubmitted]="isPersonToContactFormSubmitted"
-          >
-          </app-input>
-        </div>
+        <app-input
+          label="Prénom(s)"
+          placeholder="Saisir le(s) prénom(s)"
+          [isMandatory]="true"
+          [control]="ptcFirstnameControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
       </div>
 
       <div class="col-md-6">
-        <div class="mb-3">
-          <app-input
-            label="Téléphone"
-            placeholder="XX XX XX XX"
-            [isMandatory]="true"
-            [control]="ptcTelControl"
-            [isFormSubmitted]="isPersonToContactFormSubmitted"
-            maskFormat="09 09 09 09 09 09 09 09 09 09"
-          >
-          </app-input>
-        </div>
+        <app-input
+          label="Téléphone"
+          placeholder="XX XX XX XX"
+          [isMandatory]="true"
+          [control]="ptcTelControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
+        >
+        </app-input>
       </div>
       <div class="col-md-6">
-        <div class="mb-3">
-          <app-input
-            label="Adresse"
-            placeholder="Saisir l'adresse"
-            [isMandatory]="true"
-            [control]="ptcAddressControl"
-            [isFormSubmitted]="isPersonToContactFormSubmitted"
-          >
-          </app-input>
-        </div>
+        <app-input
+          label="Adresse"
+          placeholder="Saisir l'adresse"
+          [isMandatory]="true"
+          [control]="ptcAddressControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
       </div>
     </div>
 

@@ -21,17 +21,36 @@ export class SelectComponent implements OnInit {
   @Input() searchable = true;
   @Input() readOnly = false;
 
+  @Input() isLayoutHorizontal = false;
+
   @Input() isLoading = false;
   @Input() typeahead = new Subject<any>();
 
   // Possible values are 'sm', '' and 'lg'
   @Input() size = "sm";
 
+  // Possible values are '1', '2', '3', '4', '5'
+  @Input() bottomMargin = "";
+
   formControl!: FormControl;
+
+  bottomMarginClass = "";
 
   constructor() {}
 
   ngOnInit(): void {
+    if (this.bottomMargin) {
+      this.bottomMarginClass = "mb-" + this.bottomMargin;
+    } else {
+      if (this.size === "sm") {
+        this.bottomMarginClass = "mb-2";
+      } else if (this.size === "lg") {
+        this.bottomMarginClass = "mb-3";
+      } else {
+        this.bottomMarginClass = "mb-2";
+      }
+    }
+
     // Due to some sort of typing problem ? Investigate later
     if (this.control instanceof AbstractControl) {
       this.formControl = this.control as FormControl;

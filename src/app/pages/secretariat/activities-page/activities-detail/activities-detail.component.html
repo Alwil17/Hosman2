@@ -4,38 +4,32 @@
 >
   <div class="row">
     <div class="col-md-6">
-      <div class="mb-3">
-        <app-input
-          label="Date de début"
-          type="date"
-          [maxDate]="today"
-          [control]="startDateControl"
-        >
-        </app-input>
-      </div>
+      <app-input
+        label="Date de début"
+        type="date"
+        [maxDate]="today"
+        [control]="startDateControl"
+      >
+      </app-input>
     </div>
     <div class="col-md-6">
-      <div class="mb-3">
-        <app-input
-          label="Date de fin"
-          type="date"
-          [maxDate]="today"
-          [control]="endDateControl"
-        >
-        </app-input>
-      </div>
+      <app-input
+        label="Date de fin"
+        type="date"
+        [maxDate]="today"
+        [control]="endDateControl"
+      >
+      </app-input>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
-      <div class="mb-3">
-        <app-select
-          label="Rubrique"
-          [clearable]="false"
-          [options]="rubrics"
-          [control]="rubricControl"
-        ></app-select>
-      </div>
+      <app-select
+        label="Rubrique"
+        [clearable]="false"
+        [options]="rubrics"
+        [control]="rubricControl"
+      ></app-select>
     </div>
 
     <div class="col-md-6">

@@ -72,8 +72,8 @@
               let count = count
             "
           >
-            <div class="col-md-4 mb-3">
-              <div class="row g-2">
+            <div class="col-md-4">
+              <div class="row gx-2">
                 <div class="col-md-8">
                   <app-select
                     [label]="'Maladie chronique ' + (i + 1)"
@@ -125,7 +125,7 @@
         </div>
       </div> -->
 
-      <div class="row mb-3">
+      <div class="row">
         <div class="col-md-6">
           <label for="comments" class="form-label"> Commentaires </label>
           <textarea
@@ -180,7 +180,7 @@
            -->
           <app-card title="MERE" [hasHeader]="true" [hasBody]="true">
             <ng-container customCardBody>
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-select
                     label="Profession"
@@ -202,7 +202,7 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-select
                     label="Employeur de l'assuré"
@@ -222,7 +222,7 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-input
                     label="Année de naissance"
@@ -243,7 +243,7 @@
         <div class="col-md-6">
           <app-card title="PERE" [hasHeader]="true" [hasBody]="true">
             <ng-container customCardBody>
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-select
                     label="Profession"
@@ -265,7 +265,7 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-select
                     label="Employeur de l'assuré"
@@ -285,7 +285,7 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-md-6">
                   <app-input
                     label="Année de naissance"
@@ -309,7 +309,7 @@
     <div class="d-flex justify-content-end">
       <button
         type="button"
-        class="btn btn-success btn-label waves-effect waves-light me-3"
+        class="btn btn-success btn-label waves-effect waves-light"
         (click)="savePatientInfo()"
       >
         <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
@@ -323,7 +323,7 @@
     <div class="d-flex justify-content-end">
       <button
         type="button"
-        class="btn btn-label waves-effect waves-light me-3 text-dark"
+        class="btn btn-label waves-effect waves-light text-dark"
         [ngClass]="{
           'btn-secondary': isVisitFormCollapsed,
           'btn-warning': !isVisitFormCollapsed,
@@ -389,7 +389,7 @@
 
   <!-- BODY/CONTENT -->
   <ng-container customCardBody>
-    <div class="d-flex justify-content-between mb-4">
+    <div class="d-flex justify-content-between mb-3">
       <button class="btn btn-secondary">Détails de l'attente</button>
 
       <div
@@ -426,7 +426,7 @@
 
     <form [formGroup]="patientVisitForm2">
       <!-- FIRST PART -->
-      <div class="row mb-2">
+      <div class="row">
         <div class="col-md-4">
           <app-input
             type="date"
@@ -457,7 +457,7 @@
       <hr />
 
       <!-- SECOND PART -->
-      <div class="row mb-2">
+      <div class="row">
         <div class="col-md-2">
           <app-input
             type="number"
@@ -514,9 +514,9 @@
       <hr />
 
       <!-- THIRD PART -->
-      <div class="row mb-2">
+      <div class="row">
         <div class="col-md-4">
-          <div class="row g-2">
+          <div class="row gx-2">
             <!-- <div class="col-md-2 d-flex align-items-center">
               <label class="form-label m-0">Acte</label>
             </div> -->
@@ -556,7 +556,7 @@
         </div>
 
         <div class="col-md-4">
-          <div class="row g-2">
+          <div class="row gx-2">
             <!-- <div class="col-md-2 d-flex align-items-center">
               <label class="form-label m-0">Motif</label>
             </div> -->
@@ -579,7 +579,7 @@
                     ></app-select>
                   </div>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-4 d-flex align-items-end mb-2">
                   <button
                     type="button"
                     class="btn btn-dark btn-icon waves-effect waves-light me-1"
@@ -609,7 +609,7 @@
         </div>
 
         <div class="col-md-4">
-          <div class="row g-2">
+          <div class="row gx-2">
             <!-- <div class="col-md-3 d-flex align-items-center">
               <label class="form-label m-0">Diagnostic</label>
             </div> -->

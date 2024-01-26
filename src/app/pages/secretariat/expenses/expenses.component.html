@@ -29,94 +29,78 @@
 
         <form [formGroup]="expenseForm">
           <div class="row">
-            <div class="col-12">
-              <div class="row g-3">
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Heure de la dépense"
-                      type="time"
-                      [isMandatory]="true"
-                      [control]="timeOfExpenseControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                    >
-                      <!-- [maxDate]="today" -->
-                    </app-input>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Receveur"
-                      placeholder=""
-                      [readOnly]="true"
-                      [isMandatory]="true"
-                      [control]="receiverControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                      [emitOnInputClick]="true"
-                      (onInputClick)="onPersonClick()"
-                    >
-                    </app-input>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <app-input
-                    label="Montant"
-                    [isMandatory]="true"
-                    [alignRight]="true"
-                    [control]="amountControl"
-                    maskFormat="separator"
-                  ></app-input>
-                </div>
+            <div class="col-lg-4">
+              <app-input
+                label="Heure de la dépense"
+                type="time"
+                [isMandatory]="true"
+                [control]="timeOfExpenseControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+              >
+                <!-- [maxDate]="today" -->
+              </app-input>
+            </div>
+            <div class="col-lg-4">
+              <app-input
+                label="Receveur"
+                placeholder=""
+                [readOnly]="true"
+                [isMandatory]="true"
+                [control]="receiverControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+                [emitOnInputClick]="true"
+                (onInputClick)="onPersonClick()"
+              >
+              </app-input>
+            </div>
+            <div class="col-lg-4">
+              <app-input
+                label="Montant"
+                [isMandatory]="true"
+                [alignRight]="true"
+                [control]="amountControl"
+                maskFormat="separator"
+              ></app-input>
+            </div>
 
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Désignation"
-                      placeholder=""
-                      [isMandatory]="true"
-                      [control]="designationControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                    >
-                    </app-input>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Rubrique"
-                      [isMandatory]="true"
-                      [options]="rubrics"
-                      [canAddOption]="true"
-                      [control]="rubricControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Accordé par"
-                      [isMandatory]="true"
-                      [options]="allowedBys"
-                      [control]="allowedByControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div>
+            <div class="col-lg-4">
+              <app-input
+                label="Désignation"
+                placeholder=""
+                [isMandatory]="true"
+                [control]="designationControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+              >
+              </app-input>
+            </div>
+            <div class="col-lg-4">
+              <app-select
+                label="Rubrique"
+                [isMandatory]="true"
+                [options]="rubrics"
+                [canAddOption]="true"
+                [control]="rubricControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+              ></app-select>
+            </div>
+            <div class="col-lg-4">
+              <app-select
+                label="Accordé par"
+                [isMandatory]="true"
+                [options]="allowedBys"
+                [control]="allowedByControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+              ></app-select>
+            </div>
 
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Reçu de caisse"
-                      [isMandatory]="true"
-                      [options]="checkoutReceipts"
-                      [control]="checkoutReceiptControl"
-                      [isFormSubmitted]="isExpenseFormSubmitted"
-                    ></app-select>
-                  </div>
-                </div>
-              </div>
+            <div class="col-lg-4">
+              <app-select
+                label="Reçu de caisse"
+                [isMandatory]="true"
+                [options]="checkoutReceipts"
+                [control]="checkoutReceiptControl"
+                [isFormSubmitted]="isExpenseFormSubmitted"
+              ></app-select>
             </div>
           </div>
         </form>

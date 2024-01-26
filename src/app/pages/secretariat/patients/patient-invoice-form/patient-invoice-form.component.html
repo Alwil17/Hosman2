@@ -35,27 +35,23 @@
   <div class="row">
     <div class="col-lg-5">
       <form [formGroup]="invoiceForm!">
-        <div class="mb-2">
-          <app-input
-            [isLayoutHorizontal]="true"
-            label="Montant total de la facture"
-            [alignRight]="true"
-            [readOnly]="true"
-            [control]="totalAmountControl"
-            maskFormat="separator"
-          ></app-input>
-        </div>
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Montant total de la facture"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="totalAmountControl"
+          maskFormat="separator"
+        ></app-input>
 
-        <div class="mb-3">
-          <app-input
-            type="number"
-            [isLayoutHorizontal]="true"
-            label="Taux de PEC (%)"
-            [alignRight]="true"
-            [readOnly]="true"
-            [control]="insuranceRateControl"
-          ></app-input>
-        </div>
+        <app-input
+          type="number"
+          [isLayoutHorizontal]="true"
+          label="Taux de PEC (%)"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="insuranceRateControl"
+        ></app-input>
 
         <div class="row mb-3">
           <!--  justify-content-end -->
@@ -111,7 +107,7 @@
           </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-6 d-flex align-items-center">
             <label class="form-label m-0">Montant à payer par le patient</label>
           </div>
@@ -124,51 +120,43 @@
           </div>
         </div>
 
-        <div class="mb-2">
-          <app-input
-            [isLayoutHorizontal]="true"
-            label="Part de l'assurance"
-            [alignRight]="true"
-            [readOnly]="true"
-            [control]="insuranceShareControl"
-            maskFormat="separator"
-          ></app-input>
-        </div>
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Part de l'assurance"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="insuranceShareControl"
+          maskFormat="separator"
+        ></app-input>
 
-        <div class="mb-2">
-          <app-input
-            [isLayoutHorizontal]="true"
-            label="Montant créances antérieures"
-            [alignRight]="true"
-            [readOnly]="true"
-            [control]="previousDebtsTotalControl"
-            maskFormat="separator"
-          ></app-input>
-        </div>
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Montant créances antérieures"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="previousDebtsTotalControl"
+          maskFormat="separator"
+        ></app-input>
 
-        <div class="mb-2">
-          <app-input
-            [isLayoutHorizontal]="true"
-            label="Date de la facture"
-            type="date"
-            [readOnly]="true"
-            [maxDate]="today"
-            [control]="invoiceDateControl"
-          >
-          </app-input>
-        </div>
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Date de la facture"
+          type="date"
+          [readOnly]="true"
+          [maxDate]="today"
+          [control]="invoiceDateControl"
+        >
+        </app-input>
 
-        <div class="mb-2">
-          <app-input
-            [isLayoutHorizontal]="true"
-            label="Date du règlement"
-            type="date"
-            [readOnly]="true"
-            [maxDate]="today"
-            [control]="paymentDateControl"
-          >
-          </app-input>
-        </div>
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Date du règlement"
+          type="date"
+          [readOnly]="true"
+          [maxDate]="today"
+          [control]="paymentDateControl"
+        >
+        </app-input>
 
         <ngb-accordion
           #acc="ngbAccordion"
@@ -192,7 +180,7 @@
               </h2>
             </ng-template>
             <ng-template ngbPanelContent>
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div
                     class="form-check form-radio-outline form-radio-secondary m-0"
@@ -220,7 +208,7 @@
                 </div>
               </div>
 
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div
                     class="form-check form-radio-outline form-radio-secondary m-0"
@@ -275,7 +263,7 @@
               </h2>
             </ng-template>
             <ng-template ngbPanelContent>
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div
                     class="form-check form-radio-outline form-radio-secondary m-0"
@@ -303,7 +291,7 @@
                 </div>
               </div>
 
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div
                     class="form-check form-radio-outline form-radio-secondary m-0"
@@ -360,7 +348,7 @@
             </ng-template>
 
             <ng-template ngbPanelContent>
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div class="form-check form-check-secondary">
                     <input
@@ -400,7 +388,7 @@
                 </div>
               </div>
 
-              <div class="row mb-2">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div class="form-check form-check-secondary">
                     <input
@@ -450,7 +438,7 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row">
                 <div class="col-lg-6 d-flex align-items-center">
                   <div class="form-check form-check-secondary">
                     <input

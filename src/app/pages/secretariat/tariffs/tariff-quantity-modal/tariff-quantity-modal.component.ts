@@ -13,7 +13,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 @Component({
   selector: "app-tariff-quantity-modal",
   template: `
-    <app-simple-modal title="Quantité">
+    <app-simple-modal title="Saisissez la quantité">
       <form [formGroup]="quantityForm">
         <app-input
           label="Quantité"
@@ -22,6 +22,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
           [control]="quantityControl"
           [isFormSubmitted]="isQuantityFormSubmitted"
           maskFormat="separator"
+          size="lg"
           #quantityFieldInput
         >
         </app-input>

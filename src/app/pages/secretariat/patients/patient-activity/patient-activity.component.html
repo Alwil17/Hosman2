@@ -76,21 +76,21 @@
           *ngIf="patientService.getActivePatient().id > 0; else infoUnavailable"
         >
           <div class="col-12 col-lg-4">
-            <h5>
+            <h6>
               <b> Nom : </b>
               <b class="text-secondary">{{
                 selectedPatient.nom | uppercase
               }}</b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b> Né(e) le : </b>
               <b class="text-secondary">{{
                 selectedPatient.date_naissance | date : "dd/MM/yyyy"
               }}</b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b> Assurance : </b>
               <b class="text-secondary">
                 <span *ngIf="selectedPatient.is_assure === 0">
@@ -112,46 +112,46 @@
                     : "-"
                 }} -->
               </b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b> Contact(s) : </b>
               <b class="text-secondary">{{
                 selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
               }}</b>
-            </h5>
+            </h6>
           </div>
 
           <div class="col-12 col-lg-8">
-            <h5>
+            <h6>
               <b class="ms-4"> Prénoms : </b
               ><b class="text-secondary">{{
                 selectedPatient.prenoms | titlecase
               }}</b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b class="ms-4"> Lieu de naissance : </b>
               <b class="text-secondary">{{
                 selectedPatient.lieu_naissance ?? "-"
               }}</b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b class="ms-4"> Taux de prise en charge : </b>
               <b class="text-secondary">{{
                 selectedPatient.taux_assurance
                   ? selectedPatient.taux_assurance + " %"
                   : "-"
               }}</b>
-            </h5>
+            </h6>
 
-            <h5>
+            <h6>
               <b class="ms-4"> Personne à prévenir : </b>
               <b class="text-secondary">{{
                 selectedPatient.personne_a_prevenir.toText()
               }}</b>
-            </h5>
+            </h6>
           </div>
         </div>
 
@@ -176,7 +176,7 @@
                 [checked]="i === 0"
               />
               <label
-                class="btn btn-outline-secondary me-2 d-block"
+                class="btn btn-outline-secondary btn-sm me-2 d-block"
                 [for]="'pType-' + i"
                 (click)="updateTable(actGroup); scrollTo(activityFirstField)"
                 ><b>{{ actGroup.libelle | uppercase }}</b></label
@@ -201,104 +201,88 @@
             <form [formGroup]="activityForm">
               <div class="row" *ngIf="isMedicalProceduresSelected">
                 <div class="col-md-8">
-                  <div class="mb-3">
-                    <app-select
-                      label="Secteur"
-                      [isMandatory]="true"
-                      [options]="sectors"
-                      [control]="sectorControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-select>
-                  </div>
+                  <app-select
+                    label="Secteur"
+                    [isMandatory]="true"
+                    [options]="sectors"
+                    [control]="sectorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-select
-                      [isMandatory]="true"
-                      label="Médecin consulteur"
-                      [options]="consultingDoctors"
-                      [control]="consultingDoctorControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-select>
-                  </div>
+                  <app-select
+                    [isMandatory]="true"
+                    label="Médecin consulteur"
+                    [options]="consultingDoctors"
+                    [control]="consultingDoctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
               </div>
 
               <div class="row" *ngIf="!isMedicalProceduresSelected">
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Type Médecin"
-                      [isMandatory]="true"
-                      [editable]="false"
-                      [clearable]="false"
-                      [searchable]="false"
-                      [options]="doctorTypes"
-                      [control]="doctorTypeControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-select>
-                  </div>
+                  <app-select
+                    label="Type Médecin"
+                    [isMandatory]="true"
+                    [editable]="false"
+                    [clearable]="false"
+                    [searchable]="false"
+                    [options]="doctorTypes"
+                    [control]="doctorTypeControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Médecin demandeur"
-                      [isMandatory]="true"
-                      [options]="doctors"
-                      [canAddOption]="docAddable"
-                      [control]="doctorControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-select>
-                  </div>
+                  <app-select
+                    label="Médecin demandeur"
+                    [isMandatory]="true"
+                    [options]="doctors"
+                    [canAddOption]="docAddable"
+                    [control]="doctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-select
-                      label="Effectué par"
-                      [options]="performedBys"
-                      [control]="performedByControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-select>
-                  </div>
+                  <app-select
+                    label="Effectué par"
+                    [options]="performedBys"
+                    [control]="performedByControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Date"
-                      type="date"
-                      [minDate]="today"
-                      [isMandatory]="true"
-                      [control]="activityDateControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-input>
-                  </div>
+                  <app-input
+                    label="Date"
+                    type="date"
+                    [minDate]="today"
+                    [isMandatory]="true"
+                    [control]="activityDateControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
                 </div>
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Quantité"
-                      [isMandatory]="true"
-                      [alignRight]="true"
-                      [control]="quantityControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                      maskFormat="separator"
-                    >
-                    </app-input>
-                  </div>
+                  <app-input
+                    label="Quantité"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    [control]="quantityControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                    maskFormat="separator"
+                  >
+                  </app-input>
                 </div>
                 <div class="col-md-4">
-                  <div class="mb-3">
-                    <app-input
-                      label="Provenance"
-                      placeholder="Clinique/Hôpital de provenance du patient"
-                      [control]="originControl"
-                      [isFormSubmitted]="isActivityFormSubmitted"
-                    ></app-input>
-                  </div>
+                  <app-input
+                    label="Provenance"
+                    placeholder="Clinique/Hôpital de provenance du patient"
+                    [control]="originControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
                 </div>
               </div>
             </form>
@@ -315,7 +299,7 @@
                   <b>Dr SAMBIANI Kossi François</b>
                 </div>
                 <div>
-                  <button type="button" class="btn btn-light">
+                  <button type="button" class="btn btn-light btn-sm">
                     <b>Voir les dernières consultations</b>
                   </button>
                 </div>
@@ -364,12 +348,12 @@
            -->
 
           <div class="col-md-6">
-            <div class="col-12 mb-3">
+            <div class="col-12">
               <em>Double-cliquer un élément pour l'ajouter</em>
             </div>
 
             <div
-              class="table-responsive mt-4 mt-xl-0"
+              class="table-responsive mt-2 mt-xl-0"
               style="max-height: 400px"
             >
               <table
@@ -473,12 +457,12 @@
             SECOND TABLE
            -->
           <div class="col-md-5">
-            <div class="col-12 mb-3">
+            <div class="col-12">
               <em>Double-cliquer un élément pour le retirer</em>
             </div>
 
             <div
-              class="table-responsive mt-4 mt-xl-0"
+              class="table-responsive mt-2 mt-xl-0"
               style="max-height: 400px"
             >
               <table

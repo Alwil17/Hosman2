@@ -56,7 +56,7 @@ export class PatientActivityComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  isPatientInfoCollapsed = false;
+  isPatientInfoCollapsed = true;
 
   isMedicalProceduresSelected = true;
 

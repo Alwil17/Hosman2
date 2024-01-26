@@ -1,56 +1,97 @@
-<label
-  *ngIf="label"
-  class="form-label"
-  [ngClass]="{
-    'custom-form-label-sm': size === 'sm',
-    'custom-form-label-lg': size === 'lg'
-  }"
-  >{{ label }}
-  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
-    >*</span
-  ></label
->
+<!-- If layout is horizontal - label on same line as select -->
+<ng-container *ngIf="isLayoutHorizontal; else layoutVertical">
+  <div class="row {{ bottomMarginClass }}">
+    <div class="col-lg-6 d-flex align-items-center">
+      <!-- LABEL -->
+      <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+    </div>
+    <div class="col-lg-6">
+      <!-- SELECT -->
+      <ng-container *ngTemplateOutlet="selectTemplate"></ng-container>
+    </div>
 
-<ng-select
-  addTagText="Ajouter"
-  notFoundText="Aucun résultat"
-  [items]="options"
-  bindLabel="text"
-  [editableSearchTerm]="editable"
-  [clearable]="clearable"
-  [searchable]="searchable"
-  [readonly]="readOnly"
-  [addTag]="canAddOption ? addTagFn : false"
-  [placeholder]="placeholder"
-  [selectOnTab]="true"
-  [loading]="isLoading"
-  [typeahead]="typeahead"
-  [formControl]="formControl"
-  [ngClass]="{
-    'is-invalid custom-select-invalid':
-      ((control.touched && control.dirty) || isFormSubmitted) && control.errors,
-    'custom-select-sm': size === 'sm',
-    'custom-select-lg': size === 'lg'
-  }"
->
-  <ng-template ng-label-tmp let-item="item">
-    <span>{{ item.text }}</span>
-  </ng-template>
-  <ng-template
-    ng-option-tmp
-    let-item="item"
-    let-index="index"
-    let-search="searchTerm"
-  >
-    <span [ngClass]="{ 'text-warning': item.new }" class="text-warning">{{
-      item.text
-    }}</span>
-    <!-- [ngOptionHighlight]="search" -->
-  </ng-template>
-</ng-select>
-
-<ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
-  <div *ngIf="control.errors?.['required']" class="invalid-feedback">
-    Veuillez sélectionner une valeur.
+    <!-- VALIDATION TEXTS -->
+    <ng-container *ngTemplateOutlet="validationTextTemplate"></ng-container>
   </div>
 </ng-container>
+
+<!-- If layout is vertical - label on top of select -->
+<ng-template #layoutVertical>
+  <div class="{{ bottomMarginClass }}">
+    <!-- LABEL -->
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+
+    <!-- SELECT -->
+    <ng-container *ngTemplateOutlet="selectTemplate"></ng-container>
+
+    <!-- VALIDATION TEXTS -->
+    <ng-container *ngTemplateOutlet="validationTextTemplate"></ng-container>
+  </div>
+</ng-template>
+
+<!-- LABEL TEMPLATE -->
+<ng-template #labelTemplate>
+  <label
+    *ngIf="label"
+    class="form-label m-0"
+    [ngClass]="{
+      'custom-form-label-sm': size === 'sm',
+      'custom-form-label-lg': size === 'lg'
+    }"
+    >{{ label }}
+    <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+      >*</span
+    ></label
+  >
+</ng-template>
+
+<!-- SELECT TEMPLATE -->
+<ng-template #selectTemplate>
+  <ng-select
+    addTagText="Ajouter"
+    notFoundText="Aucun résultat"
+    [items]="options"
+    bindLabel="text"
+    [editableSearchTerm]="editable"
+    [clearable]="clearable"
+    [searchable]="searchable"
+    [readonly]="readOnly"
+    [addTag]="canAddOption ? addTagFn : false"
+    [placeholder]="placeholder"
+    [selectOnTab]="true"
+    [loading]="isLoading"
+    [typeahead]="typeahead"
+    [formControl]="formControl"
+    [ngClass]="{
+      'is-invalid custom-select-invalid':
+        ((control.touched && control.dirty) || isFormSubmitted) &&
+        control.errors,
+      'custom-select-sm': size === 'sm',
+      'custom-select-lg': size === 'lg'
+    }"
+  >
+    <ng-template ng-label-tmp let-item="item">
+      <span>{{ item.text }}</span>
+    </ng-template>
+    <ng-template
+      ng-option-tmp
+      let-item="item"
+      let-index="index"
+      let-search="searchTerm"
+    >
+      <span [ngClass]="{ 'text-warning': item.new }" class="text-warning">{{
+        item.text
+      }}</span>
+      <!-- [ngOptionHighlight]="search" -->
+    </ng-template>
+  </ng-select>
+</ng-template>
+
+<!-- VALIDATION TEXTS TEMPLATE -->
+<ng-template #validationTextTemplate>
+  <ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
+    <div *ngIf="control.errors?.['required']" class="invalid-feedback">
+      Veuillez sélectionner une valeur.
+    </div>
+  </ng-container>
+</ng-template>
