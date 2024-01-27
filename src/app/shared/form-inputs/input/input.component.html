@@ -39,7 +39,10 @@
       'custom-form-label-lg': size === 'lg'
     }"
     >{{ label }}
-    <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    <span
+      *ngIf="isMandatory && !control.disabled"
+      class="text-danger"
+      [ngbTooltip]="mandatoryFieldTextTooltipTemplate"
       >*</span
     ></label
   >
@@ -106,4 +109,12 @@
       chiffres.
     </div>
   </ng-container>
+</ng-template>
+
+<!-- MANDATORY FIELD TOOLTIP TEXT TEMPLATE-->
+<ng-template #mandatoryFieldTextTooltipTemplate>
+  <em
+    >Les champs marqués par <span class="text-danger">*</span> sont
+    obligatoires</em
+  >
 </ng-template>

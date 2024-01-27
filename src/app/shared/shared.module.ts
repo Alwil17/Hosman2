@@ -4,6 +4,7 @@ import {
   NgbNavModule,
   NgbAccordionModule,
   NgbToastModule,
+  NgbTooltipModule,
 } from "@ng-bootstrap/ng-bootstrap";
 
 // Swiper Slider
@@ -27,7 +28,7 @@ import { PdfModalComponent } from "./modals/pdf-modal/pdf-modal.component";
 import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
 import { ToastsContainerComponent } from "./toasts-container/toasts-container.component";
 import { CardComponent } from "./card/card.component";
-import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from "./modals/confirm-modal/confirm-modal.component";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -58,6 +59,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgSelectModule,
     NgxExtendedPdfViewerModule,
     NgbToastModule,
+    NgbTooltipModule,
   ],
   exports: [
     BreadcrumbsComponent,
