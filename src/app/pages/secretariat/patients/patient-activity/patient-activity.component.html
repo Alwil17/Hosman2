@@ -190,12 +190,12 @@
         class="card-body border-top border-dark border-bottom"
         #activityFirstField
       >
-        <p class="text-muted">
+        <!-- <p class="text-muted">
           <em
             >Les champs marqués par <span class="text-danger">*</span> sont
             obligatoires</em
           >
-        </p>
+        </p> -->
         <div class="row">
           <div class="col-9">
             <form [formGroup]="activityForm">
@@ -291,12 +291,12 @@
           <div class="col-3 border-dark border-start">
             <div class="row">
               <div class="col-5">
-                <b>Dernier consulteur : </b>
+                <small><b>Dernier consulteur : </b></small>
               </div>
 
               <div class="col-7">
-                <div class="text-secondary mb-4">
-                  <b>Dr SAMBIANI Kossi François</b>
+                <div class="text-secondary mb-2">
+                  <small><b>Dr SAMBIANI Kossi François</b></small>
                 </div>
                 <div>
                   <button type="button" class="btn btn-light btn-sm">
@@ -386,6 +386,7 @@
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
+
                 <tbody class="user-select-none">
                   <tr *ngFor="let item of activities" (dblclick)="add(item)">
                     <td>
@@ -408,6 +409,7 @@
                     </td>
                   </tr>
                 </tbody>
+
                 <tfoot
                   style="
                     position: sticky;
@@ -483,6 +485,7 @@
                     <th scope="col">Prix total</th>
                   </tr>
                 </thead>
+
                 <tbody class="user-select-none">
                   <tr
                     *ngFor="let item of activitiesSelect"
@@ -499,6 +502,7 @@
                     </td>
                   </tr>
                 </tbody>
+
                 <tfoot
                   style="
                     position: sticky;
