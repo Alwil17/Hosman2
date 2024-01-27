@@ -1,4 +1,4 @@
-<div class="modal-header border-bottom border-1 border-dark">
+<!-- <div class="modal-header border-bottom border-1 border-dark">
   <h5 class="modal-title">Requêtes des Prises En Charge</h5>
   <button
     type="button"
@@ -7,9 +7,9 @@
     aria-label="Close"
     (click)="modal.close('Close click')"
   ></button>
-</div>
+</div> -->
 
-<div class="modal-body">
+<app-simple-modal title="Requêtes des Prises En Charge">
   <div class="row">
     <div class="col-lg-8">
       <div class="row">
@@ -55,18 +55,18 @@
         </div>
 
         <!-- <div class="col-md-6">
-                    <div class="search-box mt-4">
-                      <input
-                        type="text"
-                        name="searchTerm"
-                        class="form-control"
-                        placeholder="Rechercher (nom et/ou prénoms)"
-                        [(ngModel)]="searchTerm"
-                        (ngModelChange)="refreshInvoicesList()"
-                      />
-                      <i class="ri-search-line search-icon"></i>
-                    </div>
-                  </div> -->
+                  <div class="search-box mt-4">
+                    <input
+                      type="text"
+                      name="searchTerm"
+                      class="form-control"
+                      placeholder="Rechercher (nom et/ou prénoms)"
+                      [(ngModel)]="searchTerm"
+                      (ngModelChange)="refreshInvoicesList()"
+                    />
+                    <i class="ri-search-line search-icon"></i>
+                  </div>
+                </div> -->
       </div>
     </div>
 
@@ -135,11 +135,11 @@
                 {{ insuranceDebt.facture.total | mask : "separator" }}
               </td>
               <!-- <td class="text-end">
-                {{
-                  insuranceDebt.facture.a_payer -
-                    insuranceDebt.facture.creance.montant | mask : "separator"
-                }}
-              </td> -->
+              {{
+                insuranceDebt.facture.a_payer -
+                  insuranceDebt.facture.creance.montant | mask : "separator"
+              }}
+            </td> -->
               <td class="text-end">
                 {{ insuranceDebt.montant_pec | mask : "separator" }}
               </td>
@@ -151,38 +151,38 @@
                 <div class="d-inline-block" ngbDropdown>
                   <!-- container="body" -->
                   <!-- <button
-                      type="button"
-                      class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
-                      ngbDropdownToggle
-                    >
-                      <i class="ri-more-fill fs-24"></i>
+                    type="button"
+                    class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                    ngbDropdownToggle
+                  >
+                    <i class="ri-more-fill fs-24"></i>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
+                      ></i>
+                      Détails
                     </button>
-                    <div ngbDropdownMenu>
-                      <button ngbDropdownItem>
-                        <i
-                          class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
-                        ></i>
-                        Détails
-                      </button>
-                      <button ngbDropdownItem>
-                        <i
-                          class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
-                        ></i>
-                        Duplicata
-                      </button>
-                      <button ngbDropdownItem>
-                        <i
-                          class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
-                        ></i>
-                        Imprimer
-                      </button>
-                      <button ngbDropdownItem>
-                        <i
-                          class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
-                        ></i>
-                        Supprimer
-                      </button>
-                    </div> -->
+                    <button ngbDropdownItem>
+                      <i
+                        class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
+                      ></i>
+                      Duplicata
+                    </button>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
+                      ></i>
+                      Imprimer
+                    </button>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                      ></i>
+                      Supprimer
+                    </button>
+                  </div> -->
                 </div>
               </td>
             </tr>
@@ -198,8 +198,8 @@
                 {{ actsAmountTotal | mask : "separator" }}
               </th>
               <!-- <th class="text-end">
-                {{ paidAmountTotal | mask : "separator" }}
-              </th> -->
+              {{ paidAmountTotal | mask : "separator" }}
+            </th> -->
               <th class="text-end">{{ scAmountTotal | mask : "separator" }}</th>
               <th></th>
             </tr>
@@ -235,9 +235,11 @@
       </div>
     </div>
   </div>
-</div>
+</app-simple-modal>
 
-<div class="modal-footer py-1 border-top border-1 border-dark">
+<div class="modal-body"></div>
+
+<!-- <div class="modal-footer py-1 border-top border-1 border-dark">
   <a
     href="javascript:void(0);"
     class="btn btn-link link-success fw-medium shadow-none"
@@ -245,4 +247,4 @@
     (click)="modal.close('Close click')"
     ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
   >
-</div>
+</div> -->

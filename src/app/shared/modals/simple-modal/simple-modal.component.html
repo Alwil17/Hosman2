@@ -1,23 +1,37 @@
 <!-- <div class="modal-content"> -->
-<div class="modal-header border-bottom border-1 border-dark">
-  <h5 class="modal-title">{{ title }}</h5>
-  <!--  id="myExtraLargeModalLabel" -->
-  <button
-    type="button"
-    class="btn-close btn-danger"
-    data-bs-dismiss="modal"
-    aria-label="Close"
-    (click)="modal.close('Close click')"
-  ></button>
-</div>
+<div class="modal-header border-bottom border-1 border-dark" #simpleModal>
+  <h5 class="modal-title mb-0">{{ title }}</h5>
 
-<!-- <hr /> -->
+  <div class="mb-2">
+    <ng-container *ngIf="isFullscreenControlDisplayed">
+      <button
+        type="button"
+        class="btn btn-icon btn-outline-info waves-effect waves-light ms-auto"
+        (click)="toggleFullscreen()"
+      >
+        <ng-container *ngIf="!isInFullscreen; else fullscreenIconTemplate">
+          <i class="ri-fullscreen-line fs-24"></i>
+        </ng-container>
+        <ng-template #fullscreenIconTemplate>
+          <i class="ri-fullscreen-exit-line fs-24"></i>
+        </ng-template></button
+    ></ng-container>
+  
+    <button
+      type="button"
+      class="btn btn-icon btn-outline-danger waves-effect waves-light"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="modal.close('Close click')"
+    >
+      <i class="ri-close-line fs-24"></i>
+    </button>
+  </div>
+</div>
 
 <div class="modal-body">
   <ng-content></ng-content>
 </div>
-
-<!-- <hr /> -->
 
 <div class="modal-footer py-1 border-top border-1 border-dark">
   <ng-container *ngIf="defaultFooter; else customFooter">
@@ -29,7 +43,7 @@
       ><i class="ri-close-line me-1 align-middle"></i> {{ closeButtonText }}</a
     >
   </ng-container>
-  
+
   <ng-template #customFooter>
     <ng-content select="[simpleModalFooter]"></ng-content>
   </ng-template>

@@ -1,4 +1,4 @@
-<div class="modal-header border-bottom border-1 border-dark">
+<!-- <div class="modal-header border-bottom border-1 border-dark">
   <h5 class="modal-title">Rendez-vous de tous les médecins</h5>
   <button
     type="button"
@@ -7,10 +7,10 @@
     aria-label="Close"
     (click)="modal.close('Close click')"
   ></button>
-</div>
+</div> -->
 
-<div class="modal-body">
-  <div class="row">
+<app-simple-modal title="Rendez-vous de tous les médecins"
+  ><div class="row">
     <div class="col-lg-8">
       <div class="row">
         <div class="col-md-6">
@@ -63,8 +63,10 @@
         </table>
       </div>
     </div>
-  </div>
-</div>
+  </div></app-simple-modal
+>
+
+<!-- <div class="modal-body"></div>
 
 <div class="modal-footer py-1 border-top border-1 border-dark">
   <a
@@ -74,4 +76,4 @@
     (click)="modal.close('Close click')"
     ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
   >
-</div>
+</div> -->
