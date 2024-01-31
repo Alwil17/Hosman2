@@ -123,4 +123,9 @@ export class FicheScamComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe;
+  }
+
+
 }

@@ -1,41 +1,35 @@
 <div class="row">
-    <div class="col-md-12"><h5 class="fw-semibold">Sortie</h5></div>
+  <div class="col-md-12">
+    <h5 class="fw-semibold">Sortie</h5>
+  </div>
   <div class="col-md-12">
     <div class="row">
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-12 mb-3">
-            <app-input
-              label="Diagnostic de sortie 1"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
+
+          <div *ngFor="let d of diagnostics; let k = index" class="col-md-12 mb-3">
+            <div class="row">
+              <div class="col-md-10">
+                <app-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true"></app-input>
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                <button type="button" 
+                class="btn
+                 btn-icon waves-effect waves-light w-100"
+                [class.btn-primary]="k === 0" 
+                [class.btn-danger]="k !== 0" 
+                 (click)="k === 0 ? addDiag() : removeDiag(k)">
+                 <i
+                    [class.ri-add-line]="k === 0"
+                    [class.ri-subtract-fill]="k !== 0"></i></button>
+              </div>
+            </div>
+
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Diagnostic de sortie 2"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
-          </div>
-
-          <div class="col-md-12 mb-3">
-            <app-input
-              label="Diagnostic de sortie 3"
-              type="text"
-              [isMandatory]="true"
-            ></app-input>
-          </div>
-
-
-          <div class="col-md-12 mb-3">
-            <app-select
-              label="Femme enceinte"
-              type="text"
-              [options]="[]"
-              [isMandatory]="true"
-            ></app-select>
+            <app-input label="Femme enceinte" type="text" [isMandatory]="true"></app-input>
           </div>
         </div>
       </div>
@@ -43,11 +37,7 @@
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <app-input
-              label="Date"
-              type="date"
-              [isMandatory]="true"
-            ></app-input>
+            <app-input label="Date" type="date" [isMandatory]="true"></app-input>
           </div>
         </div>
       </div>

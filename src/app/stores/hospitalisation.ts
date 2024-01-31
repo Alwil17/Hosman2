@@ -17,6 +17,8 @@ const chirurgieEndpoint = "/api/chirurgies";
 const adressedEndpoint = "/api/addressed";
 const scamsEndpoint = "/api/scams";
 const transfusedEndpoint = "/api/transfused";
+const decededEndpoint = "/api/deceded";
+const sortieEndpoint = "/api/sorties";
 const medecinsListEndpoint = "/api/medecins";
 const patientsListEndpoint = "/api/patients";
 
@@ -281,6 +283,30 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   }
 
+  fetchDedeced(id: number) {
+    this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/deceded").subscribe({
+      next: (deceded: any) => {
+        this.updateStore({deceded}, "FETCH ADRESSED")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });;
+
+  }
+
+  fetchSortie(id: number) {
+    this.http.get<any[]>(hospitalisationEndpoint  + "/" + id + "/sorties").subscribe({
+      next: (sorties: any) => {
+        this.updateStore({sorties}, "FETCH ADRESSED")
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });;
+
+  }
+
 
   saveHospitalisation(data: any, id : any): Observable<any> {
     // console.log(id)
@@ -351,6 +377,22 @@ export class HospitalisationStore extends ObservableStore<any> {
       return this.http.post(scamsEndpoint, data);
     } else {
       return this.http.put(scamsEndpoint + "/" + data.id, data);
+    }
+  }
+
+  saveDeceded(data: any): Observable<any> {
+    if (!('id' in data)) {
+      return this.http.post(decededEndpoint, data);
+    } else {
+      return this.http.put(decededEndpoint + "/" + data.id, data);
+    }
+  }
+  
+  sortieEndpoint(data: any): Observable<any> {
+    if (!('id' in data)) {
+      return this.http.post(sortieEndpoint, data);
+    } else {
+      return this.http.put(sortieEndpoint + "/" + data.id, data);
     }
   }
 }
