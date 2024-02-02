@@ -16,17 +16,12 @@
       <div class="col-md-7 col-xl-5">
         <div class="hstack gap-3">
           <div class="col-md-6">
-            <div class="search-box mt-3">
-              <input
-                type="text"
-                name="searchTerm"
-                class="form-control form-control-sm"
-                placeholder="Rechercher contact (nom, prénom, email ou profession)"
-                [(ngModel)]="searchTerm"
-                (ngModelChange)="refreshPhoneBooksList()"
-              />
-              <i class="ri-search-line search-icon"></i>
-            </div>
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher contact (nom, prénom, email ou profession)"
+              [control]="searchControl"
+            >
+            </app-input>
           </div>
 
           <div class="col-md-6">
@@ -80,7 +75,12 @@
                 *ngFor="let contact of phoneBooksListCut"
                 class="user-select-none"
               >
-                <td>{{ contact.nom }}</td>
+                <td>{{ contact.nom }}
+                  <!-- <ngb-highlight
+                  [result]="invoice.prestation.patient.nom"
+                  [term]="searchControl.value.split(' ')[0]"
+                ></ngb-highlight> -->
+                </td>
                 <td>{{ contact.prenom }}</td>
                 <td>{{ contact.profession }}</td>
                 <td>

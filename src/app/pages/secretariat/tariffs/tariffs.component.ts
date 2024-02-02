@@ -19,6 +19,7 @@ import { ToastType } from "src/app/models/extras/toast-type.model";
 import { WarningMessages } from "src/app/helpers/messages";
 import { InputComponent } from "src/app/shared/form-inputs/input/input.component";
 import { SelectComponent } from "src/app/shared/form-inputs/select/select.component";
+import { SelectOption } from "src/app/models/extras/select.model";
 
 @Component({
   selector: "app-tariffs",
@@ -35,10 +36,9 @@ export class TariffsComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  searchTerm = "";
-
   actGroups!: ActGroup[];
   selectedGroupTariffs!: Tariff[];
+  selectedActGroupCode = "";
 
   table1: any[] = [];
 
@@ -55,6 +55,20 @@ export class TariffsComponent implements OnInit {
   activitiesSelect: any[] = [];
 
   isProFormaInitiated = false;
+
+  searchCriteria: SelectOption[] = [
+    {
+      id: "group",
+      text: "Groupe ou Rubrique",
+    },
+    {
+      id: "global",
+      text: "Globale",
+    },
+  ];
+
+  searchControl = new FormControl("");
+  searchCriterionControl = new FormControl(this.searchCriteria[0]);
 
   patientFullnameControl = new FormControl(null, Validators.required);
   hasInsuranceControl = new FormControl(null, Validators.required);
@@ -94,7 +108,8 @@ export class TariffsComponent implements OnInit {
       next: (data) => {
         this.actGroups = data;
 
-        // this.selectedPrestationIndex = data[0].code;
+        this.selectedActGroupCode = data[0].code;
+
         this.tariffService.getByGroupCode(data[0].code).subscribe({
           next: (data) => {
             this.selectedGroupTariffs = data;
@@ -115,12 +130,22 @@ export class TariffsComponent implements OnInit {
       patientFullnameControl: this.patientFullnameControl,
       hasInsuranceControl: this.hasInsuranceControl,
     });
+
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.searchActs();
+      }
+    });
+
+    this.searchCriterionControl.valueChanges.subscribe((value) => {
+      this.searchActs();
+    });
   }
 
   updateTable(actGroup: ActGroup) {
     const code = actGroup.code;
 
-    // this.selectedPrestationIndex = code;
+    this.selectedActGroupCode = code;
 
     this.tariffService.getByGroupCode(code).subscribe({
       next: (data) => {
@@ -199,21 +224,45 @@ export class TariffsComponent implements OnInit {
   }
 
   searchActs() {
-    const searchedActs = this.searchTerm
-      ? this.table1.filter((act) => {
-          return act.designation
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase());
-        })
-      : this.table1;
+    // const searchedActs = this.searchTerm
+    //   ? this.table1.filter((act) => {
+    //       return act.designation
+    //         .toLowerCase()
+    //         .includes(this.searchTerm.toLowerCase());
+    //     })
+    //   : this.table1;
 
-    this.table1CollectionSize = searchedActs.length;
+    // this.table1CollectionSize = searchedActs.length;
 
-    this.activities = searchedActs;
-    // .slice(
-    //   (this.table1Page - 1) * this.table1PageSize,
-    //   (this.table1Page - 1) * this.table1PageSize + this.table1PageSize
-    // );
+    // this.activities = searchedActs;
+
+    const searchType = String(this.searchCriterionControl.value.id);
+    console.log(searchType);
+
+    this.tariffService
+      .searchBy({
+        searchTerm: this.searchControl.value,
+        actGroupCode:
+          searchType === "group" ? this.selectedActGroupCode : undefined,
+      })
+      .subscribe({
+        next: (data) => {
+          this.activities = data.map((item) => {
+            return {
+              id: item.code,
+              designation: item.libelle,
+              no_local: item.tarif_non_assure,
+              no_foreigner: item.tarif_etr_non_assure,
+              yes_local: item.tarif_assur_locale,
+              yes_foreigner: item.tarif_assur_hors_zone,
+              description: item.description,
+            };
+          });
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
   }
 
   async add(item: any) {

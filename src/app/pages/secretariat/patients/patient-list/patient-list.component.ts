@@ -29,8 +29,6 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   @Output()
   doubleClickedPatient = new EventEmitter<Patient>();
 
-  searchTerm = "";
-
   isTextTerm = true;
 
   searchCriteria: SelectOption[] = [
@@ -59,6 +57,7 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   // To set date max
   today = new Date().toLocaleDateString("fr-ca");
 
+  searchControl = new FormControl("");
   dateTermControl = new FormControl(this.today);
 
   searchCriterionControl = new FormControl(this.searchCriteria[0]);
@@ -92,7 +91,7 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   firstField!: ElementRef;
 
   ngAfterViewInit(): void {
-    this.firstField.nativeElement.focus();
+    this.firstField.nativeElement.querySelector("input").focus();
   }
 
   ngOnInit(): void {
@@ -108,6 +107,12 @@ export class PatientListComponent implements OnInit, AfterViewInit {
       }
 
       this.searchPatients();
+    });
+
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.searchPatients();
+      }
     });
 
     this.dateTermControl.valueChanges.subscribe((value) => {
@@ -130,7 +135,9 @@ export class PatientListComponent implements OnInit, AfterViewInit {
 
     let searchTerm = "";
     if (this.isTextTerm) {
-      searchTerm = this.searchTerm;
+      searchTerm = this.searchControl.value
+        ? String(this.searchControl.value)
+        : "";
     } else {
       searchTerm = this.dateTermControl.value;
       // new Date(this.dateTermControl.value).toLocaleDateString("fr-ca");

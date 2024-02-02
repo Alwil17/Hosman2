@@ -313,17 +313,13 @@
         <div class="row">
           <div class="col-md-4">
             <!-- <label class="form-label">Rechercher</label> -->
-            <div class="search-box">
-              <input
-                type="text"
-                name="searchTerm"
-                class="form-control form-control-sm"
-                placeholder="Rechercher par prestation"
-                [(ngModel)]="searchTerm"
-                (ngModelChange)="searchActs()"
-              />
-              <i class="ri-search-line search-icon"></i>
-            </div>
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher par prestation"
+              [control]="searchControl"
+              bottomMargin="0"
+            >
+            </app-input>
           </div>
 
           <div class="col-md-8 d-flex">
@@ -392,7 +388,7 @@
                     <td>
                       <ngb-highlight
                         [result]="item.designation"
-                        [term]="searchTerm"
+                        [term]="searchControl.value"
                       ></ngb-highlight>
                     </td>
                     <td class="text-end">

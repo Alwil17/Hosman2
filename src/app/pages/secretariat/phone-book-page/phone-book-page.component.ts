@@ -21,9 +21,8 @@ export class PhoneBookPageComponent implements OnInit {
 
   phoneGroupFirstOption = { id: -1, text: "Tous les groupes" };
 
+  searchControl = new FormControl("");
   phoneBooksGroupsControl = new FormControl(this.phoneGroupFirstOption);
-
-  searchTerm = "";
 
   phoneBooksGroups: SelectOption[] = [];
 
@@ -54,6 +53,12 @@ export class PhoneBookPageComponent implements OnInit {
 
     this.fetchSelectData();
 
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.refreshPhoneBooksList();
+      }
+    });
+
     this.phoneBooksGroupsControl.valueChanges.subscribe((value) => {
       if (value != null && value != "") {
         this.refreshPhoneBooksList();
@@ -81,16 +86,20 @@ export class PhoneBookPageComponent implements OnInit {
   }
 
   refreshPhoneBooksList() {
+    const searchTerm = this.searchControl.value
+      ? String(this.searchControl.value)
+      : "";
+
     const group =
       this.phoneBooksGroupsControl.value.id == -1
         ? null
         : this.phoneBooksGroupsControl.value.id;
 
-    console.log(this.searchTerm + " - " + group);
+    console.log(searchTerm + " - " + group);
 
     this.phoneBookService
       .searchBy({
-        q: this.searchTerm,
+        q: searchTerm,
         categorie: group,
       })
       .subscribe({

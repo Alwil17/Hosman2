@@ -13,7 +13,10 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 @Component({
   selector: "app-tariff-quantity-modal",
   template: `
-    <app-simple-modal title="Saisissez la quantité">
+    <app-simple-modal
+      title="Saisissez la quantité"
+      [isFullscreenControlDisplayed]="false"
+    >
       <form [formGroup]="quantityForm">
         <app-input
           label="Quantité"

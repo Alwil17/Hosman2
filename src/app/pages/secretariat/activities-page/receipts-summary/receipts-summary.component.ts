@@ -22,12 +22,11 @@ export class ReceiptsSummaryComponent implements OnInit {
   today = new Date().toLocaleDateString("fr-ca");
 
   receiptsDateControl = new FormControl(this.today);
+  searchControl = new FormControl("");
   paymentModeCriterionControl = new FormControl({
     id: "all",
     text: "Tout",
   });
-
-  searchTerm = "";
 
   paymentModeCriteria: SelectOption[] = [
     {
@@ -76,13 +75,23 @@ export class ReceiptsSummaryComponent implements OnInit {
         this.refreshInvoicesList();
       }
     });
+
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null && value != "") {
+        this.refreshInvoicesList();
+      }
+    });
   }
 
   refreshInvoicesList() {
+    const searchTerm = this.searchControl.value
+      ? String(this.searchControl.value)
+      : "";
+
     this.invoiceService
       .searchBy({
         minDate: new Date(this.receiptsDateControl.value),
-        patientName: this.searchTerm,
+        patientName: searchTerm,
       })
       .subscribe({
         next: (data) => {
@@ -138,7 +147,7 @@ export class ReceiptsSummaryComponent implements OnInit {
     const invoiceModalRef = this.modalService.open(ActivitiesDetailComponent, {
       size: "xl",
       centered: true,
-      // scrollable: true,
+      scrollable: true,
       backdrop: "static",
       keyboard: false,
     });
@@ -175,7 +184,7 @@ export class ReceiptsSummaryComponent implements OnInit {
   }
 
   displayReportModal() {
-    const reportModal = this.modalService.open(
+    const reportModalRef = this.modalService.open(
       ReportSearchCriteriaModalComponent,
       {
         size: "xl",
@@ -187,7 +196,7 @@ export class ReceiptsSummaryComponent implements OnInit {
   }
 
   displayInsuranceRequestsModal() {
-    const insuranceRequestsModal = this.modalService.open(
+    const insuranceRequestsModalRef = this.modalService.open(
       InsurancesDebtsModalComponent,
       {
         size: "xl",

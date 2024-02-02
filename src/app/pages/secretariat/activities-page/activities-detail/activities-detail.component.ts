@@ -35,7 +35,7 @@ export class ActivitiesDetailComponent implements OnInit {
   endDateControl = new FormControl();
   rubricControl = new FormControl(this.rubricFirstOption);
 
-  searchTerm = "";
+  searchControl = new FormControl("");
 
   activityTotal = 0;
   paidTotal = 0;
@@ -70,6 +70,12 @@ export class ActivitiesDetailComponent implements OnInit {
       }
     });
 
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.refreshInvoicesList();
+      }
+    });
+
     this.actGroupService.getAll().subscribe({
       next: (data) => {
         this.rubricsData = data;
@@ -95,13 +101,16 @@ export class ActivitiesDetailComponent implements OnInit {
     const actGroupCode = this.rubricsData.find(
       (value) => this.rubricControl.value?.id == value.id
     )?.code;
+    const searchTerm = this.searchControl.value
+      ? String(this.searchControl.value)
+      : "";
 
     this.invoiceService
       .searchBy({
         minDate: minDate,
         maxDate: maxDate,
         actGroupCode: actGroupCode,
-        patientName: this.searchTerm,
+        patientName: searchTerm,
       })
       .subscribe({
         next: (data) => {

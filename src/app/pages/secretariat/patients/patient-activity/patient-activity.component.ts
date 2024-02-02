@@ -79,6 +79,8 @@ export class PatientActivityComponent implements OnInit {
   quantityControl = new FormControl(1, [Validators.required]);
   originControl = new FormControl({ value: "PISJO", disabled: true });
 
+  searchControl = new FormControl("");
+
   // Activity form group
   activityForm: FormGroup = new FormGroup({});
   isActivityFormSubmitted = false;
@@ -241,6 +243,12 @@ export class PatientActivityComponent implements OnInit {
       }
 
       this.doctorControl.setValue(null);
+    });
+
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.searchActs();
+      }
     });
   }
 
@@ -433,29 +441,16 @@ export class PatientActivityComponent implements OnInit {
     // );
   }
 
-  searchTerm = "";
   searchActs() {
-    const searchedActs = this.searchTerm
+    const searchTerm = this.searchControl.value
+      ? String(this.searchControl.value)
+      : "";
+
+    const searchedActs = searchTerm
       ? this.table1.filter((act) => {
           return act.designation
             .toLowerCase()
-            .includes(this.searchTerm.toLowerCase());
-
-          // let isFound = false;
-
-          // if (
-          //   act.designation
-          //     .toLowerCase()
-          //     .includes(this.searchTerm.toLowerCase())
-          // ) {
-          //   isFound = true;
-          // } else if (act.description) {
-          //   isFound = act.description
-          //     .toLowerCase()
-          //     .includes(this.searchTerm.toLowerCase());
-          // }
-
-          // return isFound;
+            .includes(searchTerm.toLowerCase());
         })
       : this.table1;
 
