@@ -42,6 +42,32 @@ export class TariffService {
       );
   }
 
+  searchBy(criteria: {
+    searchTerm: string;
+    actGroupCode?: string;
+  }): Observable<Tariff[]> {
+    let apiComplementary = "acte=" + criteria.searchTerm;
+
+    if (criteria.actGroupCode) {
+      apiComplementary =
+        "groupe=" + criteria.actGroupCode + "&" + apiComplementary;
+    }
+
+    console.log(`${apiEndpoint}/search?${apiComplementary}`);
+
+    return this.http
+      .get<TariffResponse[]>(`${apiEndpoint}/search?${apiComplementary}`)
+      .pipe(
+        map((tariffs) => {
+          const mapped: Tariff[] = tariffs.map((tariff) =>
+            Tariff.fromResponse(tariff)
+          );
+
+          return mapped;
+        })
+      );
+  }
+
   loadProFormaPdf(tariffProForma: TariffProFormaRequest): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set("Accept", "application/pdf");
