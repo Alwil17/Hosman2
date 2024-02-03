@@ -55,8 +55,12 @@
             <tr *ngFor="let doctorAppointments of appointmentsList">
               <th scope="row">{{ doctorAppointments.doctorFullname }}</th>
               <td *ngFor="let appointment of doctorAppointments.appointments">
-                {{ appointment.date_rdv | date : "fullDate" }}
-                {{ appointment.date_rdv | date : "HH:mm" }}
+                {{
+                  appointment.patient_nom + " " + appointment.patient_prenoms
+                }}
+                <br />
+                {{ (appointment.date_rdv | date : "fullDate" : undefined : "fr") | titlecase }} -
+                <b> {{ appointment.date_rdv | date : "HH:mm" }} </b>
               </td>
             </tr>
           </tbody>

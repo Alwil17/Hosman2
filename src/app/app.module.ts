@@ -26,6 +26,13 @@ import { NgxMaskModule } from "ngx-mask";
 import { SharedModule } from "./shared/shared.module";
 import { LoadingSpinnerHttpInterceptor } from "./helpers/loading-spinner-http-interceptor";
 
+// French locale for datePape
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+
+// Register french locale for datePape
+registerLocaleData(localeFr, "fr");
+
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, "assets/i18n/", ".json");
 }
