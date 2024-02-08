@@ -152,6 +152,22 @@ export class InterventionChirurgicaleComponent implements OnInit {
     }
   }
 
+  async deleteRecord(id: number) {
+    const confirm = await this.message.confirmDialog(
+      WarningMessages.SURE_TO_CONTINUE
+    );
+
+    if (confirm) {
+      this.hospitalisationStore.deleteIntervention(id).subscribe({
+        next: (v) => {
+            this.interventions = this.interventions.filter((e) => e.id !== id)
+        }, 
+        error: (e) => console.error(e),
+      })
+    }
+      
+  }
+
   ngOnDestroy(): void {
     this.subscription?.unsubscribe;
   }

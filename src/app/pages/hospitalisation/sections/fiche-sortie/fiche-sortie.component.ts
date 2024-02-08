@@ -17,6 +17,8 @@ export class FicheSortieComponent implements OnInit {
 
   subscription: Subscription | undefined;
 
+  enceinteOptions = [{text : "Oui", value: "Oui"}, {text : "Non", value: "Non"}]
+
   today = formatDate(new Date(), "yyyy-MM-dd");
 
   sortie: any = null;
@@ -103,7 +105,7 @@ export class FicheSortieComponent implements OnInit {
         WarningMessages.SURE_TO_CONTINUE
       );
       if (confirm) {
-
+        
         // tobe continue
       }
     }

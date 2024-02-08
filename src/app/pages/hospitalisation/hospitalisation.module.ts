@@ -20,6 +20,7 @@ import { ComptableTableClassicComponent } from './sections/fiche-comptable/compt
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from '@services/messages/message.service';
 import { ToastrModule } from 'ngx-toastr';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { ToastrModule } from 'ngx-toastr';
     SharedModule,
     HospitalisationRoutingModule,
     ReactiveFormsModule,
+    NgbModalModule,
     ToastrModule.forRoot(),
   ],
   providers: [

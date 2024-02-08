@@ -98,7 +98,7 @@ export class FicheTransfuseComponent implements OnInit {
       .subscribe(([p, c]) => {
         if (
           (this.patients !== undefined && this.patients.length === 0) ||
-          JSON.stringify(p.medecins) !== JSON.stringify(c.medecins)
+          JSON.stringify(p.patients) !== JSON.stringify(c.patients)
         ) {
           this.patients = c.patients;
         }

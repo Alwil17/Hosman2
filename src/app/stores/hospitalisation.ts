@@ -345,7 +345,10 @@ export class HospitalisationStore extends ObservableStore<any> {
     } else {
       return this.http.put(medExterneEndpoint + "/" + id, data);
     }
-    
+  }
+
+  deleteMedExterne(id? : any): Observable<any> {
+      return this.http.delete(medExterneEndpoint + "/" + id);    
   }
   
   saveIntervention(data: any, id? : any): Observable<any> {
@@ -354,6 +357,10 @@ export class HospitalisationStore extends ObservableStore<any> {
     } else {
       return this.http.put(chirurgieEndpoint + "/" + id, data);
     }
+  }
+
+  deleteIntervention(id? : any): Observable<any> {
+    return this.http.delete(chirurgieEndpoint + "/" + id);    
   }
 
   saveAdressed(data: any): Observable<any> {

@@ -51,6 +51,7 @@
               <th scope="col">Externe</th>
               <th scope="col">Titre</th>
               <th scope="col">Frais connexes</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +62,8 @@
               <td>{{ item.med_type }}</td>
               <td>{{ item.title }}</td>
               <td>{{ item.frais === 1 ? 'Oui' : 'Non' }}</td>
+              <td> <i class="ri-delete-bin-2-fill text-center local-red cursor-pointer"
+                (click)="deleteRecord(item.id)"></i></td>
             </tr>
           </tbody>
         </table>

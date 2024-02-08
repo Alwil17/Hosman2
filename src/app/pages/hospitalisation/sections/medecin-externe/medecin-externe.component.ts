@@ -91,10 +91,6 @@ export class MedecinExterneComponent implements OnInit {
     
   }
 
-  private formatDate(date: Date, format: string): string {
-    return this.datePipe.transform(date, format) ?? "";
-  }
-
   private markAllControlsAsTouched(): void {
     Object.keys(this.fGroup.controls).forEach((controlName) => {
       const control = this.fGroup.get(controlName);
@@ -131,6 +127,22 @@ export class MedecinExterneComponent implements OnInit {
         });
       }
     }
+  }
+
+  async deleteRecord(id: number) {
+    const confirm = await this.message.confirmDialog(
+      WarningMessages.SURE_TO_CONTINUE
+    );
+
+    if (confirm) {
+      this.hospitalisationStore.deleteMedExterne(id).subscribe({
+        next: (v) => {
+            this.externes = this.externes.filter((e) => e.id !== id)
+        }, 
+        error: (e) => console.error(e),
+      })
+    }
+      
   }
 
   ngOnDestroy(): void {

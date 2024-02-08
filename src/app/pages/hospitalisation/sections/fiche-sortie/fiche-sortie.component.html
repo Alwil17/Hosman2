@@ -14,22 +14,21 @@
               </div>
               <div class="col-md-2">
                 <label>&nbsp;</label>
-                <button type="button" 
-                class="btn
-                 btn-icon waves-effect waves-light w-100"
-                [class.btn-primary]="k === 0" 
-                [class.btn-danger]="k !== 0" 
-                 (click)="k === 0 ? addDiag() : removeDiag(k)">
-                 <i
-                    [class.ri-add-line]="k === 0"
-                    [class.ri-subtract-fill]="k !== 0"></i></button>
+                <button type="button" class="btn
+                 btn-icon waves-effect waves-light w-100" [class.btn-primary]="k === 0" [class.btn-danger]="k !== 0"
+                  (click)="k === 0 ? addDiag() : removeDiag(k)">
+                  <i [class.ri-add-line]="k === 0" [class.ri-subtract-fill]="k !== 0"></i></button>
               </div>
             </div>
 
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-input label="Femme enceinte" type="text" [isMandatory]="true"></app-input>
+            <app-select label="Femme enceinte" 
+            [isMandatory]="true" [clearable]="false" 
+            [options]="enceinteOptions"
+              [bindValue]="'value'" 
+              [control]="enceinte"></app-select>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { Subject, Subscription, map, takeUntil } from "rxjs";
 
@@ -16,7 +17,8 @@ export class HospitHomeComponent implements OnInit {
 
   constructor(
     private hospitalisationStore: HospitalisationStore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -61,4 +63,13 @@ export class HospitHomeComponent implements OnInit {
       }
     );
   }
+
+  open(content:any) {
+    this.modalService.open(content, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+  } 
 }
