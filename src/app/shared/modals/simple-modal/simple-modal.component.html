@@ -1,8 +1,8 @@
 <!-- <div class="modal-content"> -->
-<div class="modal-header border-bottom border-1 border-dark" #simpleModal>
+<div class="modal-header border-bottom border-1 border-dark px-3 py-2" #simpleModal>
   <h5 class="modal-title mb-0">{{ title }}</h5>
 
-  <div class="mb-2">
+  <div class="mb-0">
     <ng-container *ngIf="isFullscreenControlDisplayed">
       <button
         type="button"
@@ -37,7 +37,7 @@
   <ng-content></ng-content>
 </div>
 
-<div class="modal-footer py-1 border-top border-1 border-dark">
+<div class="modal-footer border-top border-1 border-dark px-3 py-2">
   <ng-container *ngIf="defaultFooter; else customFooter">
     <a
       href="javascript:void(0);"
