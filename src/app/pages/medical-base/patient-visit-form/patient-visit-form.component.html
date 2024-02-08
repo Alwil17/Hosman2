@@ -32,7 +32,18 @@
       <div>
         <button
           type="button"
-          class="btn btn-info btn-label waves-effect waves-light me-3"
+          class="btn btn-warning btn-label waves-effect waves-light me-2 text-dark"
+          (click)="goToPreviousPage()"
+        >
+          <i
+            class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+          ></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-info btn-label waves-effect waves-light me-2"
           (click)="isPatientInfoCollapsed = !isPatientInfoCollapsed"
           [attr.aria-expanded]="!isPatientInfoCollapsed"
           aria-controls="collapseExample"
@@ -130,7 +141,7 @@
           <label for="comments" class="form-label"> Commentaires </label>
           <textarea
             id="comments"
-            class="form-control"
+            class="form-control form-control-sm"
             placeholder="..."
             rows="2"
             [formControl]="commentsControl"
@@ -147,7 +158,7 @@
           <label for="backgrounds" class="form-label"> Antécédents </label>
           <textarea
             id="backgrounds"
-            class="form-control"
+            class="form-control form-control-sm"
             placeholder="..."
             rows="2"
             [formControl]="backgroundsControl"
@@ -508,6 +519,7 @@
             placeholder="___ / ___"
             [control]="tensionControl"
           ></app-input>
+          <!-- maskFormat="0 / 0 || 0 / 00 || 00 / 0 || 00 / 00 || 00 / 000 || 000 / 00 || 000 / 000" NOT WORKING -->
         </div>
       </div>
 
@@ -515,7 +527,7 @@
 
       <!-- THIRD PART -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" id="actsSelects">
           <div class="row gx-2">
             <!-- <div class="col-md-2 d-flex align-items-center">
               <label class="form-label m-0">Acte</label>
@@ -523,39 +535,41 @@
             <ng-container formArrayName="acts">
               <ng-container
                 *ngFor="
-                  let act of actsFields.controls;
+                  let act of actsFields.controls.reverse();
                   let i = index;
                   let count = count
                 "
               >
-                <div class="col-md-8">
+                <div class="col-md-10">
                   <app-select
-                    [label]="'Acte ' + (i + 1)"
+                    [label]="'Acte ' + (count - i)"
                     [options]="acts"
                     [control]="act"
                   ></app-select>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-2 d-flex align-items-end mb-2">
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light me-1"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
                     (click)="addActsField()"
                   >
-                    <i class="ri-add-fill fs-24"></i>
+                    <i class="ri-add-fill fs-20"></i>
                   </button>
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light"
-                    (click)="count !== 1 ? removeActsField(i) : null"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count !== 1 ? removeActsField(count - i - 1) : null
+                    "
                   >
-                    <i class="ri-subtract-fill fs-24"></i>
+                    <i class="ri-subtract-fill fs-20"></i>
                   </button>
                 </div> </ng-container
             ></ng-container>
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" id="motifsSelects">
           <div class="row gx-2">
             <!-- <div class="col-md-2 d-flex align-items-center">
               <label class="form-label m-0">Motif</label>
@@ -563,43 +577,46 @@
             <ng-container formArrayName="motifs">
               <ng-container
                 *ngFor="
-                  let motif of motifsFields.controls;
+                  let motif of motifsFields.controls.reverse();
                   let i = index;
                   let count = count
                 "
               >
-                <div class="col-md-8">
+                <div class="col-md-10">
                   <div class="col-md-12">
                     <app-select
-                      [label]="'Motif ' + (i + 1)"
+                      [label]="'Motif ' + (count - i)"
                       [options]="motifs"
                       [isLoading]="motifsAreLoading"
                       [typeahead]="motifsTypeahead$"
                       [control]="motif"
+                      bottomMargin="1"
                     ></app-select>
                   </div>
                 </div>
-                <div class="col-md-4 d-flex align-items-end mb-2">
+                <div class="col-md-2 d-flex align-items-end mb-1">
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light me-1"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
                     (click)="addMotifsField()"
                   >
-                    <i class="ri-add-fill fs-24"></i>
+                    <i class="ri-add-fill fs-20"></i>
                   </button>
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light"
-                    (click)="count !== 1 ? removeMotifsField(i) : null"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count !== 1 ? removeMotifsField(count - i - 1) : null
+                    "
                   >
-                    <i class="ri-subtract-fill fs-24"></i>
+                    <i class="ri-subtract-fill fs-20"></i>
                   </button>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-10 mb-2">
                   <textarea
-                    class="form-control"
+                    class="form-control form-control-sm"
                     placeholder="Caractères du motif"
-                    rows="2"
+                    rows="1"
                   ></textarea>
                   <!-- [formControl]="diseaseHistoryControl" -->
                 </div>
@@ -608,7 +625,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" id="diagnosticsSelects">
           <div class="row gx-2">
             <!-- <div class="col-md-3 d-flex align-items-center">
               <label class="form-label m-0">Diagnostic</label>
@@ -616,41 +633,44 @@
             <ng-container formArrayName="diagnostics">
               <ng-container
                 *ngFor="
-                  let diagnostic of diagnosticsFields.controls;
+                  let diagnostic of diagnosticsFields.controls.reverse();
                   let i = index;
                   let count = count
                 "
               >
-                <div class="col-md-8">
+                <div class="col-md-10">
                   <app-select
-                    [label]="'Diagnostic ' + (i + 1)"
+                    [label]="'Diagnostic ' + (count - i)"
                     [options]="diagnostics"
                     [isLoading]="diagnosticsAreLoading"
                     [typeahead]="diagnosticsTypeahead$"
                     [control]="diagnostic"
+                    bottomMargin="1"
                   ></app-select>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-2 d-flex align-items-end mb-1">
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light me-1"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
                     (click)="addDiagnosticsField()"
                   >
-                    <i class="ri-add-fill fs-24"></i>
+                    <i class="ri-add-fill fs-20"></i>
                   </button>
                   <button
                     type="button"
-                    class="btn btn-dark btn-icon waves-effect waves-light"
-                    (click)="count !== 1 ? removeDiagnosticsField(i) : null"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count !== 1 ? removeDiagnosticsField(count - i - 1) : null
+                    "
                   >
-                    <i class="ri-subtract-fill fs-24"></i>
+                    <i class="ri-subtract-fill fs-20"></i>
                   </button>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-10 mb-2">
                   <textarea
-                    class="form-control"
+                    class="form-control form-control-sm"
                     placeholder="Commentaies du diagnostic"
-                    rows="2"
+                    rows="1"
                   ></textarea>
                   <!-- [formControl]="diseaseHistoryControl" -->
                 </div>
@@ -665,15 +685,15 @@
       <!-- THIRD PART -->
       <div class="row">
         <div class="col-lg-9">
-          <div class="col-md-12 mb-3">
+          <div class="col-md-12 mb-2">
             <label for="diseaseHistory" class="form-label">
               Histoire de la maladie
             </label>
             <textarea
               id="diseaseHistory"
-              class="form-control"
+              class="form-control form-control-sm"
               placeholder="..."
-              rows="3"
+              rows="2"
               [formControl]="diseaseHistoryControl"
               [ngClass]="{
                 'is-invalid':
@@ -685,15 +705,15 @@
             ></textarea>
           </div>
 
-          <div class="col-md-12 mb-md-3 mb-lg-0">
+          <div class="col-md-12 mb-3 mb-lg-0">
             <label for="diseaseHistory" class="form-label">
               Médicaments prescrits
             </label>
             <textarea
               id="diseaseHistory"
-              class="form-control"
+              class="form-control form-control-sm"
               placeholder="..."
-              rows="3"
+              rows="2"
               [formControl]="prescribedMedicationControl"
               [ngClass]="{
                 'is-invalid':
@@ -707,7 +727,7 @@
         </div>
 
         <div class="col-lg-3 d-flex align-items-end">
-          <div class="row gy-3">
+          <div class="row gy-2">
             <div class="col-md-6 d-grid">
               <button class="btn btn-outline-secondary">
                 <b>Ordonnancier</b>

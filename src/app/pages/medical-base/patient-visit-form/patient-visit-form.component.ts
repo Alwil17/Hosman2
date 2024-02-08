@@ -238,6 +238,14 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   async isNotDirty(): Promise<boolean> {
+    // if (
+    //   !this.patientVisitService.selectedWaitingListItem &&
+    //   !this.patientVisitService.selectedPatient
+    // ) {
+    //   return Promise.resolve(true);
+
+    // }
+
     console.log("Form 1 is dirty : " + this.patientVisitForm1.dirty);
     console.log("Form 2 is dirty : " + this.patientVisitForm2.dirty);
 
@@ -785,6 +793,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   addActsField() {
     this.actsFields.push(new FormControl(null));
     console.log(this.actsFields);
+
+    setTimeout(() => {
+      document.body
+        .querySelector("#actsSelects")
+        ?.querySelector("input")
+        ?.focus();
+    }, 0);
   }
 
   removeActsField(index: number) {
@@ -800,6 +815,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   addMotifsField() {
     this.motifsFields.push(new FormControl(null));
     console.log(this.motifsFields);
+
+    setTimeout(() => {
+      document.body
+        .querySelector("#motifsSelects")
+        ?.querySelector("input")
+        ?.focus();
+    }, 0);
   }
 
   removeMotifsField(index: number) {
@@ -815,6 +837,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   addDiagnosticsField() {
     this.diagnosticsFields.push(new FormControl(null));
     console.log(this.diagnosticsFields);
+
+    setTimeout(() => {
+      document.body
+        .querySelector("#diagnosticsSelects")
+        ?.querySelector("input")
+        ?.focus();
+    }, 0);
   }
 
   removeDiagnosticsField(index: number) {
