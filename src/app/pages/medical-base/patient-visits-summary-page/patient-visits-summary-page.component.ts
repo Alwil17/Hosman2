@@ -178,6 +178,11 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
   }
 
   goToPreviousPage() {
-    this.location.back();
+    if (this.patientVisitService.selectedPatient) {
+      this.medicalBaseRouter.navigateToPatientList();
+    } else if (this.patientVisitService.selectedWaitingListItem) {
+      this.medicalBaseRouter.navigateToPatientWaitingList();
+    }
+    // this.location.back();
   }
 }

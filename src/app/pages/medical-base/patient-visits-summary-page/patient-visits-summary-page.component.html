@@ -36,18 +36,18 @@
       <div class="col-md-10">
         <form [formGroup]="patientVisitsForm">
           <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4">
               <app-input label="Nom" [control]="lastNameControl"></app-input>
             </div>
 
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4">
               <app-input
                 label="Prénoms"
                 [control]="firstNameControl"
               ></app-input>
             </div>
 
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4">
               <div class="row">
                 <div class="col-md-7">
                   <app-input
@@ -71,7 +71,7 @@
 
           <div class="row">
             <div class="col-md-4">
-              <div class="mb-3">
+              <div class="">
                 <app-input
                   label="Maladie chronique 1"
                   [readOnly]="true"
@@ -79,7 +79,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="mb-3">
+              <div class="">
                 <app-input
                   label="Maladie chronique 2"
                   [readOnly]="true"
@@ -87,7 +87,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="mb-3">
+              <div class="">
                 <app-input
                   label="Maladie chronique 3"
                   [readOnly]="true"
@@ -99,7 +99,7 @@
       </div>
 
       <div class="col-md-2 border-dark border-start">
-        <div class="row mt-4 mb-4">
+        <div class="row mt-4 mb-2">
           <div class="col-12">
             <button type="button" class="btn btn-light">
               <b>Voir les antécédents</b>
@@ -167,7 +167,7 @@
                   <div class="d-inline-block" ngbDropdown container="body">
                     <button
                       type="button"
-                      class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                      class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
                       ngbDropdownToggle
                     >
                       <i class="ri-more-fill fs-24"></i>
