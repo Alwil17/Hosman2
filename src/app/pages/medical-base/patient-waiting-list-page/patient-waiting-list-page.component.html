@@ -11,32 +11,13 @@
       <div class="row g-4 align-items-center">
         <div class="col-md-7 col-xl-4">
           <div class="hstack gap-2">
-            <div class="d-inline-block" ngbDropdown #filterDrop="ngbDropdown">
-              <button
-                type="button"
-                class="btn btn-light btn-icon waves-effect arrow-none"
-                ngbDropdownToggle
-              >
-                <i class="ri-filter-2-fill"></i>
-              </button>
-              <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                <button ngbDropdownItem>Nom & Prénom(s)</button>
-                <button ngbDropdownItem>Numéro patient</button>
-                <button ngbDropdownItem>Date de naissance</button>
-                <button ngbDropdownItem>Date d'entrée</button>
-              </div>
-            </div>
-
-            <div class="search-box">
-              <input
-                type="text"
-                name="searchTerm"
-                class="form-control form-control-sm"
-                placeholder="Rechercher"
-              />
-              <!-- [(ngModel)]="service.searchTerm" -->
-              <i class="ri-search-line search-icon"></i>
-            </div>
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher (nom et/ou prénoms)"
+              [control]="searchControl"
+              bottomMargin="0"
+            >
+            </app-input>
           </div>
         </div>
 
@@ -134,7 +115,11 @@
                   <th colspan="1">
                     <countdown
                       #countdown
-                      [config]="{ leftTime: 120, format: 'mm:ss', demand: true }"
+                      [config]="{
+                        leftTime: 120,
+                        format: 'mm:ss',
+                        demand: true
+                      }"
                     ></countdown>
                   </th>
                   <th>
@@ -175,8 +160,24 @@
                 >
                   <td>{{ item.num_attente }}</td>
                   <td>{{ item.patient.reference }}</td>
-                  <td>{{ item.patient.nom | uppercase }}</td>
-                  <td>{{ item.patient.prenoms }}</td>
+                  <!-- <td>{{ item.patient.nom | uppercase }}</td>
+                  <td>{{ item.patient.prenoms }}</td> -->
+                  <td>
+                    <ngb-highlight
+                      [result]="item.patient.nom"
+                      [term]="searchControl.value.split(' ')[0]"
+                    ></ngb-highlight>
+                  </td>
+
+                  <td>
+                    <ngb-highlight
+                      [result]="item.patient.prenoms"
+                      [term]="[
+                        searchControl.value.split(' ')[1],
+                        searchControl.value
+                      ]"
+                    ></ngb-highlight>
+                  </td>
                   <td>
                     {{ item.patient.date_naissance | date : "dd/MM/yyyy" }}
                   </td>
@@ -227,7 +228,7 @@
                     <div class="d-inline-block" ngbDropdown container="body">
                       <button
                         type="button"
-                        class="btn btn-icon btn-outline-dark waves-effect waves-light arrow-none"
+                        class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
                         ngbDropdownToggle
                       >
                         <i class="ri-more-fill fs-24"></i>

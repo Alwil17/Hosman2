@@ -26,6 +26,7 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
+  searchControl = new FormControl("");
   filterRadioControl = new FormControl("me");
   doctorControl = new FormControl();
 
@@ -123,7 +124,11 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
           //   type: ToastType.Success,
           // });
 
-          this.waitingList = data;
+          this.waitingList = data.filter((value) =>
+            (value.patient.nom + " " + value.patient.prenoms)
+              .toLowerCase()
+              .includes(String(this.searchControl.value).toLowerCase())
+          );
 
           this.refreshWaitingListTable();
 
@@ -179,6 +184,12 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
   }
 
   onInputsChanges() {
+    this.searchControl.valueChanges.subscribe((value) => {
+      if (value != null) {
+        this.refreshWaitingList();
+      }
+    });
+
     this.filterRadioControl.valueChanges.subscribe((value) => {
       if (value === "me") {
         this.viewFilter = WaitingListFilter.ME;
