@@ -23,6 +23,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 
+
 @NgModule({
   declarations: [
     HospitHomeComponent,

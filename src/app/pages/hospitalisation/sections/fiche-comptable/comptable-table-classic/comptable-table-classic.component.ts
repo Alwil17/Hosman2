@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
-import { Patient } from "../../../../../models/secretariat/patients/patient.model";
 import { FormControl } from "@angular/forms";
 import * as moment from "moment";
-import { Chambre } from "../../../../../models/hospitalisation/chambre";
 
 var timer: any, // timer required to reset
   timeout = 200;
