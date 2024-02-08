@@ -7,6 +7,7 @@ import {
   NgbCollapseModule,
   NgbDropdownModule,
   NgbPaginationModule,
+  NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskModule } from "ngx-mask";
@@ -46,6 +47,7 @@ import { AllAppointmentsModalComponent } from './appointment-form/all-appointmen
     NgbCollapseModule,
     PatientsModule,
     CountdownModule,
+    NgbTypeaheadModule
   ],
   exports: [AppointmentFormComponent],
 })
