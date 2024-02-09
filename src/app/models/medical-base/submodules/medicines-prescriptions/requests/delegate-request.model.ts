@@ -4,20 +4,20 @@ export interface IDelegateRequest {
   nom: string;
   prenoms: string;
   tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  laboratoire: LaboratoryRequest;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  laboratoire?: LaboratoryRequest;
 }
 
 export class DelegateRequest {
   nom: string;
   prenoms: string;
   tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  laboratoire: LaboratoryRequest;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  laboratoire?: LaboratoryRequest;
 
   constructor(iDelegateRequest: IDelegateRequest) {
     this.nom = iDelegateRequest.nom;

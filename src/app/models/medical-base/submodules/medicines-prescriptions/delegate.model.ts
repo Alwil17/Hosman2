@@ -5,10 +5,10 @@ export interface IDelegate {
   nom: string;
   prenoms: string;
   tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  laboratoire: Laboratory;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  laboratoire?: Laboratory;
 }
 
 export class Delegate {
@@ -16,10 +16,10 @@ export class Delegate {
   nom: string;
   prenoms: string;
   tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  laboratoire: Laboratory;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  laboratoire?: Laboratory;
 
   constructor(iDelegate: IDelegate) {
     this.id = iDelegate.id;

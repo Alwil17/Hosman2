@@ -14,32 +14,32 @@ type ThClass = {
 export interface IProductRequest {
   nom: string;
   dci: string;
-  infos: string;
-  autre: string;
-  agence: AgencyRequest;
-  laboratoire: LaboratoryRequest;
-  delegue: DelegateRequest;
-  indications: IndicationRequest[];
-  contre_indications: ContraIndicationRequest[];
-  effet_secondaires: SideEffectRequest[];
+  infos?: string;
+  autre?: string;
+  agence?: AgencyRequest;
+  laboratoire?: LaboratoryRequest;
+  delegue?: DelegateRequest;
+  indications?: IndicationRequest[];
+  contre_indications?: ContraIndicationRequest[];
+  effet_secondaires?: SideEffectRequest[];
   formes: FormRequest[];
-  posologies: PosologyRequest[];
+  posologies?: PosologyRequest[];
   classes: ThClass[];
 }
 
 export class ProductRequest {
   nom: string;
   dci: string;
-  infos: string;
-  autre: string;
-  agence: AgencyRequest;
-  laboratoire: LaboratoryRequest;
-  delegue: DelegateRequest;
-  indications: IndicationRequest[];
-  contre_indications: ContraIndicationRequest[];
-  effet_secondaires: SideEffectRequest[];
+  infos?: string;
+  autre?: string;
+  agence?: AgencyRequest;
+  laboratoire?: LaboratoryRequest;
+  delegue?: DelegateRequest;
+  indications?: IndicationRequest[];
+  contre_indications?: ContraIndicationRequest[];
+  effet_secondaires?: SideEffectRequest[];
   formes: FormRequest[];
-  posologies: PosologyRequest[];
+  posologies?: PosologyRequest[];
   classes: ThClass[];
 
   constructor(iProductRequest: IProductRequest) {

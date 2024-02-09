@@ -2,20 +2,20 @@ import { AgencyRequest } from "./agency-request.model";
 
 export interface ILaboratoryRequest {
   nom: string;
-  tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  agence: AgencyRequest;
+  tel1?: string;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  agence?: AgencyRequest;
 }
 
 export class LaboratoryRequest {
   nom: string;
-  tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  agence: AgencyRequest;
+  tel1?: string;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  agence?: AgencyRequest;
 
   constructor(iLaboratoryRequest: ILaboratoryRequest) {
     this.nom = iLaboratoryRequest.nom;

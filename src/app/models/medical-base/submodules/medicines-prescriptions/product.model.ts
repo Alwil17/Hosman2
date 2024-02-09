@@ -12,16 +12,16 @@ export interface IProduct {
   id: number;
   nom: string;
   dci: string;
-  infos: string;
-  autre: string;
-  agence: Agency;
-  laboratoire: Laboratory;
-  delegue: Delegate;
-  indications: Indication[];
-  contre_indications: ContraIndication[];
-  effet_secondaires: SideEffect[];
+  infos?: string;
+  autre?: string;
+  agence?: Agency;
+  laboratoire?: Laboratory;
+  delegue?: Delegate;
+  indications?: Indication[];
+  contre_indications?: ContraIndication[];
+  effet_secondaires?: SideEffect[];
   formes: Form[];
-  posologies: Posology[];
+  posologies?: Posology[];
   classes: TherapeuticClass[];
 }
 
@@ -29,16 +29,16 @@ export class Product {
   id: number;
   nom: string;
   dci: string;
-  infos: string;
-  autre: string;
-  agence: Agency;
-  laboratoire: Laboratory;
-  delegue: Delegate;
-  indications: Indication[];
-  contre_indications: ContraIndication[];
-  effet_secondaires: SideEffect[];
+  infos?: string;
+  autre?: string;
+  agence?: Agency;
+  laboratoire?: Laboratory;
+  delegue?: Delegate;
+  indications?: Indication[];
+  contre_indications?: ContraIndication[];
+  effet_secondaires?: SideEffect[];
   formes: Form[];
-  posologies: Posology[];
+  posologies?: Posology[];
   classes: TherapeuticClass[];
 
   constructor(iProduct: IProduct) {

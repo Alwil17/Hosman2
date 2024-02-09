@@ -1,22 +1,22 @@
 export interface IAgency {
   id: number;
   nom: string;
-  directeur: string;
-  email: string;
-  tel1: string;
-  tel2: string;
-  adresse: string;
+  directeur?: string;
+  email?: string;
+  tel1?: string;
+  tel2?: string;
+  adresse?: string;
   slug: string;
 }
 
 export class Agency {
   id: number;
   nom: string;
-  directeur: string;
-  email: string;
-  tel1: string;
-  tel2: string;
-  adresse: string;
+  directeur?: string;
+  email?: string;
+  tel1?: string;
+  tel2?: string;
+  adresse?: string;
   slug: string;
 
   constructor(iAgency: IAgency) {

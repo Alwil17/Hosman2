@@ -3,22 +3,22 @@ import { Agency } from "./agency.model";
 export interface ILaboratory {
   id: number;
   nom: string;
-  tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  agence: Agency;
+  tel1?: string;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  agence?: Agency;
   slug: string;
 }
 
 export class Laboratory {
   id: number;
   nom: string;
-  tel1: string;
-  tel2: string;
-  email: string;
-  adresse: string;
-  agence: Agency;
+  tel1?: string;
+  tel2?: string;
+  email?: string;
+  adresse?: string;
+  agence?: Agency;
   slug: string;
 
   constructor(iLaboratory: ILaboratory) {
