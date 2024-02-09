@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { MedicinesPrescriptionsRouterService } from "src/app/services/medical-base/submodules/router/medicines-prescriptions-router.service";
+import { MedicinesPrescriptionsRouterService } from "src/app/services/medical-base/submodules/medicines-prescriptions/router/medicines-prescriptions-router.service";
 
 @Component({
   selector: "app-medicines-prescriptions-page",
