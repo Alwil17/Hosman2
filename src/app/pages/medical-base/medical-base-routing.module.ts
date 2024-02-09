@@ -23,6 +23,13 @@ const routes: Routes = [
     path: "patient-list",
     component: PatientListPageComponent,
   },
+  {
+    path: "medicines-prescriptions",
+    loadChildren: () =>
+      import(
+        "./submodules/medicines-prescriptions/medicines-prescriptions.module"
+      ).then((m) => m.MedicinesPrescriptionsModule),
+  },
 ];
 
 @NgModule({

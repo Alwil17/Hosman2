@@ -125,4 +125,10 @@ export const MEDICAL_BASE_MENU: MenuItem[] = [
     link: "/medical-base/patient-list",
     // icon: "ri-user-search-fill",
   },
+  {
+    id: 4,
+    label: "MEDOR",
+    link: "/medical-base/medicines-prescriptions",
+    // icon: "ri-user-search-fill",
+  },
 ];
