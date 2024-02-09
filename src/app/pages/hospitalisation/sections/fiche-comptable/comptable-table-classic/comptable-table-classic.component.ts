@@ -77,6 +77,8 @@ export class ComptableTableClassicComponent implements OnInit {
       }
 
       this.list = d;
+
+      this.setCurrentPage(1)
     }
 
     switch (this.typeData) {
@@ -218,14 +220,6 @@ export class ComptableTableClassicComponent implements OnInit {
             return null;
           for (const key of this.applyFilter.split(",")) {
             let rowValue = "";
-            // if (key.trim().includes(".")) {
-            //   const x = key.trim().split(".");
-            //   rowValue =
-            //     object[x[0] as keyof typeof object] !== undefined && object[x[0] as keyof typeof object] !== null
-            //       ? (object[x[0] as keyof typeof object][x[1] as keyof typeof object[x[0]]] as string)
-
-            //       : "";
-            // } else {
             rowValue =
               object[key as keyof typeof object] !== null &&
               object[key.trim() as keyof typeof object] !== undefined

@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { Subject, Subscription, takeUntil } from "rxjs";
 
@@ -10,6 +11,7 @@ import { Subject, Subscription, takeUntil } from "rxjs";
 export class FicheComptableComponent implements OnInit {
   subscription: Subscription | undefined;
   tabs: any[] = [];
+  search = new FormControl();
 
   constructor(private hospitalisationStore: HospitalisationStore) {}
 
@@ -22,6 +24,15 @@ export class FicheComptableComponent implements OnInit {
       }
     );
 
+  }
+
+  filterInAll(){
+    this.hospitalisationStore.doFilterTabs(this.search.value)
+  }
+
+  clearSearch(){
+    this.search.setValue('')
+    this.hospitalisationStore.clearTabsFilter()
   }
 
   ngOnDestroy() {

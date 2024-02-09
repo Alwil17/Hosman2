@@ -34,6 +34,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     sectors: null,
     chambres: null,
     tabs: null,
+    full_tabs: null,
     suivi: null,
     medecins: null,
     externes: null,
@@ -194,13 +195,12 @@ export class HospitalisationStore extends ObservableStore<any> {
               };
             });
 
+            fData = [...actes, ...fData];
 
-            fData = [...actes, ...fData]
-            
-            let sorted_tabs = fData.sort((a: any, b : any) => {
+            let sorted_tabs = fData.sort((a: any, b: any) => {
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();
-            
+
               // Compare the names
               if (nameA < nameB) {
                 return -1;
@@ -211,8 +211,8 @@ export class HospitalisationStore extends ObservableStore<any> {
               }
             });
 
-            this.updateStore({tabs : sorted_tabs}, "FETCH TABS")
-
+            this.updateStore({ tabs: sorted_tabs }, "FETCH TABS");
+            this.updateStore({ full_tabs: sorted_tabs }, "FETCH FULL TABS");
           },
           error: (response) => {
             console.log("Error: " + response);
@@ -354,6 +354,45 @@ export class HospitalisationStore extends ObservableStore<any> {
       });
   }
 
+  // FUNCTIONS
+  doFilterTabs(text: String) {
+    const state = this.getState();
+    let tabs = state.full_tabs;
+
+    try {
+      {
+        let searchResults = tabs
+        .filter((object: any | null) => object !== null)
+        .filter((object: any) =>
+          object.data.some((data: any) =>
+            ['libelle', 'nom_officiel', 'nom'].some((field) =>
+              data[field] &&
+              data[field].toLowerCase().includes(text.trim().toLowerCase())
+            )
+          )
+        )
+        .map((values : any) => ({
+          ...values,
+          data: values.data.filter((d: any) =>
+            ['libelle', 'nom_officiel', 'nom'].some((field) =>
+              d[field] &&
+              d[field].toLowerCase().includes(text.trim().toLowerCase())
+            )
+          ),
+        }));
+        console.log(searchResults);
+        this.updateStore({ tabs: searchResults }, "FILTER TABS");
+      }
+    } catch (e) {
+      console.log("filtering : " + e);
+    }
+  }
+
+  clearTabsFilter() {
+    const state = this.getState();
+    this.updateStore({ tabs: state.full_tabs }, "FETCH TABS");
+  }
+
   saveHospitalisation(data: any, id: any): Observable<any> {
     // console.log(id)
     if (id == null) {
@@ -367,7 +406,9 @@ export class HospitalisationStore extends ObservableStore<any> {
     this.http.post(suiviEndpoint, data).subscribe({
       next: (v) => {
         data.id = v;
-        console.log(data);
+        const state = this.getState();
+        state.suivis.push(data)
+        this.setState({suivis: state.suivis}, "HOSPITALISATION : COMMIT SUIVI");
       },
       error: (e) => console.error(e),
     });
@@ -378,6 +419,11 @@ export class HospitalisationStore extends ObservableStore<any> {
       next: (v) => {
         data.id = v;
         console.log(data);
+        const state = this.getState();
+        let s = state.suivis.find((d: any) => d.id !== data.id)
+        s.qte = data.qte
+        this.setState({suivis: state.suivis}, "HOSPITALISATION : UPDATE SUIVI");
+        console.log(data);
       },
       error: (e) => console.error(e),
     });
@@ -385,7 +431,11 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   removeSuivi(id: any) {
     this.http.delete(suiviEndpoint + "/" + id).subscribe({
-      next: (v) => console.log(v),
+      next: (v) => {
+        const state = this.getState();
+        state.suivis = state.suivis.filter((data: any) => data.id !== id)
+        this.setState({suivis: state.suivis}, "HOSPITALISATION : REMOVE SUIVI");
+        console.log(v) },
       error: (e) => console.error(e),
     });
   }
