@@ -26,7 +26,7 @@ export class InputComponent implements OnInit {
   @Input() dropMaskInValue = true;
 
   // @Input() controlName: string = "";
-  @Input() control = new FormControl();
+  @Input() control: AbstractControl | FormControl = new FormControl();
   // @Input() group?: FormGroup;
 
   @Input() isLayoutHorizontal = false;
@@ -47,6 +47,8 @@ export class InputComponent implements OnInit {
   // Possible values are '1', '2', '3', '4', '5'
   @Input() bottomMargin = "";
 
+  formControl!: FormControl;
+
   bottomMarginClass = "";
 
   constructor(private titleCase: TitleCasePipe) {}
@@ -66,6 +68,11 @@ export class InputComponent implements OnInit {
     // if (this.controlName.trim().length !== 0 && this.group) {
     //   this.control = this.group.get(this.controlName) as FormControl;
     // }
+
+    // Due to some sort of typing problem ? Investigate later. Used for dynamic generation of filed
+    if (this.control instanceof AbstractControl) {
+      this.formControl = this.control as FormControl;
+    }
   }
 
   emitInputClick() {

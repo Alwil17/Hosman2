@@ -6,10 +6,7 @@ import { IndicationRequest } from "./indication-request.model";
 import { LaboratoryRequest } from "./laboratory-request.model";
 import { PosologyRequest } from "./posology-request.model";
 import { SideEffectRequest } from "./side-effect-request.model";
-
-type ThClass = {
-  classe_id: number;
-};
+import { TherapeuticClassProductRequest } from "./therapeutic-class-request.model";
 
 export interface IProductRequest {
   nom: string;
@@ -24,7 +21,7 @@ export interface IProductRequest {
   effet_secondaires?: SideEffectRequest[];
   formes: FormRequest[];
   posologies?: PosologyRequest[];
-  classes: ThClass[];
+  classes: TherapeuticClassProductRequest[];
 }
 
 export class ProductRequest {
@@ -40,7 +37,7 @@ export class ProductRequest {
   effet_secondaires?: SideEffectRequest[];
   formes: FormRequest[];
   posologies?: PosologyRequest[];
-  classes: ThClass[];
+  classes: TherapeuticClassProductRequest[];
 
   constructor(iProductRequest: IProductRequest) {
     this.nom = iProductRequest.nom;

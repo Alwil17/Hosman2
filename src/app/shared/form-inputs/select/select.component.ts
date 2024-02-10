@@ -51,7 +51,7 @@ export class SelectComponent implements OnInit {
       }
     }
 
-    // Due to some sort of typing problem ? Investigate later
+    // Due to some sort of typing problem ? Investigate later. Used for dynamic generation of filed
     if (this.control instanceof AbstractControl) {
       this.formControl = this.control as FormControl;
     }

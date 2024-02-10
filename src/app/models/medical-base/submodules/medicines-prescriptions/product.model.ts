@@ -1,4 +1,3 @@
-import { Form } from "@angular/forms";
 import { Agency } from "./agency.model";
 import { ContraIndication } from "./contra-indication.model";
 import { Delegate } from "./delegate.model";
@@ -7,6 +6,7 @@ import { Laboratory } from "./laboratory.model";
 import { SideEffect } from "./side-effect.model";
 import { Posology } from "./posology.model";
 import { TherapeuticClass } from "./therapeutic-class.model";
+import { Form } from "./form.model";
 
 export interface IProduct {
   id: number;

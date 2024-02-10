@@ -32,4 +32,19 @@ export class ProductService {
   delete(id: any): Observable<void> {
     return this.http.delete<void>(`${apiEndpoint}/${id}`);
   }
+
+  searchBy(criteria: { criteria: string; q: string }): Observable<Product[]> {
+    let apiComplementary = "";
+
+    apiComplementary += "criteria=" + criteria.criteria;
+    apiComplementary += "&q=" + criteria.q;
+
+    const apiComplete = apiComplementary
+      ? `${apiEndpoint}/search?${apiComplementary}`
+      : `${apiEndpoint}/search`;
+
+    console.log(apiComplete);
+
+    return this.http.get<Product[]>(apiComplete);
+  }
 }

@@ -7,6 +7,14 @@ import { MedicinesPageComponent } from "./medicines-page/medicines-page.componen
 import { SharedModule } from "src/app/shared/shared.module";
 import { PrescriptionsPageComponent } from "./prescriptions-page/prescriptions-page.component";
 import { PrescriptionsComponent } from "./prescriptions/prescriptions.component";
+import {
+  NgbDropdownModule,
+  NgbNavModule,
+  NgbTypeaheadModule,
+} from "@ng-bootstrap/ng-bootstrap";
+import { ProductListComponent } from "./medicines/products/product-list/product-list.component";
+import { ProductFormModalComponent } from "./medicines/products/product-form-modal/product-form-modal.component";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -15,8 +23,18 @@ import { PrescriptionsComponent } from "./prescriptions/prescriptions.component"
     MedicinesComponent,
     PrescriptionsPageComponent,
     PrescriptionsComponent,
+    ProductListComponent,
+    ProductFormModalComponent,
   ],
-  imports: [CommonModule, MedicinesPrescriptionsRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    MedicinesPrescriptionsRoutingModule,
+    SharedModule,
+    NgbNavModule,
+    NgbDropdownModule,
+    ReactiveFormsModule,
+    NgbTypeaheadModule,
+  ],
   exports: [MedicinesComponent, PrescriptionsComponent],
 })
 export class MedicinesPrescriptionsModule {}
