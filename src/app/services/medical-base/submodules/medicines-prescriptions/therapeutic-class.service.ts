@@ -32,4 +32,16 @@ export class TherapeuticClassService {
   delete(id: any): Observable<void> {
     return this.http.delete<void>(`${apiEndpoint}/${id}`);
   }
+
+  searchBy(criteria: { q: string }): Observable<TherapeuticClass[]> {
+    let apiComplementary = "";
+
+    apiComplementary += "q=" + criteria.q;
+
+    const apiComplete = `${apiEndpoint}/search?${apiComplementary}`;
+
+    console.log(apiComplete);
+
+    return this.http.get<TherapeuticClass[]>(apiComplete);
+  }
 }

@@ -43,9 +43,6 @@ export class ProductListComponent implements OnInit {
     },
   ];
 
-  // To set date max
-  today = new Date().toLocaleDateString("fr-ca");
-
   searchControl = new FormControl("");
 
   searchCriterionControl = new FormControl(this.searchCriteria[0]);

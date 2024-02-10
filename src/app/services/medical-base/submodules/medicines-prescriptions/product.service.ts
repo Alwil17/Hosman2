@@ -39,10 +39,7 @@ export class ProductService {
     apiComplementary += "criteria=" + criteria.criteria;
     apiComplementary += "&q=" + criteria.q;
 
-    const apiComplete = apiComplementary
-      ? `${apiEndpoint}/search?${apiComplementary}`
-      : `${apiEndpoint}/search`;
-
+    const apiComplete = `${apiEndpoint}/search?${apiComplementary}`;
     console.log(apiComplete);
 
     return this.http.get<Product[]>(apiComplete);
