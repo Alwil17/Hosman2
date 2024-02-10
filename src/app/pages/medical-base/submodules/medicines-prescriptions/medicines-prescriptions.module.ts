@@ -15,6 +15,7 @@ import {
 import { ProductListComponent } from "./medicines/products/product-list/product-list.component";
 import { ProductFormModalComponent } from "./medicines/products/product-form-modal/product-form-modal.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { ProductDetailModalComponent } from "./medicines/products/product-detail-modal/product-detail-modal.component";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     PrescriptionsComponent,
     ProductListComponent,
     ProductFormModalComponent,
+    ProductDetailModalComponent,
   ],
   imports: [
     CommonModule,

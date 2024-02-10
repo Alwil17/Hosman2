@@ -1,4 +1,8 @@
-<app-simple-modal title="Enregistrer un nouveau produit">
+<app-simple-modal
+  [title]="
+    productInfos ? 'Modifier un produit' : 'Enregistrer un nouveau produit'
+  "
+>
   <div class="col-12">
     <form [formGroup]="productForm">
       <!-- FIRST ROW -->
@@ -42,9 +46,9 @@
                     [isMandatory]="true"
                     [control]="classControl"
                     [options]="therapeuticClasses"
+                    [canAddOption]="true"
                     [isFormSubmitted]="isProductFormSubmitted"
-                    >
-                    <!-- [canAddOption]="true" -->
+                  >
                   </app-select>
                 </div>
                 <div

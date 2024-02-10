@@ -67,7 +67,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of products" class="user-select-none">
+            <tr
+              *ngFor="let product of products"
+              class="user-select-none"
+              (dblclick)="openProductDetailModal(product)"
+            >
               <td>
                 <ngb-highlight
                   [result]="product.nom"
@@ -186,7 +190,10 @@
                     <i class="ri-more-fill fs-24"></i>
                   </button>
                   <div ngbDropdownMenu>
-                    <button ngbDropdownItem>
+                    <button
+                      ngbDropdownItem
+                      (click)="openProductDetailModal(product)"
+                    >
                       <i
                         class="ri-information-line label-icon align-middle fs-16 me-2 text-success"
                       ></i>

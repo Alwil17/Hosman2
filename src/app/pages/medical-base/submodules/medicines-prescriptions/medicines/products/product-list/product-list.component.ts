@@ -7,6 +7,8 @@ import { Product } from "src/app/models/medical-base/submodules/medicines-prescr
 import { ProductService } from "src/app/services/medical-base/submodules/medicines-prescriptions/product.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ProductFormModalComponent } from "../product-form-modal/product-form-modal.component";
+import { ProductDetailModalComponent } from "../product-detail-modal/product-detail-modal.component";
+import { merge } from "rxjs";
 
 @Component({
   selector: "app-product-list",
@@ -145,6 +147,12 @@ export class ProductListComponent implements OnInit {
       }
     );
 
+    merge(productFormModalRef.closed, productFormModalRef.dismissed).subscribe({
+      next: (value) => {
+        this.searchProductsList();
+      },
+    });
+
     if (product) {
       productFormModalRef.componentInstance.productInfos = product;
 
@@ -154,7 +162,7 @@ export class ProductListComponent implements OnInit {
 
           if (isProductModified) {
             productFormModalRef.close();
-            this.searchProductsList();
+            // this.searchProductsList();
           }
         }
       );
@@ -165,11 +173,25 @@ export class ProductListComponent implements OnInit {
 
           if (isProductCreated) {
             productFormModalRef.close();
-            this.searchProductsList();
+            // this.searchProductsList();
           }
         }
       );
     }
+  }
+
+  openProductDetailModal(product: Product) {
+    const productDetailModalRef = this.modalService.open(
+      ProductDetailModalComponent,
+      {
+        size: "lg",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    productDetailModalRef.componentInstance.productInfos = product;
   }
 
   deleteProduct(id: any) {}

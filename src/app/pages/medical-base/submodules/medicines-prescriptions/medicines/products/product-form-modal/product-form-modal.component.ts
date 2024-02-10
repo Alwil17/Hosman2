@@ -93,6 +93,7 @@ export class ProductFormModalComponent implements OnInit {
     if (this.productInfos) {
       this.nameController.setValue(this.productInfos.nom);
       this.dciController.setValue(this.productInfos.dci);
+      this.infosController.setValue(this.productInfos.infos);
 
       this.productInfos.classes.forEach((value) => {
         this.addClassesField({
@@ -242,7 +243,7 @@ export class ProductFormModalComponent implements OnInit {
   // }
 
   getProductFormData() {
-    const classes: TherapeuticClassProductRequest[] = [];
+    const classes: TherapeuticClassRequest[] = [];
     const indications: IndicationRequest[] = [];
     const sideEffects: SideEffectRequest[] = [];
     const contraIndications: ContraIndicationRequest[] = [];
@@ -252,9 +253,7 @@ export class ProductFormModalComponent implements OnInit {
 
     this.classesFields.controls.forEach((control) => {
       if (control.value) {
-        classes.push(
-          new TherapeuticClassProductRequest({ classe_id: control.value.id })
-        );
+        classes.push(new TherapeuticClassRequest({ nom: control.value.text }));
       }
     });
 
@@ -350,7 +349,7 @@ export class ProductFormModalComponent implements OnInit {
         if (emit) {
           this.isProductCreated.emit(true);
         } else {
-          this.emptyProductFormFields();
+          // this.emptyProductFormFields();
         }
       },
       error: (e) => {
