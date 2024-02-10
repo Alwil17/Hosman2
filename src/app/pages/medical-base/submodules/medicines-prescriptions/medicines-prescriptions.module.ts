@@ -16,7 +16,9 @@ import { ProductListComponent } from "./medicines/products/product-list/product-
 import { ProductFormModalComponent } from "./medicines/products/product-form-modal/product-form-modal.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ProductDetailModalComponent } from "./medicines/products/product-detail-modal/product-detail-modal.component";
-import { TherapeuticClassListComponent } from './medicines/therapeutic-classes/therapeutic-class-list/therapeutic-class-list.component';
+import { TherapeuticClassListComponent } from "./medicines/therapeutic-classes/therapeutic-class-list/therapeutic-class-list.component";
+import { NgxMaskModule } from "ngx-mask";
+import { TherapeuticClassFormModalComponent } from './medicines/therapeutic-classes/therapeutic-class-form-modal/therapeutic-class-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { TherapeuticClassListComponent } from './medicines/therapeutic-classes/t
     ProductFormModalComponent,
     ProductDetailModalComponent,
     TherapeuticClassListComponent,
+    TherapeuticClassFormModalComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +41,7 @@ import { TherapeuticClassListComponent } from './medicines/therapeutic-classes/t
     NgbDropdownModule,
     ReactiveFormsModule,
     NgbTypeaheadModule,
+    NgxMaskModule,
   ],
   exports: [MedicinesComponent, PrescriptionsComponent],
 })

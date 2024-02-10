@@ -15,7 +15,11 @@
     </div>
 
     <div class="col-md-6 d-flex justify-content-end align-items-end">
-      <button type="button" class="btn btn-success btn-label ms-auto">
+      <button
+        type="button"
+        class="btn btn-success btn-label ms-auto"
+        (click)="openThClassModal()"
+      >
         <!-- (click)="openProductFormModal()" -->
         <i class="ri-add-line label-icon align-middle fs-24 me-2"></i>
         Nouvelle classe
@@ -67,28 +71,19 @@
                     <i class="ri-more-fill fs-24"></i>
                   </button>
                   <div ngbDropdownMenu>
-                    <button ngbDropdownItem>
-                      <!-- (click)="openProductDetailModal(product)" -->
-                      <i
-                        class="ri-information-line label-icon align-middle fs-16 me-2 text-success"
-                      ></i>
-                      Voir
-                    </button>
-
-                    <button ngbDropdownItem>
-                      <!-- (click)="openProductFormModal(product)" -->
+                    <button ngbDropdownItem (click)="openThClassModal(thClass)">
                       <i
                         class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
                       ></i>
                       Modifier
                     </button>
 
-                    <!-- <button ngbDropdownItem (click)="deleteProduct(product.id)">
-                        <i
-                          class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
-                        ></i>
-                        Modifier
-                      </button> -->
+                    <button ngbDropdownItem (click)="deleteThClass(thClass)">
+                      <i
+                        class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                      ></i>
+                      Supprimer
+                    </button>
                   </div>
                 </div>
               </td>
@@ -98,7 +93,7 @@
             style="position: sticky; bottom: -1px; background-color: whitesmoke"
           >
             <tr>
-              <th colspan="11">
+              <th colspan="3">
                 Total des classes : {{ therapeuticClasses.length }}
               </th>
             </tr>

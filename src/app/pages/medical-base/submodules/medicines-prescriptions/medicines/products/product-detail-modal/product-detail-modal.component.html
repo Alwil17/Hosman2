@@ -1,4 +1,4 @@
-<app-simple-modal title="Fiche du médicament">
+<app-simple-modal title="Fiche du produit">
   <div class="d-flex justify-content-center">
     <h3>{{ productInfos.nom }} ({{ productInfos.dci }})</h3>
   </div>
@@ -193,7 +193,7 @@
               <td>{{ form.presentation }}</td>
               <td>{{ form.dosage }}</td>
               <td>{{ form.conditionnement }}</td>
-              <td>{{ form.prix }}</td>
+              <td class="text-end">{{ form.prix | mask : "separator" }}</td>
             </tr>
           </tbody>
         </table>
