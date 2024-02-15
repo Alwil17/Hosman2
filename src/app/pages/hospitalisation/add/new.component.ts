@@ -18,7 +18,6 @@ export class HospitHomeComponent implements OnInit {
   constructor(
     private hospitalisationStore: HospitalisationStore,
     private route: ActivatedRoute,
-    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -63,13 +62,4 @@ export class HospitHomeComponent implements OnInit {
       }
     );
   }
-
-  open(content:any) {
-    this.modalService.open(content, {
-      size: "md",
-      centered: true,
-      keyboard: false,
-      backdrop: "static",
-    });
-  } 
 }

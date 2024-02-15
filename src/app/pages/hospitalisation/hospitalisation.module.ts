@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from '@services/messages/message.service';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContextMenuModule } from './context-menu.module';
 
 
 
@@ -47,6 +48,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     HospitalisationRoutingModule,
     ReactiveFormsModule,
     NgbModalModule,
+    ContextMenuModule,
     ToastrModule.forRoot(),
   ],
   providers: [

@@ -42,3 +42,7 @@ export function validateYupSchema<T>(
       .replace(/-+/g, '-'); // remove consecutive hyphens
   }
   
+  export function hasStateChanges(state: any, olddata: any, newdata: any){
+    return state !== null && state !== undefined && state.length === 0 ||
+    JSON.stringify(olddata) !== JSON.stringify(newdata)
+  }

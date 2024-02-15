@@ -44,7 +44,8 @@
               "src/assets/scss/config/material/app.scss",
               "src/assets/scss/icons.scss",
               "node_modules/shepherd.js/dist/css/shepherd.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "src/custom.scss"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

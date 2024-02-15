@@ -26,9 +26,40 @@
     </li>
 </ul>
 <!-- Tab panes -->
-<div class="tab-content text-muted">
+<div class="tab-content text-muted" hosContextMenu [contextMenuItems]="contextMenuItems" [mandatoryClass]="'t-content'">
     <div *ngFor="let item of tabs; let i = index" [class]="'tab-pane ' + (i === 0 ? 'active' : '')"
         [id]="'arrow-'+item.type" role="tabpanel">
         <app-comptable-table-classic [tableData]="item.data" [typeData]="item.type"></app-comptable-table-classic>
     </div>
 </div>
+
+<ng-template #suiviEdition let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Choisissez la quantité</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-8">
+            <app-input label="Quantité" [isMandatory]="true" [control]="qte" ></app-input>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <label>&nbsp;</label>
+            </div>
+            <button
+                    type="button"
+                    class="btn btn-primary w-100"
+                    (click)="updateSuivi()"
+            >
+                Appliquer
+            </button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div> -->
+  </ng-template>

@@ -1,7 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { HospitalisationStore } from "@stores/hospitalisation";
-import { Subject, Subscription, takeUntil } from "rxjs";
+import * as moment from "moment";
+import { Subject, Subscription, pairwise, takeUntil } from "rxjs";
+import { hasStateChanges } from "src/app/helpers/utils";
 
 @Component({
   selector: "app-fiche-comptable",
@@ -9,30 +12,115 @@ import { Subject, Subscription, takeUntil } from "rxjs";
   styleUrls: ["./fiche-comptable.component.scss"],
 })
 export class FicheComptableComponent implements OnInit {
+  @ViewChild("suiviEdition") suiviEdition!: TemplateRef<any>;
+
   subscription: Subscription | undefined;
   tabs: any[] = [];
   search = new FormControl();
+  qte = new FormControl();
+  suiviList: any[] = [];
+  hospitalisation: any = null
+  contextMenuItems = [
+    {
+      content: "Ajouter/Modifier",
+      events: {
+        click: (e: Event) => {
+          this.open(this.suiviEdition);
+        },
+      },
+    },
+    {
+      content: "Supprimer",
+      divider: "top",
+      events: {
+        click: (e: Event) => {
+          this.removeSuivi();
+        },
+      },
+    },
+  ];
 
-  constructor(private hospitalisationStore: HospitalisationStore) {}
+  constructor(
+    private hospitalisationStore: HospitalisationStore,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.hospitalisationStore.stateChanged.subscribe(
-      (state) => {
-        if (state) {
-          this.tabs = state.tabs;
+    this.subscription = this.hospitalisationStore.stateChanged
+      .pipe(pairwise())
+      .subscribe(([p, c]) => {
+        if (hasStateChanges(this.tabs, p.tabs, c.tabs)) {
+          this.tabs = c.tabs;
         }
+
+        if (hasStateChanges(this.suiviList, p.suivis, c.suivis)) {
+          this.suiviList = c.suivis;
+        }
+
+          this.hospitalisation = c.hospitalisation;
+      });
+
+      
+  }
+
+  filterInAll() {
+    this.hospitalisationStore.doFilterTabs(this.search.value);
+  }
+
+  clearSearch() {
+    this.search.setValue("");
+    this.hospitalisationStore.clearTabsFilter();
+  }
+
+  removeSuivi() {
+    this.hospitalisationStore.getValue("selectedElement")?.subscribe({
+      next: (v) => {
+        this.hospitalisationStore.removeSuivi(v.id);
+      },
+    });
+  }
+
+  open(content: any) {
+    this.hospitalisationStore.getValue("selectedElement")?.subscribe({
+      next: (v) => {
+        this.qte.setValue(v.qte)
       }
-    );
-
+    })
+    this.modalService.open(content, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
   }
 
-  filterInAll(){
-    this.hospitalisationStore.doFilterTabs(this.search.value)
-  }
+  updateSuivi() {
+    if (this.qte.value !== "") {
+      this.hospitalisationStore.getValue("selectedElement")?.subscribe({
+        next: (v) => {
+          const suivi = this.suiviList.find((d) => d.id === parseInt(v.id));
+          if(suivi !== undefined) {
+             suivi.qte = parseInt(this.qte.value);
+              suivi.id = parseInt(v.id)
+              this.hospitalisationStore.updateSuivi(suivi);
+          } else {
 
-  clearSearch(){
-    this.search.setValue('')
-    this.hospitalisationStore.clearTabsFilter()
+            const data = {
+              type: v.typeData,
+              type_id: parseInt(v.type_id),
+              qte: parseInt(this.qte.value),
+              apply_date: moment(v.day).format("YYYY-MM-DD[T]HH:mm:ss"),
+              hospit_id: this.hospitalisation.id,
+              id: Date.now()
+            };
+
+            this.hospitalisationStore.commitSuivi(data);
+          }
+         
+          this.modalService.dismissAll()
+        },
+      });
+    }
   }
 
   ngOnDestroy() {

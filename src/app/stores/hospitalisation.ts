@@ -39,6 +39,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     medecins: null,
     externes: null,
     interventions: null,
+    selectedElement: null,
   };
 
   constructor(private http: HttpClient) {
@@ -394,7 +395,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   saveHospitalisation(data: any, id: any): Observable<any> {
-    // console.log(id)
     if (id == null) {
       return this.http.post(hospitalisationEndpoint + "?repeat=1", data);
     } else {
@@ -402,13 +402,18 @@ export class HospitalisationStore extends ObservableStore<any> {
     }
   }
 
+  selectContextMenuElement(payload: any){
+    this.updateStore({ selectedElement: payload }, "LIST");
+  }
+
   commitSuivi(data: any) {
     this.http.post(suiviEndpoint, data).subscribe({
       next: (v) => {
         data.id = v;
         const state = this.getState();
-        state.suivis.push(data)
-        this.setState({suivis: state.suivis}, "HOSPITALISATION : COMMIT SUIVI");
+        const list = JSON.parse(JSON.stringify(state.suivis))
+        list.push(data)
+        this.setState({suivis: list}, "HOSPITALISATION : COMMIT SUIVI");
       },
       error: (e) => console.error(e),
     });
@@ -417,13 +422,10 @@ export class HospitalisationStore extends ObservableStore<any> {
   updateSuivi(data: any) {
     this.http.put(suiviEndpoint + "/" + data.id, data).subscribe({
       next: (v) => {
-        data.id = v;
-        console.log(data);
         const state = this.getState();
-        let s = state.suivis.find((d: any) => d.id !== data.id)
-        s.qte = data.qte
-        this.setState({suivis: state.suivis}, "HOSPITALISATION : UPDATE SUIVI");
-        console.log(data);
+        const list = state.suivis
+        list.find((d: any) => d.id === data.id).qte = data.qte
+        this.setState({suivis: list}, "HOSPITALISATION : UPDATE SUIVI");
       },
       error: (e) => console.error(e),
     });
@@ -433,9 +435,10 @@ export class HospitalisationStore extends ObservableStore<any> {
     this.http.delete(suiviEndpoint + "/" + id).subscribe({
       next: (v) => {
         const state = this.getState();
-        state.suivis = state.suivis.filter((data: any) => data.id !== id)
-        this.setState({suivis: state.suivis}, "HOSPITALISATION : REMOVE SUIVI");
-        console.log(v) },
+        const list = state.suivis
+        const remains = list.filter((data: any) => data.id !== parseInt(id))
+        this.setState({suivis: remains}, "HOSPITALISATION : REMOVE SUIVI");
+      },
       error: (e) => console.error(e),
     });
   }

@@ -14,6 +14,7 @@ var timer: any, // timer required to reset
 })
 export class ComptableTableClassicComponent implements OnInit {
   subscription: Subscription | undefined;
+  
 
   @Input() typeData: string | null | undefined;
   @Input() tableData: any[] = [];
@@ -42,12 +43,14 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.hospitalisationStore.stateChanged.subscribe(
+    this.subscription = this.hospitalisationStore.stateChanged
+    .subscribe(
       (state) => {
         if (state) {
           this.patient = state.patient;
           this.hospitalisation = state.hospitalisation;
           this.suivis = state.suivis;
+  
         }
       }
     );
@@ -265,12 +268,16 @@ export class ComptableTableClassicComponent implements OnInit {
           (li !== null && li !== undefined ? li.id : null)
         );
       } else {
+        
         const res = this.suivis.find(
           (t) =>
             t["type"] === this.typeData &&
             t["type_id"] === type_id &&
             moment(day).isSame(moment(t["apply_date"]))
         );
+
+        // console.log(res)
+
         return res !== null && res !== undefined ? res.id : null;
       }
     } else {
@@ -336,14 +343,17 @@ export class ComptableTableClassicComponent implements OnInit {
 
   getRowQte(day: moment.Moment, type_id: number, sub_id?: number) {
     if (this.suivis !== null && this.suivis !== undefined) {
-      if (this.typeData !== "chambres") {
+      if (this.typeData !== "chambres") {       
         const res = this.suivis.find(
           (t) =>
             t["type"] === this.typeData &&
             t["type_id"] === type_id &&
             moment(day).isSame(moment(t["apply_date"]))
         );
-        return res !== null && res !== undefined ? res.qte : '';
+
+        return res?.qte;
+
+        // return res !== null && res !== undefined ? res.qte : '';
       }
     } else {
       return '';
@@ -374,10 +384,10 @@ export class ComptableTableClassicComponent implements OnInit {
         this.suivis.push(c);
         this.hospitalisationStore.commitSuivi(l);
         this.suivis.push(l);
+        
       }
     } else {
       const row = this.getRowId(day, type_id, extra);
-
       if (row === null || row === undefined) {
         const data = {
           type: this.typeData,
@@ -385,20 +395,26 @@ export class ComptableTableClassicComponent implements OnInit {
           qte: 1,
           apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
           hospit_id: this.hospitalisation.id,
+          id: Date.now()
         };
         this.hospitalisationStore.commitSuivi(data);
-        this.suivis.push(data);
+        // this.suivis.push(data);
       } else {
         let rowValue = this.suivis.find((s) => s.id === row);
         rowValue.qte++;
 
         delete rowValue.created_at
         delete rowValue.updated_at
-        delete rowValue.id
+        // delete rowValue.id
+
+        // console.log(rowValue)
 
         rowValue.hospit_id = this.hospitalisation.id
-        this.hospitalisationStore.commitSuivi(rowValue);
+        this.hospitalisationStore.updateSuivi(rowValue);
+
       }
+
+      // console.log(this.suivis.length)
     }
   }
 
@@ -428,10 +444,10 @@ export class ComptableTableClassicComponent implements OnInit {
 
           delete rowValue.created_at
           delete rowValue.updated_at
-          delete rowValue.id
+          // delete rowValue.id
 
           rowValue.hospit_id = this.hospitalisation.id
-          this.hospitalisationStore.commitSuivi(rowValue);
+          this.hospitalisationStore.updateSuivi(rowValue);
         } else {
           this.hospitalisationStore.removeSuivi(row);
           this.suivis = this.suivis.filter((s) => s.id !== row);
@@ -455,6 +471,28 @@ export class ComptableTableClassicComponent implements OnInit {
       this.removeItem(day, type_id, extra);
     }
   }
+
+  // rClick($event : any, user : any){
+  //   if($event.which === 3) {
+
+  //     console.log($event)
+
+  //     this.rightPanelStyle = {
+  //       'display' :'block',
+  //       'position' : 'absolute',
+  //       'left.px': $event.screenX - 380,
+  //       'top.px' : $event.screenY - 223
+  //     }
+
+  //     console.log(user)
+  //   }
+  // }
+
+  // closeContextMenu() {
+  //   this.rightPanelStyle= {
+  //     'display' : 'block'
+  //   }
+  // }
 
   ngOnChanges(): void {
     this.calculateNumberOfPages();
