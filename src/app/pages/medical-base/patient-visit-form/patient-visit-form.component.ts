@@ -44,6 +44,8 @@ import { Location } from "@angular/common";
 import { IsNotDirty } from "src/app/guards/is-not-dirty.guard";
 import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
 import { AppointmentFormModalComponent } from "../appointment-form-modal/appointment-form-modal.component";
+import { AdultPatientBackgroundsModalComponent } from "./adult-patient-backgrounds-modal/adult-patient-backgrounds-modal.component";
+import { ChildPatientBackgroundsModalComponent } from "./child-patient-backgrounds-modal/child-patient-backgrounds-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -171,6 +173,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
       return;
     }
+
     if (this.patientVisitService.selectedWaitingListItem) {
       this.activePatient =
         this.patientVisitService.selectedWaitingListItem.patient;
@@ -243,7 +246,6 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     //   !this.patientVisitService.selectedPatient
     // ) {
     //   return Promise.resolve(true);
-
     // }
 
     console.log("Form 1 is dirty : " + this.patientVisitForm1.dirty);
@@ -594,11 +596,31 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     }
   }
 
-  // ON FORM INPUTS CHANGES -----------------------------------------------------------------------------------------------------------
-  onFormInputsChanges() {
-    this.visitDateControl.valueChanges.subscribe((value) => {
-      this.waitingDetails.visitDate = new Date();
-    });
+  // OPEN PATIENT INFOS MODALS -------------------------------------------------------------------------------------------------------
+  openBackgroundsModal() {
+    let backgroundsModalRef;
+
+    if (this.isActivePatientAdult) {
+      backgroundsModalRef = this.modalService.open(
+        AdultPatientBackgroundsModalComponent,
+        {
+          size: "lg",
+          centered: true,
+          scrollable: true,
+          backdrop: "static",
+        }
+      );
+    } else {
+      backgroundsModalRef = this.modalService.open(
+        ChildPatientBackgroundsModalComponent,
+        {
+          size: "lg",
+          centered: true,
+          scrollable: true,
+          backdrop: "static",
+        }
+      );
+    }
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
@@ -651,6 +673,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           console.log(error);
         },
       });
+  }
+
+  // ON FORM INPUTS CHANGES -----------------------------------------------------------------------------------------------------------
+  onFormInputsChanges() {
+    this.visitDateControl.valueChanges.subscribe((value) => {
+      this.waitingDetails.visitDate = new Date();
+    });
   }
 
   // SAVE CONSULTATION/VISIT INFOS --------------------------------------------------------------------------------------------------

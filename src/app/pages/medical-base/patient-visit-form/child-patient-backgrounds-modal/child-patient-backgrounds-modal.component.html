@@ -1,0 +1,182 @@
+<app-simple-modal title="Antécédents pour mineur">
+  <form [formGroup]="backgroundsForm">
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [clearable]="false"
+          [searchable]="false"
+          [editable]="false"
+          label="Accouchement par"
+          [options]="birthedByOptions"
+          [control]="birthedByControl"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6">
+        <ng-container *ngIf="birthedByControl.value?.id === 2">
+          <app-select
+            [clearable]="false"
+            [searchable]="false"
+            [editable]="false"
+            label="Cause de la césarienne"
+            [options]="birthedByDetailOptions"
+            [control]="birthedByDetailControl"
+          >
+          </app-select>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [clearable]="false"
+          [searchable]="false"
+          [editable]="false"
+          label="Incconnu"
+          [options]="unknownOptions"
+          [control]="unknownControl"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-input
+          [alignRight]="true"
+          maskFormat="separator"
+          label="Hospitalisations antérieures"
+          [control]="hospitalisationsControl"
+        >
+        </app-input>
+      </div>
+      <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <ng-container *ngIf="hospitalisationsControl.value >= 1">
+          <button
+            class="btn btn-secondary"
+            (click)="openMultiInputModal(1, hospitalisationsControl.value)"
+          >
+            Renseigner les détails des hospitalisations
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <label for="allergiesId" class="form-label custom-form-label-sm">
+          Allergies connues
+        </label>
+        <textarea
+          id="allergiesId"
+          class="form-control form-control-sm mb-2"
+          rows="2"
+          [formControl]="allergiesControl"
+        ></textarea>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [clearable]="false"
+          [searchable]="false"
+          [editable]="false"
+          label="Scholarisé ?"
+          [options]="scholarizedOptions"
+          [control]="scholarizedControl"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+
+    <hr />
+
+    <ng-container *ngIf="scholarizedControl.value?.id === true">
+      <div class="row">
+        <div class="col-md-3">
+          <ng-container *ngFor="let gradeName of matGrades; index as i">
+            <div class="form-check form-radio form-radio-secondary">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="scholarGrade"
+                [id]="'matGrade-' + i"
+                [value]="gradeName"
+                [formControl]="scholarGradeControl"
+              />
+              <label class="form-check-label" [for]="'matGrade-' + i">
+                {{ gradeName }}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="col-md-3">
+          <ng-container *ngFor="let gradeName of primGrades; index as i">
+            <div class="form-check form-radio form-radio-secondary">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="scholarGrade"
+                [id]="'primGrade-' + i"
+                [value]="gradeName"
+                [formControl]="scholarGradeControl"
+              />
+              <label class="form-check-label" [for]="'primGrade-' + i">
+                {{ gradeName }}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="col-md-3">
+          <ng-container *ngFor="let gradeName of middleGrades; index as i">
+            <div class="form-check form-radio form-radio-secondary">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="scholarGrade"
+                [id]="'middleGrade-' + i"
+                [value]="gradeName"
+                [formControl]="scholarGradeControl"
+              />
+              <label class="form-check-label" [for]="'middleGrade-' + i">
+                {{ gradeName }}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="col-md-3">
+          <ng-container *ngFor="let gradeName of highGrades; index as i">
+            <div class="form-check form-radio form-radio-secondary">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="scholarGrade"
+                [id]="'highGrade-' + i"
+                [value]="gradeName"
+                [formControl]="scholarGradeControl"
+              />
+              <label class="form-check-label" [for]="'highGrade-' + i">
+                {{ gradeName }}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <hr />
+    </ng-container>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-success">Valider et fermer</button>
+    </div>
+  </form>
+</app-simple-modal>

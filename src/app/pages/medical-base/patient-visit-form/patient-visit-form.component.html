@@ -136,13 +136,14 @@
         </div>
       </div> -->
 
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-md-6">
-          <label for="comments" class="form-label"> Commentaires </label>
+          <label for="comments" class="form-label custom-form-label-sm">
+            Commentaires
+          </label>
           <textarea
             id="comments"
             class="form-control form-control-sm"
-            placeholder="..."
             rows="2"
             [formControl]="commentsControl"
             [ngClass]="{
@@ -155,12 +156,15 @@
         </div>
 
         <div class="col-md-6">
-          <label for="backgrounds" class="form-label"> Antécédents </label>
+          <label for="backgrounds" class="form-label custom-form-label-sm">
+            Antécédents
+          </label>
           <textarea
+            [readOnly]="true"
             id="backgrounds"
             class="form-control form-control-sm"
-            placeholder="..."
             rows="2"
+            (click)="openBackgroundsModal()"
             [formControl]="backgroundsControl"
             [ngClass]="{
               'is-invalid':
@@ -686,13 +690,12 @@
       <div class="row">
         <div class="col-lg-9">
           <div class="col-md-12 mb-2">
-            <label for="diseaseHistory" class="form-label">
+            <label for="diseaseHistory" class="form-label custom-form-label-sm">
               Histoire de la maladie
             </label>
             <textarea
               id="diseaseHistory"
               class="form-control form-control-sm"
-              placeholder="..."
               rows="2"
               [formControl]="diseaseHistoryControl"
               [ngClass]="{
@@ -706,13 +709,12 @@
           </div>
 
           <div class="col-md-12 mb-3 mb-lg-0">
-            <label for="diseaseHistory" class="form-label">
+            <label for="diseaseHistory" class="form-label custom-form-label-sm">
               Médicaments prescrits
             </label>
             <textarea
               id="diseaseHistory"
               class="form-control form-control-sm"
-              placeholder="..."
               rows="2"
               [formControl]="prescribedMedicationControl"
               [ngClass]="{

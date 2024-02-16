@@ -23,6 +23,9 @@ import { CountdownModule } from "ngx-countdown";
 import { AppointmentFormModalComponent } from "./appointment-form-modal/appointment-form-modal.component";
 import { AllAppointmentsModalComponent } from "./appointment-form/all-appointments-modal/all-appointments-modal.component";
 import { MedicinesPrescriptionsModule } from "./submodules/medicines-prescriptions/medicines-prescriptions.module";
+import { AdultPatientBackgroundsModalComponent } from "./patient-visit-form/adult-patient-backgrounds-modal/adult-patient-backgrounds-modal.component";
+import { ChildPatientBackgroundsModalComponent } from "./patient-visit-form/child-patient-backgrounds-modal/child-patient-backgrounds-modal.component";
+import { MultiInputModalComponent } from './patient-visit-form/multi-input-modal/multi-input-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { MedicinesPrescriptionsModule } from "./submodules/medicines-prescriptio
     PatientVisitFormModalComponent,
     AppointmentFormModalComponent,
     AllAppointmentsModalComponent,
+    AdultPatientBackgroundsModalComponent,
+    ChildPatientBackgroundsModalComponent,
+    MultiInputModalComponent,
   ],
   imports: [
     CommonModule,
