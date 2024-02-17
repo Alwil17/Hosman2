@@ -6,7 +6,9 @@ import { PatientWaitingListPageComponent } from "./patient-waiting-list-page/pat
 import {
   NgbCollapseModule,
   NgbDropdownModule,
+  NgbNavModule,
   NgbPaginationModule,
+  NgbTooltipModule,
   NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -25,7 +27,9 @@ import { AllAppointmentsModalComponent } from "./appointment-form/all-appointmen
 import { MedicinesPrescriptionsModule } from "./submodules/medicines-prescriptions/medicines-prescriptions.module";
 import { AdultPatientBackgroundsModalComponent } from "./patient-visit-form/adult-patient-backgrounds-modal/adult-patient-backgrounds-modal.component";
 import { ChildPatientBackgroundsModalComponent } from "./patient-visit-form/child-patient-backgrounds-modal/child-patient-backgrounds-modal.component";
-import { MultiInputModalComponent } from './patient-visit-form/multi-input-modal/multi-input-modal.component';
+import { MultiInputModalComponent } from "./patient-visit-form/multi-input-modal/multi-input-modal.component";
+import { SiblingsModalComponent } from "./patient-visit-form/siblings-modal/siblings-modal.component";
+import { CoefficientSocialModalComponent } from "./patient-visit-form/coefficient-social-modal/coefficient-social-modal.component";
 
 @NgModule({
   declarations: [
@@ -41,6 +45,8 @@ import { MultiInputModalComponent } from './patient-visit-form/multi-input-modal
     AdultPatientBackgroundsModalComponent,
     ChildPatientBackgroundsModalComponent,
     MultiInputModalComponent,
+    SiblingsModalComponent,
+    CoefficientSocialModalComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +62,8 @@ import { MultiInputModalComponent } from './patient-visit-form/multi-input-modal
     CountdownModule,
     NgbTypeaheadModule,
     MedicinesPrescriptionsModule,
+    NgbTooltipModule,
+    NgbNavModule,
   ],
   exports: [AppointmentFormComponent],
 })

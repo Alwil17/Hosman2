@@ -322,6 +322,26 @@
     </form>
 
     <div class="d-flex justify-content-end">
+      <ng-container *ngIf="!isActivePatientAdult">
+        <button
+          type="button"
+          class="btn btn-info btn-label waves-effect waves-light me-2"
+          (click)="openSiblingsModal()"
+        >
+          <i class="ri-team-fill label-icon align-middle fs-16 me-2"></i>
+          Fratrie
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary btn-label waves-effect waves-light me-2"
+          (click)="openCoefficientSocialModal()"
+        >
+          <i class="ri-hand-coin-fill label-icon align-middle fs-16 me-2"></i>
+          Coefficient social
+        </button>
+      </ng-container>
+
       <button
         type="button"
         class="btn btn-success btn-label waves-effect waves-light"

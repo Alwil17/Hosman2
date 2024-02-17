@@ -46,6 +46,8 @@ import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confi
 import { AppointmentFormModalComponent } from "../appointment-form-modal/appointment-form-modal.component";
 import { AdultPatientBackgroundsModalComponent } from "./adult-patient-backgrounds-modal/adult-patient-backgrounds-modal.component";
 import { ChildPatientBackgroundsModalComponent } from "./child-patient-backgrounds-modal/child-patient-backgrounds-modal.component";
+import { SiblingsModalComponent } from "./siblings-modal/siblings-modal.component";
+import { CoefficientSocialModalComponent } from "./coefficient-social-modal/coefficient-social-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -621,6 +623,29 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         }
       );
     }
+  }
+
+  openSiblingsModal() {
+    const siblingsModalRef = this.modalService.open(SiblingsModalComponent, {
+      size: "xl",
+      centered: true,
+      scrollable: true,
+      backdrop: "static",
+    });
+
+    siblingsModalRef.componentInstance.patientInfos = this.activePatient;
+  }
+
+  openCoefficientSocialModal() {
+    const coefficientSocialModalRef = this.modalService.open(
+      CoefficientSocialModalComponent,
+      {
+        size: "md",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
