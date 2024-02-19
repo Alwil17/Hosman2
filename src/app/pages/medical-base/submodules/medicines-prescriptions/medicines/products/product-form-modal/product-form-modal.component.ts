@@ -166,43 +166,46 @@ export class ProductFormModalComponent implements OnInit {
     this.isProductFormSubmitted = false;
 
     this.nameController.setValue(null);
+    this.nameController.markAsUntouched();
+    this.nameController.markAsPristine();
+
     this.dciController.setValue(null);
+    this.dciController.markAsUntouched();
+    this.dciController.markAsPristine();
+
     this.infosController.setValue(null);
+    this.infosController.markAsUntouched();
+    this.infosController.markAsPristine();
 
-    this.classesFields.controls.forEach((value, index) => {
+    while (this.classesFields.controls.length != 0) {
       this.removeClassesField(0);
-    });
-    this.addClassesField();
+    }
 
-    this.indicationsFields.controls.forEach((value, index) => {
+    while (this.indicationsFields.controls.length != 0) {
       this.removeIndicationsField(0);
-    });
-    this.addIndicationsField();
+    }
 
-    this.sideEffectsFields.controls.forEach((value, index) => {
+    while (this.sideEffectsFields.controls.length != 0) {
       this.removeSideEffectsField(0);
-    });
-    this.addSideEffectsField();
+    }
 
-    this.contraIndicationsFields.controls.forEach((value, index) => {
+    while (this.contraIndicationsFields.controls.length != 0) {
       this.removeContraIndicationsField(0);
-    });
-    this.addContraIndicationsField();
+    }
 
-    this.childPosologiesFields.controls.forEach((value, index) => {
+    while (this.childPosologiesFields.controls.length != 0) {
       this.removeChildPosologiesField(0);
-    });
-    this.addChildPosologiesField();
+    }
 
-    this.adultPosologiesFields.controls.forEach((value, index) => {
+    while (this.adultPosologiesFields.controls.length != 0) {
       this.removeAdultPosologiesField(0);
-    });
-    this.addAdultPosologiesField();
+    }
 
-    this.formsFields.controls.forEach((value, index) => {
+    while (this.formsFields.controls.length != 0) {
       this.removeFormsField(0);
-    });
-    this.addFormsField();
+    }
+
+    this.setProductFormFieldsInitialValues();
   }
 
   // getInvalidFields() {
@@ -349,7 +352,7 @@ export class ProductFormModalComponent implements OnInit {
         if (emit) {
           this.isProductCreated.emit(true);
         } else {
-          // this.emptyProductFormFields();
+          this.emptyProductFormFields();
         }
       },
       error: (e) => {
