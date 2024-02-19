@@ -497,9 +497,9 @@ export class ComptableTableClassicComponent implements OnInit {
       if (
         evolution !== undefined &&
         "extras" in evolution &&
-        "comments" in evolution.extras
+        "comments" in JSON.parse(evolution.extras)
       ) {
-        this.currentEvolution.setValue(evolution.extras.comments);
+        this.currentEvolution.setValue(JSON.parse(evolution.extras).comments);
       } else {
         this.currentEvolution.setValue("");
       }
@@ -522,8 +522,8 @@ export class ComptableTableClassicComponent implements OnInit {
           moment(day).isSame(moment(t["apply_date"]))
       );
 
-      if (res !== undefined && "extras" in res && "comments" in res.extras) {
-        return res.extras.comments;
+      if (res !== undefined && "extras" in res && "comments" in JSON.parse(res.extras)) {
+        return JSON.parse(res.extras).comments;
       } else {
         return "";
       }
@@ -539,7 +539,10 @@ export class ComptableTableClassicComponent implements OnInit {
 
     if (res !== undefined) {
 
-      res.extras.comments = this.currentEvolution.value
+      res.extras = JSON.stringify({
+        comments: this.currentEvolution.value,
+      })
+      this.hospitalisationStore.updateSuivi(res);
 
     } else {
       const data = {
@@ -549,13 +552,13 @@ export class ComptableTableClassicComponent implements OnInit {
         apply_date: moment(this.currentEvolutionDay).format("YYYY-MM-DD[T]HH:mm:ss"),
         hospit_id: this.hospitalisation.id,
         id: Date.now(),
-        extras: {
+        extras: JSON.stringify({
           comments: this.currentEvolution.value,
-        },
+        }),
       };
-      // this.hospitalisationStore.commitSuivi(data);
+      this.hospitalisationStore.commitSuivi(data);
 
-      this.suivis.push(data);
+      // this.suivis.push(data);
     }
 
     this.modalService.dismissAll();

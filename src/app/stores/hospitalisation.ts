@@ -432,7 +432,9 @@ export class HospitalisationStore extends ObservableStore<any> {
       next: (v) => {
         const state = this.getState();
         const list = state.suivis
-        list.find((d: any) => d.id === data.id).qte = data.qte
+        // list.find((d: any) => d.id === data.id).qte = data.qte
+        const i = list.findIndex((d: any) => d.id === data.id)
+        list[i] = data
         this.setState({suivis: list}, "HOSPITALISATION : UPDATE SUIVI");
       },
       error: (e) => console.error(e),
