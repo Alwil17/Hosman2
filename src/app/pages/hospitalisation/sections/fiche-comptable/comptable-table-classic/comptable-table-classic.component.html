@@ -18,7 +18,11 @@
     <tbody>
       <tr *ngFor="let d of days; let k = index" class="cursor-pointer" (dblclick)="showEvolution(d.o)">
         <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
-        <td class="td-break w-700">{{ getEvolutionData(d.o) }}</td>
+        <td class="t-content td-break w-700"
+          [attr.data-item-id]="getEvolutionDataId(d.o)"
+          [attr.data-item-day]="d.o" 
+          [attr.data-item-typedata]="typeData" 
+        >{{ getEvolutionData(d.o) }}</td>
       </tr>
     </tbody>
   </table>

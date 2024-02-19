@@ -530,6 +530,22 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
+  getEvolutionDataId(day: moment.Moment) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const res = this.suivis.find(
+        (t) =>
+          t["type"] === "evolution" &&
+          moment(day).isSame(moment(t["apply_date"]))
+      );
+
+      if (res !== undefined && "extras" in res && "comments" in JSON.parse(res.extras)) {
+        return res.id;
+      } else {
+        return "";
+      }
+    }
+  }
+
   SaveEvolution() {
     const res = this.suivis.find(
       (t) =>

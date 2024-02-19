@@ -3,6 +3,7 @@ import { FormControl } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import * as moment from "moment";
+import { ToastrService } from "ngx-toastr";
 import { Subject, Subscription, pairwise, takeUntil } from "rxjs";
 import { hasStateChanges } from "src/app/helpers/utils";
 
@@ -42,7 +43,8 @@ export class FicheComptableComponent implements OnInit {
 
   constructor(
     private hospitalisationStore: HospitalisationStore,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toast: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -83,15 +85,20 @@ export class FicheComptableComponent implements OnInit {
   open(content: any) {
     this.hospitalisationStore.getValue("selectedElement")?.subscribe({
       next: (v) => {
-        this.qte.setValue(v.qte)
+        if(v.typeData === 'evolution'){
+          this.toast.error("Hospitalisation", "Veuillez double-cliquez sur le jour pour Ajouter ou Modifier");
+        } else {
+          this.qte.setValue(v.qte)
+          this.modalService.open(content, {
+            size: "md",
+            centered: true,
+            keyboard: false,
+            backdrop: "static",
+          });
+        }
+        
       }
     })
-    this.modalService.open(content, {
-      size: "md",
-      centered: true,
-      keyboard: false,
-      backdrop: "static",
-    });
   }
 
   updateSuivi() {
