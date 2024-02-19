@@ -1,8 +1,18 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from "@angular/core";
 import { Subscription } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { FormControl } from "@angular/forms";
 import * as moment from "moment";
+import * as Yup from "yup";
+import { validateYupSchema } from "src/app/helpers/utils";
+import { ErrorMessages } from "src/app/helpers/messages";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 var timer: any, // timer required to reset
   timeout = 200;
@@ -14,7 +24,7 @@ var timer: any, // timer required to reset
 })
 export class ComptableTableClassicComponent implements OnInit {
   subscription: Subscription | undefined;
-  
+  @ViewChild("evolutionEdition") evolutionEdition!: TemplateRef<any>;
 
   @Input() typeData: string | null | undefined;
   @Input() tableData: any[] = [];
@@ -36,21 +46,25 @@ export class ComptableTableClassicComponent implements OnInit {
   currentPage: number = 1;
   suivis: any[] = [];
 
-  constructor(private hospitalisationStore: HospitalisationStore) {
+  currentEvolution = new FormControl(null, []);
+  currentEvolutionDay: moment.Moment = moment();
+
+  constructor(
+    private hospitalisationStore: HospitalisationStore,
+    private modalService: NgbModal
+  ) {
     this.search.valueChanges.subscribe((value) => {
       this.doFilter(value);
     });
   }
 
   ngOnInit(): void {
-    this.subscription = this.hospitalisationStore.stateChanged
-    .subscribe(
+    this.subscription = this.hospitalisationStore.stateChanged.subscribe(
       (state) => {
         if (state) {
           this.patient = state.patient;
           this.hospitalisation = state.hospitalisation;
           this.suivis = state.suivis;
-  
         }
       }
     );
@@ -81,7 +95,7 @@ export class ComptableTableClassicComponent implements OnInit {
 
       this.list = d;
 
-      this.setCurrentPage(1)
+      this.setCurrentPage(1);
     }
 
     switch (this.typeData) {
@@ -268,7 +282,6 @@ export class ComptableTableClassicComponent implements OnInit {
           (li !== null && li !== undefined ? li.id : null)
         );
       } else {
-        
         const res = this.suivis.find(
           (t) =>
             t["type"] === this.typeData &&
@@ -343,7 +356,7 @@ export class ComptableTableClassicComponent implements OnInit {
 
   getRowQte(day: moment.Moment, type_id: number, sub_id?: number) {
     if (this.suivis !== null && this.suivis !== undefined) {
-      if (this.typeData !== "chambres") {       
+      if (this.typeData !== "chambres") {
         const res = this.suivis.find(
           (t) =>
             t["type"] === this.typeData &&
@@ -356,14 +369,14 @@ export class ComptableTableClassicComponent implements OnInit {
         // return res !== null && res !== undefined ? res.qte : '';
       }
     } else {
-      return '';
+      return "";
     }
   }
 
   selectItem(day: moment.Moment, type_id: number, extra?: any) {
     if (this.typeData == "chambres") {
       const row = this.getRowId(day, type_id, extra);
-      if (row.toString().includes('null')) {
+      if (row.toString().includes("null")) {
         const c = {
           type: "chambres",
           type_id: extra,
@@ -384,7 +397,6 @@ export class ComptableTableClassicComponent implements OnInit {
         this.suivis.push(c);
         this.hospitalisationStore.commitSuivi(l);
         this.suivis.push(l);
-        
       }
     } else {
       const row = this.getRowId(day, type_id, extra);
@@ -395,7 +407,7 @@ export class ComptableTableClassicComponent implements OnInit {
           qte: 1,
           apply_date: moment(day).format("YYYY-MM-DD[T]HH:mm:ss"),
           hospit_id: this.hospitalisation.id,
-          id: Date.now()
+          id: Date.now(),
         };
         this.hospitalisationStore.commitSuivi(data);
         // this.suivis.push(data);
@@ -403,15 +415,14 @@ export class ComptableTableClassicComponent implements OnInit {
         let rowValue = this.suivis.find((s) => s.id === row);
         rowValue.qte++;
 
-        delete rowValue.created_at
-        delete rowValue.updated_at
+        delete rowValue.created_at;
+        delete rowValue.updated_at;
         // delete rowValue.id
 
         // console.log(rowValue)
 
-        rowValue.hospit_id = this.hospitalisation.id
+        rowValue.hospit_id = this.hospitalisation.id;
         this.hospitalisationStore.updateSuivi(rowValue);
-
       }
 
       // console.log(this.suivis.length)
@@ -442,11 +453,11 @@ export class ComptableTableClassicComponent implements OnInit {
         if (rowValue.qte > 1) {
           rowValue.qte--;
 
-          delete rowValue.created_at
-          delete rowValue.updated_at
+          delete rowValue.created_at;
+          delete rowValue.updated_at;
           // delete rowValue.id
 
-          rowValue.hospit_id = this.hospitalisation.id
+          rowValue.hospit_id = this.hospitalisation.id;
           this.hospitalisationStore.updateSuivi(rowValue);
         } else {
           this.hospitalisationStore.removeSuivi(row);
@@ -472,27 +483,83 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  // rClick($event : any, user : any){
-  //   if($event.which === 3) {
+  showEvolution(day: moment.Moment) {
+    let evolution = null;
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const res = this.suivis.find(
+        (t) =>
+          t["type"] === "evolution" &&
+          moment(day).isSame(moment(t["apply_date"]))
+      );
 
-  //     console.log($event)
+      evolution = res;
 
-  //     this.rightPanelStyle = {
-  //       'display' :'block',
-  //       'position' : 'absolute',
-  //       'left.px': $event.screenX - 380,
-  //       'top.px' : $event.screenY - 223
-  //     }
+      if (
+        evolution !== undefined &&
+        "extras" in evolution &&
+        "comments" in evolution.extras
+      ) {
+        this.currentEvolution.setValue(evolution.extras.comments);
+      } else {
+        this.currentEvolution.setValue("");
+      }
 
-  //     console.log(user)
-  //   }
-  // }
+      this.currentEvolutionDay = day;
+      this.modalService.open(this.evolutionEdition, {
+        size: "lg",
+        centered: true,
+        keyboard: false,
+        backdrop: "static",
+      });
+    }
+  }
 
-  // closeContextMenu() {
-  //   this.rightPanelStyle= {
-  //     'display' : 'block'
-  //   }
-  // }
+  getEvolutionData(day: moment.Moment) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const res = this.suivis.find(
+        (t) =>
+          t["type"] === "evolution" &&
+          moment(day).isSame(moment(t["apply_date"]))
+      );
+
+      if (res !== undefined && "extras" in res && "comments" in res.extras) {
+        return res.extras.comments;
+      } else {
+        return "";
+      }
+    }
+  }
+
+  SaveEvolution() {
+    const res = this.suivis.find(
+      (t) =>
+        t["type"] === "evolution" &&
+        moment(this.currentEvolutionDay).isSame(moment(t["apply_date"]))
+    );
+
+    if (res !== undefined) {
+
+      res.extras.comments = this.currentEvolution.value
+
+    } else {
+      const data = {
+        type: this.typeData,
+        type_id: null,
+        qte: 0,
+        apply_date: moment(this.currentEvolutionDay).format("YYYY-MM-DD[T]HH:mm:ss"),
+        hospit_id: this.hospitalisation.id,
+        id: Date.now(),
+        extras: {
+          comments: this.currentEvolution.value,
+        },
+      };
+      // this.hospitalisationStore.commitSuivi(data);
+
+      this.suivis.push(data);
+    }
+
+    this.modalService.dismissAll();
+  }
 
   ngOnChanges(): void {
     this.calculateNumberOfPages();

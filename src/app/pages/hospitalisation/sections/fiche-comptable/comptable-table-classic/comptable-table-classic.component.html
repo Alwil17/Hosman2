@@ -1,15 +1,29 @@
 <form class="app-search d-none d-md-block">
   <div class="position-relative">
-    <app-input [placeholder]="'Recherche'" [control]="search">
-
-    </app-input>
+    <app-input [placeholder]="'Recherche'" [control]="search"></app-input>
     <span class="mdi mdi-magnify search-widget-icon"></span>
     <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
       id="search-close-options"></span>
   </div>
 </form>
 <div class="table-responsive fiche-comptable">
-  <table class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+  <!-- evolution tab -->
+  <table *ngIf="typeData === 'evolution'" class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center">Jours</th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of days; let k = index" class="cursor-pointer" (dblclick)="showEvolution(d.o)">
+        <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
+        <td class="td-break w-700">{{ getEvolutionData(d.o) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table *ngIf="typeData !== 'evolution'" class="table table-responsive table-bordered align-middle table-nowrap mb-0">
     <thead>
       <tr>
         <th scope="col" class="fixed-column des-title">Désignation</th>
@@ -53,4 +67,27 @@
       </button>
     </div>
   </div>
+</div>
+
+<!-- Evolution modal -->
+<div *ngIf="typeData === 'evolution'">
+<ng-template #evolutionEdition let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Mettre à jour l'évolution du malade</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+          <app-text label="Commentaire" [isMandatory]="true" [control]="currentEvolution" [rows]="10" [fontSize]="'25px'"></app-text>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Annuler</button>
+    <button type="button" class="btn btn-primary" (click)="SaveEvolution()">Enrégistrer</button>
+  </div>
+</ng-template>
 </div>

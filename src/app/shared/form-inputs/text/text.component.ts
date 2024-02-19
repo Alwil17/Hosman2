@@ -12,6 +12,7 @@ export class TextComponent implements OnInit {
   @Input() rows = 3;
   @Input() placeholder = "";
   @Input() control = new FormControl();
+  @Input() fontSize: string = "0.8125rem"
 
   constructor() { }
 

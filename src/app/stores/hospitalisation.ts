@@ -198,6 +198,14 @@ export class HospitalisationStore extends ObservableStore<any> {
 
             fData = [...actes, ...fData];
 
+            // add evolution tab
+            fData.push({
+              color: "red",
+              name: "Evolution",
+              type: "evolution",
+              data: []
+            })
+
             let sorted_tabs = fData.sort((a: any, b: any) => {
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();
