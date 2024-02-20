@@ -10,7 +10,7 @@
           <div *ngFor="let d of diagnostics; let k = index" class="col-md-12 mb-3">
             <div class="row">
               <div class="col-md-10">
-                <app-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true"></app-input>
+                <h-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true"></h-input>
               </div>
               <div class="col-md-2">
                 <label>&nbsp;</label>
@@ -24,11 +24,11 @@
           </div>
 
           <div class="col-md-12 mb-3">
-            <app-select label="Femme enceinte" 
+            <h-select label="Femme enceinte" 
             [isMandatory]="true" [clearable]="false" 
             [options]="enceinteOptions"
               [bindValue]="'value'" 
-              [control]="enceinte"></app-select>
+              [control]="enceinte"></h-select>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <app-input label="Date" type="date" [isMandatory]="true"></app-input>
+            <h-input label="Date" type="date" [isMandatory]="true"></h-input>
           </div>
         </div>
       </div>

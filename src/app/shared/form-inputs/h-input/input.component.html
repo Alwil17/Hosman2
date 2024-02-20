@@ -1,0 +1,77 @@
+<ng-container *ngIf="isLayoutHorizontal; else layoutVertical">
+  <div class="row">
+    <div class="col-lg-6 d-flex align-items-center">
+      <label *ngIf="label !== ''" class="form-label m-0"
+        >{{ label }}
+        <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+          >*</span
+        ></label
+      >
+    </div>
+    <div class="col-lg-6">
+      <input
+        class="form-control"
+        [type]="type"
+        [placeholder]="placeholder"
+        [readOnly]="readOnly"
+        [mask]="maskFormat"
+        [suffix]="maskSuffix"
+        [dropSpecialCharacters]="dropMaskInValue"
+        [min]="minDate"
+        [max]="maxDate"
+        [formControl]="control"
+        [ngClass]="{
+          'is-invalid':
+            ((control.touched && control.dirty) || isFormSubmitted) &&
+            control.errors
+        }"
+        [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+        (dblclick)="emitOnInputClick ? emitInputClick() : null"
+        (keyup)="
+          uppercased || titlecased || firstLetterUppercased ? onChange() : null
+        "
+      />
+      <!-- style="text-transform: uppercase" -->
+      <!-- [formControlName]="controlName" -->
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #layoutVertical>
+  <label *ngIf="label !== ''" class="form-label"
+    >{{ label }}
+    <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+      >*</span
+    ></label
+  >
+  <input
+    class="form-control"
+    [type]="type"
+    [placeholder]="placeholder"
+    [readOnly]="readOnly"
+    [mask]="maskFormat"
+    [suffix]="maskSuffix"
+    [dropSpecialCharacters]="dropMaskInValue"
+    [min]="minDate"
+    [max]="maxDate"
+    [formControl]="control"
+    [ngClass]="{
+      'is-invalid':
+        ((control.touched && control.dirty) || isFormSubmitted) &&
+        control.errors
+    }"
+    [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+    (dblclick)="emitOnInputClick ? emitInputClick() : null"
+    (keyup)="
+      uppercased || titlecased || firstLetterUppercased ? onChange() : null
+    "
+  />
+  <!-- style="text-transform: capitalize" -->
+</ng-template>
+
+<!-- FOR YUP INTEGRATION -->
+<ng-container *ngIf="(control.touched || control.dirty) && control.errors !== null && control.errors?.['yup'] !== undefined">
+  <div class="invalid-feedback display">
+    {{ control.errors['yup'] }}
+  </div>
+</ng-container>

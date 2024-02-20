@@ -3,27 +3,27 @@
   <div class="col-md-4">
     <div class="row">
       <div class="col-md-12 mb-3">
-        <app-input
+        <h-input
           label="Type d'opération"
           [isMandatory]="true"
           [control]="type_op"
-        ></app-input>
+        ></h-input>
       </div>
     </div>
 
     <div class="col-md-12 mb-3">
-      <app-select
+      <h-select
         label="Médecin"
         [isMandatory]="true"
         [options]="medecins"
         [control]="medecin"
         [bindLabel]="'fullname'"
         [bindValue]="'matricule'"
-      ></app-select>
+      ></h-select>
     </div>
 
     <div class="col-md-12 mb-3">
-      <app-input label="Date" type="date" [isMandatory]="true" [control]="date_op"></app-input>
+      <h-input label="Date" type="date" [isMandatory]="true" [control]="date_op"></h-input>
     </div>
 
     <div class="row mb-3">

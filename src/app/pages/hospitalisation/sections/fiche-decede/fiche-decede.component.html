@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-12"><h5 class="fw-semibold">Décédé(e)</h5></div>
     <div class="col-md-2 mb-3">
-      <app-select
+      <h-select
         [isMandatory]="true"
         [clearable]="false"
         [options]="displayOptions"
         [bindValue]="'value'"
         [control]="showControl"
-      ></app-select>
+      ></h-select>
     </div>
     <div class="col-md-12" *ngIf="showControl.value">
       <div class="row">
@@ -45,20 +45,20 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <app-input
+              <h-input
                 label="Date"
                 type="date"
                 [isMandatory]="true"
                 [control]="date_op"
-              ></app-input>
+              ></h-input>
             </div>
             <div class="col-md-12 mb-3">
-              <app-input
+              <h-input
                 label="Motif"
                 type="text"
                 [isMandatory]="true"
                 [control]="motif"
-              ></app-input>
+              ></h-input>
             </div>
             <div class="col-md-12 mb-3">
               <app-text placeholder="..." [rows]="5"

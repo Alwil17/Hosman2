@@ -18,6 +18,7 @@ import { CountToModule } from "angular-count-to";
 import { BreadcrumbsComponent } from "./breadcrumbs/breadcrumbs.component";
 import { ScrollspyDirective } from "./scrollspy.directive";
 import { InputComponent } from "./form-inputs/input/input.component";
+import { HInputComponent } from "./form-inputs/h-input/input.component";
 import { SelectComponent } from "./form-inputs/select/select.component";
 import { HSelectComponent } from "./form-inputs/h-select/select.component";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -45,6 +46,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BreadcrumbsComponent,
     ScrollspyDirective, // Used ???
     InputComponent,
+    HInputComponent,
     SelectComponent,
     HSelectComponent,
     SimpleModalComponent,
@@ -75,6 +77,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BreadcrumbsComponent,
     ScrollspyDirective, // Used ??
     InputComponent,
+    HInputComponent,
     SelectComponent,
     HSelectComponent,
     ToastsContainerComponent,

@@ -3,7 +3,7 @@
         <div class="col-md-6 mb-3">
             <div class="row">
                 <div class="col-md-6 mb-3 mb-">
-                    <app-select
+                    <h-select
                             label="Statut"
                             [isMandatory]="true"
                             [options]="statuts"
@@ -11,10 +11,10 @@
                             [clearable]="false"
                             [bindValue]="'text'"
                             [readOnly]="hasPatient"
-                    ></app-select>
+                    ></h-select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <app-select
+                    <h-select
                             label="Sexe"
                             [isMandatory]="true"
                             [options]="genders"
@@ -22,32 +22,32 @@
                             [bindValue]="'short'"
                             [clearable]="false"
                             [readOnly]="hasPatient"
-                    ></app-select>
+                    ></h-select>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <app-input label="Nom" [isMandatory]="true" [readOnly]="hasPatient" [control]="firstname"></app-input>
+                    <h-input label="Nom" [isMandatory]="true" [readOnly]="hasPatient" [control]="firstname"></h-input>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <app-input label="Prénom(s)" [isMandatory]="true" [readOnly]="hasPatient" [control]="lastname"></app-input>
+                    <h-input label="Prénom(s)" [isMandatory]="true" [readOnly]="hasPatient" [control]="lastname"></h-input>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <app-input
+                    <h-input
                             label="Date de naissance"
                             type="date"
                             [isMandatory]="true"
                             [maxDate]="today"
                             [readOnly]="hasPatient"
                             [control]="birth_date"
-                    ></app-input>
+                    ></h-input>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <app-input
+                    <h-input
                             label="Date d'hospitalisation"
                             type="date"
                             [isMandatory]="true"
                             [maxDate]="today"
                             [control]="hospit_date"
-                    ></app-input>
+                    ></h-input>
                 </div>
             </div>
             <div></div>
@@ -55,7 +55,7 @@
         <div class="col-md-6 border-start mb-3">
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    <app-select
+                    <h-select
                             label="Secteur"
                             [isMandatory]="true"
                             [options]="sectors"
@@ -64,10 +64,10 @@
                             [bindValue]="'code'"
                             [clearable]="false"
                             [readOnly]="hospitalisation_id !== null"
-                    ></app-select>
+                    ></h-select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <app-select
+                    <h-select
                             label="Chambres"
                             [isMandatory]="true"
                             [options]="chambres"
@@ -76,10 +76,10 @@
                             [control]="chambre"
                             [clearable]="false"
                             [readOnly]="hospitalisation_id !== null"
-                    ></app-select>
+                    ></h-select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <app-select
+                    <h-select
                             label="Lits"
                             [isMandatory]="true"
                             [options]="lits"
@@ -88,13 +88,13 @@
                             [control]="lit"
                             [clearable]="false"
                             [readOnly]="hospitalisation_id !== null"
-                    ></app-select>
+                    ></h-select>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <app-input label="Motif" [isMandatory]="true" [control]="motif" [readOnly]="true"></app-input>
+                    <h-input label="Motif" [isMandatory]="true" [control]="motif" [readOnly]="true"></h-input>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <app-input label="Diagnostic d'entrée" [isMandatory]="true" [control]="diagnostic" [readOnly]="true"></app-input>
+                    <h-input label="Diagnostic d'entrée" [isMandatory]="true" [control]="diagnostic" [readOnly]="true"></h-input>
                 </div>
             </div>
         </div>

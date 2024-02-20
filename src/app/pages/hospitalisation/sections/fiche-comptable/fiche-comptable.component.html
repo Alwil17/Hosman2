@@ -3,8 +3,8 @@
 </div>
 <div class="row mb-4">
     <div class="col-md-8">
-        <app-input [placeholder]="'Recherche globale'" [control]="search" (keyup.enter)="filterInAll()">
-        </app-input>
+        <h-input [placeholder]="'Recherche globale'" [control]="search" (keyup.enter)="filterInAll()">
+        </h-input>
     </div>
     <div class="col-md-2">
         <button type="button" class="btn btn-primary w-100" (click)="filterInAll()">
@@ -43,7 +43,7 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-8">
-            <app-input label="Quantité" [isMandatory]="true" [control]="qte" ></app-input>
+            <h-input label="Quantité" [isMandatory]="true" [control]="qte" ></h-input>
         </div>
         <div class="col-md-4">
             <div>
