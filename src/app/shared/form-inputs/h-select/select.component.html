@@ -1,0 +1,56 @@
+<label class="form-label" *ngIf="label"
+  >{{ label }}
+  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    >*</span
+  ></label
+>
+
+<ng-select
+  addTagText="Ajouter"
+  notFoundText="Aucun résultat"
+  [items]="options"
+  bindLabel="text"
+  [bindValue]="bindValue"
+  [editableSearchTerm]="editable"
+  [clearable]="clearable"
+  [searchable]="searchable"
+  [readonly]="readOnly"
+  [addTag]="canAddOption ? addTagFn : false"
+  [placeholder]="placeholder"
+  [selectOnTab]="true"
+  [loading]="isLoading"
+  [typeahead]="typeahead"
+  [formControl]="formControl"
+  [ngClass]="{
+    'is-invalid custom-select-invalid':
+      ((control.touched && control.dirty) || isFormSubmitted) && control.errors
+  }"
+>
+  <ng-template ng-label-tmp let-item="item">
+    <span>{{ item[bindLabel] }}</span>
+  </ng-template>
+  <ng-template
+    ng-option-tmp
+    let-item="item"
+    let-index="index"
+    let-search="searchTerm"
+  >
+    <span [ngClass]="{ 'text-warning': item.new }" class="text-warning">{{
+      item[bindLabel]
+    }}</span>
+    <!-- [ngOptionHighlight]="search" -->
+  </ng-template>
+</ng-select>
+
+<ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
+  <div *ngIf="control.errors?.['required']" class="invalid-feedback">
+    Veuillez sélectionner une valeur.
+  </div>
+</ng-container>
+
+<!-- FOR YUP INTEGRATION -->
+<ng-container *ngIf="(control.touched || control.dirty) && control.errors !== null && control.errors?.['yup'] !== undefined">
+  <div class="invalid-feedback display">
+    {{ control.errors['yup'] }}
+  </div>
+</ng-container>
