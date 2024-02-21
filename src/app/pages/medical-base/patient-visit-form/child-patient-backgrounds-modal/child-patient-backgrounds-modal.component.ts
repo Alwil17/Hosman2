@@ -42,14 +42,14 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
     },
   ];
 
-  unknownOptions: SelectOption[] = this.yesOrNoOptions;
+  revivedOptions: SelectOption[] = this.yesOrNoOptions;
 
   scholarizedOptions: SelectOption[] = this.yesOrNoOptions;
 
   birthedByControl = new FormControl(null);
   birthedByDetailControl = new FormControl(null);
 
-  unknownControl = new FormControl(null);
+  revivedControl = new FormControl(null);
 
   hospitalisationsControl = new FormControl(null);
 
@@ -82,7 +82,7 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
     this.backgroundsForm = new FormGroup({
       birthedBy: this.birthedByControl,
       birthedByDetail: this.birthedByDetailControl,
-      unknown: this.unknownControl,
+      revived: this.revivedControl,
       hospitalisations: this.hospitalisationsControl,
       allergies: this.allergiesControl,
       scholarGrade: this.scholarGradeControl,
