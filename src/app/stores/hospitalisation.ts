@@ -206,6 +206,14 @@ export class HospitalisationStore extends ObservableStore<any> {
               data: []
             })
 
+             // add suivi tab
+            fData.push({
+              color: "red",
+              name: "Suivis",
+              type: "watches",
+              data: []
+            })
+
             let sorted_tabs = fData.sort((a: any, b: any) => {
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();

@@ -13,6 +13,9 @@ import * as Yup from "yup";
 import { validateYupSchema } from "src/app/helpers/utils";
 import { ErrorMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Chart, ChartOptions, registerables  } from "chart.js";
+import  ChartDataLabels from 'chartjs-plugin-datalabels'
+import { WATCHES } from "./suivis-list";
 
 var timer: any, // timer required to reset
   timeout = 200;
@@ -35,7 +38,7 @@ export class ComptableTableClassicComponent implements OnInit {
   patient: any;
   hospitalisation: any;
   days: any[] = [];
-
+  watches: any[] = WATCHES
   search = new FormControl();
 
   list: any[] = []; // full list
@@ -56,6 +59,9 @@ export class ComptableTableClassicComponent implements OnInit {
     this.search.valueChanges.subscribe((value) => {
       this.doFilter(value);
     });
+
+    Chart.register(...registerables);
+    Chart.register(ChartDataLabels);
   }
 
   ngOnInit(): void {
@@ -114,10 +120,111 @@ export class ComptableTableClassicComponent implements OnInit {
     this.setCurrentPage(1);
 
     this.genDays();
+
+    // this.initLineChart()
   }
 
   get numberOfPagesArray(): number[] {
     return new Array(this.numberOfPages).fill(0).map((_, index) => index + 1);
+  }
+
+  ngAfterViewInit() {
+    this.initLineChart();
+  }
+
+  initLineChart() {
+    // Line Chart
+    WATCHES.forEach((w) => {
+      const lineCanvasEle: any = document.getElementById(w.name);
+
+      if (lineCanvasEle) {
+        const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
+          type: "line",
+          data: {
+            labels: [
+              "J1",
+              "J2",
+              "J2",
+              "J3",
+              "J4",
+            ],
+            datasets: [
+              {
+                data: [70, 72, 75, 80, 82],
+                borderColor:"#8A1776",
+                borderWidth:3,
+                pointBackgroundColor:"#8A1776",
+                pointBorderWidth:4,
+                pointStyle: 'circle',
+                pointRadius: 10,
+                pointHoverRadius: 15,
+                tension: 0.5,
+                datalabels: {
+                  align: 'end',
+                  anchor: 'end',
+                  color: '#8A1776',
+                  labels: {
+                    title: {
+                      font: {
+                        weight: 'bold',
+                        family : 'Inter',
+                        size: 20
+                      }
+                    },
+                  }
+                }
+              },
+            ],
+          },
+          options: {
+            indexAxis:"x",
+            maintainAspectRatio: false,
+            // aspectRatio: 1,
+          
+            responsive: false,
+            scales: {
+              x: {
+                grid: {
+                 display: false,
+                },
+                offset: true,
+                position: w.xPosition as "left" | "right" | "bottom" | "top" | "center"
+              },
+              y: {
+                ticks: {
+                  stepSize: w.stepSize,
+                  beginAtZero: true,
+                } as { [key: string]: any },
+              },
+            },
+            plugins : {
+              tooltip: {
+                enabled: true,
+              },
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                fullSize: false,
+                position: 'left',
+                padding: {
+                  bottom: 10,
+                },
+                text: w.label,
+                font: {
+                  family : 'Inter',
+                  size: 14,
+                  style: 'normal',
+                  weight: 'normal',
+                },
+              },
+            }
+          },
+        });
+      }
+    })
+   
   }
 
   genDays() {
@@ -522,7 +629,11 @@ export class ComptableTableClassicComponent implements OnInit {
           moment(day).isSame(moment(t["apply_date"]))
       );
 
-      if (res !== undefined && "extras" in res && "comments" in JSON.parse(res.extras)) {
+      if (
+        res !== undefined &&
+        "extras" in res &&
+        "comments" in JSON.parse(res.extras)
+      ) {
         return JSON.parse(res.extras).comments;
       } else {
         return "";
@@ -538,7 +649,11 @@ export class ComptableTableClassicComponent implements OnInit {
           moment(day).isSame(moment(t["apply_date"]))
       );
 
-      if (res !== undefined && "extras" in res && "comments" in JSON.parse(res.extras)) {
+      if (
+        res !== undefined &&
+        "extras" in res &&
+        "comments" in JSON.parse(res.extras)
+      ) {
         return res.id;
       } else {
         return "";
@@ -554,18 +669,18 @@ export class ComptableTableClassicComponent implements OnInit {
     );
 
     if (res !== undefined) {
-
       res.extras = JSON.stringify({
         comments: this.currentEvolution.value,
-      })
+      });
       this.hospitalisationStore.updateSuivi(res);
-
     } else {
       const data = {
         type: this.typeData,
         type_id: null,
         qte: 0,
-        apply_date: moment(this.currentEvolutionDay).format("YYYY-MM-DD[T]HH:mm:ss"),
+        apply_date: moment(this.currentEvolutionDay).format(
+          "YYYY-MM-DD[T]HH:mm:ss"
+        ),
         hospit_id: this.hospitalisation.id,
         id: Date.now(),
         extras: JSON.stringify({
