@@ -57,7 +57,11 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
 
   scholarizedControl = new FormControl(null);
 
-  scholarGradeControl = new FormControl("");
+  scholarGradeControl = new FormControl(null);
+
+  schoolNameControl = new FormControl(null);
+  schoolAddressControl = new FormControl(null);
+  schoolContactControl = new FormControl(null);
 
   backgroundsForm!: FormGroup;
 
@@ -86,6 +90,9 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
       hospitalisations: this.hospitalisationsControl,
       allergies: this.allergiesControl,
       scholarGrade: this.scholarGradeControl,
+      schoolName: this.schoolNameControl,
+      schoolAddress: this.schoolAddressControl,
+      schoolContact: this.schoolContactControl,
     });
 
     // this.onFormFieldsChanges();

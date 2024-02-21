@@ -95,10 +95,8 @@
       <div class="col-md-6"></div>
     </div>
 
-    <hr />
-
     <ng-container *ngIf="scholarizedControl.value?.id === true">
-      <div class="row">
+      <div class="row mt-2">
         <div class="col-md-3">
           <ng-container *ngFor="let gradeName of matGrades; index as i">
             <div class="form-check form-radio form-radio-secondary">
@@ -172,8 +170,32 @@
         </div>
       </div>
 
-      <hr />
+      <div class="row mt-2">
+        <div class="col-md-4">
+          <app-input label="Nom établissement" [control]="schoolNameControl">
+          </app-input>
+        </div>
+        <div class="col-md-4">
+          <app-input
+            label="Adresse établissement"
+            [control]="schoolAddressControl"
+          >
+          </app-input>
+        </div>
+        <div class="col-md-4">
+          <app-input
+            label="Contact établissement"
+            type="tel"
+            placeholder="XX XX XX XX"
+            maskFormat="09 09 09 09 09 09 09 09 09 09"
+            [control]="schoolContactControl"
+          >
+          </app-input>
+        </div>
+      </div>
     </ng-container>
+
+    <hr />
 
     <div class="d-flex justify-content-end mt-3">
       <button type="button" class="btn btn-success">Valider et fermer</button>
