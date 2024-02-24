@@ -1,4 +1,4 @@
-<div class="container hospit-list">
+<div class="hospit-list">
 
     <div class="mb-2">
         <h4 class="card-title">Patients hospitalisés</h4>
@@ -7,7 +7,7 @@
     <hr>
 
     <div *ngFor="let d of chambres; let k = index" class="row mb-4">
-        <div *ngFor="let m of d.lits; let i = index" class="col-md-4">
+        <div *ngFor="let m of d.lits; let i = index" class="col-md-3">
             <h5 class="room-name">{{d.nom + " - " + m.nom }}</h5>
             <button type="button" class="btn btn-outline-dark waves-effect waves-light p-0" (click)="openHospit(d.id, m.id)" [class.empty-bed]="getDateHospit(d.id, m.id) === null">
                 <div class="row">

@@ -28,6 +28,7 @@ var timer: any, // timer required to reset
 export class ComptableTableClassicComponent implements OnInit {
   subscription: Subscription | undefined;
   @ViewChild("evolutionEdition") evolutionEdition!: TemplateRef<any>;
+  @ViewChild("watchesEdition") watchesEdition!: TemplateRef<any>;
 
   @Input() typeData: string | null | undefined;
   @Input() tableData: any[] = [];
@@ -51,6 +52,8 @@ export class ComptableTableClassicComponent implements OnInit {
 
   currentEvolution = new FormControl(null, []);
   currentEvolutionDay: moment.Moment = moment();
+
+  currentWatch: any = null
 
   constructor(
     private hospitalisationStore: HospitalisationStore,
@@ -121,7 +124,6 @@ export class ComptableTableClassicComponent implements OnInit {
 
     this.genDays();
 
-    // this.initLineChart()
   }
 
   get numberOfPagesArray(): number[] {
@@ -693,6 +695,63 @@ export class ComptableTableClassicComponent implements OnInit {
     }
 
     this.modalService.dismissAll();
+  }
+
+  showWatch(watch:any) {
+    let evolution = null;
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const list = this.suivis.filter((d) => d["type"] === "watches" && d.extras && 'data' in JSON.parse(d.extras))
+      const res = list.find(
+        (t) => t.data.find((s:any) => s.name === watch.name) !== undefined
+      );
+
+      this.currentWatch = watch;
+
+      // console.log(res)
+      // evolution = res;
+
+      // if (
+      //   evolution !== undefined &&
+      //   "extras" in evolution &&
+      //   "comments" in JSON.parse(evolution.extras)
+      // ) {
+      //   this.currentEvolution.setValue(JSON.parse(evolution.extras).comments);
+      // } else {
+      //   this.currentEvolution.setValue("");
+      // }
+
+      // this.currentEvolutionDay = day;
+      this.modalService.open(this.watchesEdition, {
+        size: "lg",
+        centered: true,
+        keyboard: false,
+        backdrop: "static",
+      });
+    }
+  }
+
+  getWatchData(day: moment.Moment) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const res = this.suivis.find(
+        (t) =>
+          t["type"] === "watches" &&
+          moment(day).isSame(moment(t["apply_date"])) &&
+         t.extras && 'data' in JSON.parse(t.extras)  &&
+         t.data.find((s:any) => s.name === this.currentWatch.name) !== undefined
+      );
+
+      console.log(res)
+
+      if (
+        res !== undefined &&
+        "extras" in res &&
+        "data" in JSON.parse(res.extras)
+      ) {
+        return JSON.parse(res.extras).data;
+      } else {
+        return [];
+      }
+    }
   }
 
   ngOnChanges(): void {

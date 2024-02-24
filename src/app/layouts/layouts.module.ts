@@ -15,6 +15,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { LayoutComponent } from "./layout.component";
 import { VerticalComponent } from "./vertical/vertical.component";
 import { TopbarComponent } from "./topbar/topbar.component";
+import { HospTopbarComponent } from "./hospitalisation/topbar/topbar.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { RightsidebarComponent } from "./rightsidebar/rightsidebar.component";
@@ -30,6 +31,7 @@ import { HospSidebarComponent } from './hospitalisation/sidebar/sidebar.componen
     LayoutComponent,
     VerticalComponent,
     TopbarComponent,
+    HospTopbarComponent,
     SidebarComponent,
     FooterComponent,
     RightsidebarComponent,

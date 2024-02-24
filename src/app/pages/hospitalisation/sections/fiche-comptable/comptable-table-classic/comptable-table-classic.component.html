@@ -9,7 +9,8 @@
 <div class="table-responsive fiche-comptable">
   <!-- Watches tab -->
   <div *ngIf="typeData === 'watches'">
-    <canvas [id]="watch.name" *ngFor="let watch of watches; let i = index" height="150" width="1250px"></canvas>
+    <canvas [id]="watch.name" *ngFor="let watch of watches; let i = index" height="150" width="1250px"
+    (dblclick)="showWatch(watch)"></canvas>
   </div>
 
   <!-- evolution tab -->
@@ -100,3 +101,40 @@
   </div>
 </ng-template>
 </div>
+
+<!-- Evolution modal -->
+<div *ngIf="typeData === 'watches'">
+  <ng-template #watchesEdition let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ currentWatch.label }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">Jours</th>
+                <th scope="col" class="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of days; let k = index" class="cursor-pointer">
+                <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
+                <td *ngFor="let w of getWatchData(d.o); let k"> {{ w.value }} <br> {{ w.hour }}</td>
+              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Annuler</button>
+      <button type="button" class="btn btn-primary">Enrégistrer</button>
+    </div>
+  </ng-template>
+  </div>

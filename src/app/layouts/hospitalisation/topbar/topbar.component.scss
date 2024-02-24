@@ -1,0 +1,26 @@
+[data-layout-mode=dark] {
+    .light-dark-mode {
+        .bx-moon {
+            display: block !important;
+
+            &:before {
+                content: "\ec34";
+            }
+        }
+    }
+}
+
+#page-topbar {
+    left: 0px;
+
+    a {
+        margin-left: 15px;
+        font-size: 18px;
+
+        &.active {
+            background-color: #3577f1;
+            font-weight: 600;
+            color: #fff;
+        }
+    }
+}
