@@ -7,15 +7,18 @@ import {
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import * as Yup from "yup";
-import { validateYupSchema } from "src/app/helpers/utils";
-import { ErrorMessages } from "src/app/helpers/messages";
+import { formatDate, validateYupSchema } from "src/app/helpers/utils";
+import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { Chart, ChartOptions, registerables  } from "chart.js";
-import  ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Chart, ChartOptions, registerables } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { WATCHES } from "./suivis-list";
+import { ToastrService } from "ngx-toastr";
+import { ElementRef } from "@angular/core";
+import { MessageService } from "@services/messages/message.service";
 
 var timer: any, // timer required to reset
   timeout = 200;
@@ -29,6 +32,10 @@ export class ComptableTableClassicComponent implements OnInit {
   subscription: Subscription | undefined;
   @ViewChild("evolutionEdition") evolutionEdition!: TemplateRef<any>;
   @ViewChild("watchesEdition") watchesEdition!: TemplateRef<any>;
+  @ViewChild("watchesValueEdition") watchesValueEdition!: TemplateRef<any>;
+  @ViewChild("dismissWatchValueModal") dismissWatchValueModal!: ElementRef;
+
+  modalReference: any;
 
   @Input() typeData: string | null | undefined;
   @Input() tableData: any[] = [];
@@ -36,10 +43,12 @@ export class ComptableTableClassicComponent implements OnInit {
 
   applyFilter: string = "nom_officiel";
 
+  todayTime = formatDate(new Date(), "HH:mm");
+
   patient: any;
   hospitalisation: any;
   days: any[] = [];
-  watches: any[] = WATCHES
+  watches: any[] = WATCHES;
   search = new FormControl();
 
   list: any[] = []; // full list
@@ -49,15 +58,36 @@ export class ComptableTableClassicComponent implements OnInit {
   rowsPerPage: number = 10;
   currentPage: number = 1;
   suivis: any[] = [];
+  chartsLabels: any[] = [];
+  chartsDatas: any[] = [];
 
   currentEvolution = new FormControl(null, []);
   currentEvolutionDay: moment.Moment = moment();
 
-  currentWatch: any = null
+  currentWatch: any = null;
+  currentWatchList: any[] = [];
+
+  currentWatchValueId: any = null;
+
+  watchDay: moment.Moment = moment();
+  watchTime = new FormControl(
+    null,
+    [],
+    [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
+  );
+  watchValue = new FormControl(
+    null,
+    [],
+    [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
+  );
+
+  watchFg: FormGroup = new FormGroup({});
 
   constructor(
     private hospitalisationStore: HospitalisationStore,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toast: ToastrService,
+    private message: MessageService
   ) {
     this.search.valueChanges.subscribe((value) => {
       this.doFilter(value);
@@ -68,6 +98,11 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.watchFg = new FormGroup({
+      watchTime: this.watchTime,
+      watchValue: this.watchValue,
+    });
+
     this.subscription = this.hospitalisationStore.stateChanged.subscribe(
       (state) => {
         if (state) {
@@ -123,7 +158,6 @@ export class ComptableTableClassicComponent implements OnInit {
     this.setCurrentPage(1);
 
     this.genDays();
-
   }
 
   get numberOfPagesArray(): number[] {
@@ -135,71 +169,89 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   initLineChart() {
+      
     // Line Chart
     WATCHES.forEach((w) => {
+
+      const watchname = w.name
+
+      const list = this.suivis
+        .filter(
+          (d) =>
+            d["type"] === "watches" && d.extras && "name" in JSON.parse(d.extras)
+        )
+        .filter((s: any) => JSON.parse(s.extras).name === watchname)
+        .map((r) => ({
+          date: r.apply_date,
+          milli: moment(r.apply_date).valueOf(),
+          value: Number(JSON.parse(r.extras).data.value)
+        }))
+        .sort((a, b) => a.milli - b.milli);
+
+
       const lineCanvasEle: any = document.getElementById(w.name);
 
       if (lineCanvasEle) {
         const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
           type: "line",
           data: {
-            labels: [
-              "J1",
-              "J2",
-              "J2",
-              "J3",
-              "J4",
-            ],
+            labels: list.map((m) => moment(m.date).format("yyyy-MM-DD")),
             datasets: [
               {
-                data: [70, 72, 75, 80, 82],
-                borderColor:"#8A1776",
-                borderWidth:3,
-                pointBackgroundColor:"#8A1776",
-                pointBorderWidth:4,
-                pointStyle: 'circle',
+                data: list.map((m) => m.value),
+                borderColor: "#8A1776",
+                borderWidth: 3,
+                pointBackgroundColor: "#8A1776",
+                pointBorderWidth: 4,
+                pointStyle: "circle",
                 pointRadius: 10,
                 pointHoverRadius: 15,
                 tension: 0.5,
                 datalabels: {
-                  align: 'end',
-                  anchor: 'end',
-                  color: '#8A1776',
+                  align: "start",
+                  anchor: "start",
+                  offset: 1,
+                  color: "#8A1776",
                   labels: {
                     title: {
                       font: {
-                        weight: 'bold',
-                        family : 'Inter',
-                        size: 20
-                      }
+                        weight: "bold",
+                        family: "Inter",
+                        size: 15,
+                      },
                     },
-                  }
-                }
+                  },
+                },
               },
             ],
           },
           options: {
-            indexAxis:"x",
+            indexAxis: "x",
             maintainAspectRatio: false,
             // aspectRatio: 1,
-          
+
             responsive: false,
             scales: {
               x: {
                 grid: {
-                 display: false,
+                  display: false,
                 },
                 offset: true,
-                position: w.xPosition as "left" | "right" | "bottom" | "top" | "center"
+                position: w.xPosition as
+                  | "left"
+                  | "right"
+                  | "bottom"
+                  | "top"
+                  | "center",
               },
               y: {
                 ticks: {
                   stepSize: w.stepSize,
-                  beginAtZero: true,
+                  suggestedMin: 0, 
                 } as { [key: string]: any },
               },
             },
-            plugins : {
+            plugins: {
               tooltip: {
                 enabled: true,
               },
@@ -209,24 +261,23 @@ export class ComptableTableClassicComponent implements OnInit {
               title: {
                 display: true,
                 fullSize: false,
-                position: 'left',
+                position: "left",
                 padding: {
                   bottom: 10,
                 },
                 text: w.label,
                 font: {
-                  family : 'Inter',
+                  family: "Inter",
                   size: 14,
-                  style: 'normal',
-                  weight: 'normal',
+                  style: "normal",
+                  weight: "normal",
                 },
               },
-            }
+            },
           },
         });
       }
-    })
-   
+    });
   }
 
   genDays() {
@@ -664,63 +715,59 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   SaveEvolution() {
-    const res = this.suivis.find(
-      (t) =>
-        t["type"] === "evolution" &&
-        moment(this.currentEvolutionDay).isSame(moment(t["apply_date"]))
-    );
-
-    if (res !== undefined) {
-      res.extras = JSON.stringify({
-        comments: this.currentEvolution.value,
-      });
-      this.hospitalisationStore.updateSuivi(res);
+    if (this.currentEvolution.value.trim() === "") {
+      this.toast.error(
+        "Hospitalisation",
+        "Veuillez saisir l'évolution du patient"
+      );
     } else {
-      const data = {
-        type: this.typeData,
-        type_id: null,
-        qte: 0,
-        apply_date: moment(this.currentEvolutionDay).format(
-          "YYYY-MM-DD[T]HH:mm:ss"
-        ),
-        hospit_id: this.hospitalisation.id,
-        id: Date.now(),
-        extras: JSON.stringify({
-          comments: this.currentEvolution.value,
-        }),
-      };
-      this.hospitalisationStore.commitSuivi(data);
-
-      // this.suivis.push(data);
-    }
-
-    this.modalService.dismissAll();
-  }
-
-  showWatch(watch:any) {
-    let evolution = null;
-    if (this.suivis !== null && this.suivis !== undefined) {
-      const list = this.suivis.filter((d) => d["type"] === "watches" && d.extras && 'data' in JSON.parse(d.extras))
-      const res = list.find(
-        (t) => t.data.find((s:any) => s.name === watch.name) !== undefined
+      const res = this.suivis.find(
+        (t) =>
+          t["type"] === "evolution" &&
+          moment(this.currentEvolutionDay).isSame(moment(t["apply_date"]))
       );
 
+      if (res !== undefined) {
+        res.extras = JSON.stringify({
+          comments: this.currentEvolution.value,
+        });
+        this.hospitalisationStore.updateSuivi(res);
+      } else {
+        const data = {
+          type: this.typeData,
+          type_id: null,
+          qte: 0,
+          apply_date: moment(this.currentEvolutionDay).format(
+            "YYYY-MM-DD[T]HH:mm:ss"
+          ),
+          hospit_id: this.hospitalisation.id,
+          id: Date.now(),
+          extras: JSON.stringify({
+            comments: this.currentEvolution.value,
+          }),
+        };
+        this.hospitalisationStore.commitSuivi(data);
+
+        // this.suivis.push(data);
+      }
+
+      this.modalService.dismissAll();
+    }
+  }
+
+  showWatch(watch: any) {
+    if (this.suivis !== null && this.suivis !== undefined) {
+      const list = this.suivis.filter(
+        (d) =>
+          d["type"] === "watches" && d.extras && "name" in JSON.parse(d.extras)
+      );
+
+      const res = list.filter(
+        (s: any) => JSON.parse(s.extras).name === watch.name
+      );
+
+      this.currentWatchList = res;
       this.currentWatch = watch;
-
-      // console.log(res)
-      // evolution = res;
-
-      // if (
-      //   evolution !== undefined &&
-      //   "extras" in evolution &&
-      //   "comments" in JSON.parse(evolution.extras)
-      // ) {
-      //   this.currentEvolution.setValue(JSON.parse(evolution.extras).comments);
-      // } else {
-      //   this.currentEvolution.setValue("");
-      // }
-
-      // this.currentEvolutionDay = day;
       this.modalService.open(this.watchesEdition, {
         size: "lg",
         centered: true,
@@ -730,28 +777,120 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  getWatchData(day: moment.Moment) {
-    if (this.suivis !== null && this.suivis !== undefined) {
-      const res = this.suivis.find(
+  getWatchData(day: moment.Moment): any[] {
+    if (this.currentWatchList !== null && this.currentWatchList !== undefined) {
+      const watches = this.currentWatchList;
+      const res = watches.filter(
         (t) =>
-          t["type"] === "watches" &&
-          moment(day).isSame(moment(t["apply_date"])) &&
-         t.extras && 'data' in JSON.parse(t.extras)  &&
-         t.data.find((s:any) => s.name === this.currentWatch.name) !== undefined
+          t["type"] === "watches" && moment(day).isSame(moment(t["apply_date"]))
       );
 
-      console.log(res)
+      return res.map((m) => {
+        const [hours, minutes] = JSON.parse(m.extras).data.hour.split(":");
+        const totalMilliseconds =
+          Number(hours) * 60 * 60 * 1000 + Number(minutes) * 60 * 1000;
+        return {
+          id: m.id,
+          hour: JSON.parse(m.extras).data.hour,
+          value: JSON.parse(m.extras).data.value,
+          time: totalMilliseconds,
+          watch_id: JSON.parse(m.extras).data.id,
+        };
+      });
 
-      if (
-        res !== undefined &&
-        "extras" in res &&
-        "data" in JSON.parse(res.extras)
-      ) {
-        return JSON.parse(res.extras).data;
-      } else {
-        return [];
-      }
+    } else return [];
+  }
+
+  showWatchValueSelector(
+    day: moment.Moment,
+    event: MouseEvent,
+    data: any = null
+  ) {
+    this.watchDay = day;
+
+    const t = formatDate(new Date(), "HH:mm");
+    this.watchTime.setValue(t);
+    this.watchValue.setValue("");
+    this.currentWatchValueId = null;
+
+    this.modalReference = this.modalService.open(this.watchesValueEdition, {
+      size: "sm",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+  }
+
+  saveWatch() {
+    if (this.watchValue.value === "" || this.watchValue.value === null) {
+      this.toast.error("Vous devez saisir la valeur");
+      return;
     }
+
+    const [hours, minutes] = this.watchTime.value.split(":");
+    const totalMilliseconds =
+      Number(hours) * 60 * 60 * 1000 + Number(minutes) * 60 * 1000;
+
+    const data = {
+      type: this.typeData,
+      type_id: null,
+      qte: 0,
+      apply_date: moment(this.watchDay).format("YYYY-MM-DD[T]HH:mm:ss"),
+      hospit_id: this.hospitalisation.id,
+      id: Date.now(),
+      extras: JSON.stringify({
+        name: this.currentWatch.name,
+        data: {
+          hour: this.watchTime.value,
+          value: this.watchValue.value,
+          id: Date.now(),
+          time: totalMilliseconds,
+        },
+      }),
+    };
+
+    this.currentWatchList.push(data);
+
+    this.currentWatchList.sort((a, b) => {
+      const timeA = JSON.parse(a.extras).data.time;
+      const timeB = JSON.parse(b.extras).data.time;
+      return timeA - timeB;
+    });
+
+    this.watchFg.reset();
+    this.modalReference.close();
+    this.hospitalisationStore.commitSuivi(data);
+
+    this.refreshCharts()
+  }
+
+  refreshCharts(){
+    const tmp = JSON.parse(JSON.stringify(this.watches))
+    this.watches = []
+    const app = this
+    setTimeout(function(){
+      app.watches = tmp
+      
+
+      setTimeout(function(){
+        app.initLineChart()
+      }, 500)
+
+    }, 500)
+  }
+
+  async removeWatchData(data: any) {
+    const confirm = await this.message.confirmDialog(
+      WarningMessages.SURE_TO_DELETE
+    );
+    if (!confirm) return;
+
+    this.hospitalisationStore.removeSuivi(data.id);
+    this.currentWatchList = this.currentWatchList.filter(
+      (c) => JSON.parse(c.extras).data.id !== data.watch_id
+    );
+
+    this.refreshCharts()
   }
 
   ngOnChanges(): void {

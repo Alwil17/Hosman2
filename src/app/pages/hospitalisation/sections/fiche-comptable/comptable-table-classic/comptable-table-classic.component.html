@@ -9,8 +9,11 @@
 <div class="table-responsive fiche-comptable">
   <!-- Watches tab -->
   <div *ngIf="typeData === 'watches'">
-    <canvas [id]="watch.name" *ngFor="let watch of watches; let i = index" height="150" width="1250px"
-    (dblclick)="showWatch(watch)"></canvas>
+    <div  *ngFor="let watch of watches; let i = index" class="mb-3">
+      <canvas [id]="watch.name" height="150" width="1400px"
+      (dblclick)="showWatch(watch)"></canvas>
+    </div>
+    
   </div>
 
   <!-- evolution tab -->
@@ -24,16 +27,14 @@
     <tbody>
       <tr *ngFor="let d of days; let k = index" class="cursor-pointer" (dblclick)="showEvolution(d.o)">
         <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
-        <td class="t-content td-break w-700"
-          [attr.data-item-id]="getEvolutionDataId(d.o)"
-          [attr.data-item-day]="d.o" 
-          [attr.data-item-typedata]="typeData" 
-        >{{ getEvolutionData(d.o) }}</td>
+        <td class="t-content td-break w-700" [attr.data-item-id]="getEvolutionDataId(d.o)" [attr.data-item-day]="d.o"
+          [attr.data-item-typedata]="typeData">{{ getEvolutionData(d.o) }}</td>
       </tr>
     </tbody>
   </table>
 
-  <table *ngIf="typeData !== 'evolution' && typeData !== 'watches'" class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+  <table *ngIf="typeData !== 'evolution' && typeData !== 'watches'"
+    class="table table-responsive table-bordered align-middle table-nowrap mb-0">
     <thead>
       <tr>
         <th scope="col" class="fixed-column des-title">Désignation</th>
@@ -49,9 +50,7 @@
           (dblclick)="dbClick(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"
           (click)="sClick(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"
           [attr.data-item-id]="getRowId(d.o, item.id, typeData === 'chambres' ? item.chambre : null )"
-          [attr.data-item-day]="d.o" 
-          [attr.data-item-typedata]="typeData" 
-          [attr.data-item-type-id]="item.id"
+          [attr.data-item-day]="d.o" [attr.data-item-typedata]="typeData" [attr.data-item-type-id]="item.id"
           [attr.data-item-qte]="getRowQte(d.o, item.id, typeData === 'chambres' ? item.chambre : null )">
           {{ getRowQte(d.o, item.id, typeData === 'chambres' ? item.chambre : null ) }}
         </td>
@@ -81,28 +80,29 @@
 
 <!-- Evolution modal -->
 <div *ngIf="typeData === 'evolution'">
-<ng-template #evolutionEdition let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Mettre à jour l'évolution du malade</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">×</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-md-12">
-          <app-text label="Commentaire" [isMandatory]="true" [control]="currentEvolution" [rows]="10" [fontSize]="'25px'"></app-text>
+  <ng-template #evolutionEdition let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mettre à jour l'évolution du malade</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <app-text label="Commentaire" [isMandatory]="true" [control]="currentEvolution" [rows]="10"
+            [fontSize]="'25px'"></app-text>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Annuler</button>
-    <button type="button" class="btn btn-primary" (click)="SaveEvolution()">Enrégistrer</button>
-  </div>
-</ng-template>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Annuler</button>
+      <button type="button" class="btn btn-primary" (click)="SaveEvolution()">Enrégistrer</button>
+    </div>
+  </ng-template>
 </div>
 
-<!-- Evolution modal -->
+<!-- Watch modal -->
 <div *ngIf="typeData === 'watches'">
   <ng-template #watchesEdition let-modal>
     <div class="modal-header">
@@ -119,13 +119,19 @@
               <tr>
                 <th scope="col" class="text-center">Jours</th>
                 <th scope="col" class="text-center"></th>
+                <th scope="col" class="text-center"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let d of days; let k = index" class="cursor-pointer">
+              <tr *ngFor="let d of days; let k = index">
                 <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
-                <td *ngFor="let w of getWatchData(d.o); let k"> {{ w.value }} <br> {{ w.hour }}</td>
-              
+                <td class="watch_time_data">
+                  <div class="watch_values" *ngFor="let w of getWatchData(d.o); let k" >
+                    <label class="mb-0">{{ w.value }}</label><span class="mb-2">{{ w.hour }}</span>
+                    <span class="removewatchbtn" (click)="removeWatchData(w)">Supprimer</span>
+                  </div>
+                </td>
+                <td class="evolution-day-content" (click)="showWatchValueSelector(d.o , $event)"><div class="addwatchbtn">Ajouter</div></td>
               </tr>
             </tbody>
           </table>
@@ -133,8 +139,33 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Annuler</button>
-      <button type="button" class="btn btn-primary">Enrégistrer</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Fermer</button>
     </div>
   </ng-template>
-  </div>
+</div>
+
+<div *ngIf="typeData === 'watches'">
+  <ng-template #watchesValueEdition let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ currentWatch.label }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h-input label="Heure" type="time" [isMandatory]="true" [control]="watchTime"></h-input>
+        </div>
+        <div class="col-md-6 form-group">
+          <h-input label="Valeur" type="text" [isMandatory]="true" [control]="watchValue"></h-input>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button #dismissWatchValueModal type="button" class="btn btn-outline-dark"
+        (click)="modal.close()">Annuler</button>
+      <button type="button" class="btn btn-primary" (click)="saveWatch()">Enrégistrer</button>
+    </div>
+  </ng-template>
+</div>

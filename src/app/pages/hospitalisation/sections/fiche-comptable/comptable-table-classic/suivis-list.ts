@@ -2,13 +2,13 @@ export const WATCHES = [
   {
     name: "poids",
     label: "Poids",
-    stepSize: 10,
+    stepSize: 25,
     xPosition: 'top'
   },
   {
     name: "temperature",
     label: "Température",
-    stepSize: 5,
+    stepSize: 25,
     xPosition: 'top'
   },
 ];
