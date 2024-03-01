@@ -29,6 +29,8 @@ import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
 import { ToastsContainerComponent } from "./toasts-container/toasts-container.component";
 import { CardComponent } from "./card/card.component";
 import { ConfirmModalComponent } from "./modals/confirm-modal/confirm-modal.component";
+import { ResizableColumnComponent } from "./table-column-resize/resizable-column/resizable-column.component";
+import { ColumnResizerDirective } from "./directives/column-resizer.directive";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -47,6 +49,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ToastsContainerComponent,
     CardComponent,
     ConfirmModalComponent,
+    ResizableColumnComponent,
+    ColumnResizerDirective,
   ],
   imports: [
     CommonModule,
@@ -69,6 +73,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ToastsContainerComponent,
     SimpleModalComponent,
     CardComponent,
+    ResizableColumnComponent,
+    ColumnResizerDirective,
   ],
   providers: [TitleCasePipe],
 })
