@@ -43,6 +43,7 @@
       *ngIf="isMandatory && !control.disabled"
       class="text-danger"
       [ngbTooltip]="mandatoryFieldTextTooltipTemplate"
+      container="body"
       >*</span
     ></label
   >
@@ -82,9 +83,13 @@
       let-index="index"
       let-search="searchTerm"
     >
-      <span [ngClass]="{ 'text-warning': item.new }" class="text-warning">{{
-        item.text
-      }}</span>
+      <span
+        [ngbTooltip]="item.text"
+        container="body"
+        [ngClass]="{ 'text-warning': item.new }"
+        class="text-warning"
+        >{{ item.text }}</span
+      >
       <!-- [ngOptionHighlight]="search" -->
     </ng-template>
   </ng-select>
