@@ -39,11 +39,11 @@ export class WaitingListService {
       .get<WaitingListItem[]>(`${apiEndpoint}/search?${apiComplementary}`)
       .pipe(
         map((waitingList) => {
-          // const mapped: WaitingListItem[] = waitingList.map((waitingListItem) =>
-          //   WaitingListItem.fromResponse(waitingListItem)
-          // );
+          const mapped: WaitingListItem[] = waitingList.map(
+            (waitingListItem) => new WaitingListItem(waitingListItem)
+          );
 
-          const mapped = waitingList;
+          // const mapped = waitingList;
 
           return mapped;
         })

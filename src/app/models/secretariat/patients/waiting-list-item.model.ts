@@ -41,7 +41,7 @@ export class WaitingListItem {
     this.ordre = iWaitingListItem.ordre;
     this.attente = iWaitingListItem.attente;
     this.date_attente = iWaitingListItem.date_attente;
-    this.patient = iWaitingListItem.patient;
+    this.patient = new Patient(iWaitingListItem.patient);
     this.medecin_consulteur = iWaitingListItem.medecin_consulteur;
     this.medecin = iWaitingListItem.medecin;
     this.medecin_receveur = iWaitingListItem.medecin_receveur;
