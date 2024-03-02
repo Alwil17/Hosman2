@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { TherapeuticClassRequest } from "src/app/models/medical-base/submodules/medicines-prescriptions/requests/therapeutic-class-request.model";
 import { TherapeuticClass } from "src/app/models/medical-base/submodules/medicines-prescriptions/therapeutic-class.model";
@@ -15,7 +15,7 @@ export class TherapeuticClassFormModalComponent implements OnInit {
   @Input()
   thClassInfos?: TherapeuticClass;
 
-  nameController = new FormControl(null);
+  nameController = new FormControl(null, Validators.required);
 
   thClassForm!: FormGroup;
 
@@ -37,6 +37,8 @@ export class TherapeuticClassFormModalComponent implements OnInit {
   }
 
   registerThClass() {
+    this.isThClassSubmitted = true;
+
     if (this.thClassForm.invalid) {
       return;
     }
@@ -67,6 +69,8 @@ export class TherapeuticClassFormModalComponent implements OnInit {
   }
 
   registerModifications() {
+    this.isThClassSubmitted = true;
+
     if (this.thClassForm.invalid) {
       return;
     }
