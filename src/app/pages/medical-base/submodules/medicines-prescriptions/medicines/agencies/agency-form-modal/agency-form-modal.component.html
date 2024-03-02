@@ -1,0 +1,98 @@
+<app-simple-modal
+  title="Ajouter une agence"
+  [isFullscreenControlDisplayed]="false"
+>
+  <div class="col-12">
+    <form [formGroup]="agencyForm">
+      <!-- FIRST ROW -->
+      <div class="row">
+        <!-- NAME FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Nom "
+            placeholder="Saisir le nom de l'agence"
+            [isMandatory]="true"
+            [control]="nameController"
+            [isFormSubmitted]="isAgencyFormSubmitted"
+          ></app-input>
+        </div>
+        <!-- DIRECTOR FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Directeur"
+            placeholder="Saisir le nom complet du directeur"
+            [control]="directorController"
+          ></app-input>
+        </div>
+      </div>
+
+      <!-- SECOND ROW -->
+      <div class="row">
+        <!-- EMAIL FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Email"
+            placeholder="Saisir l'email de l'agence"
+            [isMandatory]="true"
+            [control]="emailController"
+            [isFormSubmitted]="isAgencyFormSubmitted"
+          ></app-input>
+        </div>
+        <!-- ADDRESS FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Adresse"
+            placeholder="Saisir l'adresse de l'agence"
+            [control]="addressController"
+          ></app-input>
+        </div>
+      </div>
+
+      <!-- THIRD ROW -->
+      <div class="row">
+        <!-- TEL 1 FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Contact 1"
+            placeholder="XX XX XX XX XX"
+            [control]="tel1Controller"
+            maskFormat="09 09 09 09 09 09 09 09 09 09"
+          ></app-input>
+        </div>
+        <!-- TEL 2 FIELD -->
+        <div class="col-lg-6">
+          <app-input
+            label="Contact 2"
+            placeholder="XX XX XX XX XX"
+            [control]="tel2Controller"
+            maskFormat="09 09 09 09 09 09 09 09 09 09"
+          ></app-input>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <ng-container *ngIf="!agencyInfos; else modifyButton">
+          <button
+            type="button"
+            class="btn btn-success btn-label"
+            (click)="registerThClass()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer
+          </button>
+        </ng-container>
+
+        <ng-template #modifyButton>
+          <button
+            type="button"
+            class="btn btn-warning btn-label text-dark"
+            (click)="registerModifications()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer les modifications
+          </button>
+        </ng-template>
+      </div>
+    </form>
+  </div>
+</app-simple-modal>

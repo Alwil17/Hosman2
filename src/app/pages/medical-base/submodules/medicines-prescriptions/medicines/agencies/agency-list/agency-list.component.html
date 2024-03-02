@@ -1,0 +1,134 @@
+<div class="col-12">
+  <div class="row d-flex justify-content-between">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-6">
+          <app-input
+            label="Rechercher"
+            placeholder="Rechercher (nom ou email)"
+            [control]="searchControl"
+            bottomMargin="0"
+          >
+          </app-input>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 d-flex justify-content-end align-items-end">
+      <button
+        type="button"
+        class="btn btn-success btn-label ms-auto"
+        (click)="openAgencyFormModal()"
+      >
+        <i class="ri-add-line label-icon align-middle fs-24 me-2"></i>
+        Nouvelle agence
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- <div class="card-body"> -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive" style="max-height: 400px">
+        <!-- table-card -->
+        <table
+          class="table table-bordered table-hover table-striped align-middle"
+        >
+          <thead
+            class="table-light text-muted"
+            style="position: sticky; top: -1px; background-color: whitesmoke"
+          >
+            <tr>
+              <th scope="col">{{ "Nom" | uppercase }}</th>
+              <th scope="col">{{ "Directeur" | uppercase }}</th>
+              <th scope="col">{{ "Email" | uppercase }}</th>
+              <th scope="col">{{ "Contact 1" | uppercase }}</th>
+              <th scope="col">{{ "Contact 2" | uppercase }}</th>
+              <th scope="col">{{ "Adresse" | uppercase }}</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let agency of agencies" class="user-select-none">
+              <td>
+                <ngb-highlight
+                  [result]="agency.nom"
+                  [term]="searchControl.value"
+                ></ngb-highlight>
+              </td>
+
+              <td>
+                {{ agency.directeur ?? "-" }}
+              </td>
+
+              <td>
+                <ngb-highlight
+                  [result]="agency.email"
+                  [term]="searchControl.value"
+                ></ngb-highlight>
+              </td>
+
+              <td>
+                {{
+                  agency.tel1 ?? "-" | mask : "09 09 09 09 09 09 09 09 09 09"
+                }}
+              </td>
+
+              <td>
+                {{
+                  agency.tel2 ?? "-" | mask : "09 09 09 09 09 09 09 09 09 09"
+                }}
+              </td>
+
+              <td>
+                {{ agency.adresse ?? "-" }}
+              </td>
+
+              <td>
+                <div class="d-inline-block" ngbDropdown container="body">
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                    ngbDropdownToggle
+                  >
+                    <i class="ri-more-fill fs-24"></i>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button
+                      ngbDropdownItem
+                      (click)="openAgencyFormModal(agency)"
+                    >
+                      <i
+                        class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                      ></i>
+                      Modifier
+                    </button>
+
+                    <!-- <button ngbDropdownItem (click)="deleteProduct(product.id)">
+                        <i
+                          class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                        ></i>
+                        Supprimer
+                      </button> -->
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot
+            style="position: sticky; bottom: -1px; background-color: whitesmoke"
+          >
+            <tr>
+              <th colspan="11">Total des agences : {{ agencies.length }}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- </div> -->
+</div>

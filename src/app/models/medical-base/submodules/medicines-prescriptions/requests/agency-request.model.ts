@@ -1,7 +1,7 @@
 export interface IAgencyRequest {
   nom: string;
   directeur?: string;
-  email?: string;
+  email: string;
   tel1?: string;
   tel2?: string;
   adresse?: string;
@@ -10,7 +10,7 @@ export interface IAgencyRequest {
 export class AgencyRequest {
   nom: string;
   directeur?: string;
-  email?: string;
+  email: string;
   tel1?: string;
   tel2?: string;
   adresse?: string;
