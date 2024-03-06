@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormArray, FormControl, FormGroup } from "@angular/forms";
 
 @Component({
@@ -16,6 +16,12 @@ export class MultiInputModalComponent implements OnInit {
   @Input()
   numberOfFields!: number;
 
+  @Input()
+  data?: string[];
+
+  @Output()
+  formData = new EventEmitter<string[]>();
+
   multiInputForm!: FormGroup;
 
   constructor() {}
@@ -28,6 +34,8 @@ export class MultiInputModalComponent implements OnInit {
     for (let i = 0; i < this.numberOfFields; i++) {
       this.addMultiInputField();
     }
+
+    this.initFieldsValue();
   }
 
   // MULTI-INPUT FIELDS --------------------------------------------------------------------------------------------------------
@@ -43,5 +51,23 @@ export class MultiInputModalComponent implements OnInit {
   removeMultiInputField(index: number) {
     this.multiInputFields.removeAt(index);
     console.log(this.multiInputFields);
+  }
+
+  initFieldsValue() {
+    if (this.data) {
+      this.multiInputFields.controls.forEach((control, index) => {
+        control.setValue(this.data![index]);
+      });
+    }
+  }
+
+  submit() {
+    const formData: string[] = [];
+
+    this.multiInputFields.controls.forEach((control) =>
+      formData.push(control.value)
+    );
+
+    this.formData.emit(formData);
   }
 }

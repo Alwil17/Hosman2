@@ -1,4 +1,5 @@
 import { AddressResponse } from "./address-response.model";
+import { BackgroundsResponse } from "./backgrounds-response.model";
 import { ChronicDiseaseResponse } from "./chronic-disease-response.model";
 import { CountryResponse } from "./country-response.model";
 import { EmployerResponse } from "./employer-response.model";
@@ -38,5 +39,6 @@ export interface PatientResponse {
   maladies?: ChronicDiseaseResponse[];
   parents?: ParentResponse[];
   commentaire?: string;
-  antecedent?: string;
+
+  antecedant?: BackgroundsResponse;
 }

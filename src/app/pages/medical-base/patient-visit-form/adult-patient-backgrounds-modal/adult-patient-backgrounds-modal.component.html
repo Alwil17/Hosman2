@@ -128,7 +128,7 @@
       </div>
       <div class="col-md-6">
         <ng-container *ngIf="smokingControl.value?.id === true">
-          <div class="row">
+          <div class="row gx-1">
             <div class="col-md-4">
               <app-input
                 [alignRight]="true"
@@ -179,7 +179,7 @@
         <ng-container *ngIf="medicinesInUseControl.value >= 1">
           <button
             class="btn btn-secondary"
-            (click)="openMultiInputModal(0, medicinesInUseControl.value)"
+            (click)="openMultiInputModal(0, medicinesInUseControl.value, medicinesInUse)"
           >
             Renseigner la liste des médicaments
           </button>
@@ -201,7 +201,7 @@
         <ng-container *ngIf="surgeriesControl.value >= 1">
           <button
             class="btn btn-secondary"
-            (click)="openMultiInputModal(1, surgeriesControl.value)"
+            (click)="openMultiInputModal(1, surgeriesControl.value, surgeries)"
           >
             Renseigner les interventions chirurgicales
           </button>
@@ -223,7 +223,7 @@
         <ng-container *ngIf="hospitalisationsControl.value >= 1">
           <button
             class="btn btn-secondary"
-            (click)="openMultiInputModal(2, hospitalisationsControl.value)"
+            (click)="openMultiInputModal(2, hospitalisationsControl.value, hospitalisations)"
           >
             Renseigner les détails des hospitalisations
           </button>
@@ -260,7 +260,13 @@
     </div>
 
     <div class="d-flex justify-content-end mt-3">
-      <button type="button" class="btn btn-success">Valider et fermer</button>
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="registerBackgrounds()"
+      >
+        Enregistrer
+      </button>
     </div>
   </form>
 </app-simple-modal>

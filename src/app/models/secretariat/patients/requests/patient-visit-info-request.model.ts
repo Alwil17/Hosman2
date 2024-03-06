@@ -1,4 +1,5 @@
 import { AddressRequest } from "./address-request.model";
+import { BackgroundsRequest } from "./backgrounds-request.model";
 import { ChronicDiseaseRequest } from "./chronic-disease-request.model";
 import { CountryRequest } from "./country-request.model";
 import { EmployerRequest } from "./employer-request.model";
@@ -13,20 +14,20 @@ export interface IPatientVisitInfoRequest {
   maladies?: ChronicDiseaseRequest[];
   parents?: ParentRequest[];
   commentaire?: string;
-  antecedent?: string;
+  antecedant?: BackgroundsRequest;
 }
 export class PatientVisitInfoRequest {
   // Visit/Medical base fileds
   maladies?: ChronicDiseaseRequest[];
   parents?: ParentRequest[];
   commentaire?: string;
-  antecedent?: string;
+  antecedant?: BackgroundsRequest;
 
   constructor(iPatientVisitInfoRequest: IPatientVisitInfoRequest) {
     // Visit/Medical base fileds
     this.maladies = iPatientVisitInfoRequest.maladies;
     this.parents = iPatientVisitInfoRequest.parents;
     this.commentaire = iPatientVisitInfoRequest.commentaire;
-    this.antecedent = iPatientVisitInfoRequest.antecedent;
+    this.antecedant = iPatientVisitInfoRequest.antecedant;
   }
 }

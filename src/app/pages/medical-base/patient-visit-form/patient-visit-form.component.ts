@@ -470,7 +470,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     }
 
     this.commentsControl.setValue(this.activePatient.commentaire);
-    this.backgroundsControl.setValue(this.activePatient.antecedent);
+    this.backgroundsControl.setValue(this.activePatient.antecedant);
 
     if (mother) {
       this.motherProfessionControl.setValue(
@@ -612,6 +612,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           backdrop: "static",
         }
       );
+
+      backgroundsModalRef.componentInstance.patientInfos = this.activePatient;
     } else {
       backgroundsModalRef = this.modalService.open(
         ChildPatientBackgroundsModalComponent,
@@ -622,6 +624,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           backdrop: "static",
         }
       );
+
+      backgroundsModalRef.componentInstance.patientInfos = this.activePatient;
     }
   }
 
@@ -681,10 +685,10 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
     const patientVisitInfo = new PatientVisitInfoRequest({
       commentaire: this.commentsControl.value,
-      antecedent: this.backgroundsControl.value,
       maladies: chronicDiseases,
       parents: parents,
     });
+    // antecedant: this.backgroundsControl.value,
 
     console.log(JSON.stringify(patientVisitInfo, null, 2));
 

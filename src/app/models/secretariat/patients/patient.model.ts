@@ -13,6 +13,7 @@ import { City } from "./city.model";
 import { Neighborhood } from "./neighborhood.model";
 import { ChronicDisease } from "./chronic-disease.model";
 import { Parent } from "./parent.model";
+import { Backgrounds } from "./backgrounds.model";
 
 export interface IPatient {
   id: number;
@@ -44,7 +45,8 @@ export interface IPatient {
   maladies?: ChronicDisease[];
   parents?: Parent[];
   commentaire?: string;
-  antecedent?: string;
+
+  antecedant?: Backgrounds;
 }
 export class Patient {
   id: number;
@@ -76,7 +78,8 @@ export class Patient {
   maladies?: ChronicDisease[];
   parents?: Parent[];
   commentaire?: string;
-  antecedent?: string;
+
+  antecedant?: Backgrounds;
 
   constructor(iPatient: IPatient) {
     this.id = iPatient.id;
@@ -108,39 +111,39 @@ export class Patient {
     this.maladies = iPatient.maladies;
     this.parents = iPatient.parents;
     this.commentaire = iPatient.commentaire;
-    this.antecedent = iPatient.antecedent;
+    this.antecedant = iPatient.antecedant;
   }
 
-  static emptyPatient(): Patient {
-    return new Patient({
-      id: -1,
-      reference: "",
-      nom: "",
-      prenoms: "",
-      date_naissance: new Date(),
-      sexe: "",
-      tel1: "",
-      is_assure: 0,
-      date_ajout: new Date(),
-      personne_a_prevenir: new PersonToContact({
-        id: -1,
-        nom: "",
-        prenoms: "",
-        tel: "",
-        adresse: "",
-      }),
-      adresse: new Address({
-        id: -1,
-        ville: new City({ id: -1, nom: "" }),
-        quartier: new Neighborhood({ id: -1, nom: "" }),
-      }),
-      pays_origine: new Country({
-        id: -1,
-        nom: "",
-        nationalite: "",
-      }),
-    });
-  }
+  // static emptyPatient(): Patient {
+  //   return new Patient({
+  //     id: -1,
+  //     reference: "",
+  //     nom: "",
+  //     prenoms: "",
+  //     date_naissance: new Date(),
+  //     sexe: "",
+  //     tel1: "",
+  //     is_assure: 0,
+  //     date_ajout: new Date(),
+  //     personne_a_prevenir: new PersonToContact({
+  //       id: -1,
+  //       nom: "",
+  //       prenoms: "",
+  //       tel: "",
+  //       adresse: "",
+  //     }),
+  //     adresse: new Address({
+  //       id: -1,
+  //       ville: new City({ id: -1, nom: "" }),
+  //       quartier: new Neighborhood({ id: -1, nom: "" }),
+  //     }),
+  //     pays_origine: new Country({
+  //       id: -1,
+  //       nom: "",
+  //       nationalite: "",
+  //     }),
+  //   });
+  // }
 
   static fromResponse(patient: PatientResponse): Patient {
     return new Patient({
@@ -182,7 +185,10 @@ export class Patient {
       maladies: patient.maladies ? patient.maladies : undefined,
       parents: patient.parents ? patient.parents : undefined,
       commentaire: patient.commentaire,
-      antecedent: patient.antecedent,
+
+      antecedant: patient.antecedant
+        ? Backgrounds.fromResponse(patient.antecedant)
+        : undefined,
     });
   }
 

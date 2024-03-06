@@ -4,10 +4,13 @@ import { Observable, map } from "rxjs";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
 import { ConsultationRequest } from "src/app/models/medical-base/requests/consultation-request.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { environment } from "src/environments/environment";
 
 const apiEndpoint = environment.medical_base + "consultations";
+
+const apiEndpoint2 = environment.medical_base + "patients";
 
 @Injectable({
   providedIn: "root",
@@ -90,5 +93,9 @@ export class PatientVisitService {
 
   public get selectedPatient(): Patient | undefined {
     return this._selectedPatient;
+  }
+
+  updateVisitInfo(id: any, data: PatientVisitInfoRequest): Observable<any> {
+    return this.http.put(`${apiEndpoint2}/${id}/bm`, data);
   }
 }

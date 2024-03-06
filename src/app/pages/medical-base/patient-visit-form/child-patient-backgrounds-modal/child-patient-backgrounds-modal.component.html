@@ -56,7 +56,13 @@
         <ng-container *ngIf="hospitalisationsControl.value >= 1">
           <button
             class="btn btn-secondary"
-            (click)="openMultiInputModal(0, hospitalisationsControl.value)"
+            (click)="
+              openMultiInputModal(
+                0,
+                hospitalisationsControl.value,
+                hospitalisations
+              )
+            "
           >
             Renseigner les détails des hospitalisations
           </button>
@@ -198,7 +204,13 @@
     <hr />
 
     <div class="d-flex justify-content-end mt-3">
-      <button type="button" class="btn btn-success">Valider et fermer</button>
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="registerBackgrounds()"
+      >
+        Enregistrer
+      </button>
     </div>
   </form>
 </app-simple-modal>

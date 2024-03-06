@@ -1,4 +1,5 @@
 import { AddressRequest } from "./address-request.model";
+import { BackgroundsRequest } from "./backgrounds-request.model";
 import { ChronicDiseaseRequest } from "./chronic-disease-request.model";
 import { CountryRequest } from "./country-request.model";
 import { EmployerRequest } from "./employer-request.model";
@@ -40,7 +41,8 @@ export interface IPatientRequest {
   maladies?: ChronicDiseaseRequest[];
   parents?: ParentRequest[];
   commentaire?: string;
-  antecedent?: string;
+
+  antecedant?: BackgroundsRequest;
 }
 export class PatientRequest {
   nom: string;
@@ -74,7 +76,8 @@ export class PatientRequest {
   maladies?: ChronicDiseaseRequest[];
   parents?: ParentRequest[];
   commentaire?: string;
-  antecedent?: string;
+
+  antecedant?: BackgroundsRequest;
 
   constructor(iPatientRequest: IPatientRequest) {
     this.nom = iPatientRequest.nom;
@@ -104,6 +107,6 @@ export class PatientRequest {
     this.maladies = iPatientRequest.maladies;
     this.parents = iPatientRequest.parents;
     this.commentaire = iPatientRequest.commentaire;
-    this.antecedent = iPatientRequest.antecedent;
+    this.antecedant = iPatientRequest.antecedant;
   }
 }
