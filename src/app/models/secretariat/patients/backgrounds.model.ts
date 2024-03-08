@@ -15,7 +15,7 @@ export interface IBackgrounds {
   mesure_tabac?: string;
   frequence_tabac?: string;
   nb_medic?: number;
-  medics?: string[];
+  medicaments?: string[];
   nb_chirurgie?: number;
   chirurgies?: string[];
   autre?: string;
@@ -24,12 +24,12 @@ export interface IBackgrounds {
   voie_accouch?: string;
   voie_cause?: string;
   classe_scolarise?: string;
-  is_reanime?: boolean;
-  is_scolarise?: boolean;
+  reanime?: boolean;
+  scolarise?: boolean;
 
   // common to adult and child patient
   nb_hospit?: number;
-  hospits?: string[];
+  hospitalisations?: string[];
   allergies?: string;
 }
 
@@ -48,7 +48,7 @@ export class Backgrounds {
   mesure_tabac?: string;
   frequence_tabac?: string;
   nb_medic?: number;
-  medics?: string[];
+  medicaments?: string[];
   nb_chirurgie?: number;
   chirurgies?: string[];
   autre?: string;
@@ -57,12 +57,12 @@ export class Backgrounds {
   voie_accouch?: string;
   voie_cause?: string;
   classe_scolarise?: string;
-  is_reanime?: boolean;
-  is_scolarise?: boolean;
+  reanime?: boolean;
+  scolarise?: boolean;
 
   // common to adult and child patient
   nb_hospit?: number;
-  hospits?: string[];
+  hospitalisations?: string[];
   allergies?: string;
 
   constructor(iBackgrounds: IBackgrounds) {
@@ -79,7 +79,7 @@ export class Backgrounds {
     this.mesure_tabac = iBackgrounds.mesure_tabac;
     this.frequence_tabac = iBackgrounds.frequence_tabac;
     this.nb_medic = iBackgrounds.nb_medic;
-    this.medics = iBackgrounds.medics;
+    this.medicaments = iBackgrounds.medicaments;
     this.nb_chirurgie = iBackgrounds.nb_chirurgie;
     this.chirurgies = iBackgrounds.chirurgies;
     this.autre = iBackgrounds.autre;
@@ -87,11 +87,11 @@ export class Backgrounds {
     this.voie_accouch = iBackgrounds.voie_accouch;
     this.voie_cause = iBackgrounds.voie_cause;
     this.classe_scolarise = iBackgrounds.classe_scolarise;
-    this.is_reanime = iBackgrounds.is_reanime;
-    this.is_scolarise = iBackgrounds.is_scolarise;
+    this.reanime = iBackgrounds.reanime;
+    this.scolarise = iBackgrounds.scolarise;
 
     this.nb_hospit = iBackgrounds.nb_hospit;
-    this.hospits = iBackgrounds.hospits;
+    this.hospitalisations = iBackgrounds.hospitalisations;
     this.allergies = iBackgrounds.allergies;
   }
 
@@ -110,7 +110,7 @@ export class Backgrounds {
       mesure_tabac: backgrounds.mesure_tabac,
       frequence_tabac: backgrounds.frequence_tabac,
       nb_medic: backgrounds.nb_medic,
-      medics: backgrounds.medics,
+      medicaments: backgrounds.medicaments,
       nb_chirurgie: backgrounds.nb_chirurgie,
       chirurgies: backgrounds.chirurgies,
       autre: backgrounds.autre,
@@ -118,11 +118,11 @@ export class Backgrounds {
       voie_accouch: backgrounds.voie_accouch,
       voie_cause: backgrounds.voie_cause,
       classe_scolarise: backgrounds.classe_scolarise,
-      is_reanime: backgrounds.is_reanime,
-      is_scolarise: backgrounds.is_scolarise,
+      reanime: backgrounds.reanime,
+      scolarise: backgrounds.scolarise,
 
       nb_hospit: backgrounds.nb_hospit,
-      hospits: backgrounds.hospits,
+      hospitalisations: backgrounds.hospitalisations,
       allergies: backgrounds.allergies,
     });
   }

@@ -1,6 +1,7 @@
 import { AddressRequest } from "./address-request.model";
 import { BackgroundsRequest } from "./backgrounds-request.model";
 import { ChronicDiseaseRequest } from "./chronic-disease-request.model";
+import { CoefficientSocialRequest } from "./coefficient-social-request.model";
 import { CountryRequest } from "./country-request.model";
 import { EmployerRequest } from "./employer-request.model";
 import { InsuranceRequest } from "./insurance-request.model";
@@ -43,6 +44,7 @@ export interface IPatientRequest {
   commentaire?: string;
 
   antecedant?: BackgroundsRequest;
+  coefficient?: CoefficientSocialRequest;
 }
 export class PatientRequest {
   nom: string;
@@ -78,6 +80,7 @@ export class PatientRequest {
   commentaire?: string;
 
   antecedant?: BackgroundsRequest;
+  coefficient?: CoefficientSocialRequest;
 
   constructor(iPatientRequest: IPatientRequest) {
     this.nom = iPatientRequest.nom;
@@ -107,6 +110,8 @@ export class PatientRequest {
     this.maladies = iPatientRequest.maladies;
     this.parents = iPatientRequest.parents;
     this.commentaire = iPatientRequest.commentaire;
+
     this.antecedant = iPatientRequest.antecedant;
+    this.coefficient = iPatientRequest.coefficient;
   }
 }

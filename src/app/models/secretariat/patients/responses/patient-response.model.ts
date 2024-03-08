@@ -1,6 +1,7 @@
 import { AddressResponse } from "./address-response.model";
 import { BackgroundsResponse } from "./backgrounds-response.model";
 import { ChronicDiseaseResponse } from "./chronic-disease-response.model";
+import { CoefficientSocialResponse } from "./coefficient-social-response.model";
 import { CountryResponse } from "./country-response.model";
 import { EmployerResponse } from "./employer-response.model";
 import { InsuranceResponse } from "./insurance-response.model";
@@ -41,4 +42,5 @@ export interface PatientResponse {
   commentaire?: string;
 
   antecedant?: BackgroundsResponse;
+  coefficient?: CoefficientSocialResponse;
 }

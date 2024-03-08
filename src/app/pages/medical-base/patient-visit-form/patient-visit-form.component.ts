@@ -10,6 +10,7 @@ import {
   distinctUntilChanged,
   firstValueFrom,
   forkJoin,
+  merge,
   of,
   switchMap,
   tap,
@@ -48,6 +49,7 @@ import { AdultPatientBackgroundsModalComponent } from "./adult-patient-backgroun
 import { ChildPatientBackgroundsModalComponent } from "./child-patient-backgrounds-modal/child-patient-backgrounds-modal.component";
 import { SiblingsModalComponent } from "./siblings-modal/siblings-modal.component";
 import { CoefficientSocialModalComponent } from "./coefficient-social-modal/coefficient-social-modal.component";
+import { error } from "console";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -612,8 +614,6 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           backdrop: "static",
         }
       );
-
-      backgroundsModalRef.componentInstance.patientInfos = this.activePatient;
     } else {
       backgroundsModalRef = this.modalService.open(
         ChildPatientBackgroundsModalComponent,
@@ -624,9 +624,26 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           backdrop: "static",
         }
       );
-
-      backgroundsModalRef.componentInstance.patientInfos = this.activePatient;
     }
+
+    backgroundsModalRef.componentInstance.patientInfos = this.activePatient;
+
+    merge(backgroundsModalRef.closed, backgroundsModalRef.dismissed).subscribe({
+      next: () => {
+        this.patientService.get(this.activePatient.id).subscribe({
+          next: (patient) => (this.activePatient = patient),
+          error: (e) => {
+            console.error(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite"],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        });
+      },
+    });
   }
 
   openSiblingsModal() {
@@ -650,6 +667,29 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         backdrop: "static",
       }
     );
+
+    coefficientSocialModalRef.componentInstance.patientInfos =
+      this.activePatient;
+
+    merge(
+      coefficientSocialModalRef.closed,
+      coefficientSocialModalRef.dismissed
+    ).subscribe({
+      next: () => {
+        this.patientService.get(this.activePatient.id).subscribe({
+          next: (patient) => (this.activePatient = patient),
+          error: (e) => {
+            console.error(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite"],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        });
+      },
+    });
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------

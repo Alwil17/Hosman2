@@ -110,6 +110,8 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
       schoolContact: this.schoolContactControl,
     });
 
+    console.log(JSON.stringify(this.patientInfos, null, 2));
+    
     this.initFieldsValue();
   }
 
@@ -132,9 +134,7 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
       );
 
       this.revivedControl.setValue(
-        this.revivedOptions.find(
-          (value) => value.id === backgrounds?.is_reanime
-        )
+        this.revivedOptions.find((value) => value.id === backgrounds?.reanime)
       );
 
       this.hospitalisationsControl.setValue(backgrounds?.nb_hospit);
@@ -143,7 +143,7 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
 
       this.scholarizedControl.setValue(
         this.scholarizedOptions.find(
-          (value) => value.id === backgrounds?.is_scolarise
+          (value) => value.id === backgrounds?.scolarise
         )
       );
 
@@ -188,10 +188,10 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
   getBackgroundsFormData() {
     if (this.patientInfos.antecedant) {
       if (
-        this.patientInfos.antecedant?.hospits?.length !== 0 &&
+        this.patientInfos.antecedant?.hospitalisations?.length !== 0 &&
         this.hospitalisations.length === 0
       ) {
-        this.hospitalisations = this.patientInfos.antecedant?.hospits!;
+        this.hospitalisations = this.patientInfos.antecedant?.hospitalisations!;
       }
     }
 
@@ -201,27 +201,20 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
       voie_accouch: this.birthedByControl.value?.text,
       voie_cause: this.birthedByDetailControl.value?.text,
 
-      is_reanime: this.revivedControl.value?.id,
+      reanime: this.revivedControl.value?.id,
 
       nb_hospit: this.hospitalisations.length,
       hospits: this.hospitalisations,
 
       allergies: this.allergiesControl.value,
 
-      is_scolarise: this.scholarizedControl.value?.id,
+      scolarise: this.scholarizedControl.value?.id,
       classe_scolarise: this.scholarGradeControl.value,
     });
   }
 
   registerBackgrounds() {
     if (this.backgroundsForm.invalid) {
-      // const notificationMessages = this.getInvalidFields();
-
-      // this.toastService.show({
-      //   messages: notificationMessages,
-      //   type: ToastType.Warning,
-      // });
-
       return;
     }
 
@@ -233,24 +226,24 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
 
     console.log(JSON.stringify(patientVisitInfo, null, 2));
 
-    // this.patientVisitService
-    //   .updateVisitInfo(this.patientInfos.reference, patientVisitInfo)
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.toastService.show({
-    //         messages: ["Les antécédents ont été enregistrés avec succès."],
-    //         type: ToastType.Success,
-    //       });
-    //     },
-    //     error: (e) => {
-    //       console.error(e);
+    this.patientVisitService
+      .updateVisitInfo(this.patientInfos.reference, patientVisitInfo)
+      .subscribe({
+        next: (data) => {
+          this.toastService.show({
+            messages: ["Les antécédents ont été enregistrés avec succès."],
+            type: ToastType.Success,
+          });
+        },
+        error: (e) => {
+          console.error(e);
 
-    //       this.toastService.show({
-    //         messages: ["Désolé, une erreur s'est produite"],
-    //         delay: 10000,
-    //         type: ToastType.Error,
-    //       });
-    //     },
-    //   });
+          this.toastService.show({
+            messages: ["Désolé, une erreur s'est produite"],
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
   }
 }

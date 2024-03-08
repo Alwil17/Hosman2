@@ -22,8 +22,8 @@ export interface IBackgroundsRequest {
   voie_accouch?: string;
   voie_cause?: string;
   classe_scolarise?: string;
-  is_reanime?: boolean;
-  is_scolarise?: boolean;
+  reanime?: boolean;
+  scolarise?: boolean;
 
   // common to adult and child patient
   nb_hospit?: number;
@@ -55,8 +55,8 @@ export class BackgroundsRequest {
   voie_accouch?: string;
   voie_cause?: string;
   classe_scolarise?: string;
-  is_reanime?: boolean;
-  is_scolarise?: boolean;
+  reanime?: boolean;
+  scolarise?: boolean;
 
   // common to adult and child patient
   nb_hospit?: number;
@@ -85,8 +85,8 @@ export class BackgroundsRequest {
     this.voie_accouch = iBackgrounds.voie_accouch;
     this.voie_cause = iBackgrounds.voie_cause;
     this.classe_scolarise = iBackgrounds.classe_scolarise;
-    this.is_reanime = iBackgrounds.is_reanime;
-    this.is_scolarise = iBackgrounds.is_scolarise;
+    this.reanime = iBackgrounds.reanime;
+    this.scolarise = iBackgrounds.scolarise;
 
     this.nb_hospit = iBackgrounds.nb_hospit;
     this.hospits = iBackgrounds.hospits;

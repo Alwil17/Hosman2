@@ -13,7 +13,7 @@ export interface BackgroundsResponse {
   mesure_tabac?: string;
   frequence_tabac?: string;
   nb_medic?: number;
-  medics?: string[];
+  medicaments?: string[];
   nb_chirurgie?: number;
   chirurgies?: string[];
   autre?: string;
@@ -22,11 +22,11 @@ export interface BackgroundsResponse {
   voie_accouch?: string;
   voie_cause?: string;
   classe_scolarise?: string;
-  is_reanime?: boolean;
-  is_scolarise?: boolean;
+  reanime?: boolean;
+  scolarise?: boolean;
 
   // common to adult and child patient
   nb_hospit?: number;
-  hospits?: string[];
+  hospitalisations?: string[];
   allergies?: string;
 }

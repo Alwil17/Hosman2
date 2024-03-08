@@ -14,6 +14,7 @@ import { Neighborhood } from "./neighborhood.model";
 import { ChronicDisease } from "./chronic-disease.model";
 import { Parent } from "./parent.model";
 import { Backgrounds } from "./backgrounds.model";
+import { CoefficientSocial } from "./coefficient-social.model";
 
 export interface IPatient {
   id: number;
@@ -47,6 +48,7 @@ export interface IPatient {
   commentaire?: string;
 
   antecedant?: Backgrounds;
+  coefficient?: CoefficientSocial;
 }
 export class Patient {
   id: number;
@@ -80,6 +82,7 @@ export class Patient {
   commentaire?: string;
 
   antecedant?: Backgrounds;
+  coefficient?: CoefficientSocial;
 
   constructor(iPatient: IPatient) {
     this.id = iPatient.id;
@@ -111,7 +114,9 @@ export class Patient {
     this.maladies = iPatient.maladies;
     this.parents = iPatient.parents;
     this.commentaire = iPatient.commentaire;
+
     this.antecedant = iPatient.antecedant;
+    this.coefficient = iPatient.coefficient;
   }
 
   // static emptyPatient(): Patient {
@@ -188,6 +193,9 @@ export class Patient {
 
       antecedant: patient.antecedant
         ? Backgrounds.fromResponse(patient.antecedant)
+        : undefined,
+      coefficient: patient.coefficient
+        ? CoefficientSocial.fromResponse(patient.coefficient)
         : undefined,
     });
   }

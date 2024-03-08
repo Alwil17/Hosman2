@@ -290,10 +290,10 @@ export class AdultPatientBackgroundsModalComponent implements OnInit {
 
     if (this.patientInfos.antecedant) {
       if (
-        this.patientInfos.antecedant?.medics?.length !== 0 &&
+        this.patientInfos.antecedant?.medicaments?.length !== 0 &&
         this.medicinesInUse.length === 0
       ) {
-        this.medicinesInUse = this.patientInfos.antecedant?.medics!;
+        this.medicinesInUse = this.patientInfos.antecedant?.medicaments!;
       }
 
       if (
@@ -303,10 +303,10 @@ export class AdultPatientBackgroundsModalComponent implements OnInit {
         this.surgeries = this.patientInfos.antecedant?.chirurgies!;
       }
       if (
-        this.patientInfos.antecedant?.hospits?.length !== 0 &&
+        this.patientInfos.antecedant?.hospitalisations?.length !== 0 &&
         this.hospitalisations.length === 0
       ) {
-        this.hospitalisations = this.patientInfos.antecedant?.hospits!;
+        this.hospitalisations = this.patientInfos.antecedant?.hospitalisations!;
       }
     }
 
@@ -338,13 +338,6 @@ export class AdultPatientBackgroundsModalComponent implements OnInit {
 
   registerBackgrounds() {
     if (this.backgroundsForm.invalid) {
-      // const notificationMessages = this.getInvalidFields();
-
-      // this.toastService.show({
-      //   messages: notificationMessages,
-      //   type: ToastType.Warning,
-      // });
-
       return;
     }
 

@@ -1,4 +1,6 @@
-export interface ICoefficientSocialRequest {
+import { CoefficientSocialResponse } from "./responses/coefficient-social-response.model";
+
+export interface ICoefficientSocial {
   nbe: number;
   nim: number;
   nip: number;
@@ -12,7 +14,7 @@ export interface ICoefficientSocialRequest {
   commentaire?: string;
 }
 
-export class CoefficientSocialRequest {
+export class CoefficientSocial {
   nbe: number;
   nim: number;
   nip: number;
@@ -25,7 +27,7 @@ export class CoefficientSocialRequest {
   coef?: number;
   commentaire?: string;
 
-  constructor(iCoefficientSocial: ICoefficientSocialRequest) {
+  constructor(iCoefficientSocial: ICoefficientSocial) {
     this.nbe = iCoefficientSocial.nbe;
     this.nim = iCoefficientSocial.nim;
     this.nip = iCoefficientSocial.nip;
@@ -37,5 +39,23 @@ export class CoefficientSocialRequest {
     this.imv = iCoefficientSocial.imv;
     this.coef = iCoefficientSocial.coef;
     this.commentaire = iCoefficientSocial.commentaire;
+  }
+
+  static fromResponse(
+    coefficientSocial: CoefficientSocialResponse
+  ): CoefficientSocial {
+    return new CoefficientSocial({
+      nbe: coefficientSocial.nbe,
+      nim: coefficientSocial.nim,
+      nip: coefficientSocial.nip,
+      smf: coefficientSocial.smf,
+      mni: coefficientSocial.mni,
+      mf: coefficientSocial.mf,
+      pf: coefficientSocial.pf,
+      ass: coefficientSocial.ass,
+      imv: coefficientSocial.imv,
+      coef: coefficientSocial.coef,
+      commentaire: coefficientSocial.commentaire,
+    });
   }
 }

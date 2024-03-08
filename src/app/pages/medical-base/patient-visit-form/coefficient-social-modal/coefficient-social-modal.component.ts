@@ -1,8 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { merge } from "rxjs";
 import { parseFloatOrZero, parseIntOrZero } from "src/app/helpers/parsers";
 import { SelectOption } from "src/app/models/extras/select.model";
+import { ToastType } from "src/app/models/extras/toast-type.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { CoefficientSocialRequest } from "src/app/models/secretariat/patients/requests/coefficient-social-request.model";
+import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
+import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 @Component({
   selector: "app-coefficient-social-modal",
@@ -10,6 +16,9 @@ import { SelectOption } from "src/app/models/extras/select.model";
   styleUrls: ["./coefficient-social-modal.component.scss"],
 })
 export class CoefficientSocialModalComponent implements OnInit {
+  @Input()
+  patientInfos!: Patient;
+
   nbeOptions: SelectOption[] = [
     // {
     //   id: 1,
@@ -205,7 +214,10 @@ export class CoefficientSocialModalComponent implements OnInit {
 
   coefficientSocialForm!: FormGroup;
 
-  constructor() {}
+  constructor(
+    private patientVisitService: PatientVisitService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.coefficientSocialForm = new FormGroup({
@@ -226,6 +238,8 @@ export class CoefficientSocialModalComponent implements OnInit {
     });
 
     this.onFieldsValueChanges();
+
+    this.initFieldsValue();
   }
 
   onFieldsValueChanges() {
@@ -301,6 +315,60 @@ export class CoefficientSocialModalComponent implements OnInit {
     // });
   }
 
+  initFieldsValue() {
+    if (this.patientInfos.coefficient) {
+      const coefficient = this.patientInfos.coefficient;
+
+      this.nbeControl.setValue(
+        this.nbeOptions.find((value) => value.id == coefficient.nbe)
+      );
+
+      this.nimControl.setValue(
+        this.niOptions.find((value) => value.id == coefficient.nim)
+      );
+
+      this.nipControl.setValue(
+        this.niOptions.find((value) => value.id == coefficient.nip)
+      );
+
+      this.smfControl.setValue(coefficient.smf);
+
+      this.mniControl.setValue(coefficient.mni);
+
+      this.mfControl.setValue(
+        this.mfOptions.find((value) => value.id == coefficient.mf)
+      );
+
+      this.pfControl.setValue(
+        this.pfOptions.find((value) => value.id == coefficient.pf)
+      );
+
+      this.assControl.setValue(
+        this.assOptions.find((value) => value.id == coefficient.ass)
+      );
+
+      this.imvControl.setValue(
+        this.imvOptions.find((value) => value.id == coefficient.imv)
+      );
+    }
+  }
+
+  getCoefficientSocialFormData() {
+    return new CoefficientSocialRequest({
+      nbe: this.nbeControl.value.id,
+      nim: this.nimControl.value.id,
+      nip: this.nipControl.value.id,
+      smf: this.smfControl.value,
+      mni: this.mniControl.value,
+      mf: this.mfControl.value.id,
+      pf: this.pfControl.value.id,
+      ass: this.assControl.value.id,
+      imv: this.imvControl.value.id,
+      coef: this.coefficientSocialControl.value,
+      commentaire: this.interpretationControl.value,
+    });
+  }
+
   calculateCoefficientSocialAndInterprete() {
     console.log("Form valid : " + this.coefficientSocialForm.valid);
     console.log(
@@ -350,5 +418,48 @@ export class CoefficientSocialModalComponent implements OnInit {
 
       this.interpretationControl.setValue(interpretation);
     }
+  }
+
+  registerCoefficientSocial() {
+    if (this.coefficientSocialForm.invalid) {
+      // const notificationMessages = this.getInvalidFields();
+
+      // this.toastService.show({
+      //   messages: notificationMessages,
+      //   type: ToastType.Warning,
+      // });
+
+      return;
+    }
+
+    // this.calculateCoefficientSocialAndInterprete();
+
+    const coefficientSocialData = this.getCoefficientSocialFormData();
+
+    const patientVisitInfo = new PatientVisitInfoRequest({
+      coefficient: coefficientSocialData,
+    });
+
+    console.log(JSON.stringify(patientVisitInfo, null, 2));
+
+    this.patientVisitService
+      .updateVisitInfo(this.patientInfos.reference, patientVisitInfo)
+      .subscribe({
+        next: (data) => {
+          this.toastService.show({
+            messages: ["Le coefficient a été enregistré avec succès."],
+            type: ToastType.Success,
+          });
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            messages: ["Désolé, une erreur s'est produite"],
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
   }
 }
