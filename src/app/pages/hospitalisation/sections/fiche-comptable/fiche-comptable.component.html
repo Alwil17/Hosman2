@@ -21,7 +21,7 @@
     <li *ngFor="let item of tabs; let i = index" class="nav-item border-round" [class]="item.color !== undefined ? item.color : ''">
         <a [class]="'nav-link '+ (i === 0 ? 'active' : '')" data-bs-toggle="tab" [href]="'#arrow-'+item.type"
             role="tab">
-            <span class="d-none d-sm-block">{{ item.name }}</span>
+            <span class="d-none d-sm-block one-tab">{{ item.name }}</span>
         </a>
     </li>
 </ul>

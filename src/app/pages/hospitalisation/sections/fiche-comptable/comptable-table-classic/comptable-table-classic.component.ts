@@ -5,12 +5,16 @@ import {
   TemplateRef,
   ViewChild,
 } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Subscription, pairwise } from "rxjs";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { FormControl, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import * as Yup from "yup";
-import { formatDate, validateYupSchema } from "src/app/helpers/utils";
+import {
+  formatDate,
+  hasStateChanges,
+  validateYupSchema,
+} from "src/app/helpers/utils";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Chart, ChartOptions, registerables } from "chart.js";
@@ -169,25 +173,34 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   initLineChart() {
-      
     // Line Chart
     WATCHES.forEach((w) => {
-
-      const watchname = w.name
+      const watchname = w.name;
 
       const list = this.suivis
         .filter(
           (d) =>
-            d["type"] === "watches" && d.extras && "name" in JSON.parse(d.extras)
+            d["type"] === "watches" &&
+            d.extras &&
+            "name" in JSON.parse(d.extras)
         )
         .filter((s: any) => JSON.parse(s.extras).name === watchname)
-        .map((r) => ({
-          date: r.apply_date,
-          milli: moment(r.apply_date).valueOf(),
-          value: Number(JSON.parse(r.extras).data.value)
-        }))
-        .sort((a, b) => a.milli - b.milli);
+        .map((r) => {
+          const [hours, minutes] = JSON.parse(r.extras).data.hour.split(":");
 
+          const watchMoment = moment(r.apply_date).set({
+            hour: hours,
+            minute: minutes,
+          });
+
+          return {
+            date: r.apply_date,
+            milli: watchMoment.valueOf(),
+            value: Number(JSON.parse(r.extras).data.value),
+            hour: JSON.parse(r.extras).data.hour
+          };
+        })
+        .sort((a, b) => a.milli - b.milli);
 
       const lineCanvasEle: any = document.getElementById(w.name);
 
@@ -195,7 +208,7 @@ export class ComptableTableClassicComponent implements OnInit {
         const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
           type: "line",
           data: {
-            labels: list.map((m) => moment(m.date).format("yyyy-MM-DD")),
+            labels: list.map((m) => "J" + parseInt(this.days.find((d) => moment(d.o).isSame(moment(m.date).format("yyyy-MM-DD"))).i + 1)),
             datasets: [
               {
                 data: list.map((m) => m.value),
@@ -208,17 +221,31 @@ export class ComptableTableClassicComponent implements OnInit {
                 pointHoverRadius: 15,
                 tension: 0.5,
                 datalabels: {
-                  align: "start",
-                  anchor: "start",
-                  offset: 1,
-                  color: "#8A1776",
                   labels: {
+                    hour: {
+                      font: {
+                        weight: "bold",
+                        family: "Inter",
+                        size: 12,
+                      },
+                      align: "end",
+                      anchor: "end",
+                      offset: 1,
+                      color: "green",
+                      formatter: (value: any, context: any) => {
+                        return `${list[context.dataIndex].hour}`;
+                      },
+                    },
                     title: {
                       font: {
                         weight: "bold",
                         family: "Inter",
                         size: 15,
                       },
+                      align: "start",
+                      anchor: "start",
+                      offset: 1,
+                      color: "#8A1776",
                     },
                   },
                 },
@@ -226,6 +253,14 @@ export class ComptableTableClassicComponent implements OnInit {
             ],
           },
           options: {
+            layout: {
+              padding: {
+                left: 0,
+                right: 0,
+                top: 20,
+                bottom: 30,
+              },
+            },
             indexAxis: "x",
             maintainAspectRatio: false,
             // aspectRatio: 1,
@@ -247,7 +282,7 @@ export class ComptableTableClassicComponent implements OnInit {
               y: {
                 ticks: {
                   stepSize: w.stepSize,
-                  suggestedMin: 0, 
+                  suggestedMin: 0,
                 } as { [key: string]: any },
               },
             },
@@ -785,19 +820,26 @@ export class ComptableTableClassicComponent implements OnInit {
           t["type"] === "watches" && moment(day).isSame(moment(t["apply_date"]))
       );
 
-      return res.map((m) => {
-        const [hours, minutes] = JSON.parse(m.extras).data.hour.split(":");
-        const totalMilliseconds =
-          Number(hours) * 60 * 60 * 1000 + Number(minutes) * 60 * 1000;
-        return {
-          id: m.id,
-          hour: JSON.parse(m.extras).data.hour,
-          value: JSON.parse(m.extras).data.value,
-          time: totalMilliseconds,
-          watch_id: JSON.parse(m.extras).data.id,
-        };
-      });
+      return res
+        .map((m) => {
+          const [hours, minutes] = JSON.parse(m.extras).data.hour.split(":");
+          const totalMilliseconds =
+            Number(hours) * 60 * 60 * 1000 + Number(minutes) * 60 * 1000;
 
+          const watchMoment = moment(m.apply_date).set({
+            hour: hours,
+            minute: minutes,
+          });
+
+          return {
+            id: m.id,
+            hour: JSON.parse(m.extras).data.hour,
+            value: JSON.parse(m.extras).data.value,
+            time: watchMoment.valueOf(),
+            watch_id: JSON.parse(m.extras).data.id,
+          };
+        })
+        .sort((a, b) => a.time - b.time);
     } else return [];
   }
 
@@ -821,7 +863,7 @@ export class ComptableTableClassicComponent implements OnInit {
     });
   }
 
-  saveWatch() {
+  async saveWatch() {
     if (this.watchValue.value === "" || this.watchValue.value === null) {
       this.toast.error("Vous devez saisir la valeur");
       return;
@@ -830,6 +872,9 @@ export class ComptableTableClassicComponent implements OnInit {
     const [hours, minutes] = this.watchTime.value.split(":");
     const totalMilliseconds =
       Number(hours) * 60 * 60 * 1000 + Number(minutes) * 60 * 1000;
+
+    console.log(this.watchTime.value);
+    console.log(totalMilliseconds);
 
     const data = {
       type: this.typeData,
@@ -842,7 +887,9 @@ export class ComptableTableClassicComponent implements OnInit {
         name: this.currentWatch.name,
         data: {
           hour: this.watchTime.value,
-          value: this.watchValue.value,
+          value: this.watchValue.value.toString().includes(",")
+            ? parseFloat(this.watchValue.value.toString().replace(",", "."))
+            : this.watchValue.value,
           id: Date.now(),
           time: totalMilliseconds,
         },
@@ -859,24 +906,22 @@ export class ComptableTableClassicComponent implements OnInit {
 
     this.watchFg.reset();
     this.modalReference.close();
-    this.hospitalisationStore.commitSuivi(data);
+    const result = await this.hospitalisationStore.commitSuivi(data);
 
-    this.refreshCharts()
+    if (result) this.refreshCharts();
   }
 
-  refreshCharts(){
-    const tmp = JSON.parse(JSON.stringify(this.watches))
-    this.watches = []
-    const app = this
-    setTimeout(function(){
-      app.watches = tmp
-      
+  refreshCharts() {
+    const tmp = JSON.parse(JSON.stringify(this.watches));
+    this.watches = [];
+    const app = this;
+    setTimeout(function () {
+      app.watches = tmp;
 
-      setTimeout(function(){
-        app.initLineChart()
-      }, 500)
-
-    }, 500)
+      setTimeout(function () {
+        app.initLineChart();
+      }, 500);
+    }, 500);
   }
 
   async removeWatchData(data: any) {
@@ -890,7 +935,7 @@ export class ComptableTableClassicComponent implements OnInit {
       (c) => JSON.parse(c.extras).data.id !== data.watch_id
     );
 
-    this.refreshCharts()
+    this.refreshCharts();
   }
 
   ngOnChanges(): void {

@@ -10,7 +10,7 @@
   <!-- Watches tab -->
   <div *ngIf="typeData === 'watches'">
     <div  *ngFor="let watch of watches; let i = index" class="mb-3">
-      <canvas [id]="watch.name" height="150" width="1400px"
+      <canvas [id]="watch.name" height="200" width="1400px"
       (dblclick)="showWatch(watch)"></canvas>
     </div>
     

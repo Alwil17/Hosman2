@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { ObservableStore } from "@codewithdan/observable-store";
 import { HttpClient } from "@angular/common/http";
-import { Observable, Subject, of } from "rxjs";
+import { Observable, Subject, firstValueFrom, of } from "rxjs";
 import { LitResponse } from "../models/hospitalisation/lit";
 import { map } from "rxjs/operators";
 import { Sector } from "../models/secretariat/shared/sector.model";
 import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
 import { slugify } from "../helpers/utils";
+import { FASTABS } from "./suivis-tabs";
 
 const consultationEndpoint = "/api/consultations";
 const hospitalisationEndpoint = "/api/hospits";
@@ -228,7 +229,7 @@ export class HospitalisationStore extends ObservableStore<any> {
               }
             });
 
-            this.updateStore({ tabs: sorted_tabs }, "FETCH TABS");
+            this.updateStore({ tabs: sorted_tabs.filter((t:any) => FASTABS.includes(t.type)) }, "FETCH TABS");
             this.updateStore({ full_tabs: sorted_tabs }, "FETCH FULL TABS");
           },
           error: (response) => {
@@ -407,7 +408,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   clearTabsFilter() {
     const state = this.getState();
-    this.updateStore({ tabs: state.full_tabs }, "FETCH TABS");
+    this.updateStore({ tabs: state.full_tabs.filter((t:any) => FASTABS.includes(t.type)) }, "FETCH TABS");
   }
 
   saveHospitalisation(data: any, id: any): Observable<any> {
@@ -422,17 +423,25 @@ export class HospitalisationStore extends ObservableStore<any> {
     this.updateStore({ selectedElement: payload }, "LIST");
   }
 
-  commitSuivi(data: any) {
-    this.http.post(suiviEndpoint, data).subscribe({
-      next: (v) => {
-        data.id = v;
-        const state = this.getState();
-        const list = JSON.parse(JSON.stringify(state.suivis))
-        list.push(data)
-        this.setState({suivis: list}, "HOSPITALISATION : COMMIT SUIVI");
-      },
-      error: (e) => console.error(e),
-    });
+  async commitSuivi(data: any): Promise<boolean> {
+    return firstValueFrom(new Observable<boolean>((observer) => {
+      this.http.post(suiviEndpoint, data).subscribe({
+        next: (v) => {
+          data.id = v;
+          const state = this.getState();
+          const list = JSON.parse(JSON.stringify(state.suivis));
+          list.push(data);
+          this.setState({ suivis: list }, "HOSPITALISATION : COMMIT SUIVI");
+          observer.next(true);
+          observer.complete();
+        },
+        error: (e) => {
+          console.error(e);
+          observer.next(false);
+          observer.complete();
+        },
+      });
+    }));
   }
 
   updateSuivi(data: any) {
