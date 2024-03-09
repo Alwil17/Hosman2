@@ -1,0 +1,136 @@
+<app-simple-modal title="Fratrie">
+  <form [formGroup]="siblingNumberForm">
+    <div class="row">
+      <div class="col-md">
+        <app-input
+          label="Rang"
+          [alignRight]="true"
+          maskFormat="separator"
+          [isMandatory]="true"
+          [control]="rankController"
+          [isFormSubmitted]="isSiblingNumberFormSubmitted"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie du propositus"
+          [alignRight]="true"
+          maskFormat="separator"
+          [isMandatory]="true"
+          [control]="sibling1Controller"
+          [isFormSubmitted]="isSiblingNumberFormSubmitted"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md">
+        <app-input
+          label="Fratrie 2"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling2Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 3"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling3Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 4"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling4Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 5"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling5Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 6"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling6Controller"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md">
+        <app-input
+          label="Fratrie 7"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling7Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 8"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling8Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 9"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling9Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Fratrie 10"
+          [alignRight]="true"
+          maskFormat="separator"
+          [control]="sibling10Controller"
+        >
+        </app-input>
+      </div>
+      <div class="col-md">
+        <app-input
+          label="Effectif"
+          [alignRight]="true"
+          maskFormat="separator"
+          [readOnly]="true"
+          [control]="totalController"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-2">
+      <button
+        class="btn btn-secondary me-2"
+        (click)="openSiblingsDetailModal()"
+      >
+        Saisir les autres frères et soeurs
+      </button>
+
+      <button class="btn btn-success">Valider</button>
+    </div>
+  </form>
+</app-simple-modal>
