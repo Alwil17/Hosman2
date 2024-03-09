@@ -1,1 +1,53 @@
-<p>prescriptions works!</p>
+<ul
+  ngbNav
+  #prescriptions="ngbNav"
+  [activeId]="1"
+  class="nav nav-tabs nav-justified mb-2"
+>
+  <li [ngbNavItem]="1">
+    <a ngbNavLink>
+      <span class="d-sm-block">Prescrire un médicament</span>
+    </a>
+
+    <ng-template ngbNavContent>
+      <app-prescriber></app-prescriber>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="2">
+    <a ngbNavLink>
+      <span class="d-sm-block">Principales classes</span>
+    </a>
+
+    <ng-template ngbNavContent> </ng-template>
+  </li>
+
+  <li [ngbNavItem]="3">
+    <a ngbNavLink>
+      <span class="d-sm-block">Médicaments usuels</span>
+    </a>
+
+    <ng-template ngbNavContent> </ng-template>
+  </li>
+
+  <li [ngbNavItem]="4">
+    <a ngbNavLink>
+      <span class="d-sm-block">Ordonnances prépositionnées</span>
+    </a>
+
+    <ng-template ngbNavContent>Ordonnances prépositionnées</ng-template>
+  </li>
+
+  <li [ngbNavItem]="5">
+    <a ngbNavLink>
+      <span class="d-sm-block">Ordonnances stockées</span>
+    </a>
+
+    <ng-template ngbNavContent>Ordonnances stockées</ng-template>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content mx-2">
+  <div [ngbNavOutlet]="prescriptions"></div>
+</div>

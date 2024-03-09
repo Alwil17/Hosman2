@@ -21,6 +21,7 @@ import { NgxMaskModule } from "ngx-mask";
 import { TherapeuticClassFormModalComponent } from './medicines/therapeutic-classes/therapeutic-class-form-modal/therapeutic-class-form-modal.component';
 import { AgencyListComponent } from './medicines/agencies/agency-list/agency-list.component';
 import { AgencyFormModalComponent } from './medicines/agencies/agency-form-modal/agency-form-modal.component';
+import { PrescriberComponent } from './prescriptions/prescriber/prescriber.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AgencyFormModalComponent } from './medicines/agencies/agency-form-modal
     TherapeuticClassFormModalComponent,
     AgencyListComponent,
     AgencyFormModalComponent,
+    PrescriberComponent,
   ],
   imports: [
     CommonModule,
