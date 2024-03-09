@@ -18,10 +18,11 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { ProductDetailModalComponent } from "./medicines/products/product-detail-modal/product-detail-modal.component";
 import { TherapeuticClassListComponent } from "./medicines/therapeutic-classes/therapeutic-class-list/therapeutic-class-list.component";
 import { NgxMaskModule } from "ngx-mask";
-import { TherapeuticClassFormModalComponent } from './medicines/therapeutic-classes/therapeutic-class-form-modal/therapeutic-class-form-modal.component';
-import { AgencyListComponent } from './medicines/agencies/agency-list/agency-list.component';
-import { AgencyFormModalComponent } from './medicines/agencies/agency-form-modal/agency-form-modal.component';
-import { PrescriberComponent } from './prescriptions/prescriber/prescriber.component';
+import { TherapeuticClassFormModalComponent } from "./medicines/therapeutic-classes/therapeutic-class-form-modal/therapeutic-class-form-modal.component";
+import { AgencyListComponent } from "./medicines/agencies/agency-list/agency-list.component";
+import { AgencyFormModalComponent } from "./medicines/agencies/agency-form-modal/agency-form-modal.component";
+import { PrescriberComponent } from "./prescriptions/prescriber/prescriber.component";
+import { PrescriptionsModalComponent } from "./prescriptions/prescriptions-modal/prescriptions-modal.component";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PrescriberComponent } from './prescriptions/prescriber/prescriber.compo
     AgencyListComponent,
     AgencyFormModalComponent,
     PrescriberComponent,
+    PrescriptionsModalComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +51,10 @@ import { PrescriberComponent } from './prescriptions/prescriber/prescriber.compo
     NgbTypeaheadModule,
     NgxMaskModule,
   ],
-  exports: [MedicinesComponent, PrescriptionsComponent],
+  exports: [
+    MedicinesComponent,
+    PrescriptionsComponent,
+    PrescriptionsModalComponent,
+  ],
 })
 export class MedicinesPrescriptionsModule {}

@@ -7,6 +7,7 @@
           [isMandatory]="true"
           [control]="productNameController"
           [options]="products"
+          [isFormSubmitted]="isPrescriptionFormSubmitted"
         ></app-select>
       </div>
       <div class="col-lg-3">
@@ -16,6 +17,21 @@
           [control]="productDciController"
         ></app-input>
       </div>
+
+      <!-- <div class="col-lg-6 d-flex align-items-center" *ngIf="patientInfos">
+        <h4 class="mb-0">
+          <span class="badge bg-primary"
+            ><i class="mdi mdi-circle-medium"></i>
+            {{
+              patientInfos.reference +
+                " - " +
+                patientInfos.nom +
+                " " +
+                patientInfos.prenoms
+            }}</span
+          >
+        </h4>
+      </div> -->
     </div>
 
     <div class="row">
@@ -94,7 +110,9 @@
               <app-input
                 label="Présentation(s) et dosage(s)"
                 [readOnly]="true"
+                [isMandatory]="true"
                 [control]="productFormController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -103,9 +121,11 @@
             <div class="col-md-4">
               <app-input
                 label="Quantité"
+                maskFormat="separator"
                 [isMandatory]="true"
                 [alignRight]="true"
                 [control]="quantityController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-8">
@@ -113,6 +133,7 @@
                 label="Conditionnement"
                 [isMandatory]="true"
                 [control]="packagingController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -121,9 +142,11 @@
             <div class="col-md-4">
               <app-input
                 label="Dose prescrite"
+                maskFormat="separator"
                 [isMandatory]="true"
                 [alignRight]="true"
                 [control]="dosageQuantityController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-8">
@@ -131,6 +154,7 @@
                 label="Unité"
                 [isMandatory]="true"
                 [control]="dosageController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -141,6 +165,7 @@
                 label="Période"
                 [isMandatory]="true"
                 [control]="periodController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-6">
@@ -148,6 +173,7 @@
                 label="Adverbe"
                 [isMandatory]="true"
                 [control]="adverbController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -156,9 +182,11 @@
             <div class="col-md-4">
               <app-input
                 label="Durée du traitement"
+                maskFormat="separator"
                 [isMandatory]="true"
                 [alignRight]="true"
                 [control]="timeController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-8">
@@ -170,6 +198,7 @@
                 [clearable]="false"
                 [control]="timeUnitController"
                 [options]="timeUnits"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-select>
             </div>
           </div>
@@ -181,6 +210,13 @@
           </div>
 
           <div class="d-flex justify-content-end mt-2">
+            <button
+              class="btn btn-warning me-2 text-black"
+              (click)="emptyPrescriptionFields()"
+            >
+              Vider les champs
+            </button>
+
             <button class="btn btn-info me-2">Heures de prise</button>
 
             <button class="btn btn-success" (click)="validatePrescription()">
@@ -192,7 +228,7 @@
 
       <div class="col-lg-6">
         <!-- PRESCRIPTION DISPLAY ROW -->
-        <div class="row h-50 border">
+        <div class="row h-50 border" style="overflow-y: scroll">
           <div class="col-12">
             <div
               class="d-table mt-2"
@@ -238,7 +274,7 @@
         <!-- PRESCRIPTION GRID ROW -->
         <div class="row h-50 border">
           <div class="col-12">
-            <div class="table-responsive" style="max-height: 150px">
+            <div class="table-responsive" style="max-height: 300px">
               <!-- table-card -->
               <table
                 class="table table-bordered table-hover table-striped align-middle"

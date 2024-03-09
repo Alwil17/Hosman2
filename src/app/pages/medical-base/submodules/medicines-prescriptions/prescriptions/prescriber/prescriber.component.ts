@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { Form } from "src/app/models/medical-base/submodules/medicines-prescriptions/form.model";
 import { Prescription } from "src/app/models/medical-base/submodules/medicines-prescriptions/prescription.model";
 import { Product } from "src/app/models/medical-base/submodules/medicines-prescriptions/product.model";
 import { PrescriptionRequest } from "src/app/models/medical-base/submodules/medicines-prescriptions/requests/prescription-request.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { ProductService } from "src/app/services/medical-base/submodules/medicines-prescriptions/product.service";
 
 @Component({
@@ -13,6 +14,9 @@ import { ProductService } from "src/app/services/medical-base/submodules/medicin
   styleUrls: ["./prescriber.component.scss"],
 })
 export class PrescriberComponent implements OnInit {
+  @Input()
+  patientInfos?: Patient;
+
   productData: Product[] = [];
   products: SelectOption[] = [];
   selectedProduct!: Product;
@@ -43,7 +47,7 @@ export class PrescriberComponent implements OnInit {
 
   productNameController = new FormControl(null, Validators.required);
   productDciController = new FormControl(null);
-  productFormController = new FormControl(null);
+  productFormController = new FormControl(null, Validators.required);
   quantityController = new FormControl(null, Validators.required);
   packagingController = new FormControl(null, Validators.required);
   dosageQuantityController = new FormControl(null, Validators.required);
@@ -117,6 +121,25 @@ export class PrescriberComponent implements OnInit {
     this.productFormController.setValue(
       productForm.presentation + " - " + productForm.dosage
     );
+  }
+
+  emptyPrescriptionFields() {
+    this.isPrescriptionFormSubmitted = false;
+
+    this.productNameController.setValue(null);
+    this.productDciController.setValue(null);
+    this.productFormController.setValue(null);
+    this.quantityController.setValue(null);
+    this.packagingController.setValue(null);
+    this.dosageQuantityController.setValue(null);
+    this.dosageController.setValue(null);
+    this.periodController.setValue(null);
+    this.adverbController.setValue(null);
+    this.timeController.setValue(null);
+    this.timeUnitController.setValue(null);
+    this.noteController.setValue(null);
+
+    this.productForms = [];
   }
 
   getPrescriptionFormData() {
