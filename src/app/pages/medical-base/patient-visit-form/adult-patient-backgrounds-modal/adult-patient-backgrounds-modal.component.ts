@@ -9,6 +9,7 @@ import { PatientVisitService } from "src/app/services/medical-base/patient-visit
 import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { parseIntOrZero } from "src/app/helpers/parsers";
 
 @Component({
   selector: "app-adult-patient-backgrounds-modal",
@@ -289,24 +290,30 @@ export class AdultPatientBackgroundsModalComponent implements OnInit {
     // console.log(this.medicinesInUse.length === 0);
 
     if (this.patientInfos.antecedant) {
+      const backgrounds = this.patientInfos.antecedant;
+
       if (
-        this.patientInfos.antecedant?.medicaments?.length !== 0 &&
+        backgrounds.medicaments &&
+        backgrounds.medicaments.length !== 0 &&
         this.medicinesInUse.length === 0
       ) {
-        this.medicinesInUse = this.patientInfos.antecedant?.medicaments!;
+        this.medicinesInUse = backgrounds.medicaments;
       }
 
       if (
-        this.patientInfos.antecedant?.chirurgies?.length !== 0 &&
+        backgrounds.chirurgies &&
+        backgrounds.chirurgies.length !== 0 &&
         this.surgeries.length === 0
       ) {
-        this.surgeries = this.patientInfos.antecedant?.chirurgies!;
+        this.surgeries = backgrounds.chirurgies;
       }
+
       if (
-        this.patientInfos.antecedant?.hospitalisations?.length !== 0 &&
+        backgrounds.hospitalisations &&
+        backgrounds.hospitalisations.length !== 0 &&
         this.hospitalisations.length === 0
       ) {
-        this.hospitalisations = this.patientInfos.antecedant?.hospitalisations!;
+        this.hospitalisations = backgrounds.hospitalisations;
       }
     }
 
@@ -324,12 +331,21 @@ export class AdultPatientBackgroundsModalComponent implements OnInit {
       mesure_tabac: this.smokingDetailControl1.value?.text,
       frequence_tabac: this.smokingDetailControl2.value?.text,
 
-      nb_medic: this.medicinesInUse.length,
-      medics: this.medicinesInUse,
-      nb_chirurgie: this.surgeries.length,
-      chirurgies: this.surgeries,
-      nb_hospit: this.hospitalisations.length,
-      hospits: this.hospitalisations,
+      nb_medic: this.medicinesInUseControl.value ?? undefined,
+      medicaments:
+        parseIntOrZero(this.medicinesInUseControl.value) === 0
+          ? undefined
+          : this.medicinesInUse,
+      nb_chirurgie: this.surgeriesControl.value ?? undefined,
+      chirurgies:
+        parseIntOrZero(this.surgeriesControl.value) === 0
+          ? undefined
+          : this.surgeries,
+      nb_hospit: this.hospitalisationsControl.value ?? undefined,
+      hospitalisations:
+        parseIntOrZero(this.hospitalisationsControl.value) === 0
+          ? undefined
+          : this.hospitalisations,
 
       allergies: this.allergiesControl.value,
       autre: this.othersControl.value,

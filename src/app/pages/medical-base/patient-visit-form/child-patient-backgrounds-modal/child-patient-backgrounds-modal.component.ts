@@ -9,6 +9,7 @@ import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/req
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { ToastType } from "src/app/models/extras/toast-type.model";
+import { parseIntOrZero } from "src/app/helpers/parsers";
 
 @Component({
   selector: "app-child-patient-backgrounds-modal",
@@ -111,7 +112,7 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
     });
 
     console.log(JSON.stringify(this.patientInfos, null, 2));
-    
+
     this.initFieldsValue();
   }
 
@@ -187,11 +188,14 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
 
   getBackgroundsFormData() {
     if (this.patientInfos.antecedant) {
+      const backgrounds = this.patientInfos.antecedant;
+
       if (
-        this.patientInfos.antecedant?.hospitalisations?.length !== 0 &&
+        backgrounds.hospitalisations &&
+        backgrounds.hospitalisations.length !== 0 &&
         this.hospitalisations.length === 0
       ) {
-        this.hospitalisations = this.patientInfos.antecedant?.hospitalisations!;
+        this.hospitalisations = backgrounds.hospitalisations;
       }
     }
 
@@ -203,8 +207,11 @@ export class ChildPatientBackgroundsModalComponent implements OnInit {
 
       reanime: this.revivedControl.value?.id,
 
-      nb_hospit: this.hospitalisations.length,
-      hospits: this.hospitalisations,
+      nb_hospit: this.hospitalisationsControl.value,
+      hospitalisations:
+        parseIntOrZero(this.hospitalisationsControl.value) === 0
+          ? undefined
+          : this.hospitalisations,
 
       allergies: this.allergiesControl.value,
 

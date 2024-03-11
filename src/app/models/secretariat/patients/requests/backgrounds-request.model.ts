@@ -13,7 +13,7 @@ export interface IBackgroundsRequest {
   mesure_tabac?: string;
   frequence_tabac?: string;
   nb_medic?: number;
-  medics?: string[];
+  medicaments?: string[];
   nb_chirurgie?: number;
   chirurgies?: string[];
   autre?: string;
@@ -27,7 +27,7 @@ export interface IBackgroundsRequest {
 
   // common to adult and child patient
   nb_hospit?: number;
-  hospits?: string[];
+  hospitalisations?: string[];
   allergies?: string;
 }
 
@@ -46,7 +46,7 @@ export class BackgroundsRequest {
   mesure_tabac?: string;
   frequence_tabac?: string;
   nb_medic?: number;
-  medics?: string[];
+  medicaments?: string[];
   nb_chirurgie?: number;
   chirurgies?: string[];
   autre?: string;
@@ -60,7 +60,7 @@ export class BackgroundsRequest {
 
   // common to adult and child patient
   nb_hospit?: number;
-  hospits?: string[];
+  hospitalisations?: string[];
   allergies?: string;
 
   constructor(iBackgrounds: IBackgroundsRequest) {
@@ -77,7 +77,7 @@ export class BackgroundsRequest {
     this.mesure_tabac = iBackgrounds.mesure_tabac;
     this.frequence_tabac = iBackgrounds.frequence_tabac;
     this.nb_medic = iBackgrounds.nb_medic;
-    this.medics = iBackgrounds.medics;
+    this.medicaments = iBackgrounds.medicaments;
     this.nb_chirurgie = iBackgrounds.nb_chirurgie;
     this.chirurgies = iBackgrounds.chirurgies;
     this.autre = iBackgrounds.autre;
@@ -89,7 +89,7 @@ export class BackgroundsRequest {
     this.scolarise = iBackgrounds.scolarise;
 
     this.nb_hospit = iBackgrounds.nb_hospit;
-    this.hospits = iBackgrounds.hospits;
+    this.hospitalisations = iBackgrounds.hospitalisations;
     this.allergies = iBackgrounds.allergies;
   }
 }
