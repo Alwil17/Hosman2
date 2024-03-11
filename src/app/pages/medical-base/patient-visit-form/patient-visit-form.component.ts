@@ -52,6 +52,7 @@ import { CoefficientSocialModalComponent } from "./coefficient-social-modal/coef
 import { error } from "console";
 import { SiblingsNumberModalComponent } from "./siblings-number-modal/siblings-number-modal.component";
 import { PrescriptionsModalComponent } from "../submodules/medicines-prescriptions/prescriptions/prescriptions-modal/prescriptions-modal.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -158,7 +159,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     private patientVisitService: PatientVisitService,
     private loadingSpinnerService: LoadingSpinnerService,
     private toastService: ToastService,
-    private location: Location
+    private location: Location,
+    private routerService: Router
   ) {}
 
   ngOnInit(): void {
@@ -247,12 +249,12 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   async isNotDirty(): Promise<boolean> {
-    // if (
-    //   !this.patientVisitService.selectedWaitingListItem &&
-    //   !this.patientVisitService.selectedPatient
-    // ) {
-    //   return Promise.resolve(true);
-    // }
+    if (
+      !this.patientVisitService.selectedWaitingListItem &&
+      !this.patientVisitService.selectedPatient
+    ) {
+      return Promise.resolve(true);
+    }
 
     console.log("Form 1 is dirty : " + this.patientVisitForm1.dirty);
     console.log("Form 2 is dirty : " + this.patientVisitForm2.dirty);
@@ -712,7 +714,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
-  savePatientInfo() {
+  savePatientInfos() {
     let chronicDiseases: ChronicDiseaseRequest[] = [];
     this.chronicDiseasesFields.controls.map((control) =>
       chronicDiseases.push({ maladie: control.value?.text })
@@ -880,6 +882,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         console.error(e);
 
         this.toastService.show({
+          messages: ["Désolé, une erreur s'est produite."],
           delay: 10000,
           type: ToastType.Error,
         });
@@ -1004,6 +1007,153 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     //     personToContactModal.close();
     //   }
     // );
+  }
+
+  // OPEN APPOINTMENT MODAL ------------------------------------------------------------------------------------------------------
+  async hospitalise() {
+    // OPEN CONFIRMATION MODAL
+    const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+
+    confirmModalRef.componentInstance.message =
+      "Voulez-vous vraiment hospitaliser ce patient ?";
+
+    const isConfirmed = await firstValueFrom<boolean>(
+      confirmModalRef.componentInstance.isConfirmed.asObservable()
+    );
+
+    if (isConfirmed) {
+      // this.savePatientInfos();
+      // this.saveVisitInfos();
+
+      if (this.patientVisitForm2.invalid) {
+        return;
+      }
+
+      let acts: ActRequest[] = [];
+      let motifs: MotifRequest[] = [];
+      let diagnostics: DiagnosticRequest[] = [];
+
+      this.actsFields.controls.forEach((control, index) => {
+        if (control.value) {
+          acts.push(new ActRequest({ acte: control.value?.id }));
+        }
+      });
+
+      this.motifsFields.controls.forEach((control, index) => {
+        if (control.value) {
+          motifs.push(
+            new MotifRequest({ motif_id: control.value?.id, caractere: "cara" })
+          );
+        }
+      });
+
+      this.diagnosticsFields.controls.forEach((control, index) => {
+        if (control.value) {
+          diagnostics.push(
+            new DiagnosticRequest({
+              diagnostic: control.value?.id,
+              commentaire: "com",
+            })
+          );
+        }
+      });
+
+      const visitDate = new Date(this.visitDateControl.value);
+      if (this.visitDateControl.dirty) {
+        console.log("visit date dirty");
+
+        visitDate.setHours(new Date(Date.now()).getHours());
+        visitDate.setMinutes(new Date(Date.now()).getMinutes());
+        visitDate.setSeconds(new Date(Date.now()).getSeconds());
+      } else {
+        if (this.patientVisitService.selectedWaitingListItem) {
+          visitDate.setHours(
+            new Date(
+              this.patientVisitService.selectedWaitingListItem!.date_attente
+            ).getHours()
+          );
+          visitDate.setMinutes(
+            new Date(
+              this.patientVisitService.selectedWaitingListItem!.date_attente
+            ).getMinutes()
+          );
+          visitDate.setSeconds(
+            new Date(
+              this.patientVisitService.selectedWaitingListItem!.date_attente
+            ).getSeconds()
+          );
+        } else {
+          visitDate.setHours(new Date(Date.now()).getHours());
+          visitDate.setMinutes(new Date(Date.now()).getMinutes());
+          visitDate.setSeconds(new Date(Date.now()).getSeconds());
+        }
+      }
+
+      let attente_num;
+      if (this.patientVisitService.selectedWaitingListItem) {
+        attente_num =
+          this.patientVisitService.selectedWaitingListItem?.num_attente!;
+      }
+
+      const consultation = new ConsultationRequest({
+        patient_ref: this.activePatient.reference,
+        secteur_code: this.visitSectorControl.value.id,
+        attente_num: attente_num,
+        date_consultation: visitDate,
+        // new Date(this.visitDateControl.value),
+        hdm: this.diseaseHistoryControl.value,
+        constante: new ConstanteRequest({
+          poids: this.weightControl.value,
+          taille: this.sizeControl.value,
+          perimetre_cranien: this.pcControl.value,
+          temperature: this.temperatureControl.value,
+          frequence_respiratoire: this.frControl.value,
+          poul: this.pulseControl.value,
+          tension: this.tensionControl.value,
+        }),
+        actes: acts,
+        motifs: motifs,
+        diagnostics: diagnostics,
+      });
+
+      console.log(JSON.stringify(consultation, null, 2));
+
+      this.patientVisitService.create(consultation).subscribe({
+        next: async (data) => {
+          console.log(data, "\nHere");
+
+          this.toastService.show({
+            messages: ["La consultation a été enregistrée avec succès."],
+            type: ToastType.Success,
+          });
+
+          const hospitalisationRoute = "/hospitalisation?consultation=" + data;
+
+          console.log(hospitalisationRoute);
+          console.log(this.routerService.url);
+          
+          
+          await this.routerService.navigateByUrl(hospitalisationRoute);
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            messages: ["Désolé, une erreur s'est produite."],
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      });
+    }
+
+    // CLOSE CONFIRMATION MODAL
+    confirmModalRef.close();
   }
 
   goToPreviousPage() {

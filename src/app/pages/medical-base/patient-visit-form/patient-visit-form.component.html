@@ -14,7 +14,7 @@
   <!-- HEADER -->
   <ng-container customCardHeader>
     <div class="d-flex justify-content-between align-items-end">
-      <h4 *ngIf="activePatient">
+      <h4>
         <span class="badge bg-primary me-3"
           ><i class="mdi mdi-circle-medium"></i>
           {{
@@ -345,7 +345,7 @@
       <button
         type="button"
         class="btn btn-success btn-label waves-effect waves-light"
-        (click)="savePatientInfo()"
+        (click)="savePatientInfos()"
       >
         <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
         Enregistrer
@@ -771,7 +771,7 @@
               <button class="btn btn-outline-success"><b>Examens</b></button>
             </div>
             <div class="col-md-6 d-grid">
-              <button class="btn btn-outline-secondary">
+              <button class="btn btn-outline-secondary" (click)="hospitalise()">
                 <b>Hospitaliser</b>
               </button>
             </div>
