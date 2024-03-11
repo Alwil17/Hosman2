@@ -50,6 +50,8 @@ import { ChildPatientBackgroundsModalComponent } from "./child-patient-backgroun
 import { SiblingsModalComponent } from "./siblings-modal/siblings-modal.component";
 import { CoefficientSocialModalComponent } from "./coefficient-social-modal/coefficient-social-modal.component";
 import { error } from "console";
+import { SiblingsNumberModalComponent } from "./siblings-number-modal/siblings-number-modal.component";
+import { PrescriptionsModalComponent } from "../submodules/medicines-prescriptions/prescriptions/prescriptions-modal/prescriptions-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -472,7 +474,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     }
 
     this.commentsControl.setValue(this.activePatient.commentaire);
-    this.backgroundsControl.setValue(this.activePatient.antecedant);
+    // this.backgroundsControl.setValue(this.activePatient.antecedant);
 
     if (mother) {
       this.motherProfessionControl.setValue(
@@ -647,12 +649,15 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   openSiblingsModal() {
-    const siblingsModalRef = this.modalService.open(SiblingsModalComponent, {
-      size: "xl",
-      centered: true,
-      scrollable: true,
-      backdrop: "static",
-    });
+    const siblingsModalRef = this.modalService.open(
+      SiblingsNumberModalComponent,
+      {
+        size: "md",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
 
     siblingsModalRef.componentInstance.patientInfos = this.activePatient;
   }
@@ -690,6 +695,20 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         });
       },
     });
+  }
+
+  openPrescriberModal() {
+    const prescriberModalRef = this.modalService.open(
+      PrescriptionsModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    prescriberModalRef.componentInstance.patientInfos = this.activePatient;
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------

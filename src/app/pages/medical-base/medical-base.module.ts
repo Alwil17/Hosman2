@@ -30,6 +30,8 @@ import { ChildPatientBackgroundsModalComponent } from "./patient-visit-form/chil
 import { MultiInputModalComponent } from "./patient-visit-form/multi-input-modal/multi-input-modal.component";
 import { SiblingsModalComponent } from "./patient-visit-form/siblings-modal/siblings-modal.component";
 import { CoefficientSocialModalComponent } from "./patient-visit-form/coefficient-social-modal/coefficient-social-modal.component";
+import { SiblingsNumberModalComponent } from './patient-visit-form/siblings-number-modal/siblings-number-modal.component';
+import { SiblingsDetailModalComponent } from './patient-visit-form/siblings-detail-modal/siblings-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { CoefficientSocialModalComponent } from "./patient-visit-form/coefficien
     MultiInputModalComponent,
     SiblingsModalComponent,
     CoefficientSocialModalComponent,
+    SiblingsNumberModalComponent,
+    SiblingsDetailModalComponent,
   ],
   imports: [
     CommonModule,
