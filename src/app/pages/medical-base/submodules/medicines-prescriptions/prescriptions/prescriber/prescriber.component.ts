@@ -50,12 +50,12 @@ export class PrescriberComponent implements OnInit {
   productFormController = new FormControl(null, Validators.required);
   quantityController = new FormControl(null, Validators.required);
   packagingController = new FormControl(null, Validators.required);
-  dosageQuantityController = new FormControl(null, Validators.required);
-  dosageController = new FormControl(null, Validators.required);
-  periodController = new FormControl(null, Validators.required);
-  adverbController = new FormControl(null, Validators.required);
-  timeController = new FormControl(null, Validators.required);
-  timeUnitController = new FormControl(null, Validators.required);
+  dosageQuantityController = new FormControl(null);
+  dosageController = new FormControl(null);
+  periodController = new FormControl(null);
+  adverbController = new FormControl(null);
+  timeController = new FormControl(null);
+  timeUnitController = new FormControl(null);
   noteController = new FormControl(null);
 
   prescriptionForm!: FormGroup;
@@ -121,6 +121,8 @@ export class PrescriberComponent implements OnInit {
     this.productFormController.setValue(
       productForm.presentation + " - " + productForm.dosage
     );
+
+    this.packagingController.setValue(productForm.conditionnement);
   }
 
   emptyPrescriptionFields() {
@@ -147,12 +149,13 @@ export class PrescriberComponent implements OnInit {
       presentation: this.productFormController.value,
       qte: this.quantityController.value,
       conditionnement: this.packagingController.value,
+
       dose_qte: this.dosageQuantityController.value,
       dose: this.dosageController.value,
       periode: this.periodController.value,
       adverbe: this.adverbController.value,
       duree_qte: this.timeController.value,
-      duree: this.timeUnitController.value.text,
+      duree: this.timeUnitController.value?.text,
       note: this.noteController.value,
       produit_id: this.selectedProduct.id,
       forme_id: this.selectedProductForm.id,

@@ -131,9 +131,9 @@
             <div class="col-md-8">
               <app-input
                 label="Conditionnement"
+                [readOnly]="true"
                 [isMandatory]="true"
                 [control]="packagingController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -143,19 +143,12 @@
               <app-input
                 label="Dose prescrite"
                 maskFormat="separator"
-                [isMandatory]="true"
                 [alignRight]="true"
                 [control]="dosageQuantityController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-8">
-              <app-input
-                label="Unité"
-                [isMandatory]="true"
-                [control]="dosageController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
-              ></app-input>
+              <app-input label="Unité" [control]="dosageController"></app-input>
             </div>
           </div>
 
@@ -163,17 +156,13 @@
             <div class="col-md-6">
               <app-input
                 label="Période"
-                [isMandatory]="true"
                 [control]="periodController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-6">
               <app-input
                 label="Adverbe"
-                [isMandatory]="true"
                 [control]="adverbController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -183,22 +172,18 @@
               <app-input
                 label="Durée du traitement"
                 maskFormat="separator"
-                [isMandatory]="true"
                 [alignRight]="true"
                 [control]="timeController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
             <div class="col-md-8">
               <app-select
                 label="Unité"
-                [isMandatory]="true"
                 [searchable]="false"
                 [editable]="false"
                 [clearable]="false"
                 [control]="timeUnitController"
                 [options]="timeUnits"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-select>
             </div>
           </div>
@@ -257,13 +242,12 @@
               <div class="d-table-row">
                 <div class="d-table-cell" style="width: 1%">
                   {{
-                    prescription.periode +
-                      " " +
-                      prescription.adverbe +
-                      " " +
-                      prescription.duree_qte +
-                      " " +
-                      prescription.duree
+                    (prescription.periode ? prescription.periode + " " : "") +
+                      (prescription.adverbe ? prescription.adverbe + " " : "") +
+                      (prescription.duree_qte
+                        ? prescription.duree_qte + " "
+                        : "") +
+                      (prescription.duree ? prescription.duree + " " : "")
                   }}
                 </div>
               </div>
@@ -327,7 +311,12 @@
                       {{ prescription.qte }}
                     </td>
                     <td>
-                      {{ prescription.dose_qte + " " + prescription.dose }}
+                      {{
+                        (prescription.dose_qte
+                          ? prescription.dose_qte + " "
+                          : "") +
+                          (prescription.dose ? prescription.dose + " " : "")
+                      }}
                     </td>
                     <td>
                       {{ prescription.periode }}
@@ -336,7 +325,12 @@
                       {{ prescription.adverbe }}
                     </td>
                     <td>
-                      {{ prescription.duree_qte + " " + prescription.duree }}
+                      {{
+                        (prescription.duree_qte
+                          ? prescription.duree_qte + " "
+                          : "") +
+                          (prescription.duree ? prescription.duree + " " : "")
+                      }}
                     </td>
                     <td>
                       {{ prescription.note }}

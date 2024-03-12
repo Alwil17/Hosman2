@@ -2,12 +2,12 @@ export interface IPrescriptionRequest {
   presentation: string;
   qte: number;
   conditionnement: string;
-  dose_qte: number;
-  dose: string;
-  periode: string;
-  adverbe: string;
-  duree_qte: number;
-  duree: string;
+  dose_qte?: number;
+  dose?: string;
+  periode?: string;
+  adverbe?: string;
+  duree_qte?: number;
+  duree?: string;
   note?: string;
   heures?: string[];
 
@@ -19,12 +19,12 @@ export class PrescriptionRequest {
   presentation: string;
   qte: number;
   conditionnement: string;
-  dose_qte: number;
-  dose: string;
-  periode: string;
-  adverbe: string;
-  duree_qte: number;
-  duree: string;
+  dose_qte?: number;
+  dose?: string;
+  periode?: string;
+  adverbe?: string;
+  duree_qte?: number;
+  duree?: string;
   note?: string;
   heures?: string[];
 
