@@ -32,6 +32,7 @@ import { SiblingsModalComponent } from "./patient-visit-form/siblings-modal/sibl
 import { CoefficientSocialModalComponent } from "./patient-visit-form/coefficient-social-modal/coefficient-social-modal.component";
 import { SiblingsNumberModalComponent } from './patient-visit-form/siblings-number-modal/siblings-number-modal.component';
 import { SiblingsDetailModalComponent } from './patient-visit-form/siblings-detail-modal/siblings-detail-modal.component';
+import { HospitalisationFormModalComponent } from './patient-visit-form/hospitalisation-form-modal/hospitalisation-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { SiblingsDetailModalComponent } from './patient-visit-form/siblings-deta
     CoefficientSocialModalComponent,
     SiblingsNumberModalComponent,
     SiblingsDetailModalComponent,
+    HospitalisationFormModalComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,132 @@
+<app-simple-modal title="Initialisation du compte-rendu médical">
+  <div class="row">
+    <div class="col-md-6 col-lg-3">
+      <app-input label="Statut" [readOnly]="true" [control]="statusController">
+      </app-input>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-input label="Nom" [readOnly]="true" [control]="lastnameController">
+      </app-input>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-input
+        label="Prénom(s)"
+        [readOnly]="true"
+        [control]="firstnameController"
+      >
+      </app-input>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-select
+        label="Sexe"
+        [readOnly]="true"
+        [options]="genders"
+        [control]="genderController"
+      >
+      </app-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 col-lg-4">
+      <app-input
+        label="Date de naissance"
+        type="date"
+        [readOnly]="true"
+        [control]="birthdayController"
+      ></app-input>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <app-input
+        label="Âge"
+        [readOnly]="true"
+        [control]="ageController"
+      ></app-input>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <app-input
+        label="Date d'entrée"
+        type="date"
+        [readOnly]="true"
+        [control]="entryDateController"
+      ></app-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 col-lg-3">
+      <app-select
+        label="Secteur"
+        [options]="sectors"
+        [control]="sectorController"
+      >
+      </app-select>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-select label="Chambre" [options]="rooms" [control]="roomController">
+      </app-select>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-select label="Lit" [options]="beds" [control]="bedController">
+      </app-select>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <app-input label="Motifs" [control]="motifController"> </app-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <label for="hdm" class="form-label custom-form-label-sm"> HDM </label>
+      <textarea
+        id="hdm"
+        class="form-control form-control-sm"
+        rows="6"
+      ></textarea>
+    </div>
+
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-12">
+          <label for="constants" class="form-label custom-form-label-sm">
+            A l'arrivée
+          </label>
+          <textarea
+            id="constants"
+            class="form-control form-control-sm"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <label for="diagnostic" class="form-label custom-form-label-sm">
+            Diagnostic d'entrée
+          </label>
+          <textarea
+            id="diagnostic"
+            class="form-control form-control-sm"
+            rows="1"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn btn-warning text-dark me-2">
+          Annuler l'hospitalisation
+        </button>
+
+        <button class="btn btn-success">Enregistrer l'hospitalisation</button>
+      </div>
+    </div>
+  </div>
+</app-simple-modal>
