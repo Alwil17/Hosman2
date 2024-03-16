@@ -709,42 +709,105 @@
       <!-- THIRD PART -->
       <div class="row">
         <div class="col-lg-9">
-          <div class="col-md-12 mb-2">
-            <label for="diseaseHistory" class="form-label custom-form-label-sm">
-              Histoire de la maladie
-            </label>
-            <textarea
-              id="diseaseHistory"
-              class="form-control form-control-sm"
-              rows="2"
-              [formControl]="diseaseHistoryControl"
-              [ngClass]="{
-                'is-invalid':
-                  ((diseaseHistoryControl.touched &&
-                    diseaseHistoryControl.dirty) ||
-                    isFormSubmitted) &&
-                  diseaseHistoryControl.errors
-              }"
-            ></textarea>
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <label
+                for="diseaseHistory"
+                class="form-label custom-form-label-sm"
+              >
+                Histoire de la maladie
+              </label>
+              <textarea
+                id="diseaseHistory"
+                class="form-control form-control-sm"
+                rows="2"
+                [formControl]="diseaseHistoryControl"
+                [ngClass]="{
+                  'is-invalid':
+                    ((diseaseHistoryControl.touched &&
+                      diseaseHistoryControl.dirty) ||
+                      isFormSubmitted) &&
+                    diseaseHistoryControl.errors
+                }"
+              ></textarea>
+            </div>
           </div>
 
-          <div class="col-md-12 mb-3 mb-lg-0">
-            <label for="diseaseHistory" class="form-label custom-form-label-sm">
-              Médicaments prescrits
-            </label>
-            <textarea
-              id="diseaseHistory"
-              class="form-control form-control-sm"
-              rows="2"
-              [formControl]="prescribedMedicationControl"
-              [ngClass]="{
-                'is-invalid':
-                  ((prescribedMedicationControl.touched &&
-                    prescribedMedicationControl.dirty) ||
-                    isFormSubmitted) &&
-                  prescribedMedicationControl.errors
-              }"
-            ></textarea>
+          <div class="row">
+            <div class="col-md-12 mb-3 mb-lg-0">
+              <div class="row">
+                <label class="form-label custom-form-label-sm">
+                  Médicaments prescrits
+                </label>
+              </div>
+              <div
+                class="row border border-dark rounded-3 mx-0"
+                style="overflow-y: scroll; min-height: 200px; max-height: 200px"
+              >
+                <div class="col-12">
+                  <div
+                    class="d-table mt-2"
+                    *ngFor="let prescription of prescriptions"
+                  >
+                    <div class="d-table-row">
+                      <div class="d-table-cell" style="width: 1%">
+                        <h5>
+                          <b
+                            ><u>
+                              {{
+                                prescription.produit.nom +
+                                  " " +
+                                  prescription.forme.presentation +
+                                  " - " +
+                                  prescription.forme.dosage
+                              }}
+                            </u></b
+                          >
+                        </h5>
+                      </div>
+                      <div class="d-table-cell" style="width: 1%">
+                        {{
+                          prescription.qte + " " + prescription.conditionnement
+                        }}
+                      </div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell" style="width: 1%">
+                        {{
+                          (prescription.periode
+                            ? prescription.periode + " "
+                            : "") +
+                            (prescription.adverbe
+                              ? prescription.adverbe + " "
+                              : "") +
+                            (prescription.duree_qte
+                              ? prescription.duree_qte + " "
+                              : "") +
+                            (prescription.duree ? prescription.duree + " " : "")
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <label for="diseaseHistory" class="form-label custom-form-label-sm">
+                Médicaments prescrits
+              </label>
+              <textarea
+                id="diseaseHistory"
+                class="form-control form-control-sm"
+                rows="2"
+                [formControl]="prescribedMedicationControl"
+                [ngClass]="{
+                  'is-invalid':
+                    ((prescribedMedicationControl.touched &&
+                      prescribedMedicationControl.dirty) ||
+                      isFormSubmitted) &&
+                    prescribedMedicationControl.errors
+                }"
+              ></textarea> -->
+            </div>
           </div>
         </div>
 
@@ -780,7 +843,7 @@
               <button
                 type="button"
                 class="btn btn-outline-secondary btn-label btn-sm"
-                (click)="saveVisitInfos()"
+                (click)="saveVisitInfosAndLeave()"
               >
                 <i
                   class="ri-save-2-line label-icon align-middle fs-16 me-2"
@@ -793,7 +856,7 @@
               <button
                 type="button"
                 class="btn btn-outline-success btn-label btn-sm"
-                (click)="saveVisitInfos()"
+                (click)="saveVisitInfosAndLeave()"
               >
                 <i
                   class="ri-save-2-fill label-icon align-middle fs-16 me-2"

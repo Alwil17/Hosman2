@@ -1,12 +1,18 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { SelectOption } from "src/app/models/extras/select.model";
+import { ToastType } from "src/app/models/extras/toast-type.model";
+import { Consultation } from "src/app/models/medical-base/consultation.model";
 import { Form } from "src/app/models/medical-base/submodules/medicines-prescriptions/form.model";
 import { Prescription } from "src/app/models/medical-base/submodules/medicines-prescriptions/prescription.model";
 import { Product } from "src/app/models/medical-base/submodules/medicines-prescriptions/product.model";
+import { PrescriptionListRequest } from "src/app/models/medical-base/submodules/medicines-prescriptions/requests/prescription-list-request.model";
 import { PrescriptionRequest } from "src/app/models/medical-base/submodules/medicines-prescriptions/requests/prescription-request.model";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
+import { PrescriberService } from "src/app/services/medical-base/submodules/medicines-prescriptions/prescriber.service";
 import { ProductService } from "src/app/services/medical-base/submodules/medicines-prescriptions/product.service";
+import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 
 @Component({
   selector: "app-prescriber",
@@ -16,6 +22,12 @@ import { ProductService } from "src/app/services/medical-base/submodules/medicin
 export class PrescriberComponent implements OnInit {
   @Input()
   patientInfos?: Patient;
+
+  @Input()
+  consultationId$ = new BehaviorSubject<number | null>(null);
+
+  @Output()
+  prescriptionsRegistering = new EventEmitter<boolean>();
 
   productData: Product[] = [];
   products: SelectOption[] = [];
@@ -43,7 +55,13 @@ export class PrescriberComponent implements OnInit {
     },
   ];
 
+  @Input()
+  prescriptions$ = new BehaviorSubject<Prescription[]>([]);
+
+  @Input()
   prescriptions: Prescription[] = [];
+  prescriptionsRequest: PrescriptionRequest[] = [];
+  prescriptionListRequest?: PrescriptionListRequest;
 
   productNameController = new FormControl(null, Validators.required);
   productDciController = new FormControl(null);
@@ -61,7 +79,11 @@ export class PrescriberComponent implements OnInit {
   prescriptionForm!: FormGroup;
   isPrescriptionFormSubmitted = false;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private toastService: ToastService,
+    private prescriberService: PrescriberService
+  ) {}
 
   ngOnInit(): void {
     this.prescriptionForm = new FormGroup({
@@ -82,6 +104,58 @@ export class PrescriberComponent implements OnInit {
     this.fetchSelectData();
 
     this.onFieldsValueChanges();
+
+    // if (this.consultationId && this.patientInfos) {
+    this.consultationId$.asObservable().subscribe({
+      next: (consultationId) => {
+        if (consultationId) {
+          this.prescriptionListRequest = new PrescriptionListRequest({
+            consultation_id: consultationId!,
+            patient_ref: this.patientInfos!.reference,
+            prescriptions: this.prescriptionsRequest,
+          });
+
+          console.log(JSON.stringify(this.prescriptionListRequest, null, 2));
+
+          this.prescriberService
+            .registerPrescriptions(this.prescriptionListRequest)
+            .subscribe({
+              next: (data) => {
+                console.log(data, "\nHere");
+
+                this.prescriptions$.next(this.prescriptions);
+
+                this.toastService.show({
+                  messages: ["La prescription a été enregistrée avec succès."],
+                  type: ToastType.Success,
+                });
+              },
+              error: (e) => {
+                console.error(e);
+
+                this.toastService.show({
+                  messages: ["Désolé, une erreur s'est produite."],
+                  delay: 10000,
+                  type: ToastType.Error,
+                });
+              },
+            });
+        }
+      },
+    });
+    // }
+
+    // If prescriptions has elements, maps prescriptions into prerscriptionRequests
+    if (this.prescriptions.length !== 0) {
+      this.prescriptionsRequest = this.prescriptions.map(
+        (prescription) =>
+          new PrescriptionRequest({
+            ...prescription,
+            forme_id: prescription.forme.id,
+            produit_id: prescription.produit.id,
+          })
+      );
+    }
   }
 
   fetchSelectData() {
@@ -126,8 +200,6 @@ export class PrescriberComponent implements OnInit {
   }
 
   emptyPrescriptionFields() {
-    this.isPrescriptionFormSubmitted = false;
-
     this.productNameController.setValue(null);
     this.productDciController.setValue(null);
     this.productFormController.setValue(null);
@@ -142,6 +214,8 @@ export class PrescriberComponent implements OnInit {
     this.noteController.setValue(null);
 
     this.productForms = [];
+
+    this.isPrescriptionFormSubmitted = false;
   }
 
   getPrescriptionFormData() {
@@ -169,17 +243,34 @@ export class PrescriberComponent implements OnInit {
       return;
     }
 
-    const prescription = this.getPrescriptionFormData();
+    const prescriptionRequest = this.getPrescriptionFormData();
 
-    console.log(JSON.stringify(prescription, null, 2));
+    console.log(JSON.stringify(prescriptionRequest, null, 2));
 
-    this.prescriptions.push(
-      new Prescription({
-        id: -1,
-        ...prescription,
-        produit: this.selectedProduct,
-        forme: this.selectedProductForm,
-      })
-    );
+    this.prescriptionsRequest.push(prescriptionRequest);
+
+    const prescription = new Prescription({
+      id: -1,
+      ...prescriptionRequest,
+      produit: this.selectedProduct,
+      forme: this.selectedProductForm,
+    });
+
+    this.prescriptions.push(prescription);
+
+    this.emptyPrescriptionFields();
+  }
+
+  registerPrescriptions() {
+    if (this.prescriptionsRequest.length === 0) {
+      this.toastService.show({
+        messages: ["Veuillez valider au moins une prescription."],
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
+    this.prescriptionsRegistering.emit(true);
   }
 }

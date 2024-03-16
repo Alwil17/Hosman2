@@ -53,6 +53,8 @@ import { error } from "console";
 import { SiblingsNumberModalComponent } from "./siblings-number-modal/siblings-number-modal.component";
 import { PrescriptionsModalComponent } from "../submodules/medicines-prescriptions/prescriptions/prescriptions-modal/prescriptions-modal.component";
 import { Router } from "@angular/router";
+import { HospitalisationFormModalComponent } from "./hospitalisation-form-modal/hospitalisation-form-modal.component";
+import { Prescription } from "src/app/models/medical-base/submodules/medicines-prescriptions/prescription.model";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -144,6 +146,9 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     visitTotalCost: 0,
     visitDate: new Date(),
   };
+
+  consultationId?: number;
+  prescriptions?: Prescription[];
 
   constructor(
     public patientService: PatientService,
@@ -711,6 +716,26 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     );
 
     prescriberModalRef.componentInstance.patientInfos = this.activePatient;
+
+    prescriberModalRef.componentInstance.prescriptionsRegistering.subscribe(
+      (data: any) => {
+        console.log("Prescription registering emitted");
+
+        this.saveVisitObservable()?.subscribe((data) => {
+          this.consultationId = parseIntOrZero(data);
+
+          prescriberModalRef.componentInstance.consultationId$.next(
+            parseIntOrZero(this.consultationId)
+          );
+        });
+      }
+    );
+
+    prescriberModalRef.componentInstance.prescriptions$.subscribe(
+      (data: Prescription[]) => {
+        this.prescriptions = data;
+      }
+    );
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
@@ -773,11 +798,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   // SAVE CONSULTATION/VISIT INFOS --------------------------------------------------------------------------------------------------
-  saveVisitInfos() {
-    if (this.patientVisitForm2.invalid) {
-      return;
-    }
-
+  getPatientVisitFormData() {
     let acts: ActRequest[] = [];
     let motifs: MotifRequest[] = [];
     let diagnostics: DiagnosticRequest[] = [];
@@ -844,7 +865,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         this.patientVisitService.selectedWaitingListItem?.num_attente!;
     }
 
-    const consultation = new ConsultationRequest({
+    return new ConsultationRequest({
       patient_ref: this.activePatient.reference,
       secteur_code: this.visitSectorControl.value.id,
       attente_num: attente_num,
@@ -864,29 +885,63 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
       motifs: motifs,
       diagnostics: diagnostics,
     });
+  }
+
+  saveVisitObservable() {
+    if (this.patientVisitForm2.invalid) {
+      return;
+    }
+
+    const consultation = this.getPatientVisitFormData();
 
     console.log(JSON.stringify(consultation, null, 2));
 
-    this.patientVisitService.create(consultation).subscribe({
-      next: async (data) => {
-        console.log(data, "\nHere");
+    let createOrUpdate$;
 
-        this.toastService.show({
-          messages: ["La consultation a été enregistrée avec succès."],
-          type: ToastType.Success,
-        });
+    // DEFAULT - Executed if the visit/consultation has not been registered (without leaving the page)
+    if (!this.consultationId) {
+      createOrUpdate$ = this.patientVisitService.create(consultation);
+    }
+    // Executed if the visit/consultation has been registered without leaving the page
+    else {
+      createOrUpdate$ = this.patientVisitService.update(
+        this.consultationId,
+        consultation
+      );
+    }
 
-        await this.medicalBaseRouter.navigateToPatientWaitingList();
-      },
-      error: (e) => {
-        console.error(e);
+    return createOrUpdate$.pipe(
+      tap({
+        next: (data) => {
+          console.log(data, "\nHere");
 
-        this.toastService.show({
-          messages: ["Désolé, une erreur s'est produite."],
-          delay: 10000,
-          type: ToastType.Error,
-        });
-      },
+          this.toastService.show({
+            messages: ["La consultation a été enregistrée avec succès."],
+            type: ToastType.Success,
+          });
+
+          // await this.medicalBaseRouter.navigateToPatientWaitingList();
+        },
+        error: (e) => {
+          console.error(e);
+
+          this.toastService.show({
+            messages: ["Désolé, une erreur s'est produite."],
+            delay: 10000,
+            type: ToastType.Error,
+          });
+        },
+      })
+    );
+  }
+
+  saveVisitInfos() {
+    this.saveVisitObservable()?.subscribe();
+  }
+
+  saveVisitInfosAndLeave() {
+    this.saveVisitObservable()?.subscribe(async (data) => {
+      await this.medicalBaseRouter.navigateToPatientWaitingList();
     });
   }
 
@@ -973,7 +1028,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
   // OPEN APPOINTMENT MODAL ------------------------------------------------------------------------------------------------------
   openAppointmentModal() {
-    const appointmentFormModal = this.modalService.open(
+    const appointmentFormModalRef = this.modalService.open(
       AppointmentFormModalComponent,
       {
         size: "xl",
@@ -1025,6 +1080,21 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     const isConfirmed = await firstValueFrom<boolean>(
       confirmModalRef.componentInstance.isConfirmed.asObservable()
     );
+
+    // if (!isConfirmed) {
+    //   const hospitalisationFormModalRef = this.modalService.open(
+    //     HospitalisationFormModalComponent,
+    //     {
+    //       size: "xl",
+    //       centered: true,
+    //       scrollable: true,
+    //       backdrop: "static",
+    //     }
+    //   );
+
+    //   hospitalisationFormModalRef.componentInstance.patientInfos =
+    //     this.activePatient;
+    // }
 
     if (isConfirmed) {
       // this.savePatientInfos();
@@ -1136,8 +1206,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
           console.log(hospitalisationRoute);
           console.log(this.routerService.url);
-          
-          
+
           await this.routerService.navigateByUrl(hospitalisationRoute);
         },
         error: (e) => {

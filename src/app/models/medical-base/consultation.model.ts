@@ -5,6 +5,7 @@ import { Tariff } from "../secretariat/shared/tariff.model";
 import { Constante } from "./constante.model";
 import { Diagnostic } from "./diagnostic.model";
 import { Motif } from "./motif.model";
+import { PrescriptionList } from "./submodules/medicines-prescriptions/prescription-list.model";
 
 export interface IConsultation {
   id: number;
@@ -23,6 +24,8 @@ export interface IConsultation {
   motifs: Motif[];
   diagnostics?: Diagnostic[];
   hdm?: string;
+
+  ordonnance?: PrescriptionList;
 }
 
 export class Consultation {
@@ -43,6 +46,8 @@ export class Consultation {
   diagnostics?: Diagnostic[];
   hdm?: string;
 
+  ordonnance?: PrescriptionList;
+
   constructor(iConsultation: IConsultation) {
     this.id = iConsultation.id;
     this.reference = iConsultation.reference;
@@ -58,5 +63,7 @@ export class Consultation {
     this.actes = iConsultation.actes;
     this.motifs = iConsultation.motifs;
     this.diagnostics = iConsultation.diagnostics;
+
+    this.ordonnance = iConsultation.ordonnance;
   }
 }

@@ -1,3 +1,9 @@
 <app-simple-modal title="Ordonnancier">
-  <app-prescriber [patientInfos]="patientInfos"></app-prescriber>
+  <app-prescriber
+    [patientInfos]="patientInfos"
+    [consultationId$]="consultationId$"
+    (prescriptionsRegistering)="emitPrescriptionRegistration()"
+    [prescriptions$]="prescriptions$"
+    [prescriptions]="prescriptions"
+  ></app-prescriber>
 </app-simple-modal>

@@ -104,7 +104,7 @@
         </div>
 
         <!-- FIELDS ROW -->
-        <div class="row">
+        <ng-container>
           <div class="row">
             <div class="col-12">
               <app-input
@@ -131,9 +131,9 @@
             <div class="col-md-8">
               <app-input
                 label="Conditionnement"
-                [readOnly]="true"
                 [isMandatory]="true"
                 [control]="packagingController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
               ></app-input>
             </div>
           </div>
@@ -195,25 +195,36 @@
           </div>
 
           <div class="d-flex justify-content-end mt-2">
-            <button
-              class="btn btn-warning me-2 text-black"
-              (click)="emptyPrescriptionFields()"
-            >
-              Vider les champs
-            </button>
-
             <button class="btn btn-info me-2">Heures de prise</button>
 
-            <button class="btn btn-success" (click)="validatePrescription()">
+            <button
+              class="btn btn-secondary btn-label right me-2"
+              (click)="validatePrescription()"
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i>
               <b>Valider la prescription</b>
             </button>
+
+            <button
+              class="btn btn-success btn-label"
+              (click)="registerPrescriptions()"
+              *ngIf="patientInfos"
+            >
+              <i class="ri-save-2-line label-icon align-middle fs-16"></i>
+              <b>Enregistrer l'ordonnance</b>
+            </button>
           </div>
-        </div>
+        </ng-container>
       </div>
 
       <div class="col-lg-6">
         <!-- PRESCRIPTION DISPLAY ROW -->
-        <div class="row h-50 border" style="overflow-y: scroll">
+        <div
+          class="row border rounded-3"
+          style="overflow-y: scroll; min-height: 230px; max-height: 230px"
+        >
           <div class="col-12">
             <div
               class="d-table mt-2"
@@ -256,9 +267,12 @@
         </div>
 
         <!-- PRESCRIPTION GRID ROW -->
-        <div class="row h-50 border">
-          <div class="col-12">
-            <div class="table-responsive" style="max-height: 300px">
+        <div
+          class="row border rounded-3"
+          style="min-height: 230px; max-height: 230px"
+        >
+          <div class="col-12 px-0">
+            <div class="table-responsive" style="max-height: 230px">
               <!-- table-card -->
               <table
                 class="table table-bordered table-hover table-striped align-middle"

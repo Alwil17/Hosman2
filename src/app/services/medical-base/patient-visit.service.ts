@@ -20,7 +20,10 @@ export class PatientVisitService {
   private _selectedWaitingListItem?: WaitingListItem;
   private _selectedPatient?: Patient;
 
-  constructor(private http: HttpClient, private patientService: PatientService) {
+  constructor(
+    private http: HttpClient,
+    private patientService: PatientService
+  ) {
     // if (this._selectedWaitingListItem && this._selectedPatient) {
     //   throw new Error("Only one defined at a time");
     // }
@@ -38,6 +41,10 @@ export class PatientVisitService {
 
   create(data: ConsultationRequest): Observable<any> {
     return this.http.post(apiEndpoint, data);
+  }
+
+  update(id: any, data: ConsultationRequest): Observable<any> {
+    return this.http.put(`${apiEndpoint}/${id}`, data);
   }
 
   get(id: any): Observable<Consultation> {
