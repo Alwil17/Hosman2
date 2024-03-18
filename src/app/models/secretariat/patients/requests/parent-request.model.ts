@@ -1,7 +1,7 @@
 export interface IParentRequest {
   profession: string;
   employeur: string;
-  assurance: string;
+  assurance: number;
   telephone?: string;
   sexe?: string;
   type?: string;
@@ -10,7 +10,7 @@ export interface IParentRequest {
 export class ParentRequest {
   profession: string;
   employeur: string;
-  assurance: string;
+  assurance: number;
   telephone?: string;
   sexe?: string;
   type?: string;

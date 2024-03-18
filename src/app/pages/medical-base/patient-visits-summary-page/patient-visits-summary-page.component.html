@@ -37,12 +37,17 @@
         <form [formGroup]="patientVisitsForm">
           <div class="row">
             <div class="col-md-4">
-              <app-input label="Nom" [control]="lastNameControl"></app-input>
+              <app-input
+                label="Nom"
+                [readOnly]="true"
+                [control]="lastNameControl"
+              ></app-input>
             </div>
 
             <div class="col-md-4">
               <app-input
                 label="Prénoms"
+                [readOnly]="true"
                 [control]="firstNameControl"
               ></app-input>
             </div>
@@ -53,6 +58,7 @@
                   <app-input
                     label="Né(e) le"
                     type="date"
+                    [readOnly]="true"
                     [maxDate]="today"
                     [control]="dateOfBirthControl"
                   >
@@ -61,6 +67,7 @@
                 <div class="col-md-5">
                   <app-select
                     label="Sexe"
+                    [readOnly]="true"
                     [options]="genders"
                     [control]="genderControl"
                   ></app-select>
@@ -70,54 +77,40 @@
           </div>
 
           <div class="row">
-            <div class="col-md-4">
-              <div class="">
-                <app-input
-                  label="Maladie chronique 1"
-                  [readOnly]="true"
-                ></app-input>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="">
-                <app-input
-                  label="Maladie chronique 2"
-                  [readOnly]="true"
-                ></app-input>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="">
-                <app-input
-                  label="Maladie chronique 3"
-                  [readOnly]="true"
-                ></app-input>
-              </div>
-            </div>
+            <ng-container formArrayName="chronicDiseases">
+              <ng-container
+                *ngFor="
+                  let chronicDisease of chronicDiseasesFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-4">
+                  <app-input
+                    [label]="'Maladie chronique' + ' ' + (i + 1)"
+                    [readOnly]="true"
+                    [control]="chronicDisease"
+                  ></app-input>
+                </div> </ng-container
+            ></ng-container>
           </div>
         </form>
       </div>
 
-      <div class="col-md-2 border-dark border-start">
-        <div class="row mt-4 mb-2">
-          <div class="col-12">
-            <button type="button" class="btn btn-light">
-              <b>Voir les antécédents</b>
-            </button>
-          </div>
-        </div>
+      <div
+        class="col-md-2 border-dark border-start d-flex flex-column justify-content-center align-items-center"
+      >
+        <button type="button" class="btn btn-light mb-2">
+          <b>Voir les antécédents</b>
+        </button>
 
-        <div class="row">
-          <div class="col-12">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="goToPatientVisitForm()"
-            >
-              <b>Ouvrir la navette</b>
-            </button>
-          </div>
-        </div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goToPatientVisitForm()"
+        >
+          <b>Ouvrir la navette</b>
+        </button>
       </div>
     </div>
   </div>

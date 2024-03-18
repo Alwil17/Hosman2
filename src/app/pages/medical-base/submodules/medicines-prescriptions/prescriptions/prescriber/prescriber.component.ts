@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject, forkJoin } from "rxjs";
+import { PrescriptionFields } from "src/app/models/enums/prescription-fields.enum";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
@@ -30,33 +31,37 @@ export class PrescriberComponent implements OnInit {
   prescriptionsRegistering = new EventEmitter<boolean>();
 
   productData: Product[] = [];
-  products: SelectOption[] = [];
   selectedProduct!: Product;
+  products: SelectOption[] = [];
+  doses: SelectOption[] = [];
+  adverbs: SelectOption[] = [];
+  durations: SelectOption[] = [];
+  periods: SelectOption[] = [];
 
   productForms: Form[] = [];
   selectedProductForm!: Form;
 
-  timeUnits: SelectOption[] = [
-    {
-      id: 1,
-      text: "heure(s)",
-    },
-    {
-      id: 2,
-      text: "jour(s)",
-    },
-    {
-      id: 3,
-      text: "mois",
-    },
-    {
-      id: 4,
-      text: "année(s)",
-    },
-  ];
+  // timeUnits: SelectOption[] = [
+  //   {
+  //     id: 1,
+  //     text: "heure(s)",
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "jour(s)",
+  //   },
+  //   {
+  //     id: 3,
+  //     text: "mois",
+  //   },
+  //   {
+  //     id: 4,
+  //     text: "année(s)",
+  //   },
+  // ];
 
   @Input()
-  prescriptions$ = new BehaviorSubject<Prescription[]>([]);
+  prescriptions$ = new Subject<Prescription[]>();
 
   @Input()
   prescriptions: Prescription[] = [];
@@ -106,7 +111,7 @@ export class PrescriberComponent implements OnInit {
     this.onFieldsValueChanges();
 
     // if (this.consultationId && this.patientInfos) {
-    this.consultationId$.asObservable().subscribe({
+    this.consultationId$.subscribe({
       next: (consultationId) => {
         if (consultationId) {
           this.prescriptionListRequest = new PrescriptionListRequest({
@@ -159,6 +164,54 @@ export class PrescriberComponent implements OnInit {
   }
 
   fetchSelectData() {
+    forkJoin({
+      products: this.productService.getAll(),
+
+      doses: this.prescriberService.getPrescriptionTexts(
+        PrescriptionFields.DOSE
+      ),
+      adverbs: this.prescriberService.getPrescriptionTexts(
+        PrescriptionFields.ADVERB
+      ),
+      durations: this.prescriberService.getPrescriptionTexts(
+        PrescriptionFields.DURATION
+      ),
+      periods: this.prescriberService.getPrescriptionTexts(
+        PrescriptionFields.PERIOD
+      ),
+    }).subscribe({
+      next: (data) => {
+        this.productData = data.products;
+        this.products = data.products.map((product) => ({
+          id: product.id,
+          text: product.nom,
+        }));
+
+        this.doses = data.doses.map((dose) => ({
+          id: 0,
+          text: dose,
+        }));
+
+        this.adverbs = data.adverbs.map((adverb) => ({
+          id: 0,
+          text: adverb,
+        }));
+
+        this.durations = data.durations.map((duration) => ({
+          id: 0,
+          text: duration,
+        }));
+
+        this.periods = data.periods.map((period) => ({
+          id: 0,
+          text: period,
+        }));
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
     this.productService.getAll().subscribe({
       next: (data) => {
         this.productData = data;
@@ -176,8 +229,6 @@ export class PrescriberComponent implements OnInit {
   onFieldsValueChanges() {
     this.productNameController.valueChanges.subscribe((value) => {
       if (value) {
-        console.log(value);
-
         this.selectedProduct = this.productData.find(
           (product) => product.id == value.id
         )!;
@@ -216,6 +267,10 @@ export class PrescriberComponent implements OnInit {
     this.productForms = [];
 
     this.isPrescriptionFormSubmitted = false;
+
+    this.productNameController.reset();
+    this.quantityController.reset();
+    this.packagingController.reset();
   }
 
   getPrescriptionFormData() {
@@ -225,9 +280,9 @@ export class PrescriberComponent implements OnInit {
       conditionnement: this.packagingController.value,
 
       dose_qte: this.dosageQuantityController.value,
-      dose: this.dosageController.value,
-      periode: this.periodController.value,
-      adverbe: this.adverbController.value,
+      dose: this.dosageController.value?.text,
+      periode: this.periodController.value?.text,
+      adverbe: this.adverbController.value?.text,
       duree_qte: this.timeController.value,
       duree: this.timeUnitController.value?.text,
       note: this.noteController.value,

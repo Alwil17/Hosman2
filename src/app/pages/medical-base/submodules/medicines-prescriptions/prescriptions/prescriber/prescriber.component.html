@@ -148,22 +148,31 @@
               ></app-input>
             </div>
             <div class="col-md-8">
-              <app-input label="Unité" [control]="dosageController"></app-input>
+              <app-select
+                label="Unité"
+                [canAddOption]="true"
+                [options]="doses"
+                [control]="dosageController"
+              ></app-select>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6">
-              <app-input
+              <app-select
                 label="Période"
+                [canAddOption]="true"
+                [options]="periods"
                 [control]="periodController"
-              ></app-input>
+              ></app-select>
             </div>
             <div class="col-md-6">
-              <app-input
+              <app-select
                 label="Adverbe"
+                [canAddOption]="true"
+                [options]="adverbs"
                 [control]="adverbController"
-              ></app-input>
+              ></app-select>
             </div>
           </div>
 
@@ -179,11 +188,9 @@
             <div class="col-md-8">
               <app-select
                 label="Unité"
-                [searchable]="false"
-                [editable]="false"
-                [clearable]="false"
+                [canAddOption]="true"
+                [options]="durations"
                 [control]="timeUnitController"
-                [options]="timeUnits"
               ></app-select>
             </div>
           </div>

@@ -6,7 +6,7 @@ export interface ParentResponse {
   id: number;
   profession: ProfessionResponse;
   employeur: EmployerResponse;
-  assurance: InsuranceResponse;
+  assurance: number;
   telephone?: string;
   sexe?: string;
   type?: string;

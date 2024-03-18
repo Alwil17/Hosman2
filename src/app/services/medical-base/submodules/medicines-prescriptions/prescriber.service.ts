@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { PrescriptionFields } from "src/app/models/enums/prescription-fields.enum";
 import { PrescriptionListRequest } from "src/app/models/medical-base/submodules/medicines-prescriptions/requests/prescription-list-request.model";
 import { environment } from "src/environments/environment";
 
@@ -15,6 +16,10 @@ export class PrescriberService {
 
   registerPrescriptions(data: PrescriptionListRequest): Observable<any> {
     return this.http.post(prescriptionListEndpoint, data);
+  }
+
+  getPrescriptionTexts(data: PrescriptionFields): Observable<string[]> {
+    return this.http.get<string[]>(prescriptionEndpoint + "/all?q=" + data);
   }
 
   // getAll(): Observable<Product[]> {

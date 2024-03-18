@@ -7,7 +7,7 @@ export interface IParent {
   id: number;
   profession: Profession;
   employeur: Employer;
-  assurance: Insurance;
+  assurance: number;
   telephone?: string;
   sexe?: string;
   type?: string;
@@ -17,7 +17,7 @@ export class Parent {
   id: number;
   profession: Profession;
   employeur: Employer;
-  assurance: Insurance;
+  assurance: number;
   telephone?: string;
   sexe?: string;
   type?: string;

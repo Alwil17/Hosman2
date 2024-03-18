@@ -55,6 +55,7 @@ import { PrescriptionsModalComponent } from "../submodules/medicines-prescriptio
 import { Router } from "@angular/router";
 import { HospitalisationFormModalComponent } from "./hospitalisation-form-modal/hospitalisation-form-modal.component";
 import { Prescription } from "src/app/models/medical-base/submodules/medicines-prescriptions/prescription.model";
+import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -126,7 +127,11 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
   professions!: SelectOption[];
   employers!: SelectOption[];
-  insurances!: SelectOption[];
+  // insurances!: SelectOption[];
+  hasInsurances = HAS_INSURANCES.map((hasInsurance) => ({
+    id: hasInsurance.code,
+    text: hasInsurance.text,
+  }));
 
   chronicDiseases: SelectOption[] = [];
 
@@ -148,7 +153,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   };
 
   consultationId?: number;
-  prescriptions?: Prescription[];
+  prescriptions: Prescription[] = [];
 
   constructor(
     public patientService: PatientService,
@@ -246,11 +251,11 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
       prescribedMedicationControl: this.prescribedMedicationControl,
     });
 
+    this.onFormInputsChanges();
+
     this.fetchPatientSelectData();
 
     this.fetchVisitSelectData();
-
-    // this.onFormInputsChanges();
   }
 
   async isNotDirty(): Promise<boolean> {
@@ -295,7 +300,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     forkJoin({
       professions: this.professionService.getAll(),
       employers: this.employerService.getAll(),
-      insurances: this.insuranceService.getAll(),
+      // insurances: this.insuranceService.getAll(),
     }).subscribe({
       next: (data) => {
         this.professions = data.professions.map((value) => ({
@@ -308,10 +313,10 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
           text: value.nom,
         }));
 
-        this.insurances = data.insurances.map((value) => ({
-          id: value.id,
-          text: value.nom,
-        }));
+        // this.insurances = data.insurances.map((value) => ({
+        //   id: value.id,
+        //   text: value.nom,
+        // }));
 
         this.setPatientInfoFieldsInitialValues();
       },
@@ -349,9 +354,9 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         //   text: value.libelle,
         // }));
 
-        this.setVisitInfoFieldsInitialValues();
+        // this.onFormInputsChanges();
 
-        this.onFormInputsChanges();
+        this.setVisitInfoFieldsInitialValues();
       },
       error: (error) => {
         console.log(error);
@@ -501,11 +506,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         })
       );
       this.motherInsuranceControl.setValue(
-        this.insurances.find((value) => {
-          return (
-            value.text.toLowerCase() === mother?.assurance.nom.toLowerCase()
-          );
-        })
+        // this.insurances.find((value) => {
+        //   return (
+        //     value.text.toLowerCase() === mother?.assurance.nom.toLowerCase()
+        //   );
+        // })
+
+        this.hasInsurances.find((value) => mother?.assurance == value.id)
       );
       this.motherBirthYearControl.setValue(mother?.annee_naissance);
     }
@@ -528,11 +535,13 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
         })
       );
       this.fatherInsuranceControl.setValue(
-        this.insurances.find((value) => {
-          return (
-            value.text.toLowerCase() === father?.assurance.nom.toLowerCase()
-          );
-        })
+        // this.insurances.find((value) => {
+        //   return (
+        //     value.text.toLowerCase() === father?.assurance.nom.toLowerCase()
+        //   );
+        // })
+
+        this.hasInsurances.find((value) => father?.assurance == value.id)
       );
       this.fatherBirthYearControl.setValue(father?.annee_naissance);
     }
@@ -716,6 +725,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     );
 
     prescriberModalRef.componentInstance.patientInfos = this.activePatient;
+    prescriberModalRef.componentInstance.prescriptions = this.prescriptions;
 
     prescriberModalRef.componentInstance.prescriptionsRegistering.subscribe(
       (data: any) => {
@@ -733,6 +743,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
     prescriberModalRef.componentInstance.prescriptions$.subscribe(
       (data: Prescription[]) => {
+        console.log('Prescriptions : ' + JSON.stringify(data, null, 2));
+        
         this.prescriptions = data;
       }
     );
@@ -778,7 +790,7 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
     console.log(JSON.stringify(patientVisitInfo, null, 2));
 
-    this.patientService
+    this.patientVisitService
       .updateVisitInfo(this.activePatient.id, patientVisitInfo)
       .subscribe({
         next: (data) => {
@@ -792,6 +804,16 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
   // ON FORM INPUTS CHANGES -----------------------------------------------------------------------------------------------------------
   onFormInputsChanges() {
+    this.motherBirthYearControl.valueChanges.subscribe((value) => {
+      const age = new Date().getFullYear() - value;
+      this.motherAgeControl.setValue(age > 0 ? age : 0);
+    });
+
+    this.fatherBirthYearControl.valueChanges.subscribe((value) => {
+      const age = new Date().getFullYear() - value;
+      this.fatherAgeControl.setValue(age > 0 ? age : 0);
+    });
+
     this.visitDateControl.valueChanges.subscribe((value) => {
       this.waitingDetails.visitDate = new Date();
     });
@@ -1202,12 +1224,25 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
             type: ToastType.Success,
           });
 
-          const hospitalisationRoute = "/hospitalisation?consultation=" + data;
+          // const hospitalisationRoute = "/hospitalisation?consultation=" + data;
 
-          console.log(hospitalisationRoute);
-          console.log(this.routerService.url);
+          // console.log(hospitalisationRoute);
+          // console.log(this.routerService.url);
 
-          await this.routerService.navigateByUrl(hospitalisationRoute);
+          // await this.routerService.navigateByUrl(hospitalisationRoute);
+
+          const hospitalisationFormModalRef = this.modalService.open(
+            HospitalisationFormModalComponent,
+            {
+              size: "xl",
+              centered: true,
+              scrollable: true,
+              backdrop: "static",
+            }
+          );
+
+          hospitalisationFormModalRef.componentInstance.patientInfos =
+            this.activePatient;
         },
         error: (e) => {
           console.error(e);

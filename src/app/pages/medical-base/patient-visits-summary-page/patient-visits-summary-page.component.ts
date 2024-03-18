@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastType } from "src/app/models/extras/toast-type.model";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
@@ -68,6 +68,10 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       { label: "Consultations antérieures", active: true },
     ];
 
+    this.patientVisitsForm = new FormGroup({
+      chronicDiseases: new FormArray([]),
+    });
+
     if (
       !this.patientVisitService.selectedWaitingListItem &&
       !this.patientVisitService.selectedPatient
@@ -107,9 +111,10 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
           this.refreshVisitsListTable();
         },
         error: (e) => {
-          console.error(e);
+          console.log(e);
 
           this.toastService.show({
+            messages: ["Désolé, une erreur s'est produite."],
             delay: 10000,
             type: ToastType.Error,
           });
@@ -117,6 +122,8 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       });
     // this.refreshVisitsList();
     // this.refreshVisitsListTable();
+
+    this.initPatientVisitsForm();
   }
 
   goToPatientVisitForm() {
@@ -184,5 +191,33 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       this.medicalBaseRouter.navigateToPatientWaitingList();
     }
     // this.location.back();
+  }
+
+  initPatientVisitsForm() {
+    const chronicDiseases = this.activePatient.maladies;
+
+    if (!chronicDiseases) {
+      return;
+    }
+
+    console.log(JSON.stringify(chronicDiseases, null, 2));
+
+    for (let i = 0; i < chronicDiseases.length; i++) {
+      this.addChronicDiseasesField(chronicDiseases[i].nom);
+    }
+  }
+
+  // FORMS FIELDS --------------------------------------------------------------------------------------------------------
+  get chronicDiseasesFields() {
+    return this.patientVisitsForm.get("chronicDiseases") as FormArray;
+  }
+
+  addChronicDiseasesField(value: string) {
+    this.chronicDiseasesFields.push(new FormControl(value));
+  }
+
+  removeChronicDiseasesField(index: number) {
+    this.chronicDiseasesFields.removeAt(index);
+    console.log(this.chronicDiseasesFields);
   }
 }
