@@ -14,6 +14,7 @@ export interface IInvoice {
   reduction: Discount;
   majoration: Markup;
   a_payer: number;
+  surplus?: number;
   creance: Debt;
   reliquat: Remainder;
   date_facture: Date;
@@ -36,6 +37,7 @@ export class Invoice {
   reduction: Discount;
   majoration: Markup;
   a_payer: number;
+  surplus?: number;
   creance: Debt;
   reliquat: Remainder;
   date_facture: Date;
@@ -57,6 +59,7 @@ export class Invoice {
     this.reduction = iInvoice.reduction;
     this.majoration = iInvoice.majoration;
     this.a_payer = iInvoice.a_payer;
+    this.surplus = iInvoice.surplus;
     this.creance = iInvoice.creance;
     this.reliquat = iInvoice.reliquat;
     this.date_facture = iInvoice.date_facture;
@@ -76,6 +79,7 @@ export class Invoice {
       reduction: Discount.fromResponse(invoice.reduction),
       majoration: Markup.fromResponse(invoice.majoration),
       a_payer: invoice.a_payer,
+      surplus: invoice.surplus,
       creance: Debt.fromResponse(invoice.creance), // invoice.creance,
       reliquat: Remainder.fromResponse(invoice.reliquat),
       date_facture: invoice.date_facture,

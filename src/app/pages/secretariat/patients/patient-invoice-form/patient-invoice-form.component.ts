@@ -74,6 +74,7 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   totalAmountControl = new FormControl("0");
   insuranceRateControl = new FormControl("0");
+  invoiceSurplusControl = new FormControl("0");
 
   rptpRadioControl = new FormControl("", [Validators.required]);
 
@@ -202,6 +203,8 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.insuranceRateControl.setValue(
       this.patientService.getActivePatientRate()
     );
+
+    this.invoiceSurplusControl.setValue(this.preInvoiceInfos.surplus)
 
     // this.setPatientShareToMaxAmount();
 

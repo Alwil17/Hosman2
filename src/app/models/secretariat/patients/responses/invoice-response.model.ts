@@ -13,6 +13,7 @@ export interface InvoiceResponse {
   reduction: DiscountResponse;
   majoration: MarkupResponse;
   a_payer: number;
+  surplus?:number
   creance: DebtResponse;
   reliquat: RemainderResponse;
   date_facture: Date;
