@@ -88,7 +88,9 @@ export class PatientWaitingListPageComponent implements OnInit, OnDestroy {
         next: async (data) => {
           console.log(data, "\nHere");
 
-          await this.medicalBaseRouter.navigateToPatientVisitsSummary();
+          await this.medicalBaseRouter.navigateToPatientVisitsSummary(
+            waitingListItem.patient.id
+          );
         },
         error: (e) => {
           console.error(e);

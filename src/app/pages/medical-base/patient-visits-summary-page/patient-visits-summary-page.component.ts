@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastType } from "src/app/models/extras/toast-type.model";
@@ -11,13 +11,15 @@ import { PatientService } from "src/app/services/secretariat/patients/patient.se
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { PatientVisitFormModalComponent } from "../patient-visit-form-modal/patient-visit-form-modal.component";
 import { Location } from "@angular/common";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { Observable, Subscription, tap } from "rxjs";
 
 @Component({
   selector: "app-patient-visits-summary-page",
   templateUrl: "./patient-visits-summary-page.component.html",
   styleUrls: ["./patient-visits-summary-page.component.scss"],
 })
-export class PatientVisitsSummaryPageComponent implements OnInit {
+export class PatientVisitsSummaryPageComponent implements OnInit, OnDestroy {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -50,13 +52,16 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
     { id: 3, text: "Indéterminé", short: "I" },
   ];
 
+  routeParamChangesSubscription!: Subscription;
+
   constructor(
     private medicalBaseRouter: MedicalBaseRouterService,
     // private patientService: PatientService,
     private patientVisitService: PatientVisitService,
     private toastService: ToastService,
     private modalService: NgbModal,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -72,25 +77,62 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       chronicDiseases: new FormArray([]),
     });
 
-    if (
-      !this.patientVisitService.selectedWaitingListItem &&
-      !this.patientVisitService.selectedPatient
-    ) {
-      this.medicalBaseRouter.navigateToPatientWaitingList();
+    // Getting patient id from route params and patient from that id
+    this.routeParamChangesSubscription = this.route.paramMap.subscribe(
+      (params: ParamMap) => {
+        const patientId = Number(params.get("patientId"));
 
-      return;
-    }
+        this.patientVisitService.getPatientById(patientId).subscribe({
+          next: (data) => {
+            // Setting active patient
+            this.activePatient = data;
 
-    if (this.patientVisitService.selectedWaitingListItem) {
-      this.activePatient =
-        this.patientVisitService.selectedWaitingListItem.patient;
+            // Displaying patient infos in fields
+            this.initPatientVisitsForm();
 
-      // console.log('IS');
-    } else {
-      this.activePatient = this.patientVisitService.selectedPatient!;
-    }
+            // Getting patient list of consultations/visits
+            this.getPatientConsultations().subscribe();
+          },
+          error: (e) => {
+            console.log(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite."],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        });
+      }
+    );
+
+    // if (
+    //   !this.patientVisitService.selectedWaitingListItem &&
+    //   !this.patientVisitService.selectedPatient
+    // ) {
+    //   this.medicalBaseRouter.navigateToPatientWaitingList();
+
+    //   return;
+    // }
+
+    // if (this.patientVisitService.selectedWaitingListItem) {
+    //   this.activePatient =
+    //     this.patientVisitService.selectedWaitingListItem.patient;
+
+    // } else {
+    //   this.activePatient = this.patientVisitService.selectedPatient!;
+    // }
     // console.log('--- '+JSON.stringify(this.activePatient, null, 2));
 
+    // this.refreshVisitsList();
+    // this.refreshVisitsListTable();
+  }
+
+  ngOnDestroy(): void {
+    this.routeParamChangesSubscription.unsubscribe();
+  }
+
+  initPatientVisitsForm() {
     this.lastNameControl.setValue(this.activePatient.nom);
     this.firstNameControl.setValue(this.activePatient.prenoms);
     this.dateOfBirthControl.setValue(
@@ -100,34 +142,47 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
       this.genders.find((value) => value.short == this.activePatient.sexe)
     );
 
-    this.patientVisitService
+    // Chronic diseases fields
+    const chronicDiseases = this.activePatient.maladies;
+
+    if (!chronicDiseases) {
+      return;
+    }
+
+    console.log(JSON.stringify(chronicDiseases, null, 2));
+
+    for (let i = 0; i < chronicDiseases.length; i++) {
+      this.addChronicDiseasesField(chronicDiseases[i].nom);
+    }
+  }
+
+  getPatientConsultations() {
+    return this.patientVisitService
       .getConsultationsByPatientReference(this.activePatient.reference)
-      .subscribe({
-        next: async (data) => {
-          console.log(data, "\nHere");
+      .pipe(
+        tap({
+          next: async (data) => {
+            console.log(data, "\nHere");
 
-          this.visitsList = data;
+            this.visitsList = data;
 
-          this.refreshVisitsListTable();
-        },
-        error: (e) => {
-          console.log(e);
+            this.refreshVisitsListTable();
+          },
+          error: (e) => {
+            console.log(e);
 
-          this.toastService.show({
-            messages: ["Désolé, une erreur s'est produite."],
-            delay: 10000,
-            type: ToastType.Error,
-          });
-        },
-      });
-    // this.refreshVisitsList();
-    // this.refreshVisitsListTable();
-
-    this.initPatientVisitsForm();
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite."],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        })
+      );
   }
 
   goToPatientVisitForm() {
-    this.medicalBaseRouter.navigateToPatientVisitForm();
+    this.medicalBaseRouter.navigateToPatientVisitForm(this.activePatient.id);
   }
 
   refreshVisitsList() {
@@ -185,26 +240,12 @@ export class PatientVisitsSummaryPageComponent implements OnInit {
   }
 
   goToPreviousPage() {
-    if (this.patientVisitService.selectedPatient) {
-      this.medicalBaseRouter.navigateToPatientList();
-    } else if (this.patientVisitService.selectedWaitingListItem) {
+    if (this.patientVisitService.selectedWaitingListItem) {
       this.medicalBaseRouter.navigateToPatientWaitingList();
+    } else {
+      this.medicalBaseRouter.navigateToPatientList();
     }
     // this.location.back();
-  }
-
-  initPatientVisitsForm() {
-    const chronicDiseases = this.activePatient.maladies;
-
-    if (!chronicDiseases) {
-      return;
-    }
-
-    console.log(JSON.stringify(chronicDiseases, null, 2));
-
-    for (let i = 0; i < chronicDiseases.length; i++) {
-      this.addChronicDiseasesField(chronicDiseases[i].nom);
-    }
   }
 
   // FORMS FIELDS --------------------------------------------------------------------------------------------------------

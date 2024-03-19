@@ -23,12 +23,16 @@ export class MedicalBaseRouterService {
     await this.router.navigateByUrl(this.routesPath.patientWaitingList);
   }
 
-  async navigateToPatientVisitsSummary() {
-    await this.router.navigateByUrl(this.routesPath.patientVisitsSummary);
+  async navigateToPatientVisitsSummary(patientId: number) {
+    await this.router.navigateByUrl(
+      this.routesPath.patientVisitsSummary + "/" + String(patientId)
+    );
   }
 
-  async navigateToPatientVisitForm() {
-    await this.router.navigateByUrl(this.routesPath.patientVisitForm);
+  async navigateToPatientVisitForm(patientId: number) {
+    await this.router.navigateByUrl(
+      this.routesPath.patientVisitForm + "/" + String(patientId)
+    );
   }
 
   async navigateToPatientList() {

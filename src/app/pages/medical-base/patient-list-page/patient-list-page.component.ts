@@ -28,7 +28,7 @@ export class PatientListPageComponent implements OnInit {
   }
 
   goToPatientVisitsSummary(patient: Patient) {
-    this.patientVisitService.selectPatient(patient);
+    // this.patientVisitService.selectPatient(patient);
 
     // this.patientVisitService
     //   .startVisit(waitingListItem.patient.reference)
@@ -37,7 +37,7 @@ export class PatientListPageComponent implements OnInit {
     //       console.log(data, "\nHere");
 
     // await
-    this.medicalBaseRouter.navigateToPatientVisitsSummary();
+    this.medicalBaseRouter.navigateToPatientVisitsSummary(patient.id);
     //   },
     //   error: (e) => {
     //     console.error(e);

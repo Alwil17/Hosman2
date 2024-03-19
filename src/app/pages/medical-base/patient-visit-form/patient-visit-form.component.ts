@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
 import {
   Observable,
   Subject,
+  Subscription,
   catchError,
   concat,
   distinctUntilChanged,
@@ -52,7 +53,7 @@ import { CoefficientSocialModalComponent } from "./coefficient-social-modal/coef
 import { error } from "console";
 import { SiblingsNumberModalComponent } from "./siblings-number-modal/siblings-number-modal.component";
 import { PrescriptionsModalComponent } from "../submodules/medicines-prescriptions/prescriptions/prescriptions-modal/prescriptions-modal.component";
-import { Router } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { HospitalisationFormModalComponent } from "./hospitalisation-form-modal/hospitalisation-form-modal.component";
 import { Prescription } from "src/app/models/medical-base/submodules/medicines-prescriptions/prescription.model";
 import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
@@ -62,7 +63,9 @@ import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
   templateUrl: "./patient-visit-form.component.html",
   styleUrls: ["./patient-visit-form.component.scss"],
 })
-export class PatientVisitFormComponent implements OnInit, IsNotDirty {
+export class PatientVisitFormComponent
+  implements OnInit, OnDestroy, IsNotDirty
+{
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -155,6 +158,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   consultationId?: number;
   prescriptions: Prescription[] = [];
 
+  routeParamChangesSubscription!: Subscription;
+
   constructor(
     public patientService: PatientService,
     private modalService: NgbModal,
@@ -170,7 +175,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
     private loadingSpinnerService: LoadingSpinnerService,
     private toastService: ToastService,
     private location: Location,
-    private routerService: Router
+    private routerService: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -181,35 +187,6 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
       { label: "Base médicale" },
       { label: "Navette", active: true },
     ];
-
-    // this.activePatient = this.patientService.getActivePatient();
-    if (
-      !this.patientVisitService.selectedWaitingListItem &&
-      !this.patientVisitService.selectedPatient
-    ) {
-      this.medicalBaseRouter.navigateToPatientWaitingList();
-
-      return;
-    }
-
-    if (this.patientVisitService.selectedWaitingListItem) {
-      this.activePatient =
-        this.patientVisitService.selectedWaitingListItem.patient;
-    } else {
-      this.activePatient = this.patientVisitService.selectedPatient!;
-    }
-
-    this.isActivePatientAdult = isAdult(this.activePatient.date_naissance);
-    // const activePatientExactAge = calculateExactAge(
-    //   new Date(this.activePatient.date_naissance)
-    // );
-    // const activePatientAge = parseIntOrZero(
-    //   activePatientExactAge.split(" ")[0]
-    // );
-    // console.log(activePatientAge);
-    // if (activePatientAge < 18) {
-    //   this.isActivePatientAdult = true;
-    // }
 
     this.patientVisitForm1 = new FormGroup({
       // chronicDiseaseControl: this.chronicDiseaseControl,
@@ -251,20 +228,85 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
       prescribedMedicationControl: this.prescribedMedicationControl,
     });
 
-    this.onFormInputsChanges();
+    // Getting patient id from route params and patient from that id
+    this.routeParamChangesSubscription = this.route.paramMap.subscribe(
+      (params: ParamMap) => {
+        const patientId = Number(params.get("patientId"));
 
-    this.fetchPatientSelectData();
+        this.patientVisitService.getPatientById(patientId).subscribe({
+          next: (data) => {
+            // Setting active patient
+            this.activePatient = data;
 
-    this.fetchVisitSelectData();
+            // if (this.patientVisitService.selectedWaitingListItem) {
+            //   this.activePatient =
+            //     this.patientVisitService.selectedWaitingListItem.patient;
+            // }
+
+            this.isActivePatientAdult = isAdult(
+              this.activePatient.date_naissance
+            );
+
+            this.onFormInputsChanges();
+
+            this.fetchPatientSelectData();
+
+            this.fetchVisitSelectData();
+          },
+          error: (e) => {
+            console.log(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite."],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        });
+      }
+    );
+
+    // this.activePatient = this.patientService.getActivePatient();
+    // if (
+    //   !this.patientVisitService.selectedWaitingListItem &&
+    //   !this.patientVisitService.selectedPatient
+    // ) {
+    //   this.medicalBaseRouter.navigateToPatientWaitingList();
+
+    //   return;
+    // }
+
+    // if (this.patientVisitService.selectedWaitingListItem) {
+    //   this.activePatient =
+    //     this.patientVisitService.selectedWaitingListItem.patient;
+    // }
+    // else {
+    //   this.activePatient = this.patientVisitService.selectedPatient!;
+    // }
+
+    // const activePatientExactAge = calculateExactAge(
+    //   new Date(this.activePatient.date_naissance)
+    // );
+    // const activePatientAge = parseIntOrZero(
+    //   activePatientExactAge.split(" ")[0]
+    // );
+    // console.log(activePatientAge);
+    // if (activePatientAge < 18) {
+    //   this.isActivePatientAdult = true;
+    // }
+  }
+
+  ngOnDestroy(): void {
+    this.routeParamChangesSubscription.unsubscribe();
   }
 
   async isNotDirty(): Promise<boolean> {
-    if (
-      !this.patientVisitService.selectedWaitingListItem &&
-      !this.patientVisitService.selectedPatient
-    ) {
-      return Promise.resolve(true);
-    }
+    // if (
+    //   !this.patientVisitService.selectedWaitingListItem &&
+    //   !this.patientVisitService.selectedPatient
+    // ) {
+    //   return Promise.resolve(true);
+    // }
 
     console.log("Form 1 is dirty : " + this.patientVisitForm1.dirty);
     console.log("Form 2 is dirty : " + this.patientVisitForm2.dirty);
@@ -743,8 +785,8 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
 
     prescriberModalRef.componentInstance.prescriptions$.subscribe(
       (data: Prescription[]) => {
-        console.log('Prescriptions : ' + JSON.stringify(data, null, 2));
-        
+        console.log("Prescriptions : " + JSON.stringify(data, null, 2));
+
         this.prescriptions = data;
       }
     );
@@ -1261,7 +1303,9 @@ export class PatientVisitFormComponent implements OnInit, IsNotDirty {
   }
 
   goToPreviousPage() {
-    this.medicalBaseRouter.navigateToPatientVisitsSummary();
+    this.medicalBaseRouter.navigateToPatientVisitsSummary(
+      this.activePatient.id
+    );
     // this.location.back(); // Some bug when using it with canDeactive guard. Would go back twice
   }
 }

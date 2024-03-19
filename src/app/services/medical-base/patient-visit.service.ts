@@ -18,7 +18,7 @@ const apiEndpoint2 = environment.medical_base + "patients";
 })
 export class PatientVisitService {
   private _selectedWaitingListItem?: WaitingListItem;
-  private _selectedPatient?: Patient;
+  // private _selectedPatient?: Patient;
 
   constructor(
     private http: HttpClient,
@@ -79,6 +79,11 @@ export class PatientVisitService {
     );
   }
 
+  // Patient service API ------------------------------------------------------------------------------------------------
+  getPatientById(patientId: number): Observable<Patient> {
+    return this.patientService.get(patientId);
+  }
+
   // update(id: any, data: any): Observable<any> {
   //   return this.http.put(`${apiEndpoint}/${id}`, data);
   // }
@@ -86,7 +91,7 @@ export class PatientVisitService {
   selectWaitingListItem(waitingListItem: WaitingListItem) {
     this._selectedWaitingListItem = waitingListItem;
 
-    this._selectedPatient = undefined;
+    // this._selectedPatient = undefined;
   }
 
   public get selectedWaitingListItem(): WaitingListItem | undefined {
@@ -94,14 +99,14 @@ export class PatientVisitService {
   }
 
   selectPatient(patient: Patient) {
-    this._selectedPatient = patient;
+    // this._selectedPatient = patient;
 
     this._selectedWaitingListItem = undefined;
   }
 
-  public get selectedPatient(): Patient | undefined {
-    return this._selectedPatient;
-  }
+  // public get selectedPatient(): Patient | undefined {
+  //   return this._selectedPatient;
+  // }
 
   // refreshSelectedPatient():Observable<any>  {
   //   const patientId = this.selectedWaitingListItem ? this.selectedWaitingListItem.id : this.selectedPatient!.id

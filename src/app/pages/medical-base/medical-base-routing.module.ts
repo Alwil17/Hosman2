@@ -11,11 +11,11 @@ const routes: Routes = [
 
   { path: "patient-waiting-list", component: PatientWaitingListPageComponent },
   {
-    path: "patient-visits-summary",
+    path: "patient-visits-summary/:patientId",
     component: PatientVisitsSummaryPageComponent,
   },
   {
-    path: "patient-visit-form",
+    path: "patient-visit-form/:patientId",
     component: PatientVisitFormComponent,
     canDeactivate: [IsNotDirtyGuard],
   },
