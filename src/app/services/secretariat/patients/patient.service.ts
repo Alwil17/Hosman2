@@ -1,30 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { delay, map } from "rxjs/operators";
-import { CITIES } from "src/app/data/secretariat/cities.data";
-import { COUNTRIES } from "src/app/data/secretariat/countries.data";
-import { EMPLOYERS } from "src/app/data/secretariat/employers.data";
-import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
-import { INSURANCES } from "src/app/data/secretariat/insurances.data";
-import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
-// import { PATIENT_INSURANCES } from "src/app/data/secretariat/patient-insurance.data";
-import { PATIENTS } from "src/app/data/secretariat/patients.data";
-import { PROFESSIONS } from "src/app/data/secretariat/professions.data";
-import { Address } from "src/app/models/secretariat/patients/address.model";
-import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
-import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
+import { map } from "rxjs/operators";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
-import { PersonToContact } from "src/app/models/secretariat/patients/person-to-contact.model";
 import { PatientRequest } from "src/app/models/secretariat/patients/requests/patient-request.model";
 import { PatientResponse } from "src/app/models/secretariat/patients/responses/patient-response.model";
-import { CityService } from "./city.service";
-import { CountryService } from "./country.service";
-import { EmployerService } from "./employer.service";
-import { InsuranceTypeService } from "./insurance-type.service";
-import { InsuranceService } from "./insurance.service";
-import { NeighborhoodService } from "./neighborhood.service";
-import { ProfessionService } from "./profession.service";
 import { environment } from "src/environments/environment";
 import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
 
@@ -34,10 +14,6 @@ const apiEndpoint = environment.baseUrl + "patients";
   providedIn: "root",
 })
 export class PatientService {
-  private activePatient: Patient = PATIENTS[0];
-
-  allPatients: Patient[] = PATIENTS;
-
   constructor(private http: HttpClient) {}
 
   searchBy(searchTerm: string, criterion: string): Observable<Patient[]> {

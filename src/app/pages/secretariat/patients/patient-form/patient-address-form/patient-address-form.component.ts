@@ -10,8 +10,6 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { CITIES } from "src/app/data/secretariat/cities.data";
-import { NEIGHBORHOODS } from "src/app/data/secretariat/neighborhoods.data";
 import { AddressRequest } from "src/app/models/secretariat/patients/requests/address-request.model";
 import { CityService } from "src/app/services/secretariat/patients/city.service";
 import { NeighborhoodService } from "src/app/services/secretariat/patients/neighborhood.service";
