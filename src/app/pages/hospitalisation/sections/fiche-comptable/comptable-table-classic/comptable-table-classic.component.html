@@ -9,9 +9,36 @@
 <div class="table-responsive fiche-comptable">
   <!-- Watches tab -->
   <div *ngIf="typeData === 'watches'">
-    <div  *ngFor="let watch of watches; let i = index" class="mb-3">
-      <canvas [id]="watch.name" height="200" width="1400px"
+    <div  *ngFor="let watch of charts; let i = index" class="mb-3">
+      <h5 class="fw-semibold">{{ watch.label }}</h5>
+      <canvas [id]="watch.name" height="160" width="1400px"
       (dblclick)="showWatch(watch)"></canvas>
+    </div>
+    <div  *ngFor="let watch of not_charts; let i = index" class="mb-3">
+      <h5 class="fw-semibold">{{ watch.label }}</h5>
+      <table class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+        <thead>
+          <tr>
+            <th scope="col" class="text-center">Jours</th>
+            <th scope="col" class="text-center"></th>
+            <th scope="col" class="text-center"></th>
+            <th scope="col" class="text-center"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of days; let k = index">
+            <td class="evolution-day-content">{{ "J" + (d.i + 1) }}</td>
+            <td class="evolution-day-content" (click)="showWatchValueSelector(d.o , $event, watch)"><div class="addwatchbtn">Ajouter</div></td>
+            <td class="watch_time_data">
+              <div class="watch_values" *ngFor="let w of getWatchData(d.o, watch); let k" >
+                <label class="mb-0">{{ w.value }}</label><span class="mb-2">{{ w.hour }}</span>
+                <span class="removewatchbtn" (click)="removeWatchData(w, watch)">Supprimer</span>
+              </div>
+            </td>
+            <td class="evolution-day-content" (click)="showWatchValueSelector(d.o , $event, watch)"><div class="addwatchbtn">Ajouter</div></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     
   </div>

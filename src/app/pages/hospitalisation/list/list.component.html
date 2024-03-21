@@ -1,26 +1,72 @@
 <div class="hospit-list">
 
-    <div class="mb-2">
+    <div class="mb-2 d-flex flex-row justify-content-between mb-2">
         <h4 class="card-title">Patients hospitalisés</h4>
+        <div class="form-check form-switch form-switch-lg d-flex flex-row" dir="ltr">
+            <label class="form-check-label patient-grid" for="customSwitchsizelg">Grille</label>
+            <div>
+                <input type="checkbox" class="form-check-input" id="showListPatient" [formControl]="showList"
+                    checked="">
+                <label class="form-check-label patient-list" for="customSwitchsizelg">Liste</label>
+            </div>
+        </div>
     </div>
 
     <hr>
 
-    <div *ngFor="let d of chambres; let k = index" class="row mb-4">
-        <div *ngFor="let m of d.lits; let i = index" class="col-md-3">
-            <h5 class="room-name">{{d.nom + " - " + m.nom }}</h5>
-            <button type="button" class="btn btn-outline-dark waves-effect waves-light p-0" (click)="openHospit(d.id, m.id)" [class.empty-bed]="getDateHospit(d.id, m.id) === null">
-                <div class="row">
-                    <div class="col-md-5">
-                        <img class="" src="assets/app/images/hospibed.jpeg" alt="">
+    <div *ngIf="!showList.value">
+        <div *ngFor="let d of chambres; let k = index" class="row mb-4">
+            <div *ngFor="let m of d.lits; let i = index" class="col-md-3">
+                <h5 class="room-name">{{d.nom + " - " + m.nom }}</h5>
+                <button type="button" class="btn btn-outline-dark waves-effect waves-light p-0"
+                    (click)="openHospit(d.id, m.id)" [class.empty-bed]="getDateHospit(d.id, m.id) === null">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img class="" src="assets/app/images/hospibed.jpeg" alt="">
+                        </div>
+                        <div class="col-md-7 content pt-2">
+                            <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>
+                            <div>{{ getPatientAge(d.id, m.id) }}</div>
+                            <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>
+                        </div>
                     </div>
-                    <div class="col-md-7 content pt-2">
-                        <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>
-                        <div>{{ getPatientAge(d.id, m.id) }}</div>
-                        <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>
-                    </div>
-                </div>
-            </button>
+                </button>
+            </div>
         </div>
     </div>
+
+    <div *ngIf="showList.value">
+        <h-input [placeholder]="'Recherche'" [control]="search"></h-input>
+        <table class="table table-responsive table-bordered align-middle table-nowrap mb-0 mt-3">
+            <thead>
+                <tr>
+                    <th scope="col" class="">Lit</th>
+                    <th scope="col" class="">Numéro</th>
+                    <th scope="col" class="">Nom</th>
+                    <th scope="col" class="">Prénom(s)</th>
+                    <th scope="col" class="">D.Naiss</th>
+                    <th scope="col" class="">D.Hopsit</th>
+                    <th scope="col" class="">Médecin</th>
+                    <th scope="col" class="">Couverture sociale</th>
+                    <th scope="col" class="">Assurance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of filtered_list; let i = index" class="cursor-pointer"
+                    (dblclick)="openHospitById(item.id)" [ngStyle]="{'background-color': item.rowcolor}">
+                    <td class="text-white">{{ item.chambre!.nom }}</td>
+                    <td class="text-white">{{ item.reference }}</td>
+                    <td class="text-white">{{ item.nom }}</td>
+                    <td class="text-white">{{ item.prenoms }}</td>
+                    <td class="text-white">{{ item.date_naiss }}</td>
+                    <td class="text-white">{{ item.hospit_date }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
 </div>

@@ -53,6 +53,8 @@ export class ComptableTableClassicComponent implements OnInit {
   hospitalisation: any;
   days: any[] = [];
   watches: any[] = WATCHES;
+  charts: any[] = WATCHES.filter((d) => d.type === "chart");
+  not_charts: any[] = WATCHES.filter((d) => d.type !== "chart");
   search = new FormControl();
 
   list: any[] = []; // full list
@@ -174,7 +176,7 @@ export class ComptableTableClassicComponent implements OnInit {
 
   initLineChart() {
     // Line Chart
-    WATCHES.forEach((w) => {
+    WATCHES.filter((d) => d.type === "chart").forEach((w) => {
       const watchname = w.name;
 
       const list = this.suivis
@@ -197,7 +199,7 @@ export class ComptableTableClassicComponent implements OnInit {
             date: r.apply_date,
             milli: watchMoment.valueOf(),
             value: Number(JSON.parse(r.extras).data.value),
-            hour: JSON.parse(r.extras).data.hour
+            hour: JSON.parse(r.extras).data.hour,
           };
         })
         .sort((a, b) => a.milli - b.milli);
@@ -208,17 +210,25 @@ export class ComptableTableClassicComponent implements OnInit {
         const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
           type: "line",
           data: {
-            labels: list.map((m) => "J" + parseInt(this.days.find((d) => moment(d.o).isSame(moment(m.date).format("yyyy-MM-DD"))).i + 1)),
+            labels: list.map(
+              (m) =>
+                "J" +
+                parseInt(
+                  this.days.find((d) =>
+                    moment(d.o).isSame(moment(m.date).format("yyyy-MM-DD"))
+                  ).i + 1
+                )
+            ),
             datasets: [
               {
                 data: list.map((m) => m.value),
                 borderColor: "#8A1776",
                 borderWidth: 3,
                 pointBackgroundColor: "#8A1776",
-                pointBorderWidth: 4,
+                pointBorderWidth: 2,
                 pointStyle: "circle",
-                pointRadius: 10,
-                pointHoverRadius: 15,
+                pointRadius: 7,
+                pointHoverRadius: 9,
                 tension: 0.5,
                 datalabels: {
                   labels: {
@@ -293,21 +303,21 @@ export class ComptableTableClassicComponent implements OnInit {
               legend: {
                 display: false,
               },
-              title: {
-                display: true,
-                fullSize: false,
-                position: "left",
-                padding: {
-                  bottom: 10,
-                },
-                text: w.label,
-                font: {
-                  family: "Inter",
-                  size: 14,
-                  style: "normal",
-                  weight: "normal",
-                },
-              },
+              // title: {
+              //   display: true,
+              //   fullSize: false,
+              //   position: "left",
+              //   padding: {
+              //     bottom: 10,
+              //   },
+              //   text: w.label,
+              //   font: {
+              //     family: "Inter",
+              //     size: 14,
+              //     style: "normal",
+              //     weight: "normal",
+              //   },
+              // },
             },
           },
         });
@@ -812,13 +822,28 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  getWatchData(day: moment.Moment): any[] {
+  getWatchData(day: moment.Moment, watch: any = null): any[] {
+    let res = [];
+
     if (this.currentWatchList !== null && this.currentWatchList !== undefined) {
-      const watches = this.currentWatchList;
-      const res = watches.filter(
-        (t) =>
-          t["type"] === "watches" && moment(day).isSame(moment(t["apply_date"]))
-      );
+      if (watch === null) {
+        const watches = this.currentWatchList;
+        res = watches.filter(
+          (t) =>
+            t["type"] === "watches" &&
+            moment(day).isSame(moment(t["apply_date"]))
+        );
+      } else {
+        const list = this.suivis.filter(
+          (d) =>
+            d["type"] === "watches" &&
+            moment(day).isSame(moment(d["apply_date"])) &&
+            d.extras &&
+            "name" in JSON.parse(d.extras)
+        );
+
+        res = list.filter((s: any) => JSON.parse(s.extras).name === watch.name);
+      }
 
       return res
         .map((m) => {
@@ -846,9 +871,13 @@ export class ComptableTableClassicComponent implements OnInit {
   showWatchValueSelector(
     day: moment.Moment,
     event: MouseEvent,
-    data: any = null
+    watch: any = null
   ) {
     this.watchDay = day;
+
+    if (watch !== null) {
+      this.currentWatch = watch;
+    }
 
     const t = formatDate(new Date(), "HH:mm");
     this.watchTime.setValue(t);
@@ -863,7 +892,7 @@ export class ComptableTableClassicComponent implements OnInit {
     });
   }
 
-  async saveWatch() {
+  async saveWatch(watch: any = null) {
     if (this.watchValue.value === "" || this.watchValue.value === null) {
       this.toast.error("Vous devez saisir la valeur");
       return;
@@ -896,13 +925,31 @@ export class ComptableTableClassicComponent implements OnInit {
       }),
     };
 
-    this.currentWatchList.push(data);
+    if (watch === null) {
+      this.currentWatchList.push(data);
 
-    this.currentWatchList.sort((a, b) => {
-      const timeA = JSON.parse(a.extras).data.time;
-      const timeB = JSON.parse(b.extras).data.time;
-      return timeA - timeB;
-    });
+      this.currentWatchList.sort((a, b) => {
+        const timeA = JSON.parse(a.extras).data.time;
+        const timeB = JSON.parse(b.extras).data.time;
+        return timeA - timeB;
+      });
+    } else {
+      let curr = this.suivis
+        .filter(
+          (d) =>
+            d["type"] === "watches" &&
+            d.extras &&
+            "name" in JSON.parse(d.extras)
+        )
+        .filter((s: any) => JSON.parse(s.extras).name === watch.name);
+
+      curr.push(data);
+      curr.sort((a, b) => {
+        const timeA = JSON.parse(a.extras).data.time;
+        const timeB = JSON.parse(b.extras).data.time;
+        return timeA - timeB;
+      });
+    }
 
     this.watchFg.reset();
     this.modalReference.close();
@@ -912,30 +959,56 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   refreshCharts() {
-    const tmp = JSON.parse(JSON.stringify(this.watches));
-    this.watches = [];
-    const app = this;
-    setTimeout(function () {
-      app.watches = tmp;
+    this.charts.forEach((f) => {
+      // document.getElementById(f.name);
+      let chartStatus = Chart.getChart(f.name); // <canvas> id
+      if (chartStatus != undefined) {
+        chartStatus.destroy();
+      }
+    });
 
-      setTimeout(function () {
-        app.initLineChart();
-      }, 500);
-    }, 500);
+    this.initLineChart();
+
+    //-- End of chart destroy
+
+    // const tmp = JSON.parse(JSON.stringify(this.watches));
+    // this.watches = [];
+    // const app = this;
+    // setTimeout(function () {
+    //   app.watches = tmp;
+
+    //   setTimeout(function () {
+    //     app.initLineChart();
+    //   }, 1000);
+    // }, 500);
   }
 
-  async removeWatchData(data: any) {
+  async removeWatchData(data: any, watch: any = null) {
     const confirm = await this.message.confirmDialog(
       WarningMessages.SURE_TO_DELETE
     );
     if (!confirm) return;
 
     this.hospitalisationStore.removeSuivi(data.id);
-    this.currentWatchList = this.currentWatchList.filter(
-      (c) => JSON.parse(c.extras).data.id !== data.watch_id
-    );
-
-    this.refreshCharts();
+    if (watch === null) {
+      this.currentWatchList = this.currentWatchList.filter(
+        (c) => JSON.parse(c.extras).data.id !== data.watch_id
+      );
+      this.refreshCharts();
+    } else {
+      this.suivis = this.suivis
+        .filter(
+          (d) =>
+            d["type"] === "watches" &&
+            d.extras &&
+            "name" in JSON.parse(d.extras)
+        )
+        .filter(
+          (s: any) =>
+            JSON.parse(s.extras).name === watch.name &&
+            JSON.parse(s.extras).data.id !== data.watch_id
+        );
+    }
   }
 
   ngOnChanges(): void {

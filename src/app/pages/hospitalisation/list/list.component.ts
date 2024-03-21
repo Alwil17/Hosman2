@@ -6,7 +6,9 @@ import { Chambre } from "src/app/models/hospitalisation/chambre";
 import { Lit } from "src/app/models/hospitalisation/lit";
 import { calculateExactAge } from "src/app/helpers/age-calculator";
 import * as moment from "moment";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { FormControl } from "@angular/forms";
+import { hasStateChanges } from "src/app/helpers/utils";
 
 const hospitalisationEndpoint = "/api/hospits";
 
@@ -19,39 +21,138 @@ export class ListComponent implements OnInit {
   subscription: Subscription | undefined;
   chambres: Chambre[] = [];
   hospitalises: any[] = [];
+  sectors: any[] = [];
   list: any[] = [];
   extras: any[] = [];
+  showList = new FormControl(true);
+  filtered_list: any[] = [];
+  search = new FormControl();
+
+  applyFilter = "nom"
 
   constructor(
     private http: HttpClient,
     private hospitalisationStore: HospitalisationStore,
     private router: Router
-  ) {}
+  ) {
+    this.search.valueChanges.subscribe((value) => {
+      this.doFilter(value);
+    });
+  }
 
   ngOnInit(): void {
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
-        if (
-          this.list.length === 0 || JSON.stringify(previous.chambres) !== JSON.stringify(current.chambres)
-        )
+        if (hasStateChanges(this.chambres, previous.chambres, current.chambres))
           this.chambres = current.chambres?.filter(
             (chs: any) => chs.lits.length > 0
           );
-        if (this.list.length == 0 || JSON.stringify(previous.list) !== JSON.stringify(current.list)) {
-          // console.log(current.list)
+        if (hasStateChanges(this.list, previous.list, current.list)) {
           for (let step = 0; step < current.list.length; step++) {
-            this.extras.push({extra: JSON.parse(current.list[step].extras), 'hospit_id' : current.list[step].id, 'date_hospit' : current.list[step].date_hospit});
+            this.extras.push({
+              extra: JSON.parse(current.list[step].extras),
+              hospit_id: current.list[step].id,
+              date_hospit: current.list[step].date_hospit,
+            });
           }
+
           this.list = current.list;
           this.hospitalises = [];
         }
+
+        if (hasStateChanges(this.sectors, previous.sectors, current.sectors)) {
+          this.sectors = current.sectors;
+        }
+
+        if (this.list && this.sectors && this.list.length > 0 && this.sectors.length > 0) {
+          this.filtered_list = this.listData(this.list)
+
+        }
       });
 
+      console.log("init")
+    this.hospitalisationStore.fetchSector();
     this.hospitalisationStore.fetchChambres();
     this.hospitalisationStore.fetchHospitalisationList();
+  }
 
- }
+  stringToColor(color: string) {
+    switch (color) {
+      case "bleu":
+        return "#005CB6";
+      default:
+        return "";
+    }
+  }
+
+  doFilter(text: string): void {
+    try {
+      if (text.length === 0) {
+        this.filtered_list = this.listData(this.list);
+      } else {
+        let temp_list : any = this.listData(this.list);
+        const w = temp_list.filter((object: string | null) => {
+          let result = "";
+          if (object === null) return null;
+          if (
+            this.applyFilter === null ||
+            this.applyFilter.split(",").length === 0
+          )
+            return null;
+          for (const key of this.applyFilter.split(",")) {
+            console.log(object)
+            let rowValue = "";
+            rowValue =
+              object[key as keyof typeof object] !== null &&
+              object[key.trim() as keyof typeof object] !== undefined
+                ? object[key.trim() as keyof typeof object].toString()
+                : "";
+            // }
+
+            if (rowValue.toLowerCase().includes(text.trim().toLowerCase())) {
+              result = object;
+              break;
+            }
+          }
+          return result;
+        });
+        this.filtered_list = this.listData(w)
+      }
+
+    } catch (e) {
+      console.log("filtering : " + e);
+    }
+  }
+
+  listData(list : any[]) {
+    return list.map((data) => {
+      const h = data;
+      const d = JSON.parse(h.extras);
+      const c = this.chambres.find((c) => c.id === d.chambre);
+      const w = moment(h.date_hospit);
+      const n = moment(d.patient.date_naissance);
+
+      let secteur: any = "";
+      if (this.sectors !== null && this.sectors.length > 0) {
+        secteur = this.sectors.find(
+          (s: any) => s.code === h.secteur_code
+        );
+      }
+
+      return {
+        patient: d.patient,
+        reference: d.patient.reference,
+        nom: d.patient.nom,
+        prenoms: d.patient.prenoms,
+        chambre: c,
+        lit: c!.lits.find((l) => l.id === d.lit),
+        hospit_date: w.format("DD/MM/yyyy"),
+        date_naiss: n.format("DD/MM/yyyy"),
+        rowcolor: this.stringToColor(secteur.couleur),
+      };
+    });
+  }
 
   getPatientName(chambre: Number, lit: Number) {
     const value = this.extras.find(
@@ -84,7 +185,7 @@ export class ListComponent implements OnInit {
 
     if (value !== undefined) {
       const d = moment(value.date_hospit);
-      return d.format("DD/MM/yyyy")
+      return d.format("DD/MM/yyyy");
     } else {
       return null;
     }
@@ -95,7 +196,15 @@ export class ListComponent implements OnInit {
       (e) => e.extra.chambre === chambre && e.extra.lit === lit
     );
     if (value !== undefined) {
-      this.router.navigate(['/hospitalisation/edit'], { queryParams: { id: value.hospit_id } });
+      this.router.navigate(["/hospitalisation/edit"], {
+        queryParams: { id: value.hospit_id },
+      });
     }
+  }
+
+  openHospitById(id: Number) {
+    this.router.navigate(["/hospitalisation/edit"], {
+      queryParams: { id: id },
+    });
   }
 }
