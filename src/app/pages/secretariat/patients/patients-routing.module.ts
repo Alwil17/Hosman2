@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: "", redirectTo: "patient-list", pathMatch: "full" },
   { path: "patient-create", component: PatientCreatePageComponent },
   { path: "patient-list", component: PatientListPageComponent },
-  { path: "patient-activity", component: PatientActivityComponent },
+  { path: "patient-activity/:patientId", component: PatientActivityComponent },
   { path: "patient-waiting-list", component: PatientWaitingListComponent },
   { path: "patient-debts", component: DebtsComponent },
 ];

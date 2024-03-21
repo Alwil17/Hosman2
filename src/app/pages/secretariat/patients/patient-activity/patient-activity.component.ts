@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   QueryList,
   TemplateRef,
@@ -46,13 +47,15 @@ import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-
 import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { PatientFormModalComponent } from "../patient-form-modal/patient-form-modal.component";
+import { Subscription, tap } from "rxjs";
+import { ActivatedRoute, ParamMap } from "@angular/router";
 
 @Component({
   selector: "app-patient-activity",
   templateUrl: "./patient-activity.component.html",
   styleUrls: ["./patient-activity.component.scss"],
 })
-export class PatientActivityComponent implements OnInit {
+export class PatientActivityComponent implements OnInit, OnDestroy {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -124,6 +127,8 @@ export class PatientActivityComponent implements OnInit {
 
   table2Total = 0;
 
+  routeParamChangesSubscription!: Subscription;
+
   constructor(
     public patientService: PatientService,
     private datePipe: DatePipe,
@@ -134,57 +139,9 @@ export class PatientActivityComponent implements OnInit {
     private actGroupService: ActGroupService,
     private tariffService: TariffService,
     private prestationService: PrestationService,
-    private checkoutService: CheckoutService
-  ) {
-    this.selectedPatient = patientService.getActivePatient();
-
-    this.generateSummary();
-
-    this.actGroupService.getAll().subscribe({
-      next: (data) => {
-        this.actGroups = data;
-
-        this.selectedPrestationIndex = data[0].code;
-        this.tariffService.getByGroupCode(data[0].code).subscribe({
-          next: (data) => {
-            this.selectedGroupTariffs = data;
-
-            this.refreshTable1();
-          },
-          error: (e) => {
-            console.log(e);
-          },
-        });
-      },
-      error: (e) => {
-        console.log(e);
-      },
-    });
-
-    // this.table1 = (this.actGroups[0].items as IActivity[]).map((item) => {
-    //   let patientPrice = 0;
-    //   if (this.patientService.getActivePatientType() == 1) {
-    //     patientPrice = item.NA;
-    //   } else if (this.patientService.getActivePatientType() == 2) {
-    //     patientPrice = item.ENA;
-    //   } else if (this.patientService.getActivePatientType() == 3) {
-    //     patientPrice = item.AL_S;
-    //   } else {
-    //     patientPrice = item.AHZ;
-    //   }
-
-    //   return {
-    //     id: item.id,
-    //     designation: item.designation,
-    //     price: patientPrice,
-    //     description: item.description,
-    //   };
-    // }) as IPrestation[];
-
-    // this.table1CollectionSize = this.table1.length;
-
-    this.refreshActivities();
-  }
+    private checkoutService: CheckoutService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -208,9 +165,72 @@ export class PatientActivityComponent implements OnInit {
       originControl: this.originControl,
     });
 
+    // Get patient id from the route param and get the patient data from it + others
+    this.routeParamChangesSubscription = this.route.paramMap.subscribe(
+      (params: ParamMap) => {
+        const patientId = Number(params.get("patientId"));
+
+        this.patientService.get(patientId).subscribe({
+          next: (data) => {
+            // Setting active patient
+            this.selectedPatient = data;
+
+            // Get and set the list of all groups of acts
+            this.getAllActGroups().subscribe();
+          },
+          error: (e) => {
+            console.log(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite."],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        });
+      }
+    );
+
+    this.refreshActivities();
+
     this.onChanges();
 
     this.fetchSelectData();
+  }
+
+  ngOnDestroy(): void {
+    this.routeParamChangesSubscription.unsubscribe();
+  }
+
+  getAllActGroups() {
+    return this.actGroupService.getAll().pipe(
+      tap({
+        next: (data) => {
+          this.actGroups = data;
+
+          this.selectedPrestationIndex = data[0].code;
+          this.tariffService.getByGroupCode(data[0].code).subscribe({
+            next: (data) => {
+              this.selectedGroupTariffs = data;
+
+              this.refreshTable1();
+            },
+            error: (e) => {
+              console.log(e);
+
+              this.toastService.show({
+                messages: ["Désolé, une erreur s'est produite."],
+                delay: 10000,
+                type: ToastType.Error,
+              });
+            },
+          });
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      })
+    );
   }
 
   docAddable = false;
@@ -391,11 +411,11 @@ export class PatientActivityComponent implements OnInit {
   refreshTable1() {
     this.table1 = this.selectedGroupTariffs.map((item) => {
       let patientPrice = 0;
-      if (this.patientService.getActivePatientType() == 0) {
+      if (this.selectedPatient.is_assure === 0) {
         patientPrice = item.tarif_non_assure;
-      } else if (this.patientService.getActivePatientType() == 1) {
+      } else if (this.selectedPatient.is_assure === 1) {
         patientPrice = item.tarif_etr_non_assure;
-      } else if (this.patientService.getActivePatientType() == 2) {
+      } else if (this.selectedPatient.is_assure === 2) {
         patientPrice = item.tarif_assur_locale;
       } else {
         patientPrice = item.tarif_assur_hors_zone;
@@ -503,67 +523,6 @@ export class PatientActivityComponent implements OnInit {
 
   actGroups: ActGroup[] = [];
 
-  summary = {
-    title: "",
-    fullName: "",
-    birth: "",
-    // age: "",
-    birthPlace: "",
-    profession: "",
-    // nationality: "",
-    // insuranceRate: "",
-    // insurance: "",
-    // insuranceEnd: "",
-    tel1: "",
-    tel2: "",
-    personToContact: "",
-  };
-
-  generateSummary() {
-    this.summary = {
-      title:
-        this.patientService.getActivePatient().sexe === "Masculin"
-          ? "Monsieur"
-          : "Mademoiselle",
-      fullName:
-        this.patientService.getActivePatient().nom +
-        " " +
-        this.patientService.getActivePatient().prenoms,
-      birth: this.datePipe.transform(
-        this.patientService.getActivePatient().date_naissance,
-        "dd/MM/yyyy"
-      )!,
-      // age: this.ageControl.value as string,
-      birthPlace: this.patientService.getActivePatient().lieu_naissance
-        ? this.patientService.getActivePatient().lieu_naissance!
-        : "",
-      profession: this.patientService.getActivePatient().profession
-        ? this.patientService.getActivePatient().profession!.denomination
-        : "",
-      // nationality: this.patientService.getActivePatient().pays_origine ? this.patientService.getActivePatient().pays_origine as string : "",
-      // insuranceRate: this.patientService.getActivePatient().assurance..value
-      //   ? this.insuranceRateControl.value
-      //   : "",
-      // insurance: this.insuranceControl.value ? this.insuranceControl.value : "",
-      // insuranceEnd: this.insuranceEndControl.value
-      //   ? this.datePipe.transform(this.insuranceEndControl.value, "dd/MM/yyyy")!
-      //   : "",
-
-      tel1: this.patientService.getActivePatient().tel1
-        ? this.patientService.getActivePatient().tel1
-        : "",
-      tel2: this.patientService.getActivePatient().tel2
-        ? this.patientService.getActivePatient().tel2!
-        : "",
-
-      personToContact: this.patientService
-        .getActivePatient()
-        .personne_a_prevenir.toString(),
-      // ? this.patientService.getActivePatient().personne_a_prevenir
-      // : "",
-    };
-  }
-
   getInvalidFields() {
     const invalidInputs: string[] = [];
     this.inputFields.forEach((input) => {
@@ -658,7 +617,7 @@ export class PatientActivityComponent implements OnInit {
     }
 
     const prestation = new PrestationRequest({
-      patient_id: this.patientService.getActivePatient().id,
+      patient_id: this.selectedPatient.id,
 
       consulteur:
         this.consultingDoctorControl.value?.id ??
@@ -689,6 +648,7 @@ export class PatientActivityComponent implements OnInit {
           }
         );
 
+        invoiceModalRef.componentInstance.patientInfos = this.selectedPatient;
         invoiceModalRef.componentInstance.patientActivities = this.table2;
         invoiceModalRef.componentInstance.preInvoiceInfos = data;
       },
@@ -696,6 +656,7 @@ export class PatientActivityComponent implements OnInit {
         console.error(e);
 
         this.toastService.show({
+          messages: ["Désolé, une erreur s'est produite."],
           delay: 10000,
           type: ToastType.Error,
         });
@@ -746,7 +707,9 @@ export class PatientActivityComponent implements OnInit {
       (isPatientModified: boolean) => {
         console.log("Patient modified : " + isPatientModified);
 
-        this.selectedPatient = this.patientService.getActivePatient();
+        this.patientService
+          .get(this.selectedPatient.id)
+          .subscribe((data) => (this.selectedPatient = data));
 
         if (isPatientModified) {
           patientModifyModalRef.close();

@@ -797,7 +797,7 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
     const patientData = this.getPatientFormData();
 
     this.patientService.create(patientData).subscribe({
-      next: (data) => {
+      next: async (data) => {
         console.log(data, "\nHere");
 
         this.toastService.show({
@@ -805,14 +805,15 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
           type: ToastType.Success,
         });
 
-        this.patientService.setActivePatient(data).subscribe({
-          next: async (data) => {
-            await this.secretariatRouter.navigateToPatientActivity();
-          },
-          error: (e) => {
-            console.error(e);
-          },
-        });
+        await this.secretariatRouter.navigateToPatientActivity(Number(data));
+
+        // this.patientService.setActivePatient(data).subscribe({
+        //   next: async (data) => {
+        //   },
+        //   error: (e) => {
+        //     console.error(e);
+        //   },
+        // });
       },
       error: (e) => {
         console.error(e);
@@ -854,14 +855,15 @@ export class PatientFormComponent implements OnInit, AfterViewInit {
           type: ToastType.Success,
         });
 
-        this.patientService.setActivePatient(this.patientInfos!.id).subscribe({
-          next: (data) => {
-            this.isPatientModified.emit(true);
-          },
-          error: (e) => {
-            console.error(e);
-          },
-        });
+        this.isPatientModified.emit(true);
+
+        // this.patientService.setActivePatient(this.patientInfos!.id).subscribe({
+        //   next: (data) => {
+        //   },
+        //   error: (e) => {
+        //     console.error(e);
+        //   },
+        // });
       },
       error: (e) => {
         console.error(e);

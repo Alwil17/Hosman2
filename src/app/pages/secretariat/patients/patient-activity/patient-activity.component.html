@@ -11,27 +11,19 @@
       <div class="card-header d-flex align-items-center">
         <h4 class="card-title mb-0 me-4">Patient</h4>
 
-        <ng-container *ngIf="patientService.getActivePatient().id > 0">
+        <ng-container *ngIf="selectedPatient">
           <h4 class="m-0">
             <span class="badge bg-primary"
               ><i class="mdi mdi-circle-medium"></i>
               {{
-                patientService.getActivePatient().reference +
+                selectedPatient.reference +
                   " - " +
-                  patientService.getActivePatient().nom +
+                  selectedPatient.nom +
                   " " +
-                  patientService.getActivePatient().prenoms
+                  selectedPatient.prenoms
               }}</span
             >
           </h4>
-
-          <!-- <h4>
-            <span class="badge bg-primary me-3">{{
-              patientService.getActivePatient().nom +
-                " " +
-                patientService.getActivePatient().prenoms
-            }}</span>
-          </h4> -->
 
           <button
             type="button"
@@ -63,89 +55,88 @@
 
       <div class="card-body" [(ngbCollapse)]="isPatientInfoCollapsed">
         <!-- #patientInfoCollapse="ngbCollapse" -->
-        <div
-          class="row"
-          *ngIf="patientService.getActivePatient().id > 0; else infoUnavailable"
-        >
-          <div class="col-12 col-lg-4">
-            <h6>
-              <b> Nom : </b>
-              <b class="text-secondary">{{
-                selectedPatient.nom | uppercase
-              }}</b>
-            </h6>
+        <ng-container *ngIf="selectedPatient; else infoUnavailable">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <h6>
+                <b> Nom : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.nom | uppercase
+                }}</b>
+              </h6>
 
-            <h6>
-              <b> Né(e) le : </b>
-              <b class="text-secondary">{{
-                selectedPatient.date_naissance | date : "dd/MM/yyyy"
-              }}</b>
-            </h6>
+              <h6>
+                <b> Né(e) le : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.date_naissance | date : "dd/MM/yyyy"
+                }}</b>
+              </h6>
 
-            <h6>
-              <b> Assurance : </b>
-              <b class="text-secondary">
-                <span *ngIf="selectedPatient.is_assure === 0">
-                  <em>Non assuré (Local)</em>
-                </span>
-                <span *ngIf="selectedPatient.is_assure === 1">
-                  <em>Non assuré (Etranger)</em>
-                </span>
-                <span *ngIf="selectedPatient.is_assure === 2">
-                  {{ selectedPatient.assurance?.nom }}<em> (Locale)</em>
-                </span>
-                <span *ngIf="selectedPatient.is_assure === 3">
-                  {{ selectedPatient.assurance?.nom }}<em> (Etrangère)</em>
-                </span>
+              <h6>
+                <b> Assurance : </b>
+                <b class="text-secondary">
+                  <span *ngIf="selectedPatient.is_assure === 0">
+                    <em>Non assuré (Local)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 1">
+                    <em>Non assuré (Etranger)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 2">
+                    {{ selectedPatient.assurance?.nom }}<em> (Locale)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 3">
+                    {{ selectedPatient.assurance?.nom }}<em> (Etrangère)</em>
+                  </span>
 
-                <!-- {{
-                  selectedPatient.assurance
-                    ? selectedPatient.assurance.nom
+                  <!-- {{
+                    selectedPatient.assurance
+                      ? selectedPatient.assurance.nom
+                      : "-"
+                  }} -->
+                </b>
+              </h6>
+
+              <h6>
+                <b> Contact(s) : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
+                }}</b>
+              </h6>
+            </div>
+
+            <div class="col-12 col-lg-8">
+              <h6>
+                <b class="ms-4"> Prénoms : </b
+                ><b class="text-secondary">{{
+                  selectedPatient.prenoms | titlecase
+                }}</b>
+              </h6>
+
+              <h6>
+                <b class="ms-4"> Lieu de naissance : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.lieu_naissance ?? "-"
+                }}</b>
+              </h6>
+
+              <h6>
+                <b class="ms-4"> Taux de prise en charge : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.taux_assurance
+                    ? selectedPatient.taux_assurance + " %"
                     : "-"
-                }} -->
-              </b>
-            </h6>
+                }}</b>
+              </h6>
 
-            <h6>
-              <b> Contact(s) : </b>
-              <b class="text-secondary">{{
-                selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
-              }}</b>
-            </h6>
+              <h6>
+                <b class="ms-4"> Personne à prévenir : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.personne_a_prevenir.toText()
+                }}</b>
+              </h6>
+            </div>
           </div>
-
-          <div class="col-12 col-lg-8">
-            <h6>
-              <b class="ms-4"> Prénoms : </b
-              ><b class="text-secondary">{{
-                selectedPatient.prenoms | titlecase
-              }}</b>
-            </h6>
-
-            <h6>
-              <b class="ms-4"> Lieu de naissance : </b>
-              <b class="text-secondary">{{
-                selectedPatient.lieu_naissance ?? "-"
-              }}</b>
-            </h6>
-
-            <h6>
-              <b class="ms-4"> Taux de prise en charge : </b>
-              <b class="text-secondary">{{
-                selectedPatient.taux_assurance
-                  ? selectedPatient.taux_assurance + " %"
-                  : "-"
-              }}</b>
-            </h6>
-
-            <h6>
-              <b class="ms-4"> Personne à prévenir : </b>
-              <b class="text-secondary">{{
-                selectedPatient.personne_a_prevenir.toText()
-              }}</b>
-            </h6>
-          </div>
-        </div>
+        </ng-container>
 
         <ng-template #infoUnavailable>
           <h4>
@@ -379,18 +370,20 @@
                     <th scope="col">Prestation</th>
                     <th scope="col">
                       Prix
-                      <span *ngIf="selectedPatient.is_assure === 0">
-                        <em>(Non assuré local)</em>
-                      </span>
-                      <span *ngIf="selectedPatient.is_assure === 1">
-                        <em>(Non assuré étranger)</em>
-                      </span>
-                      <span *ngIf="selectedPatient.is_assure === 2">
-                        <em> (Assurance locale)</em>
-                      </span>
-                      <span *ngIf="selectedPatient.is_assure === 3">
-                        <em> (Assurance étrangère)</em>
-                      </span>
+                      <ng-container *ngIf="selectedPatient">
+                        <span *ngIf="selectedPatient.is_assure === 0">
+                          <em>(Non assuré local)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 1">
+                          <em>(Non assuré étranger)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 2">
+                          <em> (Assurance locale)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 3">
+                          <em> (Assurance étrangère)</em>
+                        </span></ng-container
+                      >
                     </th>
                     <th scope="col">Description</th>
                   </tr>

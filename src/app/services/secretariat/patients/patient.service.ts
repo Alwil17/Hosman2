@@ -88,19 +88,19 @@ export class PatientService {
   //     );
   // }
 
-  searchByReference(reference: string): Observable<Patient[]> {
-    return this.http
-      .get<PatientResponse[]>(`${apiEndpoint}/search?reference=${reference}`)
-      .pipe(
-        map((patients) => {
-          const mapped: Patient[] = patients.map((patient) =>
-            Patient.fromResponse(patient)
-          );
+  // searchByReference(reference: string): Observable<Patient[]> {
+  //   return this.http
+  //     .get<PatientResponse[]>(`${apiEndpoint}/search?reference=${reference}`)
+  //     .pipe(
+  //       map((patients) => {
+  //         const mapped: Patient[] = patients.map((patient) =>
+  //           Patient.fromResponse(patient)
+  //         );
 
-          return mapped;
-        })
-      );
-  }
+  //         return mapped;
+  //       })
+  //     );
+  // }
 
   create(data: PatientRequest): Observable<any> {
     return this.http.post<any>(apiEndpoint, data);
@@ -136,25 +136,25 @@ export class PatientService {
   //   return this.allPatients.find((value) => value.id == patientId);
   // }
 
-  getActivePatient() {
-    return new Patient(this.activePatient);
-  }
+  // getActivePatient() {
+  //   return new Patient(this.activePatient);
+  // }
 
-  setActivePatient(patientId: number): Observable<void> {
-    return this.get(patientId).pipe(
-      map((patient) => {
-        this.activePatient = patient;
+  // setActivePatient(patientId: number): Observable<void> {
+  //   return this.get(patientId).pipe(
+  //     map((patient) => {
+  //       this.activePatient = patient;
 
-        return;
-      })
-    );
-  }
+  //       return;
+  //     })
+  //   );
+  // }
 
-  getActivePatientType() {
-    return this.activePatient.is_assure;
-  }
+  // getActivePatientType() {
+  //   return this.activePatient.is_assure;
+  // }
 
-  getActivePatientRate() {
-    return this.activePatient?.taux_assurance ?? 0;
-  }
+  // getActivePatientRate() {
+  //   return this.activePatient?.taux_assurance ?? 0;
+  // }
 }

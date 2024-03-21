@@ -173,16 +173,16 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // async
-  goToPatientActivity(patient: Patient) {
-    this.patientService.setActivePatient(patient.id).subscribe({
-      next: async (data) => {
-        await this.secretariatRouter.navigateToPatientActivity();
-      },
-      error: (e) => {
-        console.error(e);
-      },
-    });
+  async goToPatientActivity(patient: Patient) {
+    await this.secretariatRouter.navigateToPatientActivity(patient.id);
+
+    // this.patientService.setActivePatient(patient.id).subscribe({
+    //   next: async (data) => {
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+    //   },
+    // });
 
     // console.log(JSON.stringify(patient, null, 2));
   }

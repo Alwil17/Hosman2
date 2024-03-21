@@ -35,8 +35,10 @@ export class SecretariatRouterService {
     await this.router.navigateByUrl(this.routesPath.patientCreate);
   }
 
-  async navigateToPatientActivity() {
-    await this.router.navigateByUrl(this.routesPath.patientActivity);
+  async navigateToPatientActivity(patientId: number) {
+    await this.router.navigateByUrl(
+      this.routesPath.patientActivity + "/" + patientId
+    );
   }
 
   async navigateToPatientDebts() {
