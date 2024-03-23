@@ -20,6 +20,11 @@ import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confi
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PatientInfosFormComponent } from "./patient-infos-form/patient-infos-form.component";
 import { VisitInfosFormComponent } from "./visit-infos-form/visit-infos-form.component";
+import { MultiChoicesModalComponent } from "src/app/shared/modals/multi-choices-modal/multi-choices-modal.component";
+import {
+  ButtonColorClass,
+  MutliChoicesButtonProps,
+} from "src/app/models/extras/multi-choices-button-props.model";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -93,11 +98,11 @@ export class PatientVisitFormComponent
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.patientInfosFormComponent.patientInfosForm$.subscribe((data) =>
-        console.log("Nexted")
-      );
-    }, 5000);
+    // setTimeout(() => {
+    //   this.patientInfosFormComponent.patientInfosForm$.subscribe((data) =>
+    //     console.log("Nexted")
+    //   );
+    // }, 5000);
   }
 
   async isNotDirty(): Promise<boolean> {
@@ -122,24 +127,86 @@ export class PatientVisitFormComponent
       this.visitInfosFormComponent?.isVisitInfosFormDirty()
     ) {
       // OPEN CONFIRMATION MODAL
-      const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
-        size: "md",
-        centered: true,
-        keyboard: false,
-        backdrop: "static",
-      });
+      // const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+      //   size: "md",
+      //   centered: true,
+      //   keyboard: false,
+      //   backdrop: "static",
+      // });
 
-      confirmModalRef.componentInstance.message =
-        "Vous n'avez pas enregistré vos modifications. Voulez-vous vraiment quitter la page ?";
+      // confirmModalRef.componentInstance.message =
+      //   "Vous n'avez pas enregistré vos modifications. Voulez-vous vraiment quitter la page ?";
 
-      const isConfirmed = await firstValueFrom<boolean>(
-        confirmModalRef.componentInstance.isConfirmed.asObservable()
+      // const isConfirmed = await firstValueFrom<boolean>(
+      //   confirmModalRef.componentInstance.isConfirmed.asObservable()
+      // );
+
+      // // CLOSE CONFIRMATION MODAL
+      // confirmModalRef.close();
+
+      // OPEN CHOICES MODAL
+      const choicesModalRef = this.modalService.open(
+        MultiChoicesModalComponent,
+        {
+          size: "lg",
+          centered: true,
+          keyboard: false,
+          backdrop: "static",
+        }
       );
 
-      // CLOSE CONFIRMATION MODAL
-      confirmModalRef.close();
+      choicesModalRef.componentInstance.messages = [
+        "Vous n'avez pas enregistré vos modifications.",
+        "Voulez-vous vraiment quitter la page ?",
+      ];
 
-      return Promise.resolve(isConfirmed);
+      const buttons: MutliChoicesButtonProps[] = [
+        {
+          text: "Annuler",
+          buttonColorClass: ButtonColorClass.OUTLINE_DARK,
+        },
+        {
+          text: "Quitter sans sauvegarder",
+          buttonColorClass: ButtonColorClass.WARNING,
+        },
+        {
+          text: "Sauvegarder et quitter",
+          buttonColorClass: ButtonColorClass.SUCCESS,
+          hasSaveIcon: true,
+        },
+      ];
+      choicesModalRef.componentInstance.buttons = buttons;
+
+      const choiceIndex = await firstValueFrom<number>(
+        choicesModalRef.componentInstance.choiceIndex.asObservable()
+      );
+
+      if (choiceIndex === 0) {
+        choicesModalRef.close();
+
+        return Promise.resolve(false);
+      } else if (choiceIndex === 1) {
+        choicesModalRef.close();
+
+        return Promise.resolve(true);
+      } else if (choiceIndex === 2) {
+        await firstValueFrom<any>(
+          this.patientInfosFormComponent.savePatientInfosObservable()
+        ).catch((e) => console.log(e));
+
+        if (this.visitInfosFormComponent) {
+          await firstValueFrom<any>(
+            this.visitInfosFormComponent.saveVisitObservable()!
+          );
+        }
+
+        // CLOSE CHOICES MODAL
+        choicesModalRef.close();
+
+        return Promise.resolve(true);
+      }
+
+      return Promise.resolve(false);
     } else {
       return Promise.resolve(true);
     }

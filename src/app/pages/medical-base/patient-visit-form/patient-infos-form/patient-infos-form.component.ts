@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { BehaviorSubject, Subject, forkJoin, merge } from "rxjs";
+import { BehaviorSubject, Subject, forkJoin, merge, tap } from "rxjs";
 import { HAS_INSURANCES } from "src/app/data/secretariat/has-insurance.data";
 import { isAdult } from "src/app/helpers/age-calculator";
 import { SelectOption } from "src/app/models/extras/select.model";
@@ -32,7 +32,7 @@ export class PatientInfosFormComponent implements OnInit {
 
   patientInfosForm!: FormGroup;
 
-  patientInfosForm$ = new BehaviorSubject<FormGroup | null>(null);
+  // patientInfosForm$ = new BehaviorSubject<FormGroup | null>(null);
 
   isPatientAdult = false;
 
@@ -84,8 +84,6 @@ export class PatientInfosFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("Init");
-
     this.patientInfosForm = new FormGroup({
       // chronicDiseaseControl: this.chronicDiseaseControl,
       chronicDiseases: new FormArray([new FormControl(null)]),
@@ -109,7 +107,7 @@ export class PatientInfosFormComponent implements OnInit {
       fatherAgeControl: this.fatherAgeControl,
     });
 
-    this.patientInfosForm$.next(this.patientInfosForm);
+    // this.patientInfosForm$.next(this.patientInfosForm);
 
     this.isPatientAdult = isAdult(this.patientInfos.date_naissance);
 
@@ -117,11 +115,11 @@ export class PatientInfosFormComponent implements OnInit {
 
     this.onPatientInfosFormInputsChanges();
 
-    this.patientInfosForm.valueChanges.subscribe((data) => {
-      console.log("Changed");
+    // this.patientInfosForm.valueChanges.subscribe((data) => {
+    //   console.log("Changed");
 
-      this.patientInfosForm$.next(this.patientInfosForm);
-    });
+    //   this.patientInfosForm$.next(this.patientInfosForm);
+    // });
   }
 
   // GET PATIENT INFOS SELECT DATA -----------------------------------------------------------------------------------
@@ -156,7 +154,6 @@ export class PatientInfosFormComponent implements OnInit {
   }
 
   // SET FIELDS INITIAL VALUES --------------------------------------------------------------------------------------------------------------
-
   setPatientInfoFieldsInitialValues() {
     const cdLength = this.patientInfos.maladies?.length ?? 0;
     console.log(this.patientInfos);
@@ -374,7 +371,7 @@ export class PatientInfosFormComponent implements OnInit {
   }
 
   // SAVE PATIENT INFO ---------------------------------------------------------------------------------------------------------------
-  savePatientInfos() {
+  savePatientInfosObservable() {
     let chronicDiseases: ChronicDiseaseRequest[] = [];
     this.chronicDiseasesFields.controls.map((control) =>
       chronicDiseases.push({ maladie: control.value?.text })
@@ -413,19 +410,28 @@ export class PatientInfosFormComponent implements OnInit {
 
     console.log(JSON.stringify(patientVisitInfo, null, 2));
 
-    this.patientVisitService
-      .updateVisitInfo(this.patientInfos.id, patientVisitInfo)
-      .subscribe({
-        next: (data) => {
-          // this.setFieldsInitialValues();
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+    return this.patientVisitService
+      .updateVisitInfo(this.patientInfos.reference, patientVisitInfo)
+      .pipe(
+        tap({
+          next: (data) => {
+            // this.setFieldsInitialValues();
 
-    this.patientInfosForm.markAsPristine();
-    // this.patientInfosForm.markAsUntouched()
+            this.patientInfosForm.markAsPristine();
+            // this.patientInfosForm.markAsUntouched()
+          },
+          error: (error) => {
+            console.log(error);
+
+            this.patientInfosForm.markAsPristine();
+            // this.patientInfosForm.markAsUntouched()
+          },
+        })
+      );
+  }
+
+  savePatientInfos() {
+    this.savePatientInfosObservable().subscribe();
   }
 
   // CHRONIC DISEASES FIELDS --------------------------------------------------------------------------------------------------------

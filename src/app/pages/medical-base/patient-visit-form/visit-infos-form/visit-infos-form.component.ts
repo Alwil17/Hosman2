@@ -661,7 +661,9 @@ export class VisitInfosFormComponent implements OnInit {
           console.error(e);
 
           this.toastService.show({
-            messages: ["Désolé, une erreur s'est produite."],
+            messages: [
+              "Désolé, une erreur s'est produite lors de l'enregistrement de la consultation.",
+            ],
             delay: 10000,
             type: ToastType.Error,
           });
