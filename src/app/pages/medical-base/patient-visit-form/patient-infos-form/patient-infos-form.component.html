@@ -1,0 +1,268 @@
+<form [formGroup]="patientInfosForm">
+  <div class="row">
+    <ng-container formArrayName="chronicDiseases">
+      <ng-container
+        *ngFor="
+          let chronicDisease of chronicDiseasesFields.controls;
+          let i = index;
+          let count = count
+        "
+      >
+        <div class="col-md-4">
+          <div class="row gx-2">
+            <div class="col-md-8">
+              <app-select
+                [label]="'Maladie chronique ' + (i + 1)"
+                [options]="chronicDiseases"
+                [canAddOption]="true"
+                [clearable]="true"
+                [editable]="true"
+                [control]="chronicDisease"
+              ></app-select>
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end mb-2">
+              <button
+                type="button"
+                class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                (click)="addChronicDiseaseField()"
+              >
+                <i class="ri-add-fill fs-24"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                (click)="count !== 1 ? removeChronicDiseaseField(i) : null"
+              >
+                <i class="ri-subtract-fill fs-24"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="comments" class="form-label custom-form-label-sm">
+        Commentaires
+      </label>
+      <textarea
+        id="comments"
+        class="form-control form-control-sm"
+        rows="2"
+        [formControl]="commentsControl"
+        [ngClass]="{
+          'is-invalid':
+            commentsControl.touched &&
+            commentsControl.dirty &&
+            commentsControl.errors
+        }"
+      ></textarea>
+    </div>
+
+    <div class="col-md-6">
+      <label for="backgrounds" class="form-label custom-form-label-sm">
+        Antécédents
+      </label>
+      <textarea
+        [readOnly]="true"
+        id="backgrounds"
+        class="form-control form-control-sm"
+        rows="2"
+        (click)="openBackgroundsModal()"
+        [formControl]="backgroundsControl"
+        [ngClass]="{
+          'is-invalid':
+            backgroundsControl.touched &&
+            backgroundsControl.dirty &&
+            backgroundsControl.errors
+        }"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!isPatientAdult">
+    <div class="col-md-6">
+      <!-- 
+            <fieldset
+            style="
+              margin-bottom: 1em !important;
+              border: 1px solid #666 !important;
+              padding: 1px !important;
+            "
+          >
+            <legend
+              style="padding: 1px 10px !important; float: none; width: auto"
+            >
+              {{ "Mère" | uppercase }}
+            </legend>
+            ...
+           -->
+      <app-card title="MERE" [hasHeader]="true" [hasBody]="true">
+        <ng-container customCardBody>
+          <div class="row">
+            <div class="col-md-6">
+              <app-select
+                label="Profession"
+                [options]="professions"
+                [canAddOption]="true"
+                [control]="motherProfessionControl"
+              ></app-select>
+            </div>
+
+            <div class="col-md-6">
+              <app-input
+                label="Cellulaire"
+                type="tel"
+                placeholder="XX XX XX XX"
+                [control]="motherTelControl"
+                maskFormat="09 09 09 09 09 09 09 09 09 09"
+              >
+              </app-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-select
+                label="Employeur de l'assuré"
+                [options]="employers"
+                [canAddOption]="true"
+                [control]="motherEmployerControl"
+              ></app-select>
+            </div>
+
+            <div class="col-md-6">
+              <app-select
+                label="Assureur"
+                [options]="hasInsurances"
+                [canAddOption]="true"
+                [control]="motherInsuranceControl"
+              ></app-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-input
+                label="Année de naissance"
+                type="number"
+                [control]="motherBirthYearControl"
+              >
+              </app-input>
+            </div>
+            <div class="col-md-6">
+              <app-input
+                label="Âge"
+                [readOnly]="true"
+                [control]="motherAgeControl"
+              >
+              </app-input>
+            </div>
+          </div>
+        </ng-container>
+      </app-card>
+    </div>
+
+    <div class="col-md-6">
+      <app-card title="PERE" [hasHeader]="true" [hasBody]="true">
+        <ng-container customCardBody>
+          <div class="row">
+            <div class="col-md-6">
+              <app-select
+                label="Profession"
+                [options]="professions"
+                [canAddOption]="true"
+                [control]="fatherProfessionControl"
+              ></app-select>
+            </div>
+
+            <div class="col-md-6">
+              <app-input
+                label="Cellulaire"
+                type="tel"
+                placeholder="XX XX XX XX"
+                [control]="fatherTelControl"
+                maskFormat="09 09 09 09 09 09 09 09 09 09"
+              >
+              </app-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-select
+                label="Employeur de l'assuré"
+                [options]="employers"
+                [canAddOption]="true"
+                [control]="fatherEmployerControl"
+              ></app-select>
+            </div>
+
+            <div class="col-md-6">
+              <app-select
+                label="Assureur"
+                [options]="hasInsurances"
+                [canAddOption]="true"
+                [control]="fatherInsuranceControl"
+              ></app-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-input
+                label="Année de naissance"
+                type="number"
+                [control]="fatherBirthYearControl"
+              >
+              </app-input>
+            </div>
+            <div class="col-md-6">
+              <app-input
+                label="Âge"
+                [readOnly]="true"
+                [control]="fatherAgeControl"
+              >
+                <!-- [readOnly]="true" -->
+              </app-input>
+            </div>
+          </div>
+        </ng-container>
+      </app-card>
+    </div>
+  </div>
+</form>
+
+<div class="d-flex justify-content-end">
+  <ng-container *ngIf="!isPatientAdult">
+    <button
+      type="button"
+      class="btn btn-info btn-label waves-effect waves-light me-2"
+      (click)="openSiblingsModal()"
+    >
+      <i class="ri-team-fill label-icon align-middle fs-16 me-2"></i>
+      Fratrie
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary btn-label waves-effect waves-light me-2"
+      (click)="openCoefficientSocialModal()"
+    >
+      <i class="ri-hand-coin-fill label-icon align-middle fs-16 me-2"></i>
+      Coefficient social
+    </button>
+  </ng-container>
+
+  <button
+    type="button"
+    class="btn btn-success btn-label waves-effect waves-light"
+    (click)="savePatientInfos()"
+  >
+    <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+    Enregistrer
+  </button>
+</div>
