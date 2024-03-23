@@ -12,7 +12,7 @@ import { ToastService } from "src/app/services/secretariat/shared/toast.service"
 import { PatientVisitFormModalComponent } from "../patient-visit-form-modal/patient-visit-form-modal.component";
 import { Location } from "@angular/common";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-import { Observable, Subscription, tap } from "rxjs";
+import { Observable, Subscription, merge, tap } from "rxjs";
 
 @Component({
   selector: "app-patient-visits-summary-page",
@@ -223,7 +223,7 @@ export class PatientVisitsSummaryPageComponent implements OnInit, OnDestroy {
     const patientVisitFormModal = this.modalService.open(
       PatientVisitFormModalComponent,
       {
-        size: "lg",
+        size: "xl",
         centered: true,
         scrollable: true,
         backdrop: "static",
@@ -232,11 +232,16 @@ export class PatientVisitsSummaryPageComponent implements OnInit, OnDestroy {
 
     patientVisitFormModal.componentInstance.consultations = this.visitsList;
     patientVisitFormModal.componentInstance.activeIndex = selectedIndex;
+    patientVisitFormModal.componentInstance.patientInfos = this.activePatient;
 
-    // setTimeout(() => {
-    //   patientVisitFormModal.componentInstance.consultation = this.visitsList[0];
-    //   console.log("Execeuted");
-    // }, 10_000);
+    merge(
+      patientVisitFormModal.closed,
+      patientVisitFormModal.dismissed
+    ).subscribe({
+      next: (value) => {
+        this.getPatientConsultations().subscribe();
+      },
+    });
   }
 
   goToPreviousPage() {

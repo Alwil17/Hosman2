@@ -35,6 +35,7 @@ import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confi
 import { HospitalisationFormModalComponent } from "../hospitalisation-form-modal/hospitalisation-form-modal.component";
 import { SelectOption } from "src/app/models/extras/select.model";
 import { Router } from "@angular/router";
+import { Consultation } from "src/app/models/medical-base/consultation.model";
 
 @Component({
   selector: "app-visit-infos-form",
@@ -42,6 +43,16 @@ import { Router } from "@angular/router";
   styleUrls: ["./visit-infos-form.component.scss"],
 })
 export class VisitInfosFormComponent implements OnInit {
+  // Variables if using Component to display previous visits/consultations
+  @Input()
+  consultations: Consultation[] = [];
+
+  @Input()
+  activeIndex = 0;
+
+  consultation?: Consultation;
+  // ----------------------------------------------------------------------
+
   @Input()
   patientInfos!: Patient;
 
@@ -235,65 +246,183 @@ export class VisitInfosFormComponent implements OnInit {
 
   // SET FIELDS INITIAL VALUES --------------------------------------------------------------------------------------------------------------
   setVisitInfoFieldsInitialValues() {
-    if (this.patientVisitService.selectedWaitingListItem) {
-      const actsLength =
-        this.patientVisitService.selectedWaitingListItem.facture.prestation
-          .tarifs.length ?? 0;
+    // If the component is used to register new visits/consultations
+    if (this.consultations.length === 0) {
+      if (this.patientVisitService.selectedWaitingListItem) {
+        const actsLength =
+          this.patientVisitService.selectedWaitingListItem.facture.prestation
+            .tarifs.length ?? 0;
 
-      this.patientVisitService.selectedWaitingListItem.facture.prestation.tarifs.forEach(
-        (value) => {
-          this.waitingDetails.visitActs += value.libelle + " * ";
+        this.patientVisitService.selectedWaitingListItem.facture.prestation.tarifs.forEach(
+          (value) => {
+            this.waitingDetails.visitActs += value.libelle + " * ";
+          }
+        );
+
+        this.waitingDetails.visitTotalCost =
+          this.patientVisitService.selectedWaitingListItem.facture.total;
+
+        for (let i = 0; i < actsLength - 1; i++) {
+          this.addActsField();
         }
+
+        if (
+          this.patientVisitService.selectedWaitingListItem.facture.prestation
+            .tarifs != null &&
+          this.patientVisitService.selectedWaitingListItem.facture.prestation
+            .tarifs.length !== 0
+        ) {
+          this.actsFields.controls.forEach((control, index) => {
+            control.setValue({
+              id: this.patientVisitService.selectedWaitingListItem!.facture
+                .prestation.tarifs![index].code,
+              text: this.patientVisitService.selectedWaitingListItem!.facture
+                .prestation.tarifs![index].libelle,
+            });
+          });
+        }
+      }
+
+      if (this.patientVisitService.selectedWaitingListItem) {
+        this.waitingDetails.visitDate = new Date(
+          this.patientVisitService.selectedWaitingListItem!.date_attente
+        );
+
+        this.visitDateControl.setValue(
+          new Date(
+            this.patientVisitService.selectedWaitingListItem?.date_attente!
+          ).toLocaleDateString("fr-ca")
+        );
+
+        this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+
+        this.visitSectorControl.setValue({
+          id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
+          text: this.patientVisitService.selectedWaitingListItem?.secteur
+            ?.libelle,
+        });
+      } else {
+        this.waitingDetails.visitDate = new Date();
+
+        this.visitDateControl.setValue(new Date().toLocaleDateString("fr-ca"));
+
+        this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+      }
+    }
+
+    // If the component is used to display (modify) previous visits/consultations
+    else {
+      this.consultation = this.consultations[this.activeIndex];
+
+      const actsLength = this.consultation.actes?.length ?? 0;
+      const motifsLength = this.consultation.motifs?.length ?? 0;
+      const diagnosticsLength = this.consultation.diagnostics?.length ?? 0;
+
+      this.actsFields.clear();
+      this.motifsFields.clear();
+      this.diagnosticsFields.clear();
+
+      if (actsLength === 0) {
+        this.addActsField();
+      }
+      if (motifsLength === 0) {
+        this.addMotifsField();
+      }
+      if (diagnosticsLength === 0) {
+        this.addDiagnosticsField();
+      }
+
+      this.visitDateControl.setValue(
+        new Date(this.consultation.date_consultation).toLocaleDateString(
+          "fr-ca"
+        )
       );
+      this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+      this.visitSectorControl.setValue({
+        id: this.consultation.secteur.code,
+        text: this.consultation.secteur.libelle,
+      });
 
-      this.waitingDetails.visitTotalCost =
-        this.patientVisitService.selectedWaitingListItem.facture.total;
+      this.weightControl.setValue(this.consultation.constante?.poids);
+      this.sizeControl.setValue(this.consultation.constante?.taille);
+      this.temperatureControl.setValue(
+        this.consultation.constante?.temperature
+      );
+      this.pcControl.setValue(this.consultation.constante?.perimetre_cranien);
+      this.frControl.setValue(
+        this.consultation.constante?.frequence_respiratoire
+      );
+      this.pulseControl.setValue(this.consultation.constante?.poul);
+      this.tensionControl.setValue(this.consultation.constante?.tension);
 
-      for (let i = 0; i < actsLength - 1; i++) {
+      for (let i = 0; i <= actsLength - 1; i++) {
         this.addActsField();
       }
 
       if (
-        this.patientVisitService.selectedWaitingListItem.facture.prestation
-          .tarifs != null &&
-        this.patientVisitService.selectedWaitingListItem.facture.prestation
-          .tarifs.length !== 0
+        this.consultation.actes != null &&
+        this.consultation.actes.length !== 0
       ) {
         this.actsFields.controls.forEach((control, index) => {
           control.setValue({
-            id: this.patientVisitService.selectedWaitingListItem!.facture
-              .prestation.tarifs![index].code,
-            text: this.patientVisitService.selectedWaitingListItem!.facture
-              .prestation.tarifs![index].libelle,
+            id: this.consultation!.actes![index].code,
+            text: this.consultation!.actes![index].libelle,
           });
         });
       }
-    }
 
-    if (this.patientVisitService.selectedWaitingListItem) {
-      this.waitingDetails.visitDate = new Date(
-        this.patientVisitService.selectedWaitingListItem!.date_attente
-      );
+      for (let i = 0; i <= motifsLength - 1; i++) {
+        this.addMotifsField();
+      }
 
-      this.visitDateControl.setValue(
-        new Date(
-          this.patientVisitService.selectedWaitingListItem?.date_attente!
-        ).toLocaleDateString("fr-ca")
-      );
+      if (
+        this.consultation.motifs != null &&
+        this.consultation.motifs.length !== 0
+      ) {
+        this.motifsFields.controls.forEach((control, index) => {
+          control.setValue({
+            id: this.consultation!.motifs![index].id,
+            text: this.consultation!.motifs![index].libelle,
+          });
+        });
+      }
 
-      this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+      for (let i = 0; i <= diagnosticsLength - 1; i++) {
+        this.addDiagnosticsField();
+      }
 
-      this.visitSectorControl.setValue({
-        id: this.patientVisitService.selectedWaitingListItem?.secteur?.code,
-        text: this.patientVisitService.selectedWaitingListItem?.secteur
-          ?.libelle,
-      });
-    } else {
-      this.waitingDetails.visitDate = new Date();
+      if (
+        this.consultation.diagnostics != null &&
+        this.consultation.diagnostics.length !== 0
+      ) {
+        this.diagnosticsFields.controls.forEach((control, index) => {
+          control.setValue({
+            id: this.consultation!.diagnostics![index].theCode,
+            text: this.consultation!.diagnostics![index].title,
+          });
+        });
+      }
 
-      this.visitDateControl.setValue(new Date().toLocaleDateString("fr-ca"));
+      this.diseaseHistoryControl.setValue(this.consultation.hdm);
 
-      this.visitDoctorControl.setValue("DOVI-AKUE J-P");
+      // console.log(this.consultation?.ordonnance);
+
+      // let medicines = "";
+
+      // this.consultation?.ordonnance?.prescriptions.forEach(
+      //   (prescription) =>
+      //     (medicines +=
+      //       prescription.produit.nom +
+      //       " " +
+      //       prescription.conditionnement +
+      //       " " +
+      //       prescription.forme.dosage +
+      //       "\n")
+      // );
+
+      // console.log(medicines);
+
+      // this.prescribedMedicationControl.setValue(medicines);
     }
   }
 
@@ -682,6 +811,50 @@ export class VisitInfosFormComponent implements OnInit {
     });
   }
 
+  // SAVE VISIT/CONSULTATION MODIFICATIONS -------------------------------------
+  registerVisitsModifications() {
+    if (this.visitInfosForm.invalid) {
+      return;
+    }
+
+    const consultation = this.getPatientVisitFormData();
+    consultation.date_consultation = this.consultation!.date_consultation;
+
+    console.log(JSON.stringify(consultation, null, 2));
+
+    this.patientVisitService
+      .update(this.consultation!.id, consultation)
+      .pipe(
+        tap({
+          next: (data) => {
+            console.log(data, "\nHere");
+
+            this.toastService.show({
+              messages: ["La consultation a été modifiée avec succès."],
+              type: ToastType.Success,
+            });
+
+            // await this.medicalBaseRouter.navigateToPatientWaitingList();
+
+            this.visitInfosForm.markAsPristine();
+            // this.visitInfosForm.markAsUntouched()
+          },
+          error: (e) => {
+            console.error(e);
+
+            this.toastService.show({
+              messages: [
+                "Désolé, une erreur s'est produite lors de la modification de la consultation.",
+              ],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        })
+      )
+      .subscribe();
+  }
+
   // ACTS FIELDS --------------------------------------------------------------------------------------------------------
   get actsFields() {
     return this.visitInfosForm.get("acts") as FormArray;
@@ -751,4 +924,53 @@ export class VisitInfosFormComponent implements OnInit {
   isVisitInfosFormDirty() {
     return this.visitInfosForm.dirty;
   }
+
+  // PREVIOUS VISITS/CONSULTATIONS DISPLAY OR MODIFICATIONS -----------------------------------
+  // Methods if using Component to display previous visits/consultations
+  goToFirstVisit() {
+    if (this.consultations.length === 0) {
+      return this.activeIndex;
+    }
+
+    this.activeIndex = this.consultations.length - 1;
+
+    console.log(JSON.stringify(this.consultation, null, 2));
+
+    this.setVisitInfoFieldsInitialValues();
+
+    return this.activeIndex;
+  }
+
+  goToPreviousVisit() {
+    if (this.activeIndex < this.consultations.length - 1) {
+      this.activeIndex++;
+
+      console.log(JSON.stringify(this.consultation, null, 2));
+
+      this.setVisitInfoFieldsInitialValues();
+    }
+    return this.activeIndex;
+  }
+
+  goToNextVisit() {
+    if (this.activeIndex >= 1) {
+      this.activeIndex--;
+
+      console.log(JSON.stringify(this.consultation, null, 2));
+
+      this.setVisitInfoFieldsInitialValues();
+    }
+    return this.activeIndex;
+  }
+
+  goToLastVisit() {
+    this.activeIndex = 0;
+
+    console.log(JSON.stringify(this.consultation, null, 2));
+
+    this.setVisitInfoFieldsInitialValues();
+
+    return this.activeIndex;
+  }
+  // -------------------------------------------------------------------------------
 }

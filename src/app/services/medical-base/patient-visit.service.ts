@@ -32,9 +32,11 @@ export class PatientVisitService {
   getAll(): Observable<Consultation[]> {
     return this.http.get<Consultation[]>(apiEndpoint).pipe(
       map((consultations) => {
-        // consultations.map((consultation) => Consultation.fromResponse(consultation))
+        const mapped = consultations.map(
+          (consultation) => new Consultation(consultation)
+        );
 
-        return consultations;
+        return mapped;
       })
     );
   }

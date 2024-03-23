@@ -1,37 +1,39 @@
-<div class="d-flex justify-content-between mb-3">
-  <button class="btn btn-secondary">Détails de l'attente</button>
+<ng-container *ngIf="consultations.length === 0">
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-secondary">Détails de l'attente</button>
 
-  <div
-    class="d-flex justify-content-between align-items-center border border-dark border-1 px-1"
-  >
-    <div class="me-5">
-      <h5 class="m-0">
-        <b>Acte: </b>
-        <span class="text-secondary"
-          ><b>{{ waitingDetails.visitActs }}</b></span
-        >
-      </h5>
+    <div
+      class="d-flex justify-content-between align-items-center border border-dark border-1 px-1"
+    >
+      <div class="me-5">
+        <h5 class="m-0">
+          <b>Acte: </b>
+          <span class="text-secondary"
+            ><b>{{ waitingDetails.visitActs }}</b></span
+          >
+        </h5>
+      </div>
+      <div>
+        <h5 class="m-0">
+          <b>Frais: </b>
+          <span class="text-secondary"
+            ><b>{{ waitingDetails.visitTotalCost }}</b></span
+          >
+        </h5>
+      </div>
+      <div class="ms-5">
+        <h5 class="m-0">
+          <b>Heure: </b>
+          <span class="text-secondary"
+            ><b>{{ waitingDetails.visitDate | date : "HH:mm:ss" }}</b></span
+          >
+        </h5>
+      </div>
     </div>
-    <div>
-      <h5 class="m-0">
-        <b>Frais: </b>
-        <span class="text-secondary"
-          ><b>{{ waitingDetails.visitTotalCost }}</b></span
-        >
-      </h5>
-    </div>
-    <div class="ms-5">
-      <h5 class="m-0">
-        <b>Heure: </b>
-        <span class="text-secondary"
-          ><b>{{ waitingDetails.visitDate | date : "HH:mm:ss" }}</b></span
-        >
-      </h5>
-    </div>
+
+    <button class="btn btn-secondary">Fichiers attachés</button>
   </div>
-
-  <button class="btn btn-secondary">Fichiers attachés</button>
-</div>
+</ng-container>
 
 <form [formGroup]="visitInfosForm">
   <!-- FIRST PART -->
@@ -40,6 +42,7 @@
       <app-input
         type="date"
         label="Date de consultation"
+        [readOnly]="consultations.length > 0"
         [control]="visitDateControl"
       ></app-input>
     </div>
@@ -278,159 +281,221 @@
 
   <!-- THIRD PART -->
   <div class="row">
-    <div class="col-lg-9">
-      <div class="row">
-        <div class="col-md-12 mb-2">
-          <label for="diseaseHistory" class="form-label custom-form-label-sm">
-            Histoire de la maladie
-          </label>
-          <textarea
-            id="diseaseHistory"
-            class="form-control form-control-sm"
-            rows="2"
-            [formControl]="diseaseHistoryControl"
-            [ngClass]="{
-              'is-invalid':
-                diseaseHistoryControl.touched &&
-                diseaseHistoryControl.dirty &&
-                diseaseHistoryControl.errors
-            }"
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 mb-3 mb-lg-0">
-          <div class="row">
-            <label class="form-label custom-form-label-sm">
-              Médicaments prescrits
-            </label>
-          </div>
-          <div
-            class="row border border-dark rounded-3 mx-0"
-            style="overflow-y: scroll; min-height: 200px; max-height: 200px"
-          >
-            <div class="col-12">
-              <div
-                class="d-table mt-2"
-                *ngFor="let prescription of prescriptions"
-              >
-                <div class="d-table-row">
-                  <div class="d-table-cell" style="width: 1%">
-                    <h5>
-                      <b
-                        ><u>
-                          {{
-                            prescription.produit.nom +
-                              " " +
-                              prescription.forme.presentation +
-                              " - " +
-                              prescription.forme.dosage
-                          }}
-                        </u></b
-                      >
-                    </h5>
-                  </div>
-                  <div class="d-table-cell" style="width: 1%">
-                    {{ prescription.qte + " " + prescription.conditionnement }}
-                  </div>
-                </div>
-                <div class="d-table-row">
-                  <div class="d-table-cell" style="width: 1%">
-                    {{
-                      (prescription.periode ? prescription.periode + " " : "") +
-                        (prescription.adverbe
-                          ? prescription.adverbe + " "
-                          : "") +
-                        (prescription.duree_qte
-                          ? prescription.duree_qte + " "
-                          : "") +
-                        (prescription.duree ? prescription.duree + " " : "")
-                    }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- <label for="diseaseHistory" class="form-label custom-form-label-sm">
-              Médicaments prescrits
+    <ng-container
+      *ngIf="consultations.length === 0; else previousOrModifyConsultation"
+    >
+      <div class="col-lg-9">
+        <div class="row">
+          <div class="col-md-12 mb-2">
+            <label for="diseaseHistory" class="form-label custom-form-label-sm">
+              Histoire de la maladie
             </label>
             <textarea
               id="diseaseHistory"
               class="form-control form-control-sm"
               rows="2"
-              [formControl]="prescribedMedicationControl"
+              [formControl]="diseaseHistoryControl"
               [ngClass]="{
                 'is-invalid':
-                  ((prescribedMedicationControl.touched &&
-                    prescribedMedicationControl.dirty) ||
-                    isFormSubmitted) &&
-                  prescribedMedicationControl.errors
+                  diseaseHistoryControl.touched &&
+                  diseaseHistoryControl.dirty &&
+                  diseaseHistoryControl.errors
               }"
-            ></textarea> -->
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 mb-3 mb-lg-0">
+            <div class="row">
+              <label class="form-label custom-form-label-sm">
+                Médicaments prescrits
+              </label>
+            </div>
+            <div
+              class="row border border-dark rounded-3 mx-0"
+              style="overflow-y: scroll; min-height: 200px; max-height: 200px"
+            >
+              <div class="col-12">
+                <div
+                  class="d-table mt-2"
+                  *ngFor="let prescription of prescriptions"
+                >
+                  <div class="d-table-row">
+                    <div class="d-table-cell" style="width: 1%">
+                      <h5>
+                        <b
+                          ><u>
+                            {{
+                              prescription.produit.nom +
+                                " " +
+                                prescription.forme.presentation +
+                                " - " +
+                                prescription.forme.dosage
+                            }}
+                          </u></b
+                        >
+                      </h5>
+                    </div>
+                    <div class="d-table-cell" style="width: 1%">
+                      {{
+                        prescription.qte + " " + prescription.conditionnement
+                      }}
+                    </div>
+                  </div>
+                  <div class="d-table-row">
+                    <div class="d-table-cell" style="width: 1%">
+                      {{
+                        (prescription.periode
+                          ? prescription.periode + " "
+                          : "") +
+                          (prescription.adverbe
+                            ? prescription.adverbe + " "
+                            : "") +
+                          (prescription.duree_qte
+                            ? prescription.duree_qte + " "
+                            : "") +
+                          (prescription.duree ? prescription.duree + " " : "")
+                      }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <label for="diseaseHistory" class="form-label custom-form-label-sm">
+                    Médicaments prescrits
+                  </label>
+                  <textarea
+                    id="diseaseHistory"
+                    class="form-control form-control-sm"
+                    rows="2"
+                    [formControl]="prescribedMedicationControl"
+                    [ngClass]="{
+                      'is-invalid':
+                        ((prescribedMedicationControl.touched &&
+                          prescribedMedicationControl.dirty) ||
+                          isFormSubmitted) &&
+                        prescribedMedicationControl.errors
+                    }"
+                  ></textarea> -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-lg-3 d-flex align-items-end">
-      <div class="row gy-2">
-        <div class="col-md-6 d-grid">
-          <button
-            class="btn btn-outline-secondary"
-            (click)="openPrescriberModal()"
-          >
-            <b>Ordonnancier</b>
-          </button>
-        </div>
-        <div class="col-md-6 d-grid">
-          <button
-            class="btn btn-outline-success"
-            (click)="openAppointmentModal()"
-          >
-            <b>Rendez-vous</b>
-          </button>
-        </div>
+      <div class="col-lg-3 d-flex align-items-end">
+        <div class="row gy-2">
+          <div class="col-md-6 d-grid">
+            <button
+              class="btn btn-outline-secondary"
+              (click)="openPrescriberModal()"
+            >
+              <b>Ordonnancier</b>
+            </button>
+          </div>
+          <div class="col-md-6 d-grid">
+            <button
+              class="btn btn-outline-success"
+              (click)="openAppointmentModal()"
+            >
+              <b>Rendez-vous</b>
+            </button>
+          </div>
 
-        <div class="col-md-6 d-grid">
-          <button class="btn btn-outline-success"><b>Examens</b></button>
-        </div>
-        <div class="col-md-6 d-grid">
-          <button class="btn btn-outline-secondary" (click)="hospitalise()">
-            <b>Hospitaliser</b>
-          </button>
-        </div>
+          <div class="col-md-6 d-grid">
+            <button class="btn btn-outline-success"><b>Examens</b></button>
+          </div>
+          <div class="col-md-6 d-grid">
+            <button class="btn btn-outline-secondary" (click)="hospitalise()">
+              <b>Hospitaliser</b>
+            </button>
+          </div>
 
-        <div class="col-md-6 d-grid">
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-label btn-sm"
-            (click)="saveVisitInfosAndLeave()"
-          >
-            <i class="ri-save-2-line label-icon align-middle fs-16 me-2"></i>
+          <div class="col-md-6 d-grid">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-label btn-sm"
+              (click)="saveVisitInfosAndLeave()"
+            >
+              <i class="ri-save-2-line label-icon align-middle fs-16 me-2"></i>
 
-            Enregistrer et retourner sur la liste d'attente
-          </button>
-        </div>
-        <div class="col-md-6 d-grid">
-          <button
-            type="button"
-            class="btn btn-outline-success btn-label btn-sm"
-            (click)="saveVisitInfosAndLeave()"
-          >
-            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+              Enregistrer et retourner sur la liste d'attente
+            </button>
+          </div>
+          <div class="col-md-6 d-grid">
+            <button
+              type="button"
+              class="btn btn-outline-success btn-label btn-sm"
+              (click)="saveVisitInfosAndLeave()"
+            >
+              <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
 
-            Enregistrer et quitter
-          </button>
-        </div>
+              Enregistrer et quitter
+            </button>
+          </div>
 
-        <div class="col-md-6 d-grid">
-          <button class="btn btn-outline-success"><b>ATRD</b></button>
-        </div>
-        <div class="col-md-6 d-grid">
-          <button class="btn btn-outline-secondary"><b>M-U</b></button>
+          <div class="col-md-6 d-grid">
+            <button class="btn btn-outline-success"><b>ATRD</b></button>
+          </div>
+          <div class="col-md-6 d-grid">
+            <button class="btn btn-outline-secondary"><b>M-U</b></button>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+
+    <ng-template #previousOrModifyConsultation>
+      <div class="col-lg-8">
+        <label for="diseaseHistory" class="form-label custom-form-label-sm">
+          Histoire de la maladie
+        </label>
+        <textarea
+          id="diseaseHistory"
+          class="form-control form-control-sm"
+          rows="5"
+          [formControl]="diseaseHistoryControl"
+          [ngClass]="{
+            'is-invalid':
+              diseaseHistoryControl.touched &&
+              diseaseHistoryControl.dirty &&
+              diseaseHistoryControl.errors
+          }"
+        ></textarea>
+      </div>
+
+      <div class="col-lg-4">
+        <label
+          for="prescribedMedication"
+          class="form-label custom-form-label-sm"
+        >
+          Médicaments prescrits
+        </label>
+        <textarea
+          id="prescribedMedication"
+          class="form-control form-control-sm"
+          rows="5"
+          [readOnly]="true"
+          [formControl]="prescribedMedicationControl"
+          [ngClass]="{
+            'is-invalid':
+              prescribedMedicationControl.touched &&
+              prescribedMedicationControl.dirty &&
+              prescribedMedicationControl.errors
+          }"
+        ></textarea>
+      </div>
+
+      <div class="col-lg-12 mt-4 d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-warning btn-label text-dark"
+          (click)="registerVisitsModifications()"
+        >
+          <i class="ri-save-2-line label-icon align-middle fs-16 me-2"></i>
+
+          Enregistrer les modifications
+        </button>
+      </div>
+    </ng-template>
   </div>
 </form>

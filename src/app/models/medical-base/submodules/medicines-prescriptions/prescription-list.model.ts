@@ -37,4 +37,20 @@ export class PrescriptionList {
     this.created_at = iPrescriptionList.created_at;
     this.updated_at = iPrescriptionList.updated_at;
   }
+
+  get medicines(): string {
+    let medicines = "";
+    this.prescriptions.forEach(
+      (prescription) =>
+        (medicines +=
+          prescription.produit.nom +
+          " " +
+          prescription.conditionnement +
+          " " +
+          prescription.forme.dosage +
+          "\n")
+    );
+
+    return medicines;
+  }
 }

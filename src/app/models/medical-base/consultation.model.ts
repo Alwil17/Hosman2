@@ -64,6 +64,8 @@ export class Consultation {
     this.motifs = iConsultation.motifs;
     this.diagnostics = iConsultation.diagnostics;
 
-    this.ordonnance = iConsultation.ordonnance;
+    this.ordonnance = iConsultation.ordonnance
+      ? new PrescriptionList(iConsultation.ordonnance)
+      : undefined;
   }
 }
