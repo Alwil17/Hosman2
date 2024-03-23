@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import {
   formatDate,
   hasStateChanges,
+  slugify,
   validateYupSchema,
 } from "src/app/helpers/utils";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
@@ -86,6 +87,8 @@ export class ComptableTableClassicComponent implements OnInit {
     [],
     [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
+
+  watchValueOptions : any[] = []
 
   watchFg: FormGroup = new FormGroup({});
 
@@ -877,6 +880,10 @@ export class ComptableTableClassicComponent implements OnInit {
 
     if (watch !== null) {
       this.currentWatch = watch;
+      if (watch.type === 'value' && watch.options !== undefined){
+        this.generateOptions(watch.options)
+      }
+      
     }
 
     const t = formatDate(new Date(), "HH:mm");
@@ -905,6 +912,15 @@ export class ComptableTableClassicComponent implements OnInit {
     console.log(this.watchTime.value);
     console.log(totalMilliseconds);
 
+    let value = null
+    if (this.currentWatch.type === 'value') {
+      value = this.watchValue.value
+    } else 
+    if (this.currentWatch.type === 'chart') {
+      value = parseFloat(this.watchValue.value.toString().includes(',') ? this.watchValue.value.toString().replace(",", ".") : value = this.watchValue.value)
+    }
+
+
     const data = {
       type: this.typeData,
       type_id: null,
@@ -916,10 +932,7 @@ export class ComptableTableClassicComponent implements OnInit {
         name: this.currentWatch.name,
         data: {
           hour: this.watchTime.value,
-          value: this.watchValue.value.toString().includes(",")
-            ? parseFloat(this.watchValue.value.toString().replace(",", "."))
-            : this.watchValue.value,
-          id: Date.now(),
+          value: value,
           time: totalMilliseconds,
         },
       }),
@@ -1009,6 +1022,15 @@ export class ComptableTableClassicComponent implements OnInit {
             JSON.parse(s.extras).data.id !== data.watch_id
         );
     }
+  }
+
+  generateOptions(list: any[]){
+    this.watchValueOptions = list.map((o) => {return {
+      id : slugify(o),
+      text : o
+    }})
+
+    console.log(this.watchValueOptions)
   }
 
   ngOnChanges(): void {
