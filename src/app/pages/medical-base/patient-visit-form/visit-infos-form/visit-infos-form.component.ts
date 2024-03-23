@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormArray, FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   Subject,
@@ -57,11 +57,12 @@ export class VisitInfosFormComponent implements OnInit {
   patientInfos!: Patient;
 
   visitInfosForm!: FormGroup;
+  isVisitInfosFormSubmitted = false;
 
   // Visit infos form controls
-  visitDateControl = new FormControl(null);
+  visitDateControl = new FormControl(null, Validators.required);
   visitDoctorControl = new FormControl(null);
-  visitSectorControl = new FormControl(null);
+  visitSectorControl = new FormControl(null, Validators.required);
 
   weightControl = new FormControl(null);
   sizeControl = new FormControl(null);
@@ -109,6 +110,10 @@ export class VisitInfosFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.visitInfosForm = new FormGroup({
+      visitDateControl: this.visitDateControl,
+      visitDoctorControl: this.visitDoctorControl,
+      visitSectorControl: this.visitSectorControl,
+
       weightControl: this.weightControl,
       sizeControl: this.sizeControl,
       temperatureControl: this.temperatureControl,
@@ -435,6 +440,19 @@ export class VisitInfosFormComponent implements OnInit {
 
   // OPEN PRESCRIBER MODAL ------------------------------------------------------------------------------------------------------
   openPrescriberModal() {
+    this.isVisitInfosFormSubmitted = true;
+
+    if (this.visitInfosForm.invalid) {
+      this.toastService.show({
+        messages: [
+          "Veuillez renseigner tous les champs obligatoires, d'abord.",
+        ],
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
     const prescriberModalRef = this.modalService.open(
       PrescriptionsModalComponent,
       {
@@ -486,6 +504,19 @@ export class VisitInfosFormComponent implements OnInit {
 
   // OPEN HOSPITALISATION MODAL ON CONFIRM ------------------------------------------------------------------------------------------------------
   async hospitalise() {
+    this.isVisitInfosFormSubmitted = true;
+
+    if (this.visitInfosForm.invalid) {
+      this.toastService.show({
+        messages: [
+          "Veuillez renseigner tous les champs obligatoires, d'abord.",
+        ],
+        type: ToastType.Warning,
+      });
+
+      return;
+    }
+
     // OPEN CONFIRMATION MODAL
     const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
       size: "md",
@@ -731,7 +762,6 @@ export class VisitInfosFormComponent implements OnInit {
       secteur_code: this.visitSectorControl.value.id,
       attente_num: attente_num,
       date_consultation: visitDate,
-      // new Date(this.visitDateControl.value),
       hdm: this.diseaseHistoryControl.value,
       constante: new ConstanteRequest({
         poids: this.weightControl.value,
@@ -749,7 +779,14 @@ export class VisitInfosFormComponent implements OnInit {
   }
 
   saveVisitObservable() {
+    this.isVisitInfosFormSubmitted = true;
+
     if (this.visitInfosForm.invalid) {
+      this.toastService.show({
+        messages: ["Veuillez renseigner tous les champs obligatoires."],
+        type: ToastType.Warning,
+      });
+
       return;
     }
 

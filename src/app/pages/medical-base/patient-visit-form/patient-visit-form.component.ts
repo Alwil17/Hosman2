@@ -8,7 +8,7 @@ import {
 import { FormGroup } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PatientService } from "src/app/services/secretariat/patients/patient.service";
-import { Subscription, firstValueFrom } from "rxjs";
+import { Subscription, firstValueFrom, tap } from "rxjs";
 import { PatientVisitService } from "src/app/services/medical-base/patient-visit.service";
 import { Patient } from "src/app/models/secretariat/patients/patient.model";
 import { MedicalBaseRouterService } from "src/app/services/medical-base/router/medical-base-router.service";
@@ -25,6 +25,8 @@ import {
   ButtonColorClass,
   MutliChoicesButtonProps,
 } from "src/app/models/extras/multi-choices-button-props.model";
+import { PatientFormModalComponent } from "../../secretariat/patients/patient-form-modal/patient-form-modal.component";
+import { PatientVisitFormModalComponent } from "../patient-visit-form-modal/patient-visit-form-modal.component";
 
 @Component({
   selector: "app-patient-visit-form",
@@ -217,5 +219,122 @@ export class PatientVisitFormComponent
       this.activePatient.id
     );
     // this.location.back(); // Some bug when using it with canDeactive guard. Would go back twice
+  }
+
+  openPatientModificationModal() {
+    const patientModifyModalRef = this.modalService.open(
+      PatientFormModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
+
+    patientModifyModalRef.componentInstance.title =
+      "Modifier les informations du patient";
+    patientModifyModalRef.componentInstance.patientInfos = this.activePatient;
+
+    patientModifyModalRef.componentInstance.isPatientModified.subscribe(
+      (isPatientModified: boolean) => {
+        if (isPatientModified) {
+          patientModifyModalRef.close();
+
+          this.patientVisitService
+            .getPatientById(this.activePatient.id)
+            .subscribe({
+              next: (data) => {
+                // Setting active patient
+                this.activePatient = data;
+              },
+              error: (e) => {
+                console.log(e);
+
+                this.toastService.show({
+                  messages: ["Désolé, une erreur s'est produite."],
+                  delay: 10000,
+                  type: ToastType.Error,
+                });
+              },
+            });
+        }
+      }
+    );
+  }
+
+  openPreviousVisitsModal() {
+    this.patientVisitService
+      .getConsultationsByPatientReference(this.activePatient.reference)
+      .pipe(
+        tap({
+          next: async (data) => {
+            console.log(data, "\nHere");
+
+            const patientVisitFormModal = this.modalService.open(
+              PatientVisitFormModalComponent,
+              {
+                size: "xl",
+                centered: true,
+                scrollable: true,
+                backdrop: "static",
+              }
+            );
+
+            patientVisitFormModal.componentInstance.consultations = data;
+            patientVisitFormModal.componentInstance.patientInfos =
+              this.activePatient;
+          },
+          error: (e) => {
+            console.log(e);
+
+            this.toastService.show({
+              messages: ["Désolé, une erreur s'est produite."],
+              delay: 10000,
+              type: ToastType.Error,
+            });
+          },
+        })
+      )
+      .subscribe();
+  }
+
+  async toggleVisitDisplay() {
+    if (
+      this.isVisitFormCollapsed === false &&
+      this.visitInfosFormComponent?.isVisitInfosFormDirty() === true
+    ) {
+      // OPEN CONFIRMATION MODAL
+      const confirmModalRef = this.modalService.open(ConfirmModalComponent, {
+        size: "md",
+        centered: true,
+        keyboard: false,
+        backdrop: "static",
+      });
+
+      confirmModalRef.componentInstance.message =
+        "Vous n'avez pas enregistré les informations de consultation. Voulez-vous vraiment annuler la consultation ?";
+
+      confirmModalRef.componentInstance.cancelButtonText = "Non";
+      confirmModalRef.componentInstance.confirmButtonText = "Oui";
+
+      const isConfirmed = await firstValueFrom<boolean>(
+        confirmModalRef.componentInstance.isConfirmed.asObservable()
+      );
+
+      if (isConfirmed) {
+        this.isVisitFormCollapsed = !this.isVisitFormCollapsed;
+        this.isPatientInfoCollapsed = !this.isPatientInfoCollapsed;
+      }
+
+      // CLOSE CONFIRMATION MODAL
+      confirmModalRef.close();
+
+      return;
+    }
+
+    this.isVisitFormCollapsed = !this.isVisitFormCollapsed;
+    this.isPatientInfoCollapsed = !this.isPatientInfoCollapsed;
   }
 }

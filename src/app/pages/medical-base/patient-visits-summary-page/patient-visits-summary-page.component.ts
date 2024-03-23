@@ -32,7 +32,7 @@ export class PatientVisitsSummaryPageComponent implements OnInit, OnDestroy {
   lastNameControl = new FormControl(null);
   firstNameControl = new FormControl(null);
 
-  dateOfBirthControl = new FormControl(this.today);
+  dateOfBirthControl = new FormControl();
   genderControl = new FormControl(null);
 
   // Activity form group

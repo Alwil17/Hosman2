@@ -59,8 +59,8 @@
         <button
           type="button"
           class="btn btn-warning btn-label waves-effect waves-light text-dark"
+          (click)="openPatientModificationModal()"
         >
-          <!-- (click)="openPatientModificationModal()" -->
           <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
           Modifier
         </button>
@@ -89,10 +89,7 @@
           'btn-warning': !isVisitFormCollapsed,
           'text-dark': !isVisitFormCollapsed
         }"
-        (click)="
-          isVisitFormCollapsed = !isVisitFormCollapsed;
-          isPatientInfoCollapsed = !isPatientInfoCollapsed
-        "
+        (click)="toggleVisitDisplay()"
         [attr.aria-expanded]="!isVisitFormCollapsed"
         aria-controls="collapseExample"
       >
@@ -139,6 +136,7 @@
         <button
           type="button"
           class="btn btn-info btn-label waves-effect waves-light"
+          (click)="openPreviousVisitsModal()"
         >
           <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
           Voir les anciennes consultations

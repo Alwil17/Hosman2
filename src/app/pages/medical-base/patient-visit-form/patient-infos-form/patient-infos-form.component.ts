@@ -39,6 +39,16 @@ export class PatientInfosFormComponent implements OnInit {
   // To set date max
   today = new Date();
 
+  patientLastnameControl = new FormControl(null);
+  patientFirstnameControl = new FormControl(null);
+  patientAgeControl = new FormControl(null);
+  patientGenderControl = new FormControl(null);
+  genders = [
+    { id: 1, text: "Masculin", short: "M" },
+    { id: 2, text: "Féminin", short: "F" },
+    { id: 3, text: "Indéterminé", short: "I" },
+  ];
+
   // Patient infos form controls
   // statusControl = new FormControl(null);
   // backgroundControl = new FormControl(null);
@@ -155,6 +165,13 @@ export class PatientInfosFormComponent implements OnInit {
 
   // SET FIELDS INITIAL VALUES --------------------------------------------------------------------------------------------------------------
   setPatientInfoFieldsInitialValues() {
+    this.patientLastnameControl.setValue(this.patientInfos.nom);
+    this.patientFirstnameControl.setValue(this.patientInfos.prenoms);
+    this.patientAgeControl.setValue(this.patientInfos.age);
+    this.patientGenderControl.setValue(
+      this.genders.find((value) => value.short == this.patientInfos.sexe)
+    );
+
     const cdLength = this.patientInfos.maladies?.length ?? 0;
     console.log(this.patientInfos);
 
