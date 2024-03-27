@@ -67,6 +67,7 @@ export class ComptableTableClassicComponent implements OnInit {
   suivis: any[] = [];
   chartsLabels: any[] = [];
   chartsDatas: any[] = [];
+  last_room: any = null
 
   currentEvolution = new FormControl(null, []);
   currentEvolutionDay: moment.Moment = moment();
@@ -131,7 +132,6 @@ export class ComptableTableClassicComponent implements OnInit {
         if (this.tableData.hasOwnProperty(chambreKey)) {
           const chambre = this.tableData[chambreKey];
 
-          // Now, you can iterate over the keys of chambre
           for (const litKey in chambre.lits) {
             const litValue = chambre.lits[litKey];
 
@@ -335,7 +335,7 @@ export class ComptableTableClassicComponent implements OnInit {
     let days = Math.floor(
       (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
     );
-    let r = moment(this.hospitalisation["date_hospit"]);
+    // let r = moment(this.hospitalisation["date_hospit"]);
     for (let i = 0; i <= days; i++) {
       let currentDate = moment(date).add(i, "days");
       res.push({
