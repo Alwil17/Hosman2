@@ -5,7 +5,7 @@ import { WaitingListFilter } from "src/app/models/enums/waiting-list-filter.enum
 import { WaitingListItem } from "src/app/models/secretariat/patients/waiting-list-item.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "attentes";
+const apiEndpoint = environment.secretariat + "attentes";
 
 @Injectable({
   providedIn: "root",

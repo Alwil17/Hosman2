@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "caisse";
+const apiEndpoint = environment.secretariat + "caisse";
 
 @Injectable({
   providedIn: "root",

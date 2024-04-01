@@ -6,7 +6,7 @@ import { Employer } from "src/app/models/secretariat/patients/employer.model";
 import { EmployerResponse } from "src/app/models/secretariat/patients/responses/employer-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "employeurs";
+const apiEndpoint = environment.secretariat + "employeurs";
 
 @Injectable({
   providedIn: "root",

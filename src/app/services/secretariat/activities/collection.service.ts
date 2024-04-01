@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { CollectionRequest } from "src/app/models/secretariat/activities/requests/collection-request.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "encaissements";
+const apiEndpoint = environment.secretariat + "encaissements";
 
 @Injectable({
   providedIn: "root",

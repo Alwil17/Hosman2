@@ -5,7 +5,7 @@ import { InsuranceDebt } from "src/app/models/secretariat/activities/insurance-d
 import { InsuranceDebtResponse } from "src/app/models/secretariat/activities/responses/insurance-debt-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "factures/pecs";
+const apiEndpoint = environment.secretariat + "factures/pecs";
 
 @Injectable({
   providedIn: "root",

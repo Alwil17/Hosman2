@@ -5,7 +5,7 @@ import { ActGroup } from "src/app/models/secretariat/shared/act-group.model";
 import { ActGroupResponse } from "src/app/models/secretariat/shared/responses/act-group-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "groupes";
+const apiEndpoint = environment.secretariat + "groupes";
 
 @Injectable({
   providedIn: "root",

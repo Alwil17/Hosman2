@@ -8,7 +8,7 @@ import { ExpenseResponse } from "src/app/models/secretariat/activities/responses
 import { ExpenseRubricResponse } from "src/app/models/secretariat/activities/responses/expense-rubric-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "depenses";
+const apiEndpoint = environment.secretariat + "depenses";
 
 @Injectable({
   providedIn: "root",
@@ -36,7 +36,7 @@ export class ExpenseService {
 
   getExpenseRubrics(): Observable<ExpenseRubricResponse[]> {
     return this.http.get<ExpenseRubricResponse[]>(
-      environment.baseUrl + "rubrique-depenses"
+      environment.secretariat + "rubrique-depenses"
     );
   }
 

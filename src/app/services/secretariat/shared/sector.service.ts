@@ -7,7 +7,7 @@ import { SectorResponse } from "src/app/models/secretariat/shared/responses/sect
 import { Sector } from "src/app/models/secretariat/shared/sector.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "secteurs";
+const apiEndpoint = environment.secretariat + "secteurs";
 
 @Injectable({
   providedIn: "root",

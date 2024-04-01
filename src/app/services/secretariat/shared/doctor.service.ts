@@ -6,7 +6,7 @@ import { Doctor } from "src/app/models/secretariat/shared/doctor.model";
 import { DoctorResponse } from "src/app/models/secretariat/shared/responses/doctor-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "medecins";
+const apiEndpoint = environment.secretariat + "medecins";
 
 @Injectable({
   providedIn: "root",

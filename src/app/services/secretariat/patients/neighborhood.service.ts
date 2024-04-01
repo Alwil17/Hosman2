@@ -6,7 +6,7 @@ import { Neighborhood } from "src/app/models/secretariat/patients/neighborhood.m
 import { NeighborhoodResponse } from "src/app/models/secretariat/patients/responses/neighborhood-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "quartiers";
+const apiEndpoint = environment.secretariat + "quartiers";
 
 @Injectable({
   providedIn: "root",

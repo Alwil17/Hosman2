@@ -6,7 +6,7 @@ import { TariffResponse } from "src/app/models/secretariat/shared/responses/tari
 import { Tariff } from "src/app/models/secretariat/shared/tariff.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "tarifs";
+const apiEndpoint = environment.secretariat + "tarifs";
 
 @Injectable({
   providedIn: "root",

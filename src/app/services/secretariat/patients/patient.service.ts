@@ -9,7 +9,7 @@ import { environment } from "src/environments/environment";
 import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
 
-const apiEndpoint = environment.baseUrl + "patients";
+const apiEndpoint = environment.secretariat + "patients";
 
 const medicalBaseEndpoint = environment.medical_base + "consultations";
 

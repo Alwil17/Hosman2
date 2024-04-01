@@ -4,7 +4,7 @@ import { Observable, map } from "rxjs";
 import { PaymentMode } from "src/app/models/secretariat/patients/payment-mode.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "mode-payements";
+const apiEndpoint = environment.secretariat + "mode-payements";
 
 @Injectable({
   providedIn: "root",

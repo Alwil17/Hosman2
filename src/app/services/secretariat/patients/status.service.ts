@@ -5,7 +5,7 @@ import { StatusResponse } from "src/app/models/secretariat/patients/responses/st
 import { Status } from "src/app/models/secretariat/patients/status.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "etats";
+const apiEndpoint = environment.secretariat + "etats";
 
 @Injectable({
   providedIn: "root",

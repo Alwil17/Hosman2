@@ -7,7 +7,7 @@ import { DebtRequest, DebtSettlingRequest } from "src/app/models/secretariat/pat
 import { DebtResponse } from "src/app/models/secretariat/patients/responses/debt-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "creances";
+const apiEndpoint = environment.secretariat + "creances";
 
 @Injectable({
   providedIn: "root",

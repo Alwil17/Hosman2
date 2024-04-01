@@ -6,7 +6,7 @@ import { InsuranceType } from "src/app/models/secretariat/patients/insurance-typ
 import { InsuranceTypeResponse } from "src/app/models/secretariat/patients/responses/insurance-type-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "typeAssurances";
+const apiEndpoint = environment.secretariat + "typeAssurances";
 
 @Injectable({
   providedIn: "root",

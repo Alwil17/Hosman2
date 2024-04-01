@@ -8,7 +8,7 @@ import { AppointmentResponse } from "src/app/models/medical-base/responses/appoi
 import { DoctorAppointmentResponse } from "src/app/models/medical-base/responses/doctor-appointment-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "rdvs";
+const apiEndpoint = environment.secretariat + "rdvs";
 
 @Injectable({
   providedIn: "root",

@@ -6,7 +6,7 @@ import { Insurance } from "src/app/models/secretariat/patients/insurance.model";
 import { InsuranceResponse } from "src/app/models/secretariat/patients/responses/insurance-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "assurances";
+const apiEndpoint = environment.secretariat + "assurances";
 
 @Injectable({
   providedIn: "root",

@@ -6,7 +6,7 @@ import { Country } from "src/app/models/secretariat/patients/country.model";
 import { CountryResponse } from "src/app/models/secretariat/patients/responses/country-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "pays";
+const apiEndpoint = environment.secretariat + "pays";
 
 @Injectable({
   providedIn: "root",

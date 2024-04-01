@@ -8,7 +8,7 @@ import { PhoneBookGroupResponse } from "src/app/models/secretariat/informations/
 import { PhoneBookResponse } from "src/app/models/secretariat/informations/responses/phone-book-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "annuaire";
+const apiEndpoint = environment.secretariat + "annuaire";
 
 @Injectable({
   providedIn: "root",

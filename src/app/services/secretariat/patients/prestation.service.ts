@@ -5,7 +5,7 @@ import { PrestationRequest } from "src/app/models/secretariat/patients/requests/
 import { InvoiceResponse } from "src/app/models/secretariat/patients/responses/invoice-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "prestations";
+const apiEndpoint = environment.secretariat + "prestations";
 
 @Injectable({
   providedIn: "root",

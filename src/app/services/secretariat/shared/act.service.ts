@@ -5,7 +5,7 @@ import { Act } from "src/app/models/secretariat/shared/act.model";
 import { ActResponse } from "src/app/models/secretariat/shared/responses/act-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "actes";
+const apiEndpoint = environment.secretariat + "actes";
 
 @Injectable({
   providedIn: "root",

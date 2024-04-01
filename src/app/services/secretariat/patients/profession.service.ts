@@ -6,7 +6,7 @@ import { Profession } from "src/app/models/secretariat/patients/profession.model
 import { ProfessionResponse } from "src/app/models/secretariat/patients/responses/profession-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "professions";
+const apiEndpoint = environment.secretariat + "professions";
 
 @Injectable({
   providedIn: "root",

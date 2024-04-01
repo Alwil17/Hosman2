@@ -6,7 +6,7 @@ import { City } from "src/app/models/secretariat/patients/city.model";
 import { CityResponse } from "src/app/models/secretariat/patients/responses/city-response.model";
 import { environment } from "src/environments/environment";
 
-const apiEndpoint = environment.baseUrl + "villes";
+const apiEndpoint = environment.secretariat + "villes";
 
 @Injectable({
   providedIn: "root",
