@@ -32,6 +32,7 @@ import { PaymentModeCode } from "src/app/models/enums/payment-mode.enum";
 import { StatusCode } from "src/app/models/enums/status.enum";
 import { ConfirmModalComponent } from "src/app/shared/modals/confirm-modal/confirm-modal.component";
 import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insurance.model";
+import { Patient } from "src/app/models/secretariat/patients/patient.model";
 
 @Component({
   selector: "app-patient-invoice-form",
@@ -39,6 +40,9 @@ import { HasInsuranceCode } from "src/app/models/secretariat/patients/has-insura
   styleUrls: ["./patient-invoice-form.component.scss"],
 })
 export class PatientInvoiceFormComponent implements OnInit {
+  @Input()
+  patientInfos!: Patient;
+
   @Input()
   patientActivities!: IPrestationSelect[];
 
@@ -132,7 +136,6 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    public patientService: PatientService,
     private invoiceService: InvoiceService,
     private modalService: NgbModal,
     private toastService: ToastService,
@@ -201,10 +204,10 @@ export class PatientInvoiceFormComponent implements OnInit {
     this.totalAmountControl.setValue(this.totalAmount);
 
     this.insuranceRateControl.setValue(
-      this.patientService.getActivePatientRate()
+      parseIntOrZero(this.patientInfos.taux_assurance)
     );
 
-    this.invoiceSurplusControl.setValue(this.preInvoiceInfos.surplus)
+    this.invoiceSurplusControl.setValue(this.preInvoiceInfos.surplus);
 
     // this.setPatientShareToMaxAmount();
 
@@ -533,7 +536,7 @@ export class PatientInvoiceFormComponent implements OnInit {
 
   // REGISTER PAYMENT
   async validatePayment() {
-    const patient = this.patientService.getActivePatient();
+    const patient = this.patientInfos;
 
     // VALIDATE FORM FIELDS
     this.isInvoiceFormSubmitted = true;
@@ -679,13 +682,11 @@ export class PatientInvoiceFormComponent implements OnInit {
             montant: this.discountValue,
             motif: this.discountReasonControl.value,
             date_operation: new Date(),
-            // patient_id: this.patientService.getActivePatient().id,
           }),
           majoration: new MarkupRequest({
             montant: this.markupValue,
             motif: this.markupReasonControl.value,
             date_operation: new Date(),
-            // patient_id: this.patientService.getActivePatient().id,
           }),
 
           a_payer: this.patientShareAmount,
@@ -695,7 +696,6 @@ export class PatientInvoiceFormComponent implements OnInit {
               (value) => StatusCode.PAID == value.indice
             )!.id, // this.debtAmount > 0 ? 1 : 2,
             date_operation: new Date(),
-            // patient_id: this.patientService.getActivePatient().id,
           }),
           reliquat: new RemainderRequest({
             montant: this.remainderAmount,
@@ -703,7 +703,6 @@ export class PatientInvoiceFormComponent implements OnInit {
               (value) => StatusCode.PAID == value.indice
             )!.id, // this.remainderAmount > 0 ? 1 : 2,
             date_operation: new Date(),
-            // patient_id: this.patientService.getActivePatient().id,
           }),
 
           date_facture: new Date(), // new Date(this.invoiceDateControl.value),

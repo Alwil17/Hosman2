@@ -16,15 +16,13 @@
     <h5>
       <span class="badge bg-primary me-3">
         <i class="mdi mdi-circle-medium"></i>
-        {{ patientService.getActivePatient().reference }}
+        {{ patientInfos.reference }}
       </span>
     </h5>
 
     <h5>
       <span class="badge bg-info">{{
-        patientService.getActivePatient().nom +
-          " " +
-          patientService.getActivePatient().prenoms
+        patientInfos.nom + " " + patientInfos.prenoms
       }}</span>
     </h5>
   </div>
