@@ -31,6 +31,7 @@ import { CardComponent } from "./card/card.component";
 import { ConfirmModalComponent } from "./modals/confirm-modal/confirm-modal.component";
 import { ResizableColumnComponent } from "./table-column-resize/resizable-column/resizable-column.component";
 import { ColumnResizerDirective } from "./directives/column-resizer.directive";
+import { MultiChoicesModalComponent } from "./modals/multi-choices-modal/multi-choices-modal.component";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -51,6 +52,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ConfirmModalComponent,
     ResizableColumnComponent,
     ColumnResizerDirective,
+    MultiChoicesModalComponent,
   ],
   imports: [
     CommonModule,
@@ -73,8 +75,10 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ToastsContainerComponent,
     SimpleModalComponent,
     CardComponent,
+    ConfirmModalComponent,
     ResizableColumnComponent,
     ColumnResizerDirective,
+    MultiChoicesModalComponent,
   ],
   providers: [TitleCasePipe],
 })
