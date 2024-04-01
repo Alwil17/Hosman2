@@ -7,8 +7,11 @@ import { PatientRequest } from "src/app/models/secretariat/patients/requests/pat
 import { PatientResponse } from "src/app/models/secretariat/patients/responses/patient-response.model";
 import { environment } from "src/environments/environment";
 import { PatientVisitInfoRequest } from "src/app/models/secretariat/patients/requests/patient-visit-info-request.model";
+import { Consultation } from "src/app/models/medical-base/consultation.model";
 
 const apiEndpoint = environment.baseUrl + "patients";
+
+const medicalBaseEndpoint = environment.medical_base + "consultations";
 
 @Injectable({
   providedIn: "root",
@@ -50,34 +53,6 @@ export class PatientService {
       );
   }
 
-  // searchByFullname(fullname: string): Observable<Patient[]> {
-  //   return this.http
-  //     .get<PatientResponse[]>(`${apiEndpoint}/search?nom=${fullname}`)
-  //     .pipe(
-  //       map((patients) => {
-  //         const mapped: Patient[] = patients.map((patient) =>
-  //           Patient.fromResponse(patient)
-  //         );
-
-  //         return mapped;
-  //       })
-  //     );
-  // }
-
-  // searchByReference(reference: string): Observable<Patient[]> {
-  //   return this.http
-  //     .get<PatientResponse[]>(`${apiEndpoint}/search?reference=${reference}`)
-  //     .pipe(
-  //       map((patients) => {
-  //         const mapped: Patient[] = patients.map((patient) =>
-  //           Patient.fromResponse(patient)
-  //         );
-
-  //         return mapped;
-  //       })
-  //     );
-  // }
-
   create(data: PatientRequest): Observable<any> {
     return this.http.post<any>(apiEndpoint, data);
   }
@@ -108,29 +83,13 @@ export class PatientService {
     return this.http.put(`${apiEndpoint}/${id}/bm`, data);
   }
 
-  // getPatient(patientId: number) {
-  //   return this.allPatients.find((value) => value.id == patientId);
-  // }
+  getConsultationsByPatientReference(
+    patientReference: string
+  ): Observable<Consultation[]> {
+    console.log(medicalBaseEndpoint + "/patient/" + patientReference);
 
-  // getActivePatient() {
-  //   return new Patient(this.activePatient);
-  // }
-
-  // setActivePatient(patientId: number): Observable<void> {
-  //   return this.get(patientId).pipe(
-  //     map((patient) => {
-  //       this.activePatient = patient;
-
-  //       return;
-  //     })
-  //   );
-  // }
-
-  // getActivePatientType() {
-  //   return this.activePatient.is_assure;
-  // }
-
-  // getActivePatientRate() {
-  //   return this.activePatient?.taux_assurance ?? 0;
-  // }
+    return this.http.get<Consultation[]>(
+      medicalBaseEndpoint + "/patient/" + patientReference
+    );
+  }
 }

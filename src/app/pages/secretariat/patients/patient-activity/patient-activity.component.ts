@@ -47,8 +47,11 @@ import { SimpleModalComponent } from "src/app/shared/modals/simple-modal/simple-
 import { CheckoutService } from "src/app/services/secretariat/activities/checkout.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
 import { PatientFormModalComponent } from "../patient-form-modal/patient-form-modal.component";
-import { Subscription, tap } from "rxjs";
+import { Subscription, finalize, tap } from "rxjs";
 import { ActivatedRoute, ParamMap } from "@angular/router";
+import { Consultation } from "src/app/models/medical-base/consultation.model";
+import { LoadingSpinnerService } from "src/app/services/secretariat/shared/loading-spinner.service";
+import { PreviousConsultationsModalComponent } from "./previous-consultations-modal/previous-consultations-modal.component";
 
 @Component({
   selector: "app-patient-activity",
@@ -87,6 +90,11 @@ export class PatientActivityComponent implements OnInit, OnDestroy {
   // Activity form group
   activityForm: FormGroup = new FormGroup({});
   isActivityFormSubmitted = false;
+
+  docAddable = false;
+
+  previousConsultations: Consultation[] = [];
+  isConsultationsLoading = false;
 
   table1: IPrestation[] = [];
 
@@ -140,7 +148,8 @@ export class PatientActivityComponent implements OnInit, OnDestroy {
     private tariffService: TariffService,
     private prestationService: PrestationService,
     private checkoutService: CheckoutService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -177,6 +186,9 @@ export class PatientActivityComponent implements OnInit, OnDestroy {
 
             // Get and set the list of all groups of acts
             this.getAllActGroups().subscribe();
+
+            // Get and set the list of patient previous consultations
+            this.getPreviousConsultations().subscribe();
           },
           error: (e) => {
             console.log(e);
@@ -233,7 +245,26 @@ export class PatientActivityComponent implements OnInit, OnDestroy {
     );
   }
 
-  docAddable = false;
+  getPreviousConsultations() {
+    this.isConsultationsLoading = true;
+
+    this.loadingSpinnerService.hideLoadingSpinner();
+
+    return this.patientService
+      .getConsultationsByPatientReference(this.selectedPatient.reference)
+      .pipe(
+        tap({
+          next: (data) => {
+            this.previousConsultations = data;
+          },
+          error: (e) => {
+            console.log(e);
+          },
+        }),
+        finalize(() => (this.isConsultationsLoading = false))
+      );
+  }
+
   onChanges() {
     this.doctorTypeControl.valueChanges.subscribe((value) => {
       console.log(value);
@@ -716,6 +747,21 @@ export class PatientActivityComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  openPreviousConsultations() {
+    const previousConsultationsModalRef = this.modalService.open(
+      PreviousConsultationsModalComponent,
+      {
+        size: "lg",
+        centered: true,
+        // scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    previousConsultationsModalRef.componentInstance.consultations =
+      this.previousConsultations;
   }
 
   // @ViewChild("activityFirstField", { read: ElementRef })

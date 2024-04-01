@@ -294,20 +294,44 @@
 
           <div class="col-3 border-dark border-start">
             <div class="row">
-              <div class="col-5">
-                <small><b>Dernier consulteur : </b></small>
-              </div>
+              <ng-container
+                *ngIf="isConsultationsLoading; else consultationsTemplate"
+              >
+              </ng-container>
 
-              <div class="col-7">
-                <div class="text-secondary mb-2">
-                  <small><b>Dr SAMBIANI Kossi François</b></small>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-light btn-sm">
-                    <b>Voir les dernières consultations</b>
-                  </button>
-                </div>
-              </div>
+              <ng-template #consultationsTemplate>
+                <ng-container
+                  *ngIf="
+                    previousConsultations.length !== 0;
+                    else noConsultationsTemplate
+                  "
+                >
+                  <div class="col-5">
+                    <small><b>Dernier consulteur : </b></small>
+                  </div>
+
+                  <div class="col-7">
+                    <div class="text-secondary mb-2">
+                      <small><b>Dr ...</b></small>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        class="btn btn-light btn-sm"
+                        (click)="openPreviousConsultations()"
+                      >
+                        <b>Voir les dernières consultations</b>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-template #noConsultationsTemplate>
+                  <div class="col-12">
+                    <small><b>Pas de consultations antérieures</b></small>
+                  </div>
+                </ng-template>
+              </ng-template>
             </div>
           </div>
         </div>
