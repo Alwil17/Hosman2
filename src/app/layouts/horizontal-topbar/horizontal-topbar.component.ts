@@ -158,6 +158,8 @@ export class HorizontalTopbarComponent implements OnInit {
   }
 
   toggleItem(event: any) {
+    // event.preventDefault();
+
     let isCurrentMenuId = event.target.closest("a.nav-link");
 
     let isMenu = isCurrentMenuId.nextElementSibling as any;
@@ -167,6 +169,23 @@ export class HorizontalTopbarComponent implements OnInit {
     });
 
     isMenu ? isMenu.classList.add("show") : null;
+
+    // if (isMenu) {
+    //   const originalPosition = isMenu.getBoundingClientRect();
+    //   document.body.appendChild(isMenu);
+    //   isMenu.style.position = "absolute";
+    //   isMenu.style.left = `0px`;
+    //   isMenu.style.top = `0px`;
+    //   isMenu.style.willChange = `transform`;
+    //   isMenu.style.transform = `translate(${originalPosition.left}px, ${originalPosition.top}px)`;
+    //   isMenu.style.display = 'block';
+    // } else {
+
+    // }
+
+    // const clonedElement = isMenu.cloneNode(true);
+    // document.body.appendChild(clonedElement);
+    // clonedElement.style.position = 'relative';
 
     const ul = document.getElementById("navbar-nav");
     if (ul) {
