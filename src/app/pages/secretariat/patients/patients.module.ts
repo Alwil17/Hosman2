@@ -27,6 +27,7 @@ import { PatientCreatePageComponent } from "./patient-create-page/patient-create
 import { PatientFormModalComponent } from "./patient-form-modal/patient-form-modal.component";
 import { DebtSettlingModalComponent } from './debts/debt-settling-modal/debt-settling-modal.component';
 import { PatientListPageComponent } from './patient-list-page/patient-list-page.component';
+import { PreviousConsultationsModalComponent } from './patient-activity/previous-consultations-modal/previous-consultations-modal.component';
 // import { SimplebarAngularModule } from "simplebar-angular";
 
 @NgModule({
@@ -43,6 +44,7 @@ import { PatientListPageComponent } from './patient-list-page/patient-list-page.
     PatientFormModalComponent,
     DebtSettlingModalComponent,
     PatientListPageComponent,
+    PreviousConsultationsModalComponent,
   ],
   imports: [
     CommonModule,
