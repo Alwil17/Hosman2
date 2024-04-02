@@ -17,7 +17,7 @@ export class PrescriptionsModalComponent implements OnInit {
   @Output()
   prescriptionsRegistering = new EventEmitter<boolean>();
 
-  prescriptions$ = new BehaviorSubject<Prescription[]>([]);
+  prescriptions$ = new Subject<Prescription[]>();
 
   @Input()
   prescriptions: Prescription[] = [];
