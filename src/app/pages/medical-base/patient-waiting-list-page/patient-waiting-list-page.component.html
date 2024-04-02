@@ -203,14 +203,7 @@
                   </td>
                   <td>{{ item.patient.age }}</td>
                   <td>{{ item.patient.sexe }}</td>
-                  <td
-                    style="
-                      max-width: 100px;
-                      overflow: hidden !important;
-                      text-overflow: ellipsis !important;
-                      white-space: nowrap !important;
-                    "
-                  >
+                  <td class="td-ellipsis">
                     <!-- <span
                       *ngFor="let prestation of item.facture.prestation.tarifs"
                     >

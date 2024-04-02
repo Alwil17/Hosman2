@@ -107,6 +107,15 @@
     white-space: nowrap !important;
 }
 
+.table-row-ellipsis {
+    td {
+        max-width: 100px;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
 // th[columnResize], td[columnResize] {
 //     position: relative;
 //   }
