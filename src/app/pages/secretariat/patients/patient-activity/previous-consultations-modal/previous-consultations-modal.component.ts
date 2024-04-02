@@ -12,7 +12,7 @@ import { Consultation } from "src/app/models/medical-base/consultation.model";
         <div class="col-12">
           <div class="table-responsive table-card">
             <table
-              class="table table-hover table-striped table-bordered align-middle mb-0"
+              class="table table-one-liner table-hover table-striped table-bordered align-middle mb-0"
             >
               <thead class="table-light text-muted">
                 <tr>

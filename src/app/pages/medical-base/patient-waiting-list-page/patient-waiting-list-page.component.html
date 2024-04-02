@@ -106,7 +106,7 @@
         <div class="col-12">
           <div class="table-responsive table-card">
             <table
-              class="table table-hover table-striped table-sm align-middle mb-0"
+              class="table table-one-liner table-hover table-bordered table-striped table-sm align-middle mb-0"
             >
               <thead class="table-light text-muted">
                 <tr>
@@ -135,19 +135,39 @@
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col">{{ "Ordre" | uppercase }}</th>
-                  <th scope="col">{{ "Référence" | uppercase }}</th>
+                  <th scope="col">
+                    {{ "Ordre" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Référence" | uppercase }}
+                  </th>
                   <th scope="col">{{ "Nom" | uppercase }}</th>
-                  <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
-                  <th scope="col">{{ "Né(e) le" | uppercase }}</th>
+                  <th scope="col">
+                    {{ "Prénom(s)" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Né(e) le" | uppercase }}
+                  </th>
                   <th scope="col">{{ "Âge" | uppercase }}</th>
                   <th scope="col">{{ "Sexe" | uppercase }}</th>
-                  <th scope="col">{{ "Prestations" | uppercase }}</th>
-                  <th scope="col">{{ "Total facture" | uppercase }}</th>
-                  <th scope="col">{{ "Secteur" | uppercase }}</th>
-                  <th scope="col">{{ "Médecin" | uppercase }}</th>
-                  <th scope="col">{{ "Date arrivée" | uppercase }}</th>
-                  <th scope="col">{{ "Heure" | uppercase }}</th>
+                  <th scope="col">
+                    {{ "Prestations" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Total facture" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Secteur" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Médecin" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Date arrivée" | uppercase }}
+                  </th>
+                  <th scope="col">
+                    {{ "Heure" | uppercase }}
+                  </th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -183,7 +203,14 @@
                   </td>
                   <td>{{ item.patient.age }}</td>
                   <td>{{ item.patient.sexe }}</td>
-                  <td>
+                  <td
+                    style="
+                      max-width: 100px;
+                      overflow: hidden !important;
+                      text-overflow: ellipsis !important;
+                      white-space: nowrap !important;
+                    "
+                  >
                     <!-- <span
                       *ngFor="let prestation of item.facture.prestation.tarifs"
                     >

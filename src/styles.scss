@@ -65,3 +65,59 @@
     border-radius: 0.3rem;
 }
 */
+
+.card-header {
+    padding: 0.5rem 1rem !important;
+}
+
+.card-body {
+    padding: 0.5rem 1rem !important;
+}
+
+// th,
+// td {
+//     white-space: nowrap;
+// }
+
+
+// .table {
+//     > :not(caption)>*>* {
+//         padding: 0.3rem 0.25rem !important;
+//     }
+// }
+
+.table-one-liner {
+
+    th,
+    td {
+        white-space: nowrap;
+    }
+
+    .table {
+        > :not(caption)>*>* {
+            padding: 0.3rem 0.25rem !important;
+        }
+    }
+}
+
+.td-ellipsis {
+    max-width: 100px;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+// th[columnResize], td[columnResize] {
+//     position: relative;
+//   }
+
+//   th[columnResize]::after {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     width: 5px; /* Adjust the handle width */
+//     height: 100%;
+//     cursor: col-resize;
+//     background-color: #f0f0f0; /* Handle background color */
+//   }
