@@ -551,96 +551,7 @@ export class VisitInfosFormComponent implements OnInit {
       // this.savePatientInfos();
       // this.saveVisitInfos();
 
-      if (this.visitInfosForm.invalid) {
-        return;
-      }
-
-      let acts: ActRequest[] = [];
-      let motifs: MotifRequest[] = [];
-      let diagnostics: DiagnosticRequest[] = [];
-
-      this.actsFields.controls.forEach((control, index) => {
-        if (control.value) {
-          acts.push(new ActRequest({ acte: control.value?.id }));
-        }
-      });
-
-      this.motifsFields.controls.forEach((control, index) => {
-        if (control.value) {
-          motifs.push(
-            new MotifRequest({ motif_id: control.value?.id, caractere: "cara" })
-          );
-        }
-      });
-
-      this.diagnosticsFields.controls.forEach((control, index) => {
-        if (control.value) {
-          diagnostics.push(
-            new DiagnosticRequest({
-              diagnostic: control.value?.id,
-              commentaire: "com",
-            })
-          );
-        }
-      });
-
-      const visitDate = new Date(this.visitDateControl.value);
-      if (this.visitDateControl.dirty) {
-        console.log("visit date dirty");
-
-        visitDate.setHours(new Date(Date.now()).getHours());
-        visitDate.setMinutes(new Date(Date.now()).getMinutes());
-        visitDate.setSeconds(new Date(Date.now()).getSeconds());
-      } else {
-        if (this.patientVisitService.selectedWaitingListItem) {
-          visitDate.setHours(
-            new Date(
-              this.patientVisitService.selectedWaitingListItem!.date_attente
-            ).getHours()
-          );
-          visitDate.setMinutes(
-            new Date(
-              this.patientVisitService.selectedWaitingListItem!.date_attente
-            ).getMinutes()
-          );
-          visitDate.setSeconds(
-            new Date(
-              this.patientVisitService.selectedWaitingListItem!.date_attente
-            ).getSeconds()
-          );
-        } else {
-          visitDate.setHours(new Date(Date.now()).getHours());
-          visitDate.setMinutes(new Date(Date.now()).getMinutes());
-          visitDate.setSeconds(new Date(Date.now()).getSeconds());
-        }
-      }
-
-      let attente_num;
-      if (this.patientVisitService.selectedWaitingListItem) {
-        attente_num =
-          this.patientVisitService.selectedWaitingListItem?.num_attente!;
-      }
-
-      const consultation = new ConsultationRequest({
-        patient_ref: this.patientInfos.reference,
-        secteur_code: this.visitSectorControl.value.id,
-        attente_num: attente_num,
-        date_consultation: visitDate,
-        // new Date(this.visitDateControl.value),
-        hdm: this.diseaseHistoryControl.value,
-        constante: new ConstanteRequest({
-          poids: this.weightControl.value,
-          taille: this.sizeControl.value,
-          perimetre_cranien: this.pcControl.value,
-          temperature: this.temperatureControl.value,
-          frequence_respiratoire: this.frControl.value,
-          poul: this.pulseControl.value,
-          tension: this.tensionControl.value,
-        }),
-        actes: acts,
-        motifs: motifs,
-        diagnostics: diagnostics,
-      });
+      const consultation = this.getPatientVisitFormData();
 
       console.log(JSON.stringify(consultation, null, 2));
 
@@ -653,25 +564,25 @@ export class VisitInfosFormComponent implements OnInit {
             type: ToastType.Success,
           });
 
-          // const hospitalisationRoute = "/hospitalisation?consultation=" + data;
+          const hospitalisationRoute = "/hospitalisation?consultation=" + data;
 
-          // console.log(hospitalisationRoute);
-          // console.log(this.routerService.url);
+          console.log(hospitalisationRoute);
+          console.log(this.routerService.url);
 
-          // await this.routerService.navigateByUrl(hospitalisationRoute);
+          await this.routerService.navigateByUrl(hospitalisationRoute);
 
-          const hospitalisationFormModalRef = this.modalService.open(
-            HospitalisationFormModalComponent,
-            {
-              size: "xl",
-              centered: true,
-              scrollable: true,
-              backdrop: "static",
-            }
-          );
+          // const hospitalisationFormModalRef = this.modalService.open(
+          //   HospitalisationFormModalComponent,
+          //   {
+          //     size: "xl",
+          //     centered: true,
+          //     scrollable: true,
+          //     backdrop: "static",
+          //   }
+          // );
 
-          hospitalisationFormModalRef.componentInstance.patientInfos =
-            this.patientInfos;
+          // hospitalisationFormModalRef.componentInstance.patientInfos =
+          //   this.patientInfos;
         },
         error: (e) => {
           console.error(e);
