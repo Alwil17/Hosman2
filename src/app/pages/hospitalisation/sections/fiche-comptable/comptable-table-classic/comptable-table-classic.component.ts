@@ -54,8 +54,7 @@ export class ComptableTableClassicComponent implements OnInit {
   hospitalisation: any;
   days: any[] = [];
   watches: any[] = WATCHES;
-  charts: any[] = WATCHES.filter((d) => d.type === "chart");
-  not_charts: any[] = WATCHES.filter((d) => d.type !== "chart");
+  charts: any[] = WATCHES;
   search = new FormControl();
 
   list: any[] = []; // full list
@@ -178,8 +177,10 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   initLineChart() {
-    // Line Chart
-    WATCHES.filter((d) => d.type === "chart").forEach((w) => {
+
+    let re_watch : any = []
+  
+    WATCHES.forEach((w : any) => {
       const watchname = w.name;
 
       const list = this.suivis
@@ -207,10 +208,27 @@ export class ComptableTableClassicComponent implements OnInit {
         })
         .sort((a, b) => a.milli - b.milli);
 
+        if (list.length === 0) { w.empty = true } else { re_watch.push(w) } 
+
       const lineCanvasEle: any = document.getElementById(w.name);
 
       if (lineCanvasEle) {
-        const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
+
+        if (list.length === 0) {
+
+          lineCanvasEle.height = 50; 
+          const ctx = lineCanvasEle.getContext('2d');
+          const centerX = lineCanvasEle.width / 2;
+          const centerY = lineCanvasEle.height / 2;
+          const width = 30; 
+          
+          ctx.fillStyle = '#3577f1';
+          ctx.fillRect(centerX - width / 2, centerY - 1, width, 2);          
+          ctx.fillRect(centerX - 1, centerY - width / 2, 2, width);
+          
+        } else {
+            
+           const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
           type: "line",
           data: {
             labels: list.map(
@@ -324,8 +342,15 @@ export class ComptableTableClassicComponent implements OnInit {
             },
           },
         });
+        }
+
+       
       }
     });
+
+    re_watch = [...re_watch, ...WATCHES.filter((w:any) => re_watch.find((r:any) => r.name === w.name) === undefined)]
+
+    this.charts = re_watch
   }
 
   genDays() {
@@ -804,7 +829,8 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   showWatch(watch: any) {
-    if (this.suivis !== null && this.suivis !== undefined) {
+    if (watch.type === 'chart') {
+       if (this.suivis !== null && this.suivis !== undefined) {
       const list = this.suivis.filter(
         (d) =>
           d["type"] === "watches" && d.extras && "name" in JSON.parse(d.extras)
@@ -823,6 +849,14 @@ export class ComptableTableClassicComponent implements OnInit {
         backdrop: "static",
       });
     }
+    } else {
+      if (watch.empty === undefined) {
+        watch.empty = false
+      } else {
+        watch.empty = !watch.empty
+      }
+    }
+   
   }
 
   getWatchData(day: moment.Moment, watch: any = null): any[] {

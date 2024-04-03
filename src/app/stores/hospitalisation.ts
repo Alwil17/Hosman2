@@ -27,6 +27,7 @@ const patientsListEndpoint = "/api/patients";
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
   init_state = {
+    pageName: "",
     list: null,
     hospitalisation: null,
     hospitalisation_id: null,
@@ -204,16 +205,16 @@ export class HospitalisationStore extends ObservableStore<any> {
               color: "red",
               name: "Evolution",
               type: "evolution",
-              data: []
-            })
+              data: [],
+            });
 
-             // add suivi tab
+            // add suivi tab
             fData.push({
               color: "red",
               name: "Suivis",
               type: "watches",
-              data: []
-            })
+              data: [],
+            });
 
             let sorted_tabs = fData.sort((a: any, b: any) => {
               const nameA = a.name.toLowerCase();
@@ -229,7 +230,12 @@ export class HospitalisationStore extends ObservableStore<any> {
               }
             });
 
-            this.updateStore({ tabs: sorted_tabs.filter((t:any) => FASTABS.includes(t.type)) }, "FETCH TABS");
+            this.updateStore(
+              {
+                tabs: sorted_tabs.filter((t: any) => FASTABS.includes(t.type)),
+              },
+              "FETCH TABS"
+            );
             this.updateStore({ full_tabs: sorted_tabs }, "FETCH FULL TABS");
           },
           error: (response) => {
@@ -380,24 +386,26 @@ export class HospitalisationStore extends ObservableStore<any> {
     try {
       {
         let searchResults = tabs
-        .filter((object: any | null) => object !== null)
-        .filter((object: any) =>
-          object.data.some((data: any) =>
-            ['libelle', 'nom_officiel', 'nom'].some((field) =>
-              data[field] &&
-              data[field].toLowerCase().includes(text.trim().toLowerCase())
+          .filter((object: any | null) => object !== null)
+          .filter((object: any) =>
+            object.data.some((data: any) =>
+              ["libelle", "nom_officiel", "nom"].some(
+                (field) =>
+                  data[field] &&
+                  data[field].toLowerCase().includes(text.trim().toLowerCase())
+              )
             )
           )
-        )
-        .map((values : any) => ({
-          ...values,
-          data: values.data.filter((d: any) =>
-            ['libelle', 'nom_officiel', 'nom'].some((field) =>
-              d[field] &&
-              d[field].toLowerCase().includes(text.trim().toLowerCase())
-            )
-          ),
-        }));
+          .map((values: any) => ({
+            ...values,
+            data: values.data.filter((d: any) =>
+              ["libelle", "nom_officiel", "nom"].some(
+                (field) =>
+                  d[field] &&
+                  d[field].toLowerCase().includes(text.trim().toLowerCase())
+              )
+            ),
+          }));
         console.log(searchResults);
         this.updateStore({ tabs: searchResults }, "FILTER TABS");
       }
@@ -406,9 +414,20 @@ export class HospitalisationStore extends ObservableStore<any> {
     }
   }
 
+  changePage(pageName: string){
+    const state = this.getState();
+    this.updateStore(
+      { currentPage: pageName },
+      "CHANGE PAGE"
+    );
+  }
+
   clearTabsFilter() {
     const state = this.getState();
-    this.updateStore({ tabs: state.full_tabs.filter((t:any) => FASTABS.includes(t.type)) }, "FETCH TABS");
+    this.updateStore(
+      { tabs: state.full_tabs.filter((t: any) => FASTABS.includes(t.type)) },
+      "FETCH TABS"
+    );
   }
 
   saveHospitalisation(data: any, id: any): Observable<any> {
@@ -419,40 +438,42 @@ export class HospitalisationStore extends ObservableStore<any> {
     }
   }
 
-  selectContextMenuElement(payload: any){
+  selectContextMenuElement(payload: any) {
     this.updateStore({ selectedElement: payload }, "LIST");
   }
 
   async commitSuivi(data: any): Promise<boolean> {
-    return firstValueFrom(new Observable<boolean>((observer) => {
-      this.http.post(suiviEndpoint, data).subscribe({
-        next: (v) => {
-          data.id = v;
-          const state = this.getState();
-          const list = JSON.parse(JSON.stringify(state.suivis));
-          list.push(data);
-          this.setState({ suivis: list }, "HOSPITALISATION : COMMIT SUIVI");
-          observer.next(true);
-          observer.complete();
-        },
-        error: (e) => {
-          console.error(e);
-          observer.next(false);
-          observer.complete();
-        },
-      });
-    }));
+    return firstValueFrom(
+      new Observable<boolean>((observer) => {
+        this.http.post(suiviEndpoint, data).subscribe({
+          next: (v) => {
+            data.id = v;
+            const state = this.getState();
+            const list = JSON.parse(JSON.stringify(state.suivis));
+            list.push(data);
+            this.setState({ suivis: list }, "HOSPITALISATION : COMMIT SUIVI");
+            observer.next(true);
+            observer.complete();
+          },
+          error: (e) => {
+            console.error(e);
+            observer.next(false);
+            observer.complete();
+          },
+        });
+      })
+    );
   }
 
   updateSuivi(data: any) {
     this.http.put(suiviEndpoint + "/" + data.id, data).subscribe({
       next: (v) => {
         const state = this.getState();
-        const list = state.suivis
+        const list = state.suivis;
         // list.find((d: any) => d.id === data.id).qte = data.qte
-        const i = list.findIndex((d: any) => d.id === data.id)
-        list[i] = data
-        this.setState({suivis: list}, "HOSPITALISATION : UPDATE SUIVI");
+        const i = list.findIndex((d: any) => d.id === data.id);
+        list[i] = data;
+        this.setState({ suivis: list }, "HOSPITALISATION : UPDATE SUIVI");
       },
       error: (e) => console.error(e),
     });
@@ -462,9 +483,9 @@ export class HospitalisationStore extends ObservableStore<any> {
     this.http.delete(suiviEndpoint + "/" + id).subscribe({
       next: (v) => {
         const state = this.getState();
-        const list = state.suivis
-        const remains = list.filter((data: any) => data.id !== parseInt(id))
-        this.setState({suivis: remains}, "HOSPITALISATION : REMOVE SUIVI");
+        const list = state.suivis;
+        const remains = list.filter((data: any) => data.id !== parseInt(id));
+        this.setState({ suivis: remains }, "HOSPITALISATION : REMOVE SUIVI");
       },
       error: (e) => console.error(e),
     });

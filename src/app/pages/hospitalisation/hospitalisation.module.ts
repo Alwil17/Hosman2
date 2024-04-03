@@ -23,6 +23,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuModule } from './context-menu.module';
 import { NgChartsModule } from 'ng2-charts';
+import { NgxMaskModule } from 'ngx-mask';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { NgChartsModule } from 'ng2-charts';
     NgbModalModule,
     ContextMenuModule,
     NgChartsModule,
+    NgxMaskModule,
     ToastrModule.forRoot(),
   ],
   providers: [

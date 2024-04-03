@@ -58,10 +58,10 @@
                     aria-labelledby="v-pills-transfuse-tab">
                     <app-fiche-transfuse> </app-fiche-transfuse>
                   </div>
-                  <div class="tab-pane fade" id="v-pills-transfere" role="tabpanel"
+                  <!-- <div class="tab-pane fade" id="v-pills-transfere" role="tabpanel"
                     aria-labelledby="v-pills-transfere-tab">
                     <app-fiche-transfere> </app-fiche-transfere>
-                  </div>
+                  </div> -->
                   <div class="tab-pane fade" id="v-pills-scam" role="tabpanel" aria-labelledby="v-pills-scam-tab">
                     <app-fiche-scam> </app-fiche-scam>
                   </div>
@@ -80,7 +80,7 @@
                     href="#v-pills-comptable" role="tab" aria-controls="v-pills-comptable" aria-selected="true">Fiche
                     comptable</a>
                   <a class="nav-link" id="v-pills-synthese-tab" data-bs-toggle="pill" href="#v-pills-synthese"
-                    role="tab" aria-controls="v-pills-synthese" aria-selected="false">Fiche de synthèse</a>
+                    role="tab" aria-controls="v-pills-synthese" aria-selected="false" (click)="selectPage('fiche-synthese')">Fiche de synthèse</a>
 
                   <a class="nav-link mb-2  border-bottom" id="v-pills-externes-tab" data-bs-toggle="pill"
                     href="#v-pills-externes" role="tab" aria-controls="v-pills-externes" aria-selected="false">Médecins
@@ -94,9 +94,9 @@
                   <a class="nav-link mb-2  border-bottom" id="v-pills-transfuse-tab" data-bs-toggle="pill"
                     href="#v-pills-transfuse" role="tab" aria-controls="v-pills-transfuse"
                     aria-selected="false">Transfusé(e)</a>
-                  <a class="nav-link mb-2  border-bottom" id="v-pills-transfere-tab" data-bs-toggle="pill"
+                  <!-- <a class="nav-link mb-2  border-bottom" id="v-pills-transfere-tab" data-bs-toggle="pill"
                     href="#v-pills-transfere" role="tab" aria-controls="v-pills-transfere"
-                    aria-selected="false">Transféré(e)</a>
+                    aria-selected="false">Transféré(e)</a> -->
                   <a class="nav-link mb-2 border-bottom" id="v-pills-scam-tab" data-bs-toggle="pill"
                     href="#v-pills-scam" role="tab" aria-controls="v-pills-scam" aria-selected="false">SCAM</a>
                   <a class="nav-link mb-2  border-bottom" id="v-pills-decede-tab" data-bs-toggle="pill"

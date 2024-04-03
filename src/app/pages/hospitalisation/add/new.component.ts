@@ -137,4 +137,8 @@ export class HospitHomeComponent implements OnInit {
       }
     }
   }
+
+  selectPage(name: string) {
+    this.hospitalisationStore.changePage(name)
+  }
 }

@@ -7,15 +7,12 @@
   </div>
 </form>
 <div class="table-responsive fiche-comptable">
-  <!-- Watches tab -->
+  <!-- Watches tab -->  
   <div *ngIf="typeData === 'watches'">
     <div *ngFor="let watch of charts; let i = index" class="mb-3">
       <h5 class="fw-semibold">{{ watch.label }}</h5>
-      <canvas [id]="watch.name" height="160" width="1400px" (dblclick)="showWatch(watch)"></canvas>
-    </div>
-    <div *ngFor="let watch of not_charts; let i = index" class="mb-3">
-      <h5 class="fw-semibold">{{ watch.label }}</h5>
-      <table class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+      <canvas *ngIf="watch.type === 'chart' || watch.empty === true" [id]="watch.name" height="160" width="1400px" (dblclick)="showWatch(watch)"></canvas>
+      <table *ngIf="watch.type === 'value' && (watch.empty === undefined || watch.empty === false )" class="table table-responsive table-bordered align-middle table-nowrap mb-0">
         <thead>
           <tr>
             <th scope="col" class="text-center">Jours</th>
