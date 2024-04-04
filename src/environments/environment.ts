@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   secretariat: "http://hosman-apps.com:81/", // "http://localhost:8081/",
   medical_base: "http://hosman-apps.com:84/",
+  hospitalisation_base: "http://hosman-apps.com:8083/",
 
   defaultauth: "fackbackend",
   firebaseConfig: {

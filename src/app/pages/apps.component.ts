@@ -16,8 +16,11 @@ export class AppsComponent implements OnInit {
   goToSec() {
     this.router.navigateByUrl('/secretariat')
   }
-  goToMed() {
+  goToMed() { 
     this.router.navigateByUrl('/medical-base')
+  }  
+  goToHospit() {
+    this.router.navigateByUrl('/hospitalisation')
   }
 
 }

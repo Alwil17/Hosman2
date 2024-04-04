@@ -532,68 +532,12 @@ export class VisitInfosFormComponent implements OnInit {
       confirmModalRef.componentInstance.isConfirmed.asObservable()
     );
 
-    // if (!isConfirmed) {
-    //   const hospitalisationFormModalRef = this.modalService.open(
-    //     HospitalisationFormModalComponent,
-    //     {
-    //       size: "xl",
-    //       centered: true,
-    //       scrollable: true,
-    //       backdrop: "static",
-    //     }
-    //   );
-
-    //   hospitalisationFormModalRef.componentInstance.patientInfos =
-    //     this.patientInfos;
-    // }
-
     if (isConfirmed) {
-      // this.savePatientInfos();
-      // this.saveVisitInfos();
-
-      const consultation = this.getPatientVisitFormData();
-
-      console.log(JSON.stringify(consultation, null, 2));
-
-      this.patientVisitService.create(consultation).subscribe({
-        next: async (data) => {
-          console.log(data, "\nHere");
-
-          this.toastService.show({
-            messages: ["La consultation a été enregistrée avec succès."],
-            type: ToastType.Success,
-          });
-
-          const hospitalisationRoute = "/hospitalisation?consultation=" + data;
-
-          console.log(hospitalisationRoute);
-          console.log(this.routerService.url);
-
-          await this.routerService.navigateByUrl(hospitalisationRoute);
-
-          // const hospitalisationFormModalRef = this.modalService.open(
-          //   HospitalisationFormModalComponent,
-          //   {
-          //     size: "xl",
-          //     centered: true,
-          //     scrollable: true,
-          //     backdrop: "static",
-          //   }
-          // );
-
-          // hospitalisationFormModalRef.componentInstance.patientInfos =
-          //   this.patientInfos;
-        },
-        error: (e) => {
-          console.error(e);
-
-          this.toastService.show({
-            messages: ["Désolé, une erreur s'est produite."],
-            delay: 10000,
-            type: ToastType.Error,
-          });
-        },
+      this.saveVisitObservable()?.subscribe(async (data) => {
+        const hospitalisationRoute = "/hospitalisation/edit?consultation=" + data;
+        await this.routerService.navigateByUrl(hospitalisationRoute);
       });
+
     }
 
     // CLOSE CONFIRMATION MODAL
