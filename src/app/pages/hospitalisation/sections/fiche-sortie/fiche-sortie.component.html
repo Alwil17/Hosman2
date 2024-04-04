@@ -10,7 +10,7 @@
           <div *ngFor="let d of diagnostics; let k = index" class="col-md-12 mb-3">
             <div class="row">
               <div class="col-md-10">
-                <h-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true"></h-input>
+                <h-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true" [control]="d"></h-input>
               </div>
               <div class="col-md-2">
                 <label>&nbsp;</label>
@@ -41,5 +41,17 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="d-flex justify-content-start">
+      <button
+      type="button"
+      class="btn btn-success btn-label right"
+      (click)="confirmAction()"
+    >
+      <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+      Enrégistrer
+    </button>
   </div>
 </div>

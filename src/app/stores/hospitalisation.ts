@@ -1,28 +1,32 @@
 import { Injectable } from "@angular/core";
 import { ObservableStore } from "@codewithdan/observable-store";
 import { HttpClient } from "@angular/common/http";
-import { Observable, Subject, firstValueFrom, of } from "rxjs";
+import { Observable, firstValueFrom, of } from "rxjs";
 import { LitResponse } from "../models/hospitalisation/lit";
 import { map } from "rxjs/operators";
 import { Sector } from "../models/secretariat/shared/sector.model";
 import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
 import { slugify } from "../helpers/utils";
 import { FASTABS } from "./suivis-tabs";
+import { environment } from "src/environments/environment";
+import { Patient } from "../models/secretariat/patients/patient.model";
 
-const consultationEndpoint = "/api/consultations";
-const hospitalisationEndpoint = "/api/hospits";
-// const getHospitalisationEndpoint = "/api/hospits";
-const tabsEndpoint = "/api/produits";
-const suiviEndpoint = "/api/suivis";
-const medExterneEndpoint = "/api/med-externes";
-const chirurgieEndpoint = "/api/chirurgies";
-const adressedEndpoint = "/api/addressed";
-const scamsEndpoint = "/api/scams";
-const transfusedEndpoint = "/api/transfused";
-const decededEndpoint = "/api/deceded";
-const sortieEndpoint = "/api/sorties";
-const medecinsListEndpoint = "/api/medecins";
-const patientsListEndpoint = "/api/patients";
+const consultationEndpoint = environment.hospitalisation_base + "consultations";
+const hospitalisationEndpoint = environment.hospitalisation_base + "hospits";
+const tabsEndpoint = environment.hospitalisation_base + "produits";
+const tarifsEndpoint = environment.hospitalisation_base + "tarifs";
+const secteursEndpoint = environment.hospitalisation_base + "secteurs";
+const chambresEndpoint = environment.hospitalisation_base + "chambres";
+const suiviEndpoint = environment.hospitalisation_base + "suivis";
+const medExterneEndpoint = environment.hospitalisation_base + "med-externes";
+const chirurgieEndpoint = environment.hospitalisation_base + "chirurgies";
+const adressedEndpoint = environment.hospitalisation_base + "addressed";
+const scamsEndpoint = environment.hospitalisation_base + "scams";
+const transfusedEndpoint = environment.hospitalisation_base + "transfused";
+const decededEndpoint = environment.hospitalisation_base + "deceded";
+const sortieEndpoint = environment.hospitalisation_base + "sorties";
+const medecinsListEndpoint = environment.hospitalisation_base + "medecins";
+const patientsListEndpoint = environment.hospitalisation_base + "patients";
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -37,7 +41,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     chambres: null,
     tabs: null,
     full_tabs: null,
-    suivi: null,
+    suivis: null,
     medecins: null,
     externes: null,
     interventions: null,
@@ -145,7 +149,7 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchSector(): void {
-    const res: Observable<Sector[]> = this.http.get<Sector[]>("/api/secteurs");
+    const res: Observable<Sector[]> = this.http.get<Sector[]>(secteursEndpoint);
 
     res.subscribe({
       next: (sectors: Sector[]) => {
@@ -159,7 +163,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   fetchChambres(): void {
     const res: Observable<Chambre[]> = this.http
-      .get<ChambreResponse[]>("/api/chambres")
+      .get<ChambreResponse[]>(chambresEndpoint)
       .pipe(
         map((chambres) =>
           chambres.map((chambre) => Chambre.fromResponse(chambre))
@@ -187,7 +191,7 @@ export class HospitalisationStore extends ObservableStore<any> {
 
         // adding tarifs
         const tarifs: Observable<any> =
-          this.http.get<LitResponse[]>("/api/tarifs");
+          this.http.get<LitResponse[]>(tarifsEndpoint);
         tarifs.subscribe({
           next: (t: any) => {
             let actes: any = Object.entries(t).map((group: any) => {
@@ -430,9 +434,38 @@ export class HospitalisationStore extends ObservableStore<any> {
     );
   }
 
+  clearHospitalisation() {
+    const state = this.getState();
+    this.updateStore(
+      { hospitalisation: null },
+      "CLEAR HOSPITALISATION"
+    );
+    
+    this.updateStore(
+      { hospitalisation_id: null },
+      "CLEAR HOSPITALISATION ID"
+    );
+
+    this.updateStore(
+      { patient: null },
+      "CLEAR PATIENT"
+    );
+
+    this.updateStore(
+      { consultation: null },
+      "CLEAR CONSULTATION"
+    );
+
+     this.updateStore(
+      { suivis: null },
+      "CLEAR SUIVIS"
+    );
+  }
+
   saveHospitalisation(data: any, id: any): Observable<any> {
     if (id == null) {
-      return this.http.post(hospitalisationEndpoint + "?repeat=1", data);
+      // return this.http.post(hospitalisationEndpoint + "?repeat=1", data);
+      return this.http.post(hospitalisationEndpoint, data);
     } else {
       return this.http.put(hospitalisationEndpoint + "/" + id, data);
     }
@@ -547,7 +580,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     }
   }
 
-  sortieEndpoint(data: any): Observable<any> {
+  saveSortie(data: any): Observable<any> {
     if (!("id" in data)) {
       return this.http.post(sortieEndpoint, data);
     } else {

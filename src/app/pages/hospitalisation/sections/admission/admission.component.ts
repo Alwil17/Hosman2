@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Subject, takeUntil, Subscription, map, Observable } from "rxjs";
 import { Lit } from "src/app/models/hospitalisation/lit";
 import { Chambre } from "src/app/models/hospitalisation/chambre";
@@ -12,6 +12,7 @@ import { Sector } from "src/app/models/secretariat/shared/sector.model";
 import { validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-hosp-admission",
@@ -19,7 +20,10 @@ import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
   styleUrls: ["./admission.component.scss"],
 })
 export class AdmissionComponent implements OnInit {
+  @ViewChild("constants") constants!: TemplateRef<any>;
   subscription: Subscription | undefined;
+
+  modalReference : any
 
   lits: Lit[] = [];
   all_lits: Lit[] = [];
@@ -54,7 +58,8 @@ export class AdmissionComponent implements OnInit {
     private message: MessageService,
     private toast: ToastrService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private modalService: NgbModal,
   ) {}
 
   //controls
@@ -125,6 +130,16 @@ export class AdmissionComponent implements OnInit {
     [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
 
+  temperature = new FormControl(null, [], []);
+  poids = new FormControl(null, [], []);
+  taille = new FormControl(null, [], []);
+  pc = new FormControl(null, [], []);
+  fc = new FormControl(null, [], []);
+  fr = new FormControl(null, [], []);
+  ta = new FormControl(null, [], []);
+  etat = new FormControl(null, [], []);
+  conscience = new FormControl(null, [], []);
+
   ngOnInit(): void {
     this.admissionFormGroup = new FormGroup({
       statut: this.statut,
@@ -153,6 +168,7 @@ export class AdmissionComponent implements OnInit {
           if (state.sectors) this.sectors = state.sectors;
           if (state.suivis) this.suivis = state.suivis;
 
+
           this.loadPatient(this.patient);
 
           if (
@@ -177,10 +193,13 @@ export class AdmissionComponent implements OnInit {
 
   loadPatient(patient: any) {
     if (this.patient !== null) {
+      const gender = this.genders.find((g) => g["short"] == patient["sexe"]);
+      
+
       this.firstname.setValue(patient["nom"]);
       this.lastname.setValue(patient["prenoms"]);
       this.gender.setValue(
-        this.genders.find((g) => g["short"] == patient["sexe"])!.short
+        gender ? gender.short :"M"
       );
       this.statut.setValue(
         patient["sexe"] == "M" ? this.statuts[0].text : this.statuts[2].text
@@ -246,6 +265,41 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
+  openConstants(){
+    const v = this.consultation.constante
+    this.temperature.setValue(v.temperature)
+    this.poids.setValue(v.poids)
+    this.taille.setValue(v.taille)
+    this.ta.setValue(v.tension)
+    this.pc.setValue(v.perimetre_cranien)
+    this.fc.setValue(v.poul)
+    this.fr.setValue("")
+
+    this.modalReference = this.modalService.open(this.constants, {
+      size: "md",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+  }
+
+  pasteTofield(){
+    let s = ""
+    if (this.temperature.value.toString().trim().length > 0) s +=  `Température (°C): ${this.temperature.value}; `
+    if (this.poids.value.toString().trim().length > 0) s +=  `Poids (kg): ${this.poids.value}; `
+    if (this.taille.value.toString().trim().length > 0) s +=  `Taille (cm): ${this.taille.value}; `
+    if (this.pc.value.toString().trim().length > 0) s +=  `PC: ${this.pc.value}; `
+    if (this.fc.value.toString().trim().length > 0) s +=  `Fréquence cardiaque (/mn): ${this.fc.value}; `
+    if (this.fr.value.toString().trim().length > 0) s +=  `Fréquence respiratoire (/mn): ${this.fr.value}; `
+    if (this.ta.value.toString().trim().length > 0) s +=  `Tension artérielle (mm/Hg): ${this.ta.value}; `
+    if (this.etat.value.toString().trim().length > 0) s +=  `Etat général: ${this.etat.value}; `
+    if (this.conscience.value.toString().trim().length > 0) s +=  `Conscience: ${this.conscience.value}; `
+
+    this.arrive.setValue(s)
+
+    this.modalReference.close()
+  }
+
   async confirmAction() {
     if (!this.admissionFormGroup.valid) {
       this.markAllControlsAsTouched();
@@ -254,9 +308,6 @@ export class AdmissionComponent implements OnInit {
         WarningMessages.SURE_TO_CONTINUE
       );
       if (confirm) {
-        // console.log(this.admissionFormGroup.value);
-        // console.log(this.patient);
-        // console.log(this.consultation);
 
         const data = {
           id: this.hospitalisation_id,

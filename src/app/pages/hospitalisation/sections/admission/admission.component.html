@@ -105,7 +105,7 @@
         </div>
         <div class="col-md-6 mb-3">
             <div class="form-group">
-                <app-text [rows]="3" label="A l'arrivée"  [control]="arrive"></app-text>                
+                <app-text [rows]="3" label="A l'arrivée"  [control]="arrive" (doubleClick)="openConstants()"></app-text>                
             </div>
         </div>
         <div class="d-flex justify-content-end">
@@ -120,4 +120,59 @@
         </div>
     </div>
 </form>
+
+<ng-template #constants let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Constantes</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+            <h-input label="Température (°C)" [readOnly]="true" [control]="temperature"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Poids (kg)" [readOnly]="true" [control]="poids"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Taille (cm)" [readOnly]="true" [control]="taille"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="PC" [readOnly]="true" [control]="pc"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Fréquence cardiaque (/mn)" [readOnly]="true" [control]="fc"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Fréquence respiratoire (/mn)" [readOnly]="true" [control]="fr"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Tension artérielle (mm/Hg)" [readOnly]="true" [control]="ta"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Etat général" [control]="etat"></h-input>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h-input label="Conscience" [control]="conscience"></h-input>
+        </div>
+        <div class="col-md-12">
+            <div>
+                <label>&nbsp;</label>
+            </div>
+            <button
+                    type="button"
+                    class="btn btn-primary w-100"
+                    (click)="pasteTofield()"
+            >
+                Ajouter à l'admission
+            </button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div> -->
+  </ng-template>
 

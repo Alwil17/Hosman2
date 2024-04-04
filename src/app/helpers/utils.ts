@@ -43,6 +43,11 @@ export function validateYupSchema<T>(
   }
   
   export function hasStateChanges(state: any, olddata: any, newdata: any){
-    return state !== null && state !== undefined && state.length === 0 ||
-    JSON.stringify(olddata) !== JSON.stringify(newdata)
+    if ((typeof newdata) === 'object') {
+      return state !== null && state !== undefined ||
+      JSON.stringify(olddata) !== JSON.stringify(newdata)
+    } else {
+      return state !== null && state !== undefined && state.length === 0 ||
+    JSON.stringify(olddata) !== JSON.stringify(newdata) && newdata.length > 0
+    }
   }

@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { MessageService } from "@services/messages/message.service";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { ToastrService } from "ngx-toastr";
 import { Subscription, pairwise } from "rxjs";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
-import { formatDate, markAllControlsAsTouched, validateYupSchema } from "src/app/helpers/utils";
+import { formatDate, hasStateChanges, markAllControlsAsTouched, validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
 
 @Component({
@@ -25,6 +26,8 @@ export class FicheSortieComponent implements OnInit {
 
   hospitalisation_id: number | null = null;
 
+  hospitalisation : any = null
+
   diagnostics: FormControl[] = [];
 
   date_op = new FormControl(
@@ -34,7 +37,7 @@ export class FicheSortieComponent implements OnInit {
   );
 
   enceinte = new FormControl(
-    null,
+    "Non",
     [],
     [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
@@ -45,6 +48,7 @@ export class FicheSortieComponent implements OnInit {
     private hospitalisationStore: HospitalisationStore,
     private message: MessageService,
     private toast: ToastrService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +73,10 @@ export class FicheSortieComponent implements OnInit {
         this.sortie = c.sorties[0]
         this.setValues();
       }
+
+      if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
+        this.hospitalisation = c.hospitalisation
+      }
     });
 
   }
@@ -86,14 +94,17 @@ export class FicheSortieComponent implements OnInit {
 
   addDiag(value? : string){
     const f = new FormControl(
-      value,
+      value ?? "",
       [],
       [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
     );
+
     this.diagnostics.push(f)
+    this.fGroup.addControl("diag_"+(this.diagnostics.length - 1).toString(),f)  
   }
 
   removeDiag(position : number) {
+    this.fGroup.removeControl("diag_"+position.toString())
     this.diagnostics.splice(position, 1);
   }
 
@@ -106,7 +117,39 @@ export class FicheSortieComponent implements OnInit {
       );
       if (confirm) {
         
-        // tobe continue
+        const data: any = {
+          enceinte: this.fGroup.value.enceinte,
+          date_op: new Date(this.fGroup.value.date_op),
+          hospit_id: this.hospitalisation_id,
+          diagnostics: this.diagnostics.map((d) => { return { diagnostic : d.value}})
+        };
+
+        console.log(data)
+        
+        if (this.sortie !== null && this.sortie !== undefined && 'id' in this.sortie) {
+          data.id = this.sortie.id
+        }
+
+        this.hospitalisationStore.saveSortie(data).subscribe({
+          next: (v) => {
+            data.id = v;
+            this.toast.success("Hospitalisation", "Enregistrement effectué");
+            this.hospitalisationStore.fetchSortie(this.hospitalisation_id!);
+          },
+          error: (e) => console.error(e),
+        });
+
+        const data_hospit = {...this.hospitalisation, ...{status: 1}}
+
+        this.hospitalisationStore.saveHospitalisation({status: 1}, this.hospitalisation_id).subscribe({
+          next: (v) => {
+            data.id = v;
+            this.toast.success("Hospitalisation", "Hospitalisation terminé. La chambre a été libéré");
+            this.router.navigate(["/hospitalisation/list"]);
+          },
+          error: (e) => console.error(e),
+        });
+
       }
     }
   }

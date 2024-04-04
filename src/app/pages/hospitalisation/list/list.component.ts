@@ -10,8 +10,6 @@ import { Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
 import { hasStateChanges } from "src/app/helpers/utils";
 
-const hospitalisationEndpoint = "/api/hospits";
-
 @Component({
   selector: "app-list",
   templateUrl: "./list.component.html",
@@ -28,7 +26,7 @@ export class ListComponent implements OnInit {
   filtered_list: any[] = [];
   search = new FormControl();
 
-  applyFilter = "nom"
+  applyFilter = "nom,prenoms,reference";
 
   constructor(
     private http: HttpClient,
@@ -44,34 +42,50 @@ export class ListComponent implements OnInit {
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
-        if (hasStateChanges(this.chambres, previous.chambres, current.chambres))
-          this.chambres = current.chambres?.filter(
-            (chs: any) => chs.lits.length > 0
-          );
         if (hasStateChanges(this.list, previous.list, current.list)) {
-          for (let step = 0; step < current.list.length; step++) {
-            this.extras.push({
-              extra: JSON.parse(current.list[step].extras),
-              hospit_id: current.list[step].id,
-              date_hospit: current.list[step].date_hospit,
-            });
+          if (current.list !== null) {
+            for (let step = 0; step < current.list.length; step++) {
+              this.extras.push({
+                extra: JSON.parse(current.list[step].extras),
+                hospit_id: current.list[step].id,
+                date_hospit: current.list[step].date_hospit,
+              });
+            }
+
+            if (
+              hasStateChanges(
+                this.chambres,
+                previous.chambres,
+                current.chambres
+              )
+            )
+              this.chambres = current.chambres?.filter(
+                (chs: any) => chs.lits.length > 0
+              );
+
+            if (
+              hasStateChanges(this.sectors, previous.sectors, current.sectors)
+            ) {
+              this.sectors = current.sectors;
+            }
+
+            this.list = current.list;
+            this.hospitalises = [];
+
+            if (
+              this.list &&
+              this.sectors &&
+              this.chambres &&
+              this.list.length > 0 &&
+              this.sectors.length > 0 &&
+              this.chambres.length > 0
+            ) {
+              this.filtered_list = this.listData(this.list);
+            }
           }
-
-          this.list = current.list;
-          this.hospitalises = [];
-        }
-
-        if (hasStateChanges(this.sectors, previous.sectors, current.sectors)) {
-          this.sectors = current.sectors;
-        }
-
-        if (this.list && this.sectors && this.list.length > 0 && this.sectors.length > 0) {
-          this.filtered_list = this.listData(this.list)
-
         }
       });
 
-      console.log("init")
     this.hospitalisationStore.fetchSector();
     this.hospitalisationStore.fetchChambres();
     this.hospitalisationStore.fetchHospitalisationList();
@@ -91,41 +105,39 @@ export class ListComponent implements OnInit {
       if (text.length === 0) {
         this.filtered_list = this.listData(this.list);
       } else {
-        let temp_list : any = this.listData(this.list);
-        const w = temp_list.filter((object: string | null) => {
-          let result = "";
-          if (object === null) return null;
-          if (
-            this.applyFilter === null ||
-            this.applyFilter.split(",").length === 0
-          )
-            return null;
-          for (const key of this.applyFilter.split(",")) {
-            console.log(object)
-            let rowValue = "";
-            rowValue =
-              object[key as keyof typeof object] !== null &&
-              object[key.trim() as keyof typeof object] !== undefined
-                ? object[key.trim() as keyof typeof object].toString()
-                : "";
-            // }
+        let temp_list: any = this.list;
 
-            if (rowValue.toLowerCase().includes(text.trim().toLowerCase())) {
-              result = object;
-              break;
+        const w = temp_list.filter((object: any) => {
+          let result = "";
+
+          for (const key of this.applyFilter.split(",")) {
+            let rowValue = "";
+
+            const patient = JSON.parse(object.extras).patient;
+            if (patient !== undefined) {
+              rowValue =
+                patient[key] !== null && patient[key.trim()] !== undefined
+                  ? patient[key.trim()].toString()
+                  : "";
+
+              if (
+                rowValue !== undefined &&
+                rowValue.toLowerCase().includes(text.trim().toLowerCase())
+              ) {
+                result = object;
+              }
             }
           }
           return result;
         });
-        this.filtered_list = this.listData(w)
+        this.filtered_list = this.listData(w);
       }
-
     } catch (e) {
       console.log("filtering : " + e);
     }
   }
 
-  listData(list : any[]) {
+  listData(list: any[]) {
     return list.map((data) => {
       const h = data;
       const d = JSON.parse(h.extras);
@@ -135,12 +147,11 @@ export class ListComponent implements OnInit {
 
       let secteur: any = "";
       if (this.sectors !== null && this.sectors.length > 0) {
-        secteur = this.sectors.find(
-          (s: any) => s.code === h.secteur_code
-        );
+        secteur = this.sectors.find((s: any) => s.code === h.secteur_code);
       }
 
       return {
+        id: h.id,
         patient: d.patient,
         reference: d.patient.reference,
         nom: d.patient.nom,
@@ -203,6 +214,7 @@ export class ListComponent implements OnInit {
   }
 
   openHospitById(id: Number) {
+    console.log(id);
     this.router.navigate(["/hospitalisation/edit"], {
       queryParams: { id: id },
     });

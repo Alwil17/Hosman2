@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -13,10 +13,15 @@ export class TextComponent implements OnInit {
   @Input() placeholder = "";
   @Input() control = new FormControl();
   @Input() fontSize: string = "0.8125rem"
+  @Output() doubleClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onDoubleClick(): void {
+    this.doubleClick.emit();
   }
 
 }

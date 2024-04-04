@@ -33,6 +33,7 @@ export class HospitHomeComponent implements OnInit {
       this.consultation_id = params["consultation"];
       const hospitalisation_id = params["id"];
       if (this.consultation_id !== undefined) {
+        this.hospitalisationStore.clearHospitalisation()
         this.hospitalisationStore.fetchConsultation(this.consultation_id);
       } else if (hospitalisation_id !== undefined) {
         this.hospitalisationStore.fetchHospitalisation(hospitalisation_id);
@@ -52,6 +53,7 @@ export class HospitHomeComponent implements OnInit {
           this.hospitalisation = current.hospitalisation;
           if (this.hospitalisation !== null) {
             // show fiches
+          
             const admissionSection = document.querySelector(
               "#accordion-admission"
             );
@@ -73,6 +75,9 @@ export class HospitHomeComponent implements OnInit {
 
         if (hasStateChanges(this.suivis, previous.suivis, current.suivis)) {
           this.suivis = current.suivis;
+        }
+        
+        if (this.suivis !== undefined && this.suivis !== null && this.hospitalisation !== null) {
           this.getAutoAddRoom();
         }
       });
