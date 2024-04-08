@@ -17,6 +17,7 @@ const tabsEndpoint = environment.hospitalisation_base + "produits";
 const tarifsEndpoint = environment.hospitalisation_base + "tarifs";
 const secteursEndpoint = environment.hospitalisation_base + "secteurs";
 const chambresEndpoint = environment.hospitalisation_base + "chambres";
+const chambresEmptyEndpoint = environment.hospitalisation_base + "chambres?vue=UNTAKEN";
 const suiviEndpoint = environment.hospitalisation_base + "suivis";
 const medExterneEndpoint = environment.hospitalisation_base + "med-externes";
 const chirurgieEndpoint = environment.hospitalisation_base + "chirurgies";
@@ -39,6 +40,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     consultation: null,
     sectors: null,
     chambres: null,
+    emptyChambres: null,
     tabs: null,
     full_tabs: null,
     suivis: null,
@@ -161,9 +163,9 @@ export class HospitalisationStore extends ObservableStore<any> {
     });
   }
 
-  fetchChambres(): void {
+  fetchChambres(showAll:boolean = true): void {
     const res: Observable<Chambre[]> = this.http
-      .get<ChambreResponse[]>(chambresEndpoint)
+      .get<ChambreResponse[]>(showAll ? chambresEndpoint : chambresEmptyEndpoint)
       .pipe(
         map((chambres) =>
           chambres.map((chambre) => Chambre.fromResponse(chambre))
@@ -187,6 +189,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     res.subscribe({
       next: (tabs: any) => {
         // this.updateStore({tabs}, "FETCH TABS")
+        //tabs === tarifs
         fData = tabs;
 
         // adding tarifs
@@ -220,19 +223,16 @@ export class HospitalisationStore extends ObservableStore<any> {
               data: [],
             });
 
-            let sorted_tabs = fData.sort((a: any, b: any) => {
-              const nameA = a.name.toLowerCase();
-              const nameB = b.name.toLowerCase();
+            let sorted_tabs : any = []
 
-              // Compare the names
-              if (nameA < nameB) {
-                return -1;
-              } else if (nameA > nameB) {
-                return 1;
-              } else {
-                return 0; // Names are equal
-              }
-            });
+            FASTABS.forEach((el) => {
+              const r = fData.find((d:any) => d.type === el)
+              if (r !== undefined) sorted_tabs.push(r)
+            })
+
+            // rename examens => Imagerie
+            const k = sorted_tabs.find((e:any) => e.type === 'examens')
+            k.name = "Imagerie"
 
             this.updateStore(
               {
@@ -240,6 +240,7 @@ export class HospitalisationStore extends ObservableStore<any> {
               },
               "FETCH TABS"
             );
+            
             this.updateStore({ full_tabs: sorted_tabs }, "FETCH FULL TABS");
           },
           error: (response) => {

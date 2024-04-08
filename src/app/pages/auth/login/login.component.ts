@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
 
   usernameControl = new FormControl('PISJO', [Validators.required]);
   passwordControl = new FormControl('PISJO1234', [Validators.required]);
+  // usernameControl = new FormControl('', [Validators.required]);
+  // passwordControl = new FormControl('', [Validators.required]);
 
   constructor(private authService: AuthService, private router: Router) {}
 

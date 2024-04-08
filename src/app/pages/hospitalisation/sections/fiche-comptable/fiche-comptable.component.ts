@@ -51,7 +51,7 @@ export class FicheComptableComponent implements OnInit {
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([p, c]) => {
-        if (hasStateChanges(this.tabs, p.tabs, c.tabs)) {
+          if (this.tabs === null || this.tabs.length === 0) {
           this.tabs = c.tabs;
         }
 
@@ -90,7 +90,7 @@ export class FicheComptableComponent implements OnInit {
         } else {
           this.qte.setValue(v.qte)
           this.modalService.open(content, {
-            size: "md",
+            size: "sm",
             centered: true,
             keyboard: false,
             backdrop: "static",

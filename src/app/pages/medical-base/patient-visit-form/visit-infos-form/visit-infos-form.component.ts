@@ -534,8 +534,18 @@ export class VisitInfosFormComponent implements OnInit {
 
     if (isConfirmed) {
       this.saveVisitObservable()?.subscribe(async (data) => {
-        const hospitalisationRoute = "/hospitalisation/edit?consultation=" + data;
-        await this.routerService.navigateByUrl(hospitalisationRoute);
+        if (data === null) {
+          this.toastService.show({
+            messages: [
+              "Impossible de récupérer les donneés de la consultation, veuillez rééssayer.",
+            ],
+            type: ToastType.Error,
+          });
+        } else {
+          const hospitalisationRoute = "/hospitalisation/edit?consultation=" + data;
+          await this.routerService.navigateByUrl(hospitalisationRoute);
+        }
+
       });
 
     }

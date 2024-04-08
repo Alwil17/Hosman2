@@ -5,11 +5,11 @@ import { Chambre } from "src/app/models/hospitalisation/chambre";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { MessageService } from "@services/messages/message.service";
 import { ToastrService } from "ngx-toastr";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Sector } from "src/app/models/secretariat/shared/sector.model";
-import { validateYupSchema } from "src/app/helpers/utils";
+import { formatDate, validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -49,7 +49,7 @@ export class AdmissionComponent implements OnInit {
 
   private destroy$ = new Subject<void>();
 
-  today = new Date().toLocaleDateString("fr-FR");
+  today = formatDate(new Date(), "yyyy-MM-dd HH:mm");
 
   private chambreChanges: Subscription | undefined;
 
@@ -60,6 +60,7 @@ export class AdmissionComponent implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private modalService: NgbModal,
+    private routerService: Router,
   ) {}
 
   //controls
@@ -90,7 +91,7 @@ export class AdmissionComponent implements OnInit {
     [validateYupSchema(Yup.date().required(ErrorMessages.REQUIRED))]
   );
   hospit_date = new FormControl(
-    null,
+    this.today,
     [],
     [validateYupSchema(Yup.date().required(ErrorMessages.REQUIRED))]
   );
@@ -162,6 +163,7 @@ export class AdmissionComponent implements OnInit {
         // console.log("''''''''''''''''''''''''''''''''''''''''''''''")
         // console.log(state);
         if (state) {
+
           if (state.patient) this.patient = state.patient;
           if (state.consultation) this.consultation = state.consultation;
           if (state.chambres) this.chambres = state.chambres;
@@ -187,6 +189,9 @@ export class AdmissionComponent implements OnInit {
       .get("chambre")
       ?.valueChanges.subscribe((n) => {
         this.lit.setValue(null);
+        // console.log(this.chambres)
+        // console.log(n)
+        // console.log(this.chambres!.find((c) => c.id === n))
         this.lits = this.chambres!.find((c) => c.id === n)!["lits"];
       });
   }
@@ -194,7 +199,7 @@ export class AdmissionComponent implements OnInit {
   loadPatient(patient: any) {
     if (this.patient !== null) {
       const gender = this.genders.find((g) => g["short"] == patient["sexe"]);
-      
+
 
       this.firstname.setValue(patient["nom"]);
       this.lastname.setValue(patient["prenoms"]);
@@ -230,6 +235,8 @@ export class AdmissionComponent implements OnInit {
           .join(",")
       );
       this.hdm.setValue(this.consultation["hdm"]);
+      this.getConsultationConstants()
+      this.pasteTofield()
     }
 
     if (hospitalisation != null) {
@@ -265,7 +272,7 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-  openConstants(){
+  getConsultationConstants() {
     const v = this.consultation.constante
     this.temperature.setValue(v.temperature)
     this.poids.setValue(v.poids)
@@ -273,8 +280,10 @@ export class AdmissionComponent implements OnInit {
     this.ta.setValue(v.tension)
     this.pc.setValue(v.perimetre_cranien)
     this.fc.setValue(v.poul)
-    this.fr.setValue("")
+    this.fr.setValue(v.frequence_respiratoire)
+  }
 
+  openConstants(){
     this.modalReference = this.modalService.open(this.constants, {
       size: "md",
       centered: true,
@@ -298,6 +307,16 @@ export class AdmissionComponent implements OnInit {
     this.arrive.setValue(s)
 
     this.modalReference.close()
+  }
+
+  async cancel() {
+    const confirm = await this.message.confirmDialog(
+      WarningMessages.SURE_TO_CONTINUE
+    );
+
+    if (confirm) {
+      this.routerService.navigateByUrl("/medical-base/patient-visits-summary/"+this.patient.reference)
+    }
   }
 
   async confirmAction() {
@@ -328,7 +347,7 @@ export class AdmissionComponent implements OnInit {
           this.hospitalisationStore
             .saveHospitalisation(data, this.hospitalisation_id)
             .subscribe(
-              (response) => {
+              async (response) => {
                 const responseData = response;
                 this.toast.success("Hospitalisation", "Admission effectuée");
                 this.hospitalisation_id = responseData;
@@ -354,7 +373,10 @@ export class AdmissionComponent implements OnInit {
                   apply_date: new Date(this.admissionFormGroup.value.hospit_date),
                   hospit_id: this.hospitalisation_id
                 });
-                this.hospitalisationStore.fetchHospitalisation(responseData);
+                // this.hospitalisationStore.fetchHospitalisation(responseData);
+                this.hospitalisationStore.clearHospitalisation()
+                const route = "/hospitalisation/edit?id=" + responseData;
+                await this.routerService.navigateByUrl(route);
 
               },
               (error) => {

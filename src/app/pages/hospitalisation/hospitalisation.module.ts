@@ -24,6 +24,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuModule } from './context-menu.module';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxMaskModule } from 'ngx-mask';
+import { AppIncreaseFontSizeDirective } from 'src/app/app-increase-fontsize.directive';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { NgxMaskModule } from 'ngx-mask';
     FicheSortieComponent,
     FicheSyntheseComponent,
     ComptableTableClassicComponent,
+    AppIncreaseFontSizeDirective
   ],
   imports: [
     CommonModule,

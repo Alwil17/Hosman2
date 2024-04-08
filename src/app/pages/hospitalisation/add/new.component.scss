@@ -15,3 +15,13 @@
 .nav-link {
     font-size: 15px;
 }
+
+.infos-patient {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    span {
+        font-size: 18px;
+    }
+}

@@ -47,6 +47,8 @@ export class HInputComponent implements OnInit {
   // Possible values are '1', '2', '3', '4', '5'
   @Input() bottomMargin = "";
 
+  @Input() tabIndex : number | null = null
+
   formControl!: FormControl;
 
   bottomMarginClass = "";

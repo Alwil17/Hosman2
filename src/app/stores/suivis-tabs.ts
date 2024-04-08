@@ -1,1 +1,1 @@
-export const FASTABS  = ['conso','chambres','examens', 'medic','solut','analyses', 'evolution', 'watches'];
+export const FASTABS  = ['chambres','analyses','examens','medic','conso','solut','evolution','watches'];

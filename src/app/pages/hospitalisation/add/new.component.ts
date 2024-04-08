@@ -15,9 +15,10 @@ export class HospitHomeComponent implements OnInit {
   subscription: Subscription | undefined;
   consultation$: any = null;
   consultation_id: number = -1;
-  hospitalisation: any | null = null;
+  hospitalisation: any = null;
   suivis: any[] = [];
   suiviHasTodayRoom: boolean = false;
+  patient: any = null
 
   constructor(
     private hospitalisationStore: HospitalisationStore,
@@ -27,15 +28,16 @@ export class HospitHomeComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.hospitalisationStore.fetchSector();
-      this.hospitalisationStore.fetchChambres();
       this.hospitalisationStore.fetchTabs();
 
       this.consultation_id = params["consultation"];
       const hospitalisation_id = params["id"];
       if (this.consultation_id !== undefined) {
         this.hospitalisationStore.clearHospitalisation()
+        this.hospitalisationStore.fetchChambres(false);
         this.hospitalisationStore.fetchConsultation(this.consultation_id);
       } else if (hospitalisation_id !== undefined) {
+        this.hospitalisationStore.fetchChambres();
         this.hospitalisationStore.fetchHospitalisation(hospitalisation_id);
       }
     });
@@ -47,13 +49,14 @@ export class HospitHomeComponent implements OnInit {
           hasStateChanges(
             this.hospitalisation,
             previous.hospitalisation,
-            current.hospitalisation
+            current.hospitalisation,
           )
         ) {
+
           this.hospitalisation = current.hospitalisation;
           if (this.hospitalisation !== null) {
+            
             // show fiches
-          
             const admissionSection = document.querySelector(
               "#accordion-admission"
             );
@@ -75,6 +78,10 @@ export class HospitHomeComponent implements OnInit {
 
         if (hasStateChanges(this.suivis, previous.suivis, current.suivis)) {
           this.suivis = current.suivis;
+        }
+
+        if (hasStateChanges(this.patient, previous.patient, current.patient)) {
+          this.patient = current.patient;
         }
         
         if (this.suivis !== undefined && this.suivis !== null && this.hospitalisation !== null) {
@@ -146,4 +153,5 @@ export class HospitHomeComponent implements OnInit {
   selectPage(name: string) {
     this.hospitalisationStore.changePage(name)
   }
+  
 }

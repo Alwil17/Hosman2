@@ -66,7 +66,8 @@ export class FicheSyntheseComponent implements OnInit {
 
             const qteTotal = g.reduce((total, item) => total + item.qte, 0);
             // console.log(qteTotal);
-            const label = td.nom_officiel ?? td.nom;
+            let label = td.nom_officiel ?? td.nom; 
+            if (label === undefined ||label === null || label === "") label = td.libelle
 
             // console.log(label);
             this.list.push({
@@ -82,6 +83,5 @@ export class FicheSyntheseComponent implements OnInit {
       }
     });
 
-    console.log(this.list);
   }
 }

@@ -43,7 +43,7 @@
                 <div class="col-md-6 mb-3">
                     <h-input
                             label="Date d'hospitalisation"
-                            type="date"
+                            type="datetime-local"
                             [isMandatory]="true"
                             [maxDate]="today"
                             [control]="hospit_date"
@@ -111,11 +111,18 @@
         <div class="d-flex justify-content-end">
             <button
                     type="button"
+                    class="btn btn-warning"
+                    (click)="cancel()"
+            >
+                ANNULER
+            </button>
+            <button
+                    type="button"
                     class="btn btn-success btn-label right"
                     (click)="confirmAction()"
             >
                 <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
-                Enrégistrer
+                ENREGISTRER
             </button>
         </div>
     </div>
@@ -131,25 +138,25 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-6 mb-3">
-            <h-input label="Température (°C)" [readOnly]="true" [control]="temperature"></h-input>
+            <h-input label="Température (°C)" [control]="temperature"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="Poids (kg)" [readOnly]="true" [control]="poids"></h-input>
+            <h-input label="Poids (kg)" [control]="poids"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="Taille (cm)" [readOnly]="true" [control]="taille"></h-input>
+            <h-input label="Taille (cm)" [control]="taille"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="PC" [readOnly]="true" [control]="pc"></h-input>
+            <h-input label="PC" [control]="pc"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="Fréquence cardiaque (/mn)" [readOnly]="true" [control]="fc"></h-input>
+            <h-input label="Fréquence cardiaque (/mn)" [control]="fc"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="Fréquence respiratoire (/mn)" [readOnly]="true" [control]="fr"></h-input>
+            <h-input label="Fréquence respiratoire (/mn)" [control]="fr"></h-input>
         </div>
         <div class="col-md-6 mb-3">
-            <h-input label="Tension artérielle (mm/Hg)" [readOnly]="true" [control]="ta"></h-input>
+            <h-input label="Tension artérielle (mm/Hg)" [control]="ta"></h-input>
         </div>
         <div class="col-md-6 mb-3">
             <h-input label="Etat général" [control]="etat"></h-input>
