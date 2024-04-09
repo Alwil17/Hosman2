@@ -12,7 +12,6 @@ import * as moment from "moment";
 import * as Yup from "yup";
 import {
   formatDate,
-  hasStateChanges,
   slugify,
   validateYupSchema,
 } from "src/app/helpers/utils";
@@ -179,7 +178,7 @@ export class ComptableTableClassicComponent implements OnInit {
   initLineChart() {
 
     let re_watch : any = []
-  
+
     WATCHES.forEach((w : any) => {
       const watchname = w.name;
 
@@ -208,7 +207,7 @@ export class ComptableTableClassicComponent implements OnInit {
         })
         .sort((a, b) => a.milli - b.milli);
 
-        if (list.length === 0) { w.empty = true } else { re_watch.push(w) } 
+        if (list.length === 0) { w.empty = true } else { re_watch.push(w) }
 
       const lineCanvasEle: any = document.getElementById(w.name);
 
@@ -216,18 +215,18 @@ export class ComptableTableClassicComponent implements OnInit {
 
         if (list.length === 0) {
 
-          lineCanvasEle.height = 50; 
+          lineCanvasEle.height = 50;
           const ctx = lineCanvasEle.getContext('2d');
           const centerX = lineCanvasEle.width / 2;
           const centerY = lineCanvasEle.height / 2;
-          const width = 30; 
-          
+          const width = 30;
+
           ctx.fillStyle = '#3577f1';
-          ctx.fillRect(centerX - width / 2, centerY - 1, width, 2);          
+          ctx.fillRect(centerX - width / 2, centerY - 1, width, 2);
           ctx.fillRect(centerX - 1, centerY - width / 2, 2, width);
-          
+
         } else {
-            
+
            const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
           type: "line",
           data: {
@@ -344,7 +343,7 @@ export class ComptableTableClassicComponent implements OnInit {
         });
         }
 
-       
+
       }
     });
 
@@ -741,7 +740,7 @@ export class ComptableTableClassicComponent implements OnInit {
       this.modalService.open(this.evolutionEdition, {
         size: "lg",
         centered: true,
-        keyboard: false,
+        keyboard: true,
         backdrop: "static",
       });
     }
@@ -856,7 +855,7 @@ export class ComptableTableClassicComponent implements OnInit {
         watch.empty = !watch.empty
       }
     }
-   
+
   }
 
   getWatchData(day: moment.Moment, watch: any = null): any[] {
@@ -917,7 +916,7 @@ export class ComptableTableClassicComponent implements OnInit {
       if (watch.type === 'value' && watch.options !== undefined){
         this.generateOptions(watch.options)
       }
-      
+
     }
 
     const t = formatDate(new Date(), "HH:mm");
@@ -928,7 +927,7 @@ export class ComptableTableClassicComponent implements OnInit {
     this.modalReference = this.modalService.open(this.watchesValueEdition, {
       size: "sm",
       centered: true,
-      keyboard: false,
+      keyboard: true,
       backdrop: "static",
     });
   }
@@ -949,7 +948,7 @@ export class ComptableTableClassicComponent implements OnInit {
     let value = null
     if (this.currentWatch.type === 'value') {
       value = this.watchValue.value
-    } else 
+    } else
     if (this.currentWatch.type === 'chart') {
       value = parseFloat(this.watchValue.value.toString().includes(',') ? this.watchValue.value.toString().replace(",", ".") : value = this.watchValue.value)
     }

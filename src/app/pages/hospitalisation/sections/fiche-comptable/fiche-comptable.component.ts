@@ -62,7 +62,7 @@ export class FicheComptableComponent implements OnInit {
           this.hospitalisation = c.hospitalisation;
       });
 
-      
+
   }
 
   filterInAll() {
@@ -92,11 +92,11 @@ export class FicheComptableComponent implements OnInit {
           this.modalService.open(content, {
             size: "sm",
             centered: true,
-            keyboard: false,
+            keyboard: true,
             backdrop: "static",
           });
         }
-        
+
       }
     })
   }
@@ -123,7 +123,7 @@ export class FicheComptableComponent implements OnInit {
 
             this.hospitalisationStore.commitSuivi(data);
           }
-         
+
           this.modalService.dismissAll()
         },
       });

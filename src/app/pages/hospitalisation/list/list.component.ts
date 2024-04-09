@@ -42,7 +42,27 @@ export class ListComponent implements OnInit {
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
-        if (hasStateChanges(this.list, previous.list, current.list)) {
+
+        if (
+            hasStateChanges(
+                this.chambres,
+                previous.chambres,
+                current.chambres
+            )
+        ) {
+          this.chambres = current.chambres?.filter(
+              (chs: any) => chs.lits.length > 0
+          );
+        }
+
+        if (
+            hasStateChanges(this.sectors, previous.sectors, current.sectors)
+        ) {
+          this.sectors = current.sectors;
+        }
+
+
+        if ( this.sectors && this.chambres && hasStateChanges(this.list, previous.list, current.list)) {
           if (current.list !== null) {
             for (let step = 0; step < current.list.length; step++) {
               this.extras.push({
@@ -52,35 +72,17 @@ export class ListComponent implements OnInit {
               });
             }
 
-            if (
-              hasStateChanges(
-                this.chambres,
-                previous.chambres,
-                current.chambres
-              )
-            )
-              this.chambres = current.chambres?.filter(
-                (chs: any) => chs.lits.length > 0
-              );
-
-            if (
-              hasStateChanges(this.sectors, previous.sectors, current.sectors)
-            ) {
-              this.sectors = current.sectors;
-            }
-
             this.list = current.list;
+
             this.hospitalises = [];
 
             if (
               this.list &&
-              this.sectors &&
-              this.chambres &&
               this.list.length > 0 &&
               this.sectors.length > 0 &&
               this.chambres.length > 0
             ) {
-              this.filtered_list = this.listData(this.list);
+              this.doFilter("")
             }
           }
         }

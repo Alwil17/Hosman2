@@ -29,6 +29,7 @@ import { LoadingSpinnerHttpInterceptor } from "./helpers/loading-spinner-http-in
 // French locale for datePape
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
+import { GlasgowComponent } from './components/glasgow/glasgow.component';
 
 // Register french locale for datePape
 registerLocaleData(localeFr, "fr");
@@ -44,7 +45,7 @@ if (environment.defaultauth === "firebase") {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, GlasgowComponent],
   imports: [
     TranslateModule.forRoot({
       defaultLanguage: "fr",
