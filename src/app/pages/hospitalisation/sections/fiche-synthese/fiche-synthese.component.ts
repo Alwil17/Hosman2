@@ -60,11 +60,11 @@ export class FicheSyntheseComponent implements OnInit {
         this.list.push(a);
 
         t.data.forEach((td: any) => {
-          const g = this.suivis.filter((s) => s.type_id === td.id);
+          const g = v.filter((s: any) => s.type_id === td.id);
           if (g.length > 0) {
             // console.log(td);
 
-            const qteTotal = g.reduce((total, item) => total + item.qte, 0);
+            const qteTotal = g.reduce((total : any, item : any) => total + item.qte, 0);
             // console.log(qteTotal);
             let label = td.nom_officiel ?? td.nom; 
             if (label === undefined ||label === null || label === "") label = td.libelle

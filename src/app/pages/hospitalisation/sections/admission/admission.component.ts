@@ -63,6 +63,9 @@ export class AdmissionComponent implements OnInit {
     consultation_id: number = -1;
     hospitalisation_id: number | null = null;
     suivis: any | null = null;
+    hospitalisation: any = null
+
+    freeBeds : any[] = []
 
     private destroy$ = new Subject<void>();
 
@@ -189,7 +192,7 @@ export class AdmissionComponent implements OnInit {
                     if (state.chambres) this.chambres = state.chambres;
                     if (state.sectors) this.sectors = state.sectors;
                     if (state.suivis) this.suivis = state.suivis;
-
+                    if(state.freeBeds) this.freeBeds = state.freeBeds
 
                     this.loadPatient(this.patient);
 
@@ -224,9 +227,12 @@ export class AdmissionComponent implements OnInit {
             backdrop: "static",
         });
 
-        modalRef.componentInstance.age = 5
+        console.log(this.hospitalisation)
+        if (this.hospitalisation) {
+            modalRef.componentInstance.hospitalisation = this.hospitalisation
+        }
         modalRef.componentInstance.closeModal.subscribe((data: any) => {
-            this.glasgow = data.value
+            this.glasgow = data
         });
     }
 
@@ -273,6 +279,7 @@ export class AdmissionComponent implements OnInit {
         }
 
         if (hospitalisation != null) {
+            this.hospitalisation = hospitalisation
             this.hospitalisation_id = hospitalisation.id;
             this.motif.setValue(hospitalisation["motif"]["libelle"]);
             this.diagnostic.setValue(hospitalisation["diagnostic"]["theCode"]);
@@ -291,6 +298,11 @@ export class AdmissionComponent implements OnInit {
                     this.lit.setValue(litSuivi['type_id'])
                 }
             }
+        } else {
+            // remove occuped beds
+            this.chambres.forEach((c) => {
+                c.lits = c.lits.filter((l) => this.freeBeds.find((k) => k.id === l.id) !== undefined)
+            })
         }
     }
 
@@ -306,6 +318,8 @@ export class AdmissionComponent implements OnInit {
     }
 
     getConsultationConstants() {
+
+        console.log(this.consultation)
         const v = this.consultation.constante
         this.temperature.setValue(v.temperature)
         this.poids.setValue(v.poids)
@@ -314,6 +328,28 @@ export class AdmissionComponent implements OnInit {
         this.pc.setValue(v.perimetre_cranien)
         this.fc.setValue(v.poul)
         this.fr.setValue(v.frequence_respiratoire)
+        
+
+        if (this.hospitalisation) {
+            const e = JSON.parse(this.hospitalisation.extras).constantes
+            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
+            console.log(e)
+            if (e !== undefined) {
+                this.temperature.setValue(e.temperature)
+                this.poids.setValue(e.poids)
+                this.taille.setValue(e.taille)
+                this.ta.setValue(e.ta)
+                this.pc.setValue(e.pc)
+                this.fc.setValue(e.fc)
+                this.fr.setValue(e.fr)
+                this.etat.setValue(e.etat)
+                this.conscience.setValue(e.conscience)
+
+                this.glasgow = e.glasgow
+            }
+            
+        }
+
     }
 
     openConstants() {
@@ -334,14 +370,14 @@ export class AdmissionComponent implements OnInit {
         if (this.fc.value.toString().trim().length > 0) s += `Fréquence cardiaque (/mn): ${this.fc.value}; `
         if (this.fr.value.toString().trim().length > 0) s += `Fréquence respiratoire (/mn): ${this.fr.value}; `
         if (this.ta.value.toString().trim().length > 0) s += `Tension artérielle (mm/Hg): ${this.ta.value}; `
-        if (this.etat.value.toString().trim().length > 0) s += `${this.etat.value}; `
-        if (this.conscience.value.toString().trim().length > 0) s += `${this.conscience.value}; `
+        if (this.etat.value && this.etat.value.toString().trim().length > 0) s += `${this.etat.value}; `
+        if (this.conscience.value  && this.conscience.value.toString().trim().length > 0) s += `${this.conscience.value}; `
 
-        if (this.glasgow !== 0) s += `Score de glasgow : ${this.glasgow}`
+        if (this.glasgow.value && this.glasgow.value !== 0) s += `Score de glasgow : ${this.glasgow.value}`
 
         this.arrive.setValue(s)
 
-        this.modalReference.close()
+        if (this.modalReference) this.modalReference.close()
     }
 
     async cancel() {
@@ -363,6 +399,19 @@ export class AdmissionComponent implements OnInit {
             );
             if (confirm) {
 
+                const constantes = {
+                    temperature :  this.temperature.value,
+                    poids : this.poids.value,
+                    taille: this.taille.value,
+                    pc :this.pc.value,
+                    fc :this.fc.value,
+                    fr: this.fr.value,
+                    ta: this.ta.value,
+                    etat: this.etat.value,
+                    conscience: this.conscience.value,
+                    glasgow: this.glasgow
+                }
+
                 const data = {
                     id: this.hospitalisation_id,
                     motif: this.admissionFormGroup.value.motif,
@@ -375,8 +424,10 @@ export class AdmissionComponent implements OnInit {
                     arrive: this.arrive.value,
                     extras: JSON.stringify({
                         "patient": this.patient,
+                        constantes,
                         "chambre": this.chambre.value,
-                        "lit": this.lit.value
+                        "lit": this.lit.value,
+
                     })
                 };
 

@@ -24,5 +24,8 @@
 </div>
 <div class="modal-footer">
     <h4>Score : <b>{{ score }}</b></h4>
-    <button type="button" class="btn btn-outline-dark" (click)="close()">Continuer</button>
+    <div>
+        <button type="button" class="btn btn-outline-dark cancel-button" (click)="cancel()">Annuler</button>
+        <button type="button" class="btn btn-primary" (click)="close()">Continuer</button>
+    </div>
 </div>

@@ -34,7 +34,8 @@ export class HospitHomeComponent implements OnInit {
       const hospitalisation_id = params["id"];
       if (this.consultation_id !== undefined) {
         this.hospitalisationStore.clearHospitalisation()
-        this.hospitalisationStore.fetchChambres(false);
+        this.hospitalisationStore.fetchChambres();
+        this.hospitalisationStore.fetchFreeLits();
         this.hospitalisationStore.fetchConsultation(this.consultation_id);
       } else if (hospitalisation_id !== undefined) {
         this.hospitalisationStore.fetchChambres();

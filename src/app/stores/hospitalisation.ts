@@ -9,7 +9,6 @@ import { Chambre, ChambreResponse } from "../models/hospitalisation/chambre";
 import { slugify } from "../helpers/utils";
 import { FASTABS } from "./suivis-tabs";
 import { environment } from "src/environments/environment";
-import { Patient } from "../models/secretariat/patients/patient.model";
 
 const consultationEndpoint = environment.hospitalisation_base + "consultations";
 const hospitalisationEndpoint = environment.hospitalisation_base + "hospits";
@@ -28,6 +27,7 @@ const decededEndpoint = environment.hospitalisation_base + "deceded";
 const sortieEndpoint = environment.hospitalisation_base + "sorties";
 const medecinsListEndpoint = environment.hospitalisation_base + "medecins";
 const patientsListEndpoint = environment.hospitalisation_base + "patients";
+const freeBedsEndPoint = environment.hospitalisation_base + "lits?vue=UNTAKEN"
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -40,7 +40,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     consultation: null,
     sectors: null,
     chambres: null,
-    emptyChambres: null,
+    freeBeds: null,
     tabs: null,
     full_tabs: null,
     suivis: null,
@@ -163,9 +163,9 @@ export class HospitalisationStore extends ObservableStore<any> {
     });
   }
 
-  fetchChambres(showAll:boolean = true): void {
+  fetchChambres(): void {
     const res: Observable<Chambre[]> = this.http
-      .get<ChambreResponse[]>(showAll ? chambresEndpoint : chambresEmptyEndpoint)
+      .get<ChambreResponse[]>(chambresEndpoint)
       .pipe(
         map((chambres) =>
           chambres.map((chambre) => Chambre.fromResponse(chambre))
@@ -182,9 +182,22 @@ export class HospitalisationStore extends ObservableStore<any> {
     });
   }
 
+  fetchFreeLits(): void {
+    const res: Observable<any> = this.http.get<any>(freeBedsEndPoint);
+
+    res.subscribe({
+      next: (freeBeds: any) => {
+        this.updateStore({ freeBeds }, "FETCH FREE BEDS");
+      },
+      error: (response) => {
+        console.log("Error: " + response);
+      },
+    });
+  }
+
   fetchTabs(): void {
     let fData: any = [];
-    const res: Observable<any> = this.http.get<LitResponse[]>(tabsEndpoint);
+    const res: Observable<any> = this.http.get<any[]>(tabsEndpoint);
 
     res.subscribe({
       next: (tabs: any) => {

@@ -22,7 +22,7 @@
                         [readOnly]="hasPatient" [control]="birth_date"></h-input>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <h-input label="Date d'hospitalisation" type="datetime-local" [isMandatory]="true" [maxDate]="today"
+                    <h-input label="Date et heure d'hospitalisation" type="datetime-local" [isMandatory]="true" [maxDate]="today"
                         [control]="hospit_date"></h-input>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             </div>
             <div class="col-md-12">
                 <label>Score</label>
-                <h3>{{ glasgow }}</h3>
+                <h3>{{ glasgow.value }}</h3>
             </div>
 
             <div class="col-md-12">
