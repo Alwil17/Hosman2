@@ -83,6 +83,7 @@ export class MedecinExterneComponent implements OnInit {
         ) {
           this.externes = current.externes
         }
+        if (current.hospitalisation)
           this.hospitalisation_id = current.hospitalisation.id
           
       });

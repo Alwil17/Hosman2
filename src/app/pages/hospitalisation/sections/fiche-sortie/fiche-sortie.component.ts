@@ -62,6 +62,7 @@ export class FicheSortieComponent implements OnInit {
       next: (v) => {
         this.hospitalisation_id = v.id;
         this.hospitalisationStore.fetchSortie(v.id);
+        this.hospitalisation = v
       },
     });
 
@@ -124,7 +125,6 @@ export class FicheSortieComponent implements OnInit {
           diagnostics: this.diagnostics.map((d) => { return { diagnostic : d.value}})
         };
 
-        console.log(data)
         
         if (this.sortie !== null && this.sortie !== undefined && 'id' in this.sortie) {
           data.id = this.sortie.id
@@ -135,21 +135,21 @@ export class FicheSortieComponent implements OnInit {
             data.id = v;
             this.toast.success("Hospitalisation", "Enregistrement effectué");
             this.hospitalisationStore.fetchSortie(this.hospitalisation_id!);
+
+            // this.hospitalisation.status = 1
+
+            // this.hospitalisationStore.saveHospitalisation(this.hospitalisation, this.hospitalisation_id).subscribe({
+            //   next: (v) => {
+            //     data.id = v;
+            //     this.toast.success("Hospitalisation", "Hospitalisation terminé. La chambre a été libéré");
+            //     // this.hospitalisationStore.clearHospitalisation()
+            //     this.router.navigate(["/hospitalisation/list"]);
+            //   },
+            //   error: (e) => console.error(e),
+            // });
           },
           error: (e) => console.error(e),
         });
-
-        const data_hospit = {...this.hospitalisation, ...{status: 1}}
-
-        this.hospitalisationStore.saveHospitalisation({status: 1}, this.hospitalisation_id).subscribe({
-          next: (v) => {
-            data.id = v;
-            this.toast.success("Hospitalisation", "Hospitalisation terminé. La chambre a été libéré");
-            this.router.navigate(["/hospitalisation/list"]);
-          },
-          error: (e) => console.error(e),
-        });
-
       }
     }
   }

@@ -101,6 +101,7 @@ export class InterventionChirurgicaleComponent implements OnInit {
         ) {
           this.interventions = current.interventions;
         }
+        if (current.hospitalisation)
         this.hospitalisation_id = current.hospitalisation.id;
       });
 

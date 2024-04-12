@@ -31,6 +31,7 @@ export class FicheSyntheseComponent implements OnInit {
         }
 
         if (hasStateChanges(this.suivis, previous.suivis, current.suivis)) {
+          if (current.suivis)
           this.suivis = current.suivis.filter(
             (s: any) => s.type !== "watches" && s.type !== "evolution" && s.type !== "lits"
           );

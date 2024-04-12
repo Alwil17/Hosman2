@@ -55,16 +55,16 @@
         </div>
         <div class="col-md-6 mb-3">
             <div class="form-group">
-                <app-text [rows]="3" label="Histoire de la maladie" [control]="hdm"></app-text>
+                <app-text [rows]="5" label="Histoire de la maladie" [control]="hdm"></app-text>
             </div>
         </div>
         <div class="col-md-6 mb-3">
             <div class="form-group">
-                <app-text [rows]="3" label="A l'arrivée" [control]="arrive" (doubleClick)="openConstants()"></app-text>
+                <app-text [rows]="5" label="A l'arrivée" [control]="arrive" (doubleClick)="openConstants()"></app-text>
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-warning" (click)="cancel()">
+            <button type="button" class="btn btn-danger btn-cancel" (click)="cancel()" *ngIf="hospitalisation === null">
                 ANNULER
             </button>
             <button type="button" class="btn btn-success btn-label right" (click)="confirmAction()">
@@ -113,13 +113,13 @@
                 <h-select label="Conscience" [options]="consciences" [bindLabel]="'label'" [bindValue]="'value'"
                     [control]="conscience" [clearable]="false"></h-select>
             </div>
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
                 <label>&nbsp;</label>
                 <button type="button" class="btn btn-secondary w-100" (click)="openGlasgow()">
                     Score de Glasgow
                 </button>
-            </div>
-            <div class="col-md-12">
+            </div> -->
+            <div class="col-md-6">
                 <label>Score</label>
                 <h3>{{ glasgow.value }}</h3>
             </div>
