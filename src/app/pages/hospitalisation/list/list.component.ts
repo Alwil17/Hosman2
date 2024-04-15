@@ -9,6 +9,8 @@ import * as moment from "moment";
 import { Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
 import { hasStateChanges } from "src/app/helpers/utils";
+import { Cim11Component } from "src/app/components/cim11/cim11.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-list",
@@ -31,7 +33,8 @@ export class ListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private hospitalisationStore: HospitalisationStore,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
   ) {
     this.search.valueChanges.subscribe((value) => {
       this.doFilter(value);
@@ -39,6 +42,8 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.testCIM()
+
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
@@ -219,6 +224,21 @@ export class ListComponent implements OnInit {
     console.log(id);
     this.router.navigate(["/hospitalisation/edit"], {
       queryParams: { id: id },
+    });
+  }
+
+  testCIM(){
+    const modalRef = this.modalService.open(Cim11Component, {
+      size: "lg",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+
+    modalRef.componentInstance.modal = modalRef;
+    modalRef.componentInstance.closeModal.subscribe((data: any) => {
+      // return data
+      console.log(data)
     });
   }
 }

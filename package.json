@@ -36,6 +36,7 @@
         "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
         "@thisissoon/angular-inviewport": "^4.2.2",
         "@thisissoon/angular-scrollspy": "^2.2.0",
+        "@whoicd/icd11ect": "^1.7.0",
         "ag-grid-angular": "^27.0.0",
         "ag-grid-community": "^27.0.1",
         "angular-archwizard": "^7.0.0",

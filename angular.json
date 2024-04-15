@@ -45,6 +45,7 @@
               "src/assets/scss/icons.scss",
               "node_modules/shepherd.js/dist/css/shepherd.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@whoicd/icd11ect/style.css",
               "src/custom.scss"
             ],
             "scripts": [

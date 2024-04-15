@@ -1,0 +1,1513 @@
+       
+#tom {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+  }
+  #tom .clearfix:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  #tom .defaultFontColor {
+    color: #333;
+  }
+  #tom .defaultErrorAlert {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: #721c24;
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb;
+    font-size: 85%;
+  }
+  #tom .syntaxErrorAlert {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: #004085;
+    background-color: #cce5ff !important;
+    border-color: #b8daff;
+    font-size: 85%;
+  }
+  .ctw-input:not(.apiInitializationCompleted) {
+    background-color: #eee;
+    pointer-events: none;
+    color: #aea79f;
+  }
+  #tom .overflowBox {
+    overflow: auto;
+  }
+  #tom .browserContent {
+    height: 85vh;
+  }
+  #tom .browserBodyLeft,
+  #tom .browserBodyRight {
+    overflow: auto;
+    height: 80vh;
+  }
+  #tom .browserCloseiconWrapper {
+    float: right;
+  }
+  #tom ol,
+  #tom ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  #tom .embeddedBrowser .browser,
+  #tom .embeddedBrowser .browserBody,
+  #tom .embeddedBrowser .browserBodyLeft,
+  #tom .embeddedBrowser .browserBodyRight,
+  #tom .embeddedBrowser .browserContent {
+    height: inherit;
+    max-height: inherit;
+  }
+  .ctw-eb-window .embeddedBrowserSearchbox {
+    width: 30%;
+    margin-left: 20px;
+    height: 30px;
+  }
+  .ctw-eb-window .popupMode {
+    max-width: 60vw;
+  }
+  .ctw-eb-window .popupModeResults {
+    margin-left: 20px;
+  }
+  #tom .popupMode {
+    position: relative;
+  }
+  #tom .popupMode .popupModeTop {
+    margin-top: 4px;
+  }
+  #tom .popupMode .popupModeTop .entityLoading {
+    margin-left: 6px;
+  }
+  #tom .popupMode .popupModeTop .closeicon {
+    float: right;
+    margin-right: 6px;
+  }
+  #tom .popupMode .popupModeResults {
+    position: absolute;
+    z-index: 100002;
+    top: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    min-width: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: auto;
+  }
+  #tom #ctwFlexContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  #tom .ctwFlexItem25 {
+    width: 25%;
+  }
+  #tom .ctwFlexItem50 {
+    width: 50%;
+  }
+  #tom .ctwFlexItem75 {
+    width: 75%;
+  }
+  #tom .ctwFlexItem100 {
+    width: 100%;
+  }
+  #tom .ctwFlexItemPadding {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #tom .entityHead.currentEntityHighlighted,
+  #tom .entityHead:not(.keyboardOnlyHighlight):hover {
+    background-color: #eee;
+  }
+  #tom .importantlabel:not(.keyboardOnlyHighlight):hover,
+  #tom .importantlabelCurrentEntityHighlighted {
+    background-color: #cae1ed !important;
+  }
+  #tom .entityHead {
+    display: flex;
+    flex-direction: row;
+  }
+  #tom .entityTheCode {
+    flex-basis: 7em;
+    cursor: pointer;
+    color: #555;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #tom .entityTitleAndIcons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  #tom .entityTheCodeInDetails {
+    cursor: pointer;
+    color: #555;
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  #tom .entityTitle {
+    width: 100%;
+  }
+  #tom .entityTitlePointer {
+    cursor: pointer;
+  }
+  #tom .entityPv {
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+  }
+  #tom .entityPvPointer {
+    cursor: pointer;
+  }
+  #tom .entityPv .entityPvBadge {
+    font-size: 80%;
+    white-space: nowrap;
+    background-color: #feeebd;
+    border: 1px solid #d19405;
+    text-align: center;
+    border-radius: 2px;
+    margin: 0 5px;
+    padding: 0 5px;
+    vertical-align: 1px;
+    cursor: default;
+  }
+  #tom .entityDetails {
+    margin-top: 10px;
+    margin-bottom: 13px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f8f8f8 !important;
+  }
+  #tom .entityDetails .entityDetailsSelection .entityHead {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  #tom .entityDetails .showAllEntities .entityHead {
+    padding-left: 4px;
+  }
+  #tom .entityDetailsError {
+    margin-bottom: 13px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  #tom .entityDetails .entityDetailsContentAfterHead {
+    font-size: 85%;
+    margin-top: 4px;
+  }
+  #tom .entityDetails .entityDetailsContent {
+    padding: 4px 8px;
+  }
+  #tom .entityDetailsCodeAndTitle {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 8px;
+  }
+  #tom .entityDetailsCodeAndTitle .entityDetailsTheCode {
+    color: #555;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  #tom .entityDetailsSelectionHeader {
+    display: flex;
+    flex-direction: row;
+  }
+  #tom .entityDetailsSelectionHeader .mitHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  #tom .entityDetailsSelectionHeader .mitHeader .mitHeaderFlex {
+    width: 100%;
+  }
+  #tom .entityDetailsSelectionHeader .pcHeader {
+    white-space: nowrap;
+  }
+  #tom .entityDetailsSelection {
+    background-color: #fff !important;
+    border: 1px solid #e8e6e6;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  #tom .entityDetailsSelection .showAllEntities .entityTitleSelection {
+    font-size: 85%;
+  }
+  #tom
+    .entityDetailsSelection
+    .showAllEntities
+    .entityTitleSelection
+    .showlink {
+    margin-left: 4px !important;
+  }
+  #tom .entityTitleSelection {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  #tom .entityTitleSelectionFlex {
+    width: 100%;
+  }
+  #tom .entityTitlePointerSelection {
+    cursor: pointer;
+  }
+  #tom .entityDetails .entityDetailsProperties {
+    margin-top: 8px;
+    font-size: 85%;
+  }
+  #tom .entityDetails .entityDetailsContent .propertyWrapper {
+    margin-bottom: 8px;
+  }
+  #tom
+    .entityDetails
+    .entityDetailsContent
+    .propertyWrapper.lastPropertyWrapper {
+    margin-bottom: 4px;
+  }
+  #tom .entityDetails .entityDetailsContent .propertyHeader {
+    font-weight: 700;
+    color: #4e4c48;
+  }
+  #tom .entityDetails .entityDetailsContent .propertyHeaderSelection {
+    font-size: 85%;
+    font-weight: 700;
+    color: #4e4c48;
+  }
+  #tom .entityDetails .entityDetailsContent .property {
+    margin-left: 10px;
+  }
+  #tom .embeddedBrowserAllIndexTerms .subIndexTerm {
+    margin-left: 2.5rem;
+    font-size: 85%;
+    display: list-item;
+    list-style-type: circle;
+  }
+  #tom .entityLoading {
+    font-weight: 700;
+  }
+  @keyframes blink {
+    0% {
+      opacity: 0.2;
+    }
+    20% {
+      opacity: 1;
+    }
+    to {
+      opacity: 0.2;
+    }
+  }
+  #tom .entityLoading span {
+    margin-left: 2px;
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  #tom .entityLoading span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  #tom .entityLoading span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  #tom .elementToFadeOut {
+    animation: fadeOut 5s linear forwards;
+    border-radius: 2px;
+    padding-bottom: 1px;
+  }
+  @keyframes fadeOut {
+    0%,
+    90% {
+      background-color: #fbdaa0;
+    }
+    to {
+      background-color: transparent;
+    }
+  }
+  #tom .foundationCodingTool .ulDescendants {
+    padding-left: 30px;
+  }
+  #tom .browser.browserModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+  #tom .browser.browserModal .browserContent {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff !important;
+    margin: 3% 5%;
+    padding: 10px;
+  }
+  #tom .browser .browserBodyTitle {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #404040;
+    margin-bottom: 6px;
+    margin-right: 0;
+    border-bottom: 1px solid #ccc;
+  }
+  #tom .browser .browserBody {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  #tom .embeddedBrowser .browser .browserBody {
+    margin-top: 0;
+  }
+  #tom .embeddedBrowser .browser .browserBody.hierarchyNotAvailable {
+    display: inline;
+    display: initial;
+  }
+  #tom .browser .browserBodyLeft {
+    width: 31vw;
+    border-right: 1px solid #ccc;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  #tom .browser .browserBodyLeft.hierarchyResizable {
+    resize: horizontal;
+    min-width: 15vw;
+    max-width: 60vw;
+  }
+  #tom .browser .browserBodyRight {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  #tom .browser .propertyHeader {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  #tom .browser .property {
+    margin-left: 10px;
+    margin-bottom: 15px;
+  }
+  #tom .browser .subproperty {
+    font-size: 85%;
+    font-style: italic;
+    margin-left: 8px;
+  }
+  #tom .browser .parentcode {
+    font-weight: 600;
+    font-style: normal;
+    margin-right: 4px;
+  }
+  #tom .browser .propertyHeaderCodingNote,
+  #tom .browser .propertyHeaderDiagnosticCriteria,
+  #tom .browser .propertyHeaderPostcoordination {
+    background-color: #e8e8f0;
+    padding: 2px 10px 4px;
+    margin-top: 20px;
+  }
+  #tom .browser .propertyHeaderCodingNoteSub {
+    margin-left: 10px;
+  }
+  #tom .browser .idclass {
+    margin-right: 2px;
+    vertical-align: bottom;
+  }
+  #tom .browser .idclass,
+  #tom .browser .idclass2 {
+    color: #606060;
+    font-style: italic;
+    font-size: 0.8em;
+    white-space: nowrap;
+  }
+  #tom .browser .idclass2 {
+    margin-left: 8px;
+  }
+  #tom .browser .orangetextbutton {
+    font-size: 0.8em;
+    color: #df7030;
+    margin-left: 8px;
+    text-decoration: none;
+    vertical-align: bottom;
+  }
+  #tom .browser .markdownDefinition li {
+    list-style-type: disc;
+  }
+  #tom .browser .markdownDefinition table td {
+    border-bottom: 1px solid #ddd;
+    padding: 4px 20px 4px 0;
+  }
+  #tom .browser .markdownDefinition table th {
+    border-bottom: 1px solid #ddd;
+    padding: 4px 20px 4px 0;
+    text-align: left;
+  }
+  #tom .browser .markdownDefinition table ul {
+    margin-left: 0;
+    padding-left: 0;
+  }
+  #tom .browser .markdownDefinition table li {
+    list-style: none;
+  }
+  #tom .browser .propertyDiagnosticCriteria {
+    font-size: 14px;
+  }
+  #tom .browser .diagnosticCriteria h1 {
+    font-weight: 700;
+    font-size: 1em;
+    color: #b96021;
+    margin-bottom: 4px;
+    margin-top: 18px;
+    padding-bottom: 0;
+  }
+  #tom .browser .diagnosticCriteria h2 {
+    font-weight: 400;
+    font-size: 1em;
+    color: #b96021;
+    margin-bottom: 4px;
+    margin-top: 18px;
+    padding-bottom: 0;
+  }
+  #tom .browser .diagnosticCriteria h3 {
+    font-weight: 400;
+    font-size: 0.9em;
+    color: #b96021;
+    margin-bottom: 4px;
+    margin-top: 18px;
+    padding-bottom: 0;
+  }
+  #tom .browser .diagnosticCriteria h4 {
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 4px;
+    margin-top: 18px;
+    padding-bottom: 0;
+  }
+  #tom .openicon {
+    margin-right: 4px;
+  }
+  #tom .entityHead:hover > .openicon {
+    display: inline;
+  }
+  #tom .closeicon {
+    font-size: 9.8px;
+    color: #777;
+    cursor: pointer;
+    margin-right: 4px;
+    vertical-align: text-top;
+    font-weight: 700;
+  }
+  #tom .closeicon:hover {
+    color: #333;
+    background-color: #eee;
+  }
+  #tom .entityDetailsCloseiconWrapper {
+    position: relative;
+    float: right;
+  }
+  #tom .entityDetailsCloseicon {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    font-size: 9.8px;
+    color: #777;
+    border-radius: 3px;
+    padding: 0 3px 1px 2px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ccc;
+    font-weight: 700;
+  }
+  #tom .entityDetailsCloseicon:hover {
+    color: #333;
+    background-color: #eee;
+  }
+  #tom .dimensionicon {
+    font-size: smaller;
+    color: #777;
+    cursor: pointer;
+    margin-right: 4px;
+    margin-left: 6px;
+    vertical-align: top;
+  }
+  #tom .dimensionicon:hover {
+    color: #333;
+    background-color: #eee;
+  }
+  #tom .showlink {
+    color: #4169e1 !important;
+    cursor: pointer;
+    font-size: 85%;
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  #tom .showlinkPostcoordination {
+    font-size: 85%;
+    margin-right: 3px;
+    vertical-align: 2px;
+  }
+  #tom .showlinkNormalSize {
+    color: #4169e1 !important;
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  #tom .showlink:hover,
+  #tom .showlinkNormalSize:hover {
+    color: #4169e1;
+    text-decoration: none;
+  }
+  #tom .showlinkSeeInHierarchy {
+    color: #4169e1 !important;
+    cursor: pointer;
+    font-size: 85%;
+  }
+  #tom .showlinkSeeInHierarchy:hover {
+    text-decoration: none;
+  }
+  #tom .iconSeeInHierarchy {
+    font-size: 120%;
+    color: #fff;
+    background-color: #4f74e3;
+    padding: 0 4px;
+    border-radius: 3px;
+    margin-right: 2px;
+  }
+  #tom .showdetails {
+    font-size: 85%;
+    padding-right: 2px;
+    vertical-align: 2px;
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+  #tom .unicodeicon {
+    color: #4169e1;
+    font-size: 8px;
+    cursor: pointer;
+  }
+  #tom .mandatoryPostcoord {
+    color: #d45800;
+  }
+  #tom .circleicon {
+    cursor: pointer;
+  }
+  #tom .circleicon,
+  #tom .circleiconWithinDetails {
+    font-family: "Courier New";
+    font-weight: 700;
+    font-size: 9.8px;
+    color: #424242;
+    border-radius: 50%;
+    padding: 1px 4px;
+    margin-left: 2px;
+    vertical-align: 2px;
+  }
+  #tom .circleiconWithinDetails {
+    cursor: default;
+  }
+  #tom .circleiconWithinDetailsHeaders {
+    font-family: "Courier New";
+    font-weight: 700;
+    font-size: 9.8px !important;
+    color: #424242;
+    border-radius: 50%;
+    padding: 1px 4px;
+    margin-left: 6px;
+    cursor: default;
+    vertical-align: 2px;
+  }
+  #tom .pacolor {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding-right: 3px !important;
+    font-weight: 700;
+  }
+  #tom .prcolor {
+    background: #facdac;
+    border: 1px solid #f8b687;
+    padding-right: 3px !important;
+    font-weight: 700;
+  }
+  #tom .mlcolor {
+    background: #f8ee69;
+    border: 1px solid #f0f00f;
+    font-weight: 700;
+  }
+  #tom .plcolor {
+    background: #e2d0e2;
+    border: 1px solid #cfb0cf;
+    font-weight: 700;
+  }
+  #tom .cncolor {
+    background: #ace259;
+    border: 1px solid #9ac754;
+    padding: 1px 3px 1px 2px !important;
+    font-weight: 700;
+  }
+  #tom .entityDetails .circleiconWithinDetails {
+    cursor: pointer;
+  }
+  #tom .hierarchy ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #tom .hierarchy ul ul {
+    padding-left: 18px;
+  }
+  #tom .hierarchy .topul li {
+    margin-bottom: 3px;
+  }
+  #tom .hierarchy .collapsed,
+  .hierarchy .expanded {
+    cursor: pointer;
+    width: 16px;
+    display: inline-block;
+    font-size: 0.8em;
+  }
+  #tom .hierarchy .collapsed {
+    vertical-align: top;
+  }
+  #tom .hierarchy .expanded {
+    vertical-align: top;
+    position: relative;
+    top: 2px;
+  }
+  #tom .hierarchy .empty {
+    width: 16px;
+    display: inline-block;
+  }
+  #tom .hierarchy .codeinh {
+    font-weight: 600;
+  }
+  #tom .hierarchy .nodeWindow .codeinh,
+  #tom .hierarchy .nodeWindow .titleinh {
+    color: #668;
+  }
+  #tom .hierarchy .nodeAdoptedChild .codeinh,
+  #tom .hierarchy .nodeAdoptedChild .titleinh {
+    color: #999;
+  }
+  #tom .hierarchy .nodeResidual .codeinh,
+  #tom .hierarchy .nodeResidual .titleinh {
+    color: maroon;
+  }
+  #tom .hierarchy .nodeAdoptedResidual .codeinh,
+  #tom .hierarchy .nodeAdoptedResidual .titleinh {
+    color: rgba(128, 0, 0, 0.6);
+  }
+  #tom .hierarchy .hideNodeWindow {
+    display: none;
+  }
+  #tom .hierarchy .labelinh {
+    cursor: pointer;
+    width: calc(100% - 16px);
+    display: inline-block;
+  }
+  #tom .hierarchy .selected {
+    background-color: #fef6e8 !important;
+  }
+  #tom .hierarchy .labelinh:hover {
+    background-color: #eee;
+  }
+  #tom .hierarchy .rsubtitle {
+    font-style: italic;
+    color: #505050;
+  }
+  #tom .browserBodyLeft .hierarchy .rtitle {
+    font-weight: 600;
+    color: #505050;
+  }
+  #tom .hierarchy .nodeError {
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+  #tom .postcoordinatedCodeLeft {
+    float: left;
+  }
+  #tom .postcoordinatedCodeRight {
+    float: right;
+  }
+  #tom .postcoordColored {
+    font-style: normal;
+    color: #d45800;
+  }
+  #tom .postcoordAction {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    border-left: thin solid #b96021;
+    background-color: #f8f8f8;
+  }
+  #tom .postcoordAction .hierarchy {
+    max-height: 300px;
+    overflow: auto;
+  }
+  #tom .postcoordActionClickable {
+    cursor: pointer;
+  }
+  #tom .highlightedEntity,
+  #tom .postcoordActionClickable:hover {
+    background-color: #eee;
+  }
+  #tom .highlightedEntityPv {
+    background-color: #eee;
+    border-right: 2px solid #eee !important;
+    border-bottom: 2px solid #eee !important;
+  }
+  #tom .highlightedParent {
+    position: relative;
+  }
+  #tom .highlightedEntityArrow {
+    left: -15px;
+    position: absolute;
+    color: #d45800;
+  }
+  #tom .icdcodewpc .stemcodestyle {
+    font-weight: 500;
+  }
+  #tom .icdcodewpc .simplifiedcode {
+    text-decoration: underline;
+    display: inline-block;
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    animation-iteration-count: 1;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+  #tom .icdcodewpc .codedelimamp {
+    display: inline-block;
+    margin: 0 1px;
+    color: #8080e0;
+    font-weight: 500;
+    font-size: 0.9em;
+  }
+  #tom .icdcodewpc .codedelimsl {
+    display: inline-block;
+    margin: 0 3px;
+    color: #df7030;
+    font-weight: 700;
+    font-size: 0.9em;
+  }
+  #tom .icdcodewpc .xchaptercodestyle {
+    font-size: 0.9em;
+    color: #666;
+  }
+  #tom .postcoordSticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -10px;
+    background-color: #fff;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    z-index: 100001;
+  }
+  #tom .postcoordForSelection {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fef6e8 !important;
+    padding: 10px;
+  }
+  #tom .postcoordForSelection .postcoordCode {
+    font-size: 110%;
+    cursor: pointer;
+  }
+  #tom .postcoorForSelectionURI {
+    margin-top: 6px;
+  }
+  #tom .postcoorForSelectionURI .postcoordURI {
+    color: #606060;
+    font-style: italic;
+    font-size: 0.8em;
+    white-space: normal;
+    cursor: pointer;
+  }
+  #tom .postcoorForSelectionURI .postcoordURI .codedelimamp,
+  #tom .postcoorForSelectionURI .postcoordURI .codedelimsl {
+    font-style: normal;
+    font-size: 1.2em;
+  }
+  #tom .postcoordForSelection button {
+    color: #4169e1;
+    background-color: #fff;
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+  }
+  #tom .postcoordForSelection button:hover {
+    background-color: #eee;
+  }
+  #tom .postcoordForSelection .postcoordForSelectionLeft {
+    float: left;
+  }
+  #tom .postcoordForSelection .postcoordForSelectionRight {
+    float: right;
+  }
+  #tom .propertyPostcoordinationSummary .pccodeset {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  #tom .propertyPostcoordinationSummary .liFlex {
+    display: flex;
+  }
+  #tom .propertyPostcoordinationSummary .axis {
+    width: 200px;
+    color: #505050;
+    font-size: 0.9em;
+    font-weight: 400;
+    color: #b96021;
+  }
+  #tom .propertyPostcoordinationSummary .axisWithName {
+    margin-top: 10px;
+  }
+  #tom .propertyPostcoordinationSummary .values {
+    flex-grow: 1;
+  }
+  #tom .propertyPostcoordinationSummary .pccode {
+    font-weight: 600;
+    color: #444;
+    font-size: 0.9em;
+    margin-right: 10px;
+  }
+  #tom .propertyPostcoordinationSummary .pctitle {
+    color: #444;
+    font-size: 0.9em;
+    margin-right: 10px;
+  }
+  #tom .propertyPostcoordinationSummary .pcdelete {
+    font-size: 0.8em;
+    cursor: pointer;
+  }
+  #tom .postcoordSearch .rtitle {
+    color: #b96021;
+  }
+  #tom .postcoordSearch .rsubtitle {
+    font-style: italic;
+    color: #505050;
+  }
+  #tom .postcoordSearchInput input {
+    margin-right: 10px;
+    width: 40%;
+  }
+  #tom .postcoordSearchInputToResult {
+    position: relative;
+  }
+  #tom .postcoordSearchResult {
+    position: absolute;
+    z-index: 100000;
+    top: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    min-width: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  #tom .postcoordSearchResult .closeSearch {
+    float: right;
+    font-size: 9.8px;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+  }
+  #tom .postcoordSearchResult .postcoordSearchResultList {
+    float: left;
+  }
+  #tom .postcoordSearchResult ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #tom .postcoordSearchResult ul ul {
+    padding-left: 18px;
+  }
+  #tom .postcoordSearchResult .postcoordFlex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  #tom .postcoordSearchResult .labelinh {
+    cursor: pointer;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 4px;
+  }
+  #tom .postcoordSearchResult .titleinh {
+    width: 100%;
+  }
+  #tom .postcoordSearchResult .postcoordPvs {
+    font-size: small;
+    background-color: #fef6e8;
+    z-index: 1002;
+    overflow: auto;
+    margin-left: 7em;
+    cursor: auto;
+  }
+  #tom .postcoordSearchResult .clickinh:hover {
+    background-color: #eee;
+  }
+  #tom .postcoordSearchResult .searchError {
+    border-radius: 3px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  #tom .messageright {
+    float: right;
+  }
+  #tom .messageleft {
+    float: left;
+  }
+  #tom .wordlist ul {
+    list-style: none;
+    margin-left: -40px;
+  }
+  #tom .wordlist li {
+    cursor: pointer;
+    width: 140px;
+    text-indent: -10px;
+    padding-left: 10px;
+  }
+  #tom .wordlist li:hover {
+    background-color: #eee;
+  }
+  #tom .wordlist .dontChangeResult {
+    color: #b0a0a0;
+  }
+  #tom .browser ul.toplevel,
+  #tom .entitylist ul.toplevel {
+    list-style: none;
+    margin-left: -40px;
+  }
+  #tom .browser em.foundpc,
+  #tom .entitylist em.foundpc {
+    font-weight: 700;
+    font-style: normal;
+    color: red;
+  }
+  #tom .browser em.found,
+  #tom .browser em.found em.wbe,
+  #tom .entitylist em.found,
+  #tom .entitylist em.found em.wbe {
+    font-weight: 700;
+    font-style: normal;
+    color: #d45800;
+  }
+  #tom .browser em.found em.nonwbe,
+  #tom .entitylist em.found em.nonwbe {
+    font-weight: 400;
+    font-style: normal;
+    color: #d45800;
+  }
+  #tom .browser em.foundpc em.wbe,
+  #tom .entitylist em.foundpc em.wbe {
+    font-weight: 700;
+    font-style: normal;
+    color: red;
+  }
+  #tom .browser em.foundpc em.nonwbe,
+  #tom .entitylist em.foundpc em.nonwbe {
+    font-weight: 400;
+    font-style: normal;
+    color: red;
+  }
+  #tom .browser em.wbe,
+  #tom .entitylist em.wbe {
+    font-weight: 700;
+    font-style: normal;
+    color: #d45800;
+  }
+  #tom .browser em.nonwbe,
+  #tom .entitylist em.nonwbe {
+    font-weight: 400;
+    font-style: normal;
+    color: #d45800;
+  }
+  #tom .searchresults h5 {
+    color: #d45800;
+  }
+  #tom .searchresults h4 {
+    color: #d45800;
+    margin-bottom: 0;
+    font-size: 18px;
+    font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica,
+      Verdana, sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  #tom .detailsicon {
+    font-size: 8px;
+    color: #728ead;
+    cursor: pointer;
+  }
+  #tom .browsericon {
+    font-size: smaller;
+    color: #d45800;
+    cursor: pointer;
+  }
+  #tom a.browsericon {
+    text-decoration: none;
+  }
+  #tom a.browsericon:visited {
+    color: #d45800;
+  }
+  #tom .pvs {
+    font-size: small;
+    background-color: #fef6e8;
+    z-index: 1002;
+    overflow: auto;
+    margin-left: 8em;
+  }
+  #tom .foundationCodingTool .pvs {
+    margin-left: 1.4em;
+  }
+  #tom .destinationentitiesdiv .toplevel li {
+    margin-bottom: 3px;
+  }
+  #tom .toplevel li {
+    list-style: none;
+  }
+  #tom .searchresults .title {
+    text-align: left;
+    margin-left: 10px;
+  }
+  #tom .searchresults ul dt.thecode {
+    font-weight: 700;
+    color: #606060;
+    text-align: left;
+    cursor: pointer;
+  }
+  #tom .searchresults ul dt.thecode-4 {
+    width: 3em;
+  }
+  #tom .searchresults ul dt.thecode-5 {
+    width: 3.4em;
+  }
+  #tom .searchresults ul dt.thecode-6 {
+    width: 3.9em;
+  }
+  #tom .searchresults ul dt.thecode-7 {
+    width: 4.6em;
+  }
+  #tom .searchresults ul dt.thecode-8 {
+    width: 4.9em;
+  }
+  #tom .searchresults ul dt.thecode-9 {
+    width: 5.2em;
+  }
+  #tom .searchresults ul dt.thecode-10 {
+    width: 5.9em;
+  }
+  #tom .searchresults ul dt.thecode-11 {
+    width: 6.5em;
+  }
+  #tom .searchresults ul dt.thecode-12 {
+    width: 7em;
+  }
+  #tom .searchresults dl {
+    margin-top: 0;
+    margin-bottom: 3px;
+  }
+  #tom .sortoption {
+    position: relative;
+    float: right;
+    font-size: 0.9em;
+    color: #4169e1;
+  }
+  #tom .listhead {
+    margin-bottom: 35px;
+  }
+  #tom .listhead h4 {
+    margin-top: 10px !important;
+  }
+  #tom .chdistro {
+    margin-left: -40px;
+    list-style: none;
+  }
+  #tom .ch01 {
+    background-color: #f7c3b5;
+  }
+  #tom .ch02 {
+    background-color: #e5cbf8;
+  }
+  #tom .ch03 {
+    background-color: #beeb9f;
+  }
+  #tom .ch04 {
+    background-color: #79bd8f;
+  }
+  #tom .ch05 {
+    background-color: #d0fcff;
+  }
+  #tom .ch06 {
+    background-color: #ededed;
+  }
+  #tom .ch07 {
+    background-color: #f2e088;
+  }
+  #tom .ch08 {
+    background-color: #95c3c7;
+  }
+  #tom .ch09 {
+    background-color: #ffff9d;
+  }
+  #tom .ch10 {
+    background-color: #c6f4d5;
+  }
+  #tom .ch11 {
+    background-color: #e3d2b4;
+  }
+  #tom .ch12 {
+    background-color: #fff7ea;
+  }
+  #tom .ch13 {
+    background-color: #7da626;
+  }
+  #tom .ch14 {
+    background-color: #bcd952;
+  }
+  #tom .ch15 {
+    background-color: #eefec3;
+  }
+  #tom .ch16 {
+    background-color: #6dbcdb;
+  }
+  #tom .ch17 {
+    background-color: #ff9c47;
+  }
+  #tom .ch18 {
+    background-color: #facdac;
+  }
+  #tom .ch19 {
+    background-color: #f2e088;
+  }
+  #tom .ch20 {
+    background-color: #94e5d5;
+  }
+  #tom .ch21 {
+    background-color: #d1dbbd;
+  }
+  #tom .ch22 {
+    background-color: #91aa9d;
+  }
+  #tom .ch23 {
+    background-color: #bdd4de;
+  }
+  #tom .ch24 {
+    background-color: #f2ebbf;
+  }
+  #tom .ch25 {
+    background-color: #c3cfeb;
+  }
+  #tom .ch26 {
+    background-color: #d7d8dc;
+  }
+  #tom .ch27 {
+    background-color: #d9cb9e;
+  }
+  #tom .chapter {
+    font-size: 0.9em;
+    vertical-align: central;
+  }
+  #tom .freq {
+    font-style: italic;
+    font-size: 0.9em;
+    position: absolute;
+    right: 8px;
+    top: 0;
+  }
+  #tom .chtitlediv {
+    position: relative;
+    margin-left: 10px;
+    padding-right: 24px;
+    padding-left: 20px;
+    text-indent: -20px;
+  }
+  #tom .chaptertitle,
+  #tom .showallbutton {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  #tom .showallbutton {
+    position: absolute;
+    top: -20px;
+    white-space: nowrap;
+  }
+  #tom #chapters {
+    position: relative;
+  }
+  #tom .important {
+    margin-left: 6px;
+    cursor: default;
+  }
+  #tom .importantlabel {
+    background-color: #dbf2fe !important;
+  }
+  #tom #flexisearchbtn {
+    background-color: #03038d;
+    color: #eee;
+    padding: 1px 8px;
+    cursor: pointer;
+    margin-right: 2px;
+    display: inline-block;
+  }
+  #tom .flexisearchwarning {
+    position: absolute;
+    top: 30px;
+    right: 6px;
+    color: #03038d;
+    font-weight: 300;
+  }
+  #tom .flexi {
+    color: #03038d;
+    font-weight: 300;
+  }
+  #tom .clipboard,
+  #tom .pcicon {
+    color: #777;
+    font-weight: 300;
+  }
+  #tom .pcicon {
+    font-size: 0.8em;
+  }
+  #tom .entityInList .notleaf,
+  #tom .postcoordSearchResultList .notleaf {
+    background-color: #ececec;
+    color: #555;
+    font-weight: 400;
+    padding-left: 2px;
+    font-size: 1.1em;
+    padding-right: 2px;
+  }
+  #tom .chopped {
+    color: #d45800;
+  }
+  #tom select {
+    color: #4169e1;
+  }
+  #tom .filterSwitch {
+    position: relative;
+    display: inline-block;
+    top: 2px;
+    right: 1px;
+    width: 43px;
+    height: 17px;
+  }
+  #tom .filterSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  #tom .filterSwitch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ddd;
+    transition: 0.4s;
+  }
+  #tom .filterSwitch .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #fff;
+    transition: 0.4s;
+  }
+  #tom .filterSwitch input:checked + .slider {
+    background-color: #9acbb1;
+  }
+  #tom .filterSwitch input:focus + .slider {
+    box-shadow: 0 0 1px #9acbb1;
+  }
+  #tom .filterSwitch input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  #tom .filterSwitch .slider.round {
+    border-radius: 34px;
+  }
+  #tom .filterSwitch .slider.round:before {
+    border-radius: 50%;
+  }
+  #tom .filterSwitchLabel {
+    margin-right: 6px;
+    margin-left: 6px;
+    color: #777;
+  }
+  #tom .filterSwitchStar {
+    color: #d45800;
+    cursor: help;
+  }
+  #tom #statusFlexContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  #tom .statusFlexWords {
+    text-align: left;
+    color: #777;
+  }
+  #tom .statusFlexInfo {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #tom .statusFlexFilter {
+    text-align: right;
+  }
+  #tom .statusError {
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+  #tom .textNotFound {
+    color: #777;
+  }
+  #tom .tooltipWrapper {
+    text-align: left;
+    text-align: initial;
+    position: relative;
+    display: inline-block;
+    z-index: 100003;
+  }
+  #tom .tooltipContent {
+    position: absolute;
+    width: 25vw;
+    max-width: 80vw;
+    max-height: 600px;
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0/20%), 0 6px 20px 0 rgb(0 0 0/19%);
+    color: #777;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  #tom .tooltipCloseiconWrapper {
+    float: right;
+  }
+  #tom .tooltipLinkKeyboard {
+    color: #777;
+    vertical-align: -1px;
+    cursor: help;
+    margin-right: 25px;
+  }
+  #tom .tooltipLinkKeyboard:hover,
+  #tom .tooltipLinkKeyboardOpen {
+    background-color: #eee;
+  }
+  #tom .tooltipContentKeyboard {
+    top: 5px;
+    right: 1vw;
+  }
+  #tom .tooltipPostcoordination {
+    font-family: "Courier New";
+    font-weight: 700;
+    font-size: 9.8px;
+    border-radius: 50%;
+    padding: 1px 4px;
+    cursor: help;
+    vertical-align: 2px;
+    color: #4169e1;
+    background-color: #fff;
+    border: 1px solid #7a7a7a;
+    margin-left: 4px;
+    margin-right: 6px;
+  }
+  #tom .tooltipPostcoordination:hover {
+    background-color: #eee;
+    border-color: #4169e1;
+  }
+  #tom .tooltipOpenEndedPostcoordination {
+    vertical-align: 3px !important;
+  }
+  #tom .tooltipContentPostcoordination {
+    list-style-type: none;
+  }
+  #tom .tooltipContentPostcoordination ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  #tom .statusAdvancedsearch {
+    white-space: nowrap;
+    color: #d19405 !important;
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: 400;
+    margin-right: 0.5em;
+  }
+  #tom .statusAdvancedsearch .unicodeicon {
+    color: #d19405 !important;
+    vertical-align: 0;
+  }
+  #tom .advancedsearchdiv {
+    display: flex;
+    background-color: #feeebd;
+    border: 1px solid #d19405;
+    border-radius: 3px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+  }
+  #tom .advancedsearchdiv .advancedsearchIndexTerms {
+    display: inline-block;
+    margin-right: 1em;
+  }
+  #tom .advancedsearchdiv .advancedsearchInput {
+    display: inline-block;
+    margin-right: 0.5em;
+  }
+  #tom .advancedsearchdiv .advancedsearchIndexTerms input,
+  #tom .advancedsearchdiv .advancedsearchIndexTerms label,
+  #tom .advancedsearchdiv .advancedsearchInput input,
+  #tom .advancedsearchdiv .advancedsearchInput label {
+    vertical-align: 1px;
+    cursor: pointer;
+  }
+  #tom .browser,
+  #tom .entityTheCode,
+  #tom .postcoordCode,
+  #tom .statusFlexInfo .clipboard {
+    direction: ltr;
+  }
