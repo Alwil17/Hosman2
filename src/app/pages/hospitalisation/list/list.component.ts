@@ -42,8 +42,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.testCIM()
-
+    
     this.subscription = this.hospitalisationStore.stateChanged
       .pipe(pairwise())
       .subscribe(([previous, current]) => {
@@ -224,21 +223,6 @@ export class ListComponent implements OnInit {
     console.log(id);
     this.router.navigate(["/hospitalisation/edit"], {
       queryParams: { id: id },
-    });
-  }
-
-  testCIM(){
-    const modalRef = this.modalService.open(Cim11Component, {
-      size: "lg",
-      centered: true,
-      keyboard: false,
-      backdrop: "static",
-    });
-
-    modalRef.componentInstance.modal = modalRef;
-    modalRef.componentInstance.closeModal.subscribe((data: any) => {
-      // return data
-      console.log(data)
     });
   }
 }

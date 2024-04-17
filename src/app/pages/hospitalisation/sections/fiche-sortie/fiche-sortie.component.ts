@@ -1,10 +1,13 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { MessageService } from "@services/messages/message.service";
 import { HospitalisationStore } from "@stores/hospitalisation";
 import { ToastrService } from "ngx-toastr";
 import { Subscription, pairwise } from "rxjs";
+import { Cim11Component } from "src/app/components/cim11/cim11.component";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { formatDate, hasStateChanges, markAllControlsAsTouched, validateYupSchema } from "src/app/helpers/utils";
 import * as Yup from "yup";
@@ -49,6 +52,8 @@ export class FicheSortieComponent implements OnInit {
     private message: MessageService,
     private toast: ToastrService,
     private router: Router,
+    private modalService: NgbModal,
+    private http: HttpClient,
   ) { }
 
   ngOnInit(): void {
@@ -122,19 +127,21 @@ export class FicheSortieComponent implements OnInit {
           enceinte: this.fGroup.value.enceinte,
           date_op: new Date(this.fGroup.value.date_op),
           hospit_id: this.hospitalisation_id,
-          diagnostics: this.diagnostics.map((d) => { return { diagnostic : d.value}})
+          diagnostics: this.diagnostics.map((d) => { return { diagnostic : d.value.split(' - ')[0]}})
         };
 
+
+        console.log(data)
         
         if (this.sortie !== null && this.sortie !== undefined && 'id' in this.sortie) {
           data.id = this.sortie.id
         }
 
-        this.hospitalisationStore.saveSortie(data).subscribe({
-          next: (v) => {
-            data.id = v;
-            this.toast.success("Hospitalisation", "Enregistrement effectué");
-            this.hospitalisationStore.fetchSortie(this.hospitalisation_id!);
+        // this.hospitalisationStore.saveSortie(data).subscribe({
+        //   next: (v) => {
+        //     data.id = v;
+        //     this.toast.success("Hospitalisation", "Enregistrement effectué");
+        //     this.hospitalisationStore.fetchSortie(this.hospitalisation_id!);
 
             // this.hospitalisation.status = 1
 
@@ -147,12 +154,31 @@ export class FicheSortieComponent implements OnInit {
             //   },
             //   error: (e) => console.error(e),
             // });
-          },
-          error: (e) => console.error(e),
-        });
+        //   },
+        //   error: (e) => console.error(e),
+        // });
       }
     }
   }
+
+
+  
+  openCIM(input: FormControl){
+    const modalRef = this.modalService.open(Cim11Component, {
+      size: "lg",
+      centered: true,
+      keyboard: false,
+      backdrop: "static",
+    });
+
+    modalRef.componentInstance.modal = modalRef;
+    modalRef.componentInstance.closeModal.subscribe((data: any) => {
+      // return data
+      // console.log(data)
+      input.setValue(data.code + " - " + data.selectedText)
+    });
+  }
+
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe;

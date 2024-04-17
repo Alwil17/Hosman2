@@ -35,7 +35,7 @@ export class HInputComponent implements OnInit {
   emitOnInputClick = false;
 
   @Output()
-  onInputClick = new EventEmitter();
+  onInputClick: EventEmitter<void> = new EventEmitter<void>();
 
   @Input() uppercased = false;
   @Input() titlecased = false;
@@ -77,7 +77,7 @@ export class HInputComponent implements OnInit {
     }
   }
 
-  emitInputClick() {
+  emitInputClick() : void {
     this.onInputClick.emit();
   }
 
