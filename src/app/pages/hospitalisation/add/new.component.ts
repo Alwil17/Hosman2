@@ -85,9 +85,9 @@ export class HospitHomeComponent implements OnInit {
           this.patient = current.patient;
         }
         
-        if (this.suivis !== undefined && this.suivis !== null && this.hospitalisation !== null) {
-          this.getAutoAddRoom();
-        }
+        // if (this.suivis !== undefined && this.suivis !== null && this.hospitalisation !== null) {
+        //   this.getAutoAddRoom();
+        // }
       });
   }
 

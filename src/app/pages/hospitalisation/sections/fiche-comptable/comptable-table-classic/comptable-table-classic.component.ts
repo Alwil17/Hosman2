@@ -10,11 +10,7 @@ import { HospitalisationStore } from "@stores/hospitalisation";
 import { FormControl, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import * as Yup from "yup";
-import {
-  formatDate,
-  slugify,
-  validateYupSchema,
-} from "src/app/helpers/utils";
+import { formatDate, slugify, validateYupSchema } from "src/app/helpers/utils";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Chart, ChartOptions, registerables } from "chart.js";
@@ -65,7 +61,7 @@ export class ComptableTableClassicComponent implements OnInit {
   suivis: any[] = [];
   chartsLabels: any[] = [];
   chartsDatas: any[] = [];
-  last_room: any = null
+  last_room: any = null;
 
   currentEvolution = new FormControl(null, []);
   currentEvolutionDay: moment.Moment = moment();
@@ -87,7 +83,7 @@ export class ComptableTableClassicComponent implements OnInit {
     [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
 
-  watchValueOptions : any[] = []
+  watchValueOptions: any[] = [];
 
   watchFg: FormGroup = new FormGroup({});
 
@@ -176,10 +172,9 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   initLineChart() {
+    let re_watch: any = [];
 
-    let re_watch : any = []
-
-    WATCHES.forEach((w : any) => {
+    WATCHES.forEach((w: any) => {
       const watchname = w.name;
 
       const list = this.suivis
@@ -207,149 +202,152 @@ export class ComptableTableClassicComponent implements OnInit {
         })
         .sort((a, b) => a.milli - b.milli);
 
-        if (list.length === 0) { w.empty = true } else { re_watch.push(w) }
+      if (list.length === 0) {
+        w.empty = true;
+      } else {
+        re_watch.push(w);
+      }
 
       const lineCanvasEle: any = document.getElementById(w.name);
 
       if (lineCanvasEle) {
-
         if (list.length === 0) {
-
           lineCanvasEle.height = 50;
-          const ctx = lineCanvasEle.getContext('2d');
+          const ctx = lineCanvasEle.getContext("2d");
           const centerX = lineCanvasEle.width / 2;
           const centerY = lineCanvasEle.height / 2;
           const width = 30;
 
-          ctx.fillStyle = '#3577f1';
+          ctx.fillStyle = "#3577f1";
           ctx.fillRect(centerX - width / 2, centerY - 1, width, 2);
           ctx.fillRect(centerX - 1, centerY - width / 2, 2, width);
-
         } else {
-
-           const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
-          type: "line",
-          data: {
-            labels: list.map(
-              (m) =>
-                "J" +
-                parseInt(
-                  this.days.find((d) =>
-                    moment(d.o).isSame(moment(m.date).format("yyyy-MM-DD"))
-                  ).i + 1
-                )
-            ),
-            datasets: [
-              {
-                data: list.map((m) => m.value),
-                borderColor: "#8A1776",
-                borderWidth: 3,
-                pointBackgroundColor: "#8A1776",
-                pointBorderWidth: 2,
-                pointStyle: "circle",
-                pointRadius: 7,
-                pointHoverRadius: 9,
-                tension: 0.5,
-                datalabels: {
-                  labels: {
-                    hour: {
-                      font: {
-                        weight: "bold",
-                        family: "Inter",
-                        size: 12,
+          const lineChar = new Chart(lineCanvasEle.getContext("2d"), {
+            type: "line",
+            data: {
+              labels: list.map(
+                (m) =>
+                  "J" +
+                  parseInt(
+                    this.days.find((d) =>
+                      moment(d.o).isSame(moment(m.date).format("yyyy-MM-DD"))
+                    ).i + 1
+                  )
+              ),
+              datasets: [
+                {
+                  data: list.map((m) => m.value),
+                  borderColor: "#8A1776",
+                  borderWidth: 3,
+                  pointBackgroundColor: "#8A1776",
+                  pointBorderWidth: 2,
+                  pointStyle: "circle",
+                  pointRadius: 7,
+                  pointHoverRadius: 9,
+                  tension: 0.5,
+                  datalabels: {
+                    labels: {
+                      hour: {
+                        font: {
+                          weight: "bold",
+                          family: "Inter",
+                          size: 12,
+                        },
+                        align: "end",
+                        anchor: "end",
+                        offset: 1,
+                        color: "green",
+                        formatter: (value: any, context: any) => {
+                          return `${list[context.dataIndex].hour}`;
+                        },
                       },
-                      align: "end",
-                      anchor: "end",
-                      offset: 1,
-                      color: "green",
-                      formatter: (value: any, context: any) => {
-                        return `${list[context.dataIndex].hour}`;
+                      title: {
+                        font: {
+                          weight: "bold",
+                          family: "Inter",
+                          size: 15,
+                        },
+                        align: "start",
+                        anchor: "start",
+                        offset: 1,
+                        color: "#8A1776",
                       },
-                    },
-                    title: {
-                      font: {
-                        weight: "bold",
-                        family: "Inter",
-                        size: 15,
-                      },
-                      align: "start",
-                      anchor: "start",
-                      offset: 1,
-                      color: "#8A1776",
                     },
                   },
                 },
-              },
-            ],
-          },
-          options: {
-            layout: {
-              padding: {
-                left: 0,
-                right: 0,
-                top: 20,
-                bottom: 30,
-              },
+              ],
             },
-            indexAxis: "x",
-            maintainAspectRatio: false,
-            // aspectRatio: 1,
+            options: {
+              layout: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top: 20,
+                  bottom: 30,
+                },
+              },
+              indexAxis: "x",
+              maintainAspectRatio: false,
+              // aspectRatio: 1,
 
-            responsive: false,
-            scales: {
-              x: {
-                grid: {
+              responsive: false,
+              scales: {
+                x: {
+                  grid: {
+                    display: false,
+                  },
+                  offset: true,
+                  position: w.xPosition as
+                    | "left"
+                    | "right"
+                    | "bottom"
+                    | "top"
+                    | "center",
+                },
+                y: {
+                  ticks: {
+                    stepSize: w.stepSize,
+                    suggestedMin: 0,
+                  } as { [key: string]: any },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  enabled: true,
+                },
+                legend: {
                   display: false,
                 },
-                offset: true,
-                position: w.xPosition as
-                  | "left"
-                  | "right"
-                  | "bottom"
-                  | "top"
-                  | "center",
-              },
-              y: {
-                ticks: {
-                  stepSize: w.stepSize,
-                  suggestedMin: 0,
-                } as { [key: string]: any },
+                // title: {
+                //   display: true,
+                //   fullSize: false,
+                //   position: "left",
+                //   padding: {
+                //     bottom: 10,
+                //   },
+                //   text: w.label,
+                //   font: {
+                //     family: "Inter",
+                //     size: 14,
+                //     style: "normal",
+                //     weight: "normal",
+                //   },
+                // },
               },
             },
-            plugins: {
-              tooltip: {
-                enabled: true,
-              },
-              legend: {
-                display: false,
-              },
-              // title: {
-              //   display: true,
-              //   fullSize: false,
-              //   position: "left",
-              //   padding: {
-              //     bottom: 10,
-              //   },
-              //   text: w.label,
-              //   font: {
-              //     family: "Inter",
-              //     size: 14,
-              //     style: "normal",
-              //     weight: "normal",
-              //   },
-              // },
-            },
-          },
-        });
+          });
         }
-
-
       }
     });
 
-    re_watch = [...re_watch, ...WATCHES.filter((w:any) => re_watch.find((r:any) => r.name === w.name) === undefined)]
+    re_watch = [
+      ...re_watch,
+      ...WATCHES.filter(
+        (w: any) => re_watch.find((r: any) => r.name === w.name) === undefined
+      ),
+    ];
 
-    this.charts = re_watch
+    this.charts = re_watch;
   }
 
   genDays() {
@@ -606,8 +604,21 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   selectItem(day: moment.Moment, type_id: number, extra?: any) {
-    if (this.typeData == "chambres") {
+    if (this.typeData === "chambres") {
       const row = this.getRowId(day, type_id, extra);
+
+      // We need to remove all room / bed for that day
+      this.suivis
+        .filter((s) => moment(s.apply_date).isSame(day) && s.type === "lits")
+        .forEach((b : any) => {
+          this.hospitalisationStore.removeSuivi(b.id);
+        });
+      this.suivis
+        .filter((s) => moment(s.apply_date).isSame(day) && s.type === "chambres")
+        .forEach((r: any) => {
+          this.hospitalisationStore.removeSuivi(r.id);
+        });
+
       if (row.toString().includes("null")) {
         const c = {
           type: "chambres",
@@ -626,9 +637,9 @@ export class ComptableTableClassicComponent implements OnInit {
         };
 
         this.hospitalisationStore.commitSuivi(c);
-        this.suivis.push(c);
+        // this.suivis.push(c);
         this.hospitalisationStore.commitSuivi(l);
-        this.suivis.push(l);
+        // this.suivis.push(l);
       }
     } else {
       const row = this.getRowId(day, type_id, extra);
@@ -642,16 +653,12 @@ export class ComptableTableClassicComponent implements OnInit {
           id: Date.now(),
         };
         this.hospitalisationStore.commitSuivi(data);
-        // this.suivis.push(data);
       } else {
         let rowValue = this.suivis.find((s) => s.id === row);
         rowValue.qte++;
 
         delete rowValue.created_at;
         delete rowValue.updated_at;
-        // delete rowValue.id
-
-        // console.log(rowValue)
 
         rowValue.hospit_id = this.hospitalisation.id;
         this.hospitalisationStore.updateSuivi(rowValue);
@@ -828,34 +835,35 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   showWatch(watch: any) {
-    if (watch.type === 'chart') {
-       if (this.suivis !== null && this.suivis !== undefined) {
-      const list = this.suivis.filter(
-        (d) =>
-          d["type"] === "watches" && d.extras && "name" in JSON.parse(d.extras)
-      );
+    if (watch.type === "chart") {
+      if (this.suivis !== null && this.suivis !== undefined) {
+        const list = this.suivis.filter(
+          (d) =>
+            d["type"] === "watches" &&
+            d.extras &&
+            "name" in JSON.parse(d.extras)
+        );
 
-      const res = list.filter(
-        (s: any) => JSON.parse(s.extras).name === watch.name
-      );
+        const res = list.filter(
+          (s: any) => JSON.parse(s.extras).name === watch.name
+        );
 
-      this.currentWatchList = res;
-      this.currentWatch = watch;
-      this.modalService.open(this.watchesEdition, {
-        size: "lg",
-        centered: true,
-        keyboard: false,
-        backdrop: "static",
-      });
-    }
+        this.currentWatchList = res;
+        this.currentWatch = watch;
+        this.modalService.open(this.watchesEdition, {
+          size: "lg",
+          centered: true,
+          keyboard: false,
+          backdrop: "static",
+        });
+      }
     } else {
       if (watch.empty === undefined) {
-        watch.empty = false
+        watch.empty = false;
       } else {
-        watch.empty = !watch.empty
+        watch.empty = !watch.empty;
       }
     }
-
   }
 
   getWatchData(day: moment.Moment, watch: any = null): any[] {
@@ -913,10 +921,9 @@ export class ComptableTableClassicComponent implements OnInit {
 
     if (watch !== null) {
       this.currentWatch = watch;
-      if (watch.type === 'value' && watch.options !== undefined){
-        this.generateOptions(watch.options)
+      if (watch.type === "value" && watch.options !== undefined) {
+        this.generateOptions(watch.options);
       }
-
     }
 
     const t = formatDate(new Date(), "HH:mm");
@@ -945,14 +952,16 @@ export class ComptableTableClassicComponent implements OnInit {
     console.log(this.watchTime.value);
     console.log(totalMilliseconds);
 
-    let value = null
-    if (this.currentWatch.type === 'value') {
-      value = this.watchValue.value
-    } else
-    if (this.currentWatch.type === 'chart') {
-      value = parseFloat(this.watchValue.value.toString().includes(',') ? this.watchValue.value.toString().replace(",", ".") : value = this.watchValue.value)
+    let value = null;
+    if (this.currentWatch.type === "value") {
+      value = this.watchValue.value;
+    } else if (this.currentWatch.type === "chart") {
+      value = parseFloat(
+        this.watchValue.value.toString().includes(",")
+          ? this.watchValue.value.toString().replace(",", ".")
+          : (value = this.watchValue.value)
+      );
     }
-
 
     const data = {
       type: this.typeData,
@@ -1057,13 +1066,15 @@ export class ComptableTableClassicComponent implements OnInit {
     }
   }
 
-  generateOptions(list: any[]){
-    this.watchValueOptions = list.map((o) => {return {
-      id : slugify(o),
-      text : o
-    }})
+  generateOptions(list: any[]) {
+    this.watchValueOptions = list.map((o) => {
+      return {
+        id: slugify(o),
+        text: o,
+      };
+    });
 
-    console.log(this.watchValueOptions)
+    console.log(this.watchValueOptions);
   }
 
   ngOnChanges(): void {

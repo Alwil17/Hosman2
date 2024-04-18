@@ -77,6 +77,12 @@ export class FicheComptableComponent implements OnInit {
   removeSuivi() {
     this.hospitalisationStore.getValue("selectedElement")?.subscribe({
       next: (v) => {
+        console.log(v)
+        if (v.id.toString().includes("/")) {
+          const arr = v.id.toString().split("/");
+          this.hospitalisationStore.removeSuivi(arr[0])
+          this.hospitalisationStore.removeSuivi(arr[1])
+        } else 
         this.hospitalisationStore.removeSuivi(v.id);
       },
     });
@@ -85,7 +91,7 @@ export class FicheComptableComponent implements OnInit {
   open(content: any) {
     this.hospitalisationStore.getValue("selectedElement")?.subscribe({
       next: (v) => {
-        if(v.typeData === 'evolution'){
+        if(v.typeData === 'evolution' || v.typeData === 'chambres'){
           this.toast.error("Hospitalisation", "Veuillez double-cliquez sur le jour pour Ajouter ou Modifier");
         } else {
           this.qte.setValue(v.qte)
@@ -120,7 +126,6 @@ export class FicheComptableComponent implements OnInit {
               hospit_id: this.hospitalisation.id,
               id: Date.now()
             };
-
             this.hospitalisationStore.commitSuivi(data);
           }
 

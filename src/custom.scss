@@ -136,7 +136,8 @@
 
     input,
     textarea,
-    select {
+    select, 
+    .ng-select .ng-select-container {
       background-color: #ffffe1;
       color: #0000ff;
       font-size: 16px !important;
@@ -152,6 +153,10 @@
 
     .border-bottom {
       border-color: rgba(0,0,0,0.25) !important;
+    }
+
+    .ng-select.ng-select-single .ng-select-container {
+      height: 42px;
     }
   }
 }

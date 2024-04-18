@@ -68,11 +68,12 @@ export class ListComponent implements OnInit {
 
         if ( this.sectors && this.chambres && hasStateChanges(this.list, previous.list, current.list)) {
           if (current.list !== null) {
-            for (let step = 0; step < current.list.length; step++) {
+            const pendingHospits = current.list.filter((l:any) => l.status === 0)
+            for (let step = 0; step < pendingHospits.length; step++) {
               this.extras.push({
-                extra: JSON.parse(current.list[step].extras),
-                hospit_id: current.list[step].id,
-                date_hospit: current.list[step].date_hospit,
+                extra: JSON.parse(pendingHospits[step].extras),
+                hospit_id: pendingHospits[step].id,
+                date_hospit: pendingHospits[step].date_hospit,
               });
             }
 
@@ -144,7 +145,7 @@ export class ListComponent implements OnInit {
   }
 
   listData(list: any[]) {
-    return list.map((data) => {
+    return list.filter((l) => l.status === 0).map((data) => {
       const h = data;
       const d = JSON.parse(h.extras);
       const c = this.chambres.find((c) => c.id === d.chambre);

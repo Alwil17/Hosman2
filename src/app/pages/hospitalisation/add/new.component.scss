@@ -1,5 +1,19 @@
 .accordion-button {
     font-size: 1rem;
+
+    .accordion-title {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .accordion-click {
+            background: #0000ff3d;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 45px;
+            margin-right: 20px;
+        }
+    }
 }
 
 .accordion-button:not(.collapsed) {

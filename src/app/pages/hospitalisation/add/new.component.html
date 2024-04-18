@@ -1,12 +1,16 @@
 <!-- Accordions with Icons -->
 
 
-<div class="accordion custom-accordionwithicon hospitalisation" id="accordionWithicon" oncontextmenu="return false;" appIncreaseFontSize>
+<div class="accordion custom-accordionwithicon hospitalisation" id="accordionWithicon" oncontextmenu="return false;"
+  appIncreaseFontSize>
   <div class="accordion-item" id="accordion-admission">
     <h2 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
         data-bs-target="#accordion-admission-content" aria-expanded="true" aria-controls="accor_iconExamplecollapse1">
-        <i class="ri-hotel-bed-line"></i>&nbsp; Admission
+        <div class="accordion-title">
+          <div><i class="ri-hotel-bed-line"></i>&nbsp; Admission </div> 
+          <div class="accordion-click">Cliquez pour afficher / cacher</div>
+        </div>
       </button>
     </h2>
     <div id="accordion-admission-content" class="accordion-collapse collapse show"
@@ -20,7 +24,10 @@
     <h2 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse"
         data-bs-target="#accordion-fiches-content" aria-expanded="false" aria-controls="accor_iconExamplecollapse2">
-        <i class="ri-survey-line"></i>&nbsp; Station / Infirmerie
+        <div class="accordion-title">
+          <div><i class="ri-hotel-bed-line"></i>&nbsp; Station / Infirmerie </div> 
+          <div class="accordion-click">Cliquez pour afficher / cacher</div>
+        </div>
       </button>
     </h2>
     <div id="accordion-fiches-content" class="accordion-collapse collapse" aria-labelledby="accordionwithiconExample2"
@@ -50,7 +57,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-dm-12"><hr></div>
+              <div class="col-dm-12">
+                <hr>
+              </div>
               <div class="col-md-10">
                 <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
                   <div class="tab-pane fade show active" id="v-pills-comptable" role="tabpanel"
@@ -97,8 +106,9 @@
                   <a class="nav-link mb-2 active border-bottom" id="v-pills-comptable-tab" data-bs-toggle="pill"
                     href="#v-pills-comptable" role="tab" aria-controls="v-pills-comptable" aria-selected="true">Fiche
                     comptable</a>
-                  <a class="nav-link mb-2 border-bottom" id="v-pills-synthese-tab" data-bs-toggle="pill" href="#v-pills-synthese"
-                    role="tab" aria-controls="v-pills-synthese" aria-selected="false" (click)="selectPage('fiche-synthese')">Fiche de synthèse</a>
+                  <a class="nav-link mb-2 border-bottom" id="v-pills-synthese-tab" data-bs-toggle="pill"
+                    href="#v-pills-synthese" role="tab" aria-controls="v-pills-synthese" aria-selected="false"
+                    (click)="selectPage('fiche-synthese')">Fiche de synthèse</a>
 
                   <a class="nav-link mb-2  border-bottom" id="v-pills-externes-tab" data-bs-toggle="pill"
                     href="#v-pills-externes" role="tab" aria-controls="v-pills-externes" aria-selected="false">Médecins

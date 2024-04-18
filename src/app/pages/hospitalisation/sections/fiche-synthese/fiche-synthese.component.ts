@@ -26,9 +26,10 @@ export class FicheSyntheseComponent implements OnInit {
           this.tabs = current.tabs;
         }
 
-        if (hasStateChanges(this.patient, previous.patient, current.patient)) {
+        // if (hasStateChanges(this.patient, previous.patient, current.patient)) {
           this.patient = current.patient;
-        }
+          // this.patient = current.hospitalisation.patient
+        // }
 
         if (hasStateChanges(this.suivis, previous.suivis, current.suivis)) {
           if (current.suivis)
@@ -41,6 +42,46 @@ export class FicheSyntheseComponent implements OnInit {
           this.populate()
         }
       });
+
+    
+  }
+
+
+  getPrice(td: any) {
+    let price = 0
+    switch (this.patient.is_assure) {
+      case 0 : {
+        price = td.tarif_non_assure ?? td.prix
+        break;
+      }
+
+      case '0ex' : {
+        price = td.tarif_etr_non_assure  ?? td.prix
+        break;
+      }
+
+      case 1 : {
+        price = td.tarif_etr_non_assure  ?? td.prix
+        break;
+      }
+
+      case 2 : {
+        price = td.tarif_assur_locale  ?? td.prix
+        break;
+      } 
+      
+      case 3 : {
+        price = td.tarif_assur_hors_zone   ?? td.prix
+        break;
+      }
+
+      default : {
+        price = td.prix
+      }
+      
+    }
+
+    return price
   }
 
   populate() {
@@ -63,12 +104,12 @@ export class FicheSyntheseComponent implements OnInit {
         t.data.forEach((td: any) => {
           const g = v.filter((s: any) => s.type_id === td.id);
           if (g.length > 0) {
-            // console.log(td);
 
             const qteTotal = g.reduce((total : any, item : any) => total + item.qte, 0);
             // console.log(qteTotal);
             let label = td.nom_officiel ?? td.nom; 
             if (label === undefined ||label === null || label === "") label = td.libelle
+            const price = this.getPrice(td)
 
             // console.log(label);
             this.list.push({
@@ -76,8 +117,8 @@ export class FicheSyntheseComponent implements OnInit {
               num : td.id,
               name: label,
               qte: qteTotal,
-              pu: td.prix,
-              total: td.prix * qteTotal,
+              pu: price,
+              total: price * qteTotal,
             });
           }
         });
