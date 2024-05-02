@@ -1,0 +1,138 @@
+<form [formGroup]="admissionFormGroup">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-">
+                    <h-select label="Statut" [isMandatory]="true" [options]="statuts" [control]="statut"
+                        [clearable]="false" [bindValue]="'text'" [readOnly]="hasPatient"></h-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h-select label="Sexe" [isMandatory]="true" [options]="genders" [control]="gender"
+                        [bindValue]="'short'" [clearable]="false" [readOnly]="hasPatient"></h-select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <h-input label="Nom" [isMandatory]="true" [readOnly]="hasPatient" [control]="firstname"></h-input>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <h-input label="Prénom(s)" [isMandatory]="true" [readOnly]="hasPatient"
+                        [control]="lastname"></h-input>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h-input label="Date de naissance" type="date" [isMandatory]="true" [maxDate]="today"
+                        [readOnly]="hasPatient" [control]="birth_date"></h-input>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h-input label="Date et heure d'hospitalisation" type="datetime-local" [isMandatory]="true" [maxDate]="today"
+                        [control]="hospit_date"></h-input>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="col-md-6 border-start mb-3">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <h-select label="Secteur" [isMandatory]="true" [options]="sectors" [control]="sector"
+                        [bindLabel]="'libelle'" [bindValue]="'code'" [clearable]="false"
+                        [readOnly]="hospitalisation_id !== null"></h-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h-select label="Chambres" [isMandatory]="true" [options]="chambres" [bindLabel]="'nom'"
+                        [bindValue]="'id'" [control]="chambre" [clearable]="false"
+                        [readOnly]="hospitalisation_id !== null"></h-select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h-select label="Lits" [isMandatory]="true" [options]="lits" [bindLabel]="'nom'" [bindValue]="'id'"
+                        [control]="lit" [clearable]="false" [readOnly]="hospitalisation_id !== null"></h-select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <h-input label="Motif" [isMandatory]="true" [control]="motif" [readOnly]="true"></h-input>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <h-input label="Diagnostic d'entrée" [isMandatory]="true" [control]="diagnostic"
+                        [readOnly]="true"></h-input>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-group">
+                <app-text [rows]="5" label="Histoire de la maladie" [control]="hdm"></app-text>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-group">
+                <app-text [rows]="5" label="A l'arrivée" [control]="arrive" (doubleClick)="openConstants()"></app-text>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-danger btn-cancel" (click)="cancel()" *ngIf="hospitalisation === null">
+                ANNULER
+            </button>
+            <button type="button" class="btn btn-success btn-label right" (click)="confirmAction()">
+                <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+                ENREGISTRER
+            </button>
+        </div>
+    </div>
+</form>
+
+<ng-template #constants let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Constantes</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <h-input label="Température (°C)" [control]="temperature"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="Poids (kg)" [control]="poids"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="Taille (cm)" [control]="taille"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="PC" [control]="pc"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="Fréquence cardiaque (/mn)" [control]="fc"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="Fréquence respiratoire (/mn)" [control]="fr"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-input label="Tension artérielle (mm/Hg)" [control]="ta"></h-input>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h-select label="Etat général" [options]="etats" [bindLabel]="'label'" [bindValue]="'value'"
+                    [control]="etat" [clearable]="false"></h-select>
+            </div>
+            <div class="col-md-6">
+                <h-select label="Conscience" [options]="consciences" [bindLabel]="'label'" [bindValue]="'value'"
+                    [control]="conscience" [clearable]="false"></h-select>
+            </div>
+            <!-- <div class="col-md-6 mb-3">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-secondary w-100" (click)="openGlasgow()">
+                    Score de Glasgow
+                </button>
+            </div> -->
+            <div class="col-md-6">
+                <label>Score</label>
+                <h3>{{ glasgow.value }}</h3>
+            </div>
+
+            <div class="col-md-12">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-primary w-100" (click)="pasteTofield()">
+                    Ajouter à l'admission
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div> -->
+</ng-template>

@@ -18,7 +18,9 @@ import { CountToModule } from "angular-count-to";
 import { BreadcrumbsComponent } from "./breadcrumbs/breadcrumbs.component";
 import { ScrollspyDirective } from "./scrollspy.directive";
 import { InputComponent } from "./form-inputs/input/input.component";
+import { HInputComponent } from "./form-inputs/h-input/input.component";
 import { SelectComponent } from "./form-inputs/select/select.component";
+import { HSelectComponent } from "./form-inputs/h-select/select.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskModule } from "ngx-mask";
 import { NgSelectModule } from "@ng-select/ng-select";
@@ -29,6 +31,7 @@ import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
 import { ToastsContainerComponent } from "./toasts-container/toasts-container.component";
 import { CardComponent } from "./card/card.component";
 import { ConfirmModalComponent } from "./modals/confirm-modal/confirm-modal.component";
+import { TextComponent } from './form-inputs/text/text.component';
 import { ResizableColumnComponent } from "./table-column-resize/resizable-column/resizable-column.component";
 import { ColumnResizerDirective } from "./directives/column-resizer.directive";
 import { MultiChoicesModalComponent } from "./modals/multi-choices-modal/multi-choices-modal.component";
@@ -43,13 +46,16 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BreadcrumbsComponent,
     ScrollspyDirective, // Used ???
     InputComponent,
+    HInputComponent,
     SelectComponent,
+    HSelectComponent,
     SimpleModalComponent,
     PdfModalComponent,
     PdfViewerComponent,
     ToastsContainerComponent,
     CardComponent,
     ConfirmModalComponent,
+    TextComponent,
     ResizableColumnComponent,
     ColumnResizerDirective,
     MultiChoicesModalComponent,
@@ -71,10 +77,13 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BreadcrumbsComponent,
     ScrollspyDirective, // Used ??
     InputComponent,
+    HInputComponent,
     SelectComponent,
+    HSelectComponent,
     ToastsContainerComponent,
     SimpleModalComponent,
     CardComponent,
+    TextComponent,
     ConfirmModalComponent,
     ResizableColumnComponent,
     ColumnResizerDirective,

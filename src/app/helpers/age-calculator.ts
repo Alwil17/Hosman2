@@ -95,3 +95,25 @@ export function isAdult(dateOfBirth: Date): boolean {
 
   return year >= 18;
 }
+
+
+export function isUnderAge(dateOfBirth: Date, age: number): boolean {
+  dateOfBirth = new Date(dateOfBirth);
+
+  const actualDate = new Date();
+
+  const diffDay = actualDate.getDate() - dateOfBirth.getDate();
+  const diffMonth = actualDate.getMonth() - dateOfBirth.getMonth();
+  const diffYear = actualDate.getFullYear() - dateOfBirth.getFullYear();
+
+  var year: number = 0;
+
+  // Year calculation
+  if (diffMonth > 0 || (diffMonth == 0 && diffDay >= 0)) {
+    year = diffYear;
+  } else if (diffMonth < 0 || (diffMonth == 0 && diffDay < 0)) {
+    year = diffYear - 1;
+  }
+
+  return year < age;
+}

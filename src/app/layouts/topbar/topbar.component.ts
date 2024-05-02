@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Inject } from "@angular/core";
+import {Component, OnInit, EventEmitter, Output, Inject, ViewEncapsulation} from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { EventService } from "../../core/services/event.service";
 
@@ -17,6 +17,7 @@ import { TranslateService } from "@ngx-translate/core";
   selector: "app-topbar",
   templateUrl: "./topbar.component.html",
   styleUrls: ["./topbar.component.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TopbarComponent implements OnInit {
   element: any;
@@ -52,6 +53,15 @@ export class TopbarComponent implements OnInit {
       }
     } else {
       this.flagvalue = val.map((element) => element.flag);
+    }
+
+    // apply theme color
+    let theme = localStorage.getItem("data-layout-mode")
+    if (theme) {
+      document.body.setAttribute('data-layout-mode', theme);
+      document.body.setAttribute('data-sidebar', theme);
+      var html = document.getElementsByTagName("HTML")[0];
+      html.setAttribute("data-layout-mode", theme);
     }
   }
 
@@ -108,21 +118,28 @@ export class TopbarComponent implements OnInit {
   /**
    * Topbar Light-Dark Mode Change
    */
-  changeMode(mode: string) {
+  changeMode() {
+    var html = document.getElementsByTagName("HTML")[0];
+    var mode = html.hasAttribute("data-layout-mode") && html.getAttribute("data-layout-mode") == "dark" ? 'light' : 'dark'
+    html.setAttribute("data-layout-mode", mode);
+
     this.mode = mode;
-    this.eventService.broadcast("changeMode", mode);
+    this.eventService.broadcast('changeMode', mode);
 
     switch (mode) {
-      case "light":
-        document.body.setAttribute("data-layout-mode", "light");
-        document.body.setAttribute("data-sidebar", "light");
+      case 'light':
+        document.body.setAttribute('data-layout-mode', "light");
+        document.body.setAttribute('data-sidebar', "light");
+        localStorage.setItem("data-layout-mode", "light");
         break;
-      case "dark":
-        document.body.setAttribute("data-layout-mode", "dark");
-        document.body.setAttribute("data-sidebar", "dark");
+      case 'dark':
+        document.body.setAttribute('data-layout-mode', "dark");
+        document.body.setAttribute('data-sidebar', "dark");
+        localStorage.setItem("data-layout-mode", "dark");
         break;
       default:
-        document.body.setAttribute("data-layout-mode", "light");
+        document.body.setAttribute('data-layout-mode', "light");
+        localStorage.setItem("data-layout-mode", "light");
         break;
     }
   }

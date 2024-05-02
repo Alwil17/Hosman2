@@ -1,0 +1,15 @@
+.border-round {
+    border-radius: 5px;
+
+    &.red {
+      background-color: #c92626;  
+      
+      span {
+        color: #fff
+      }
+    }
+}
+
+.one-tab {
+  font-size: 15px;
+}

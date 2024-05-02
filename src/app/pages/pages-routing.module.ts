@@ -2,6 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AppsComponent } from "./apps.component";
 import { AuthGuard } from "../guards/auth.guard";
+import { HospitalisationComponent } from "../layouts/hospitalisation/hospitalisation.component";
+import { LayoutComponent } from "../layouts/layout.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "auth", pathMatch: "full" },
@@ -14,6 +16,7 @@ const routes: Routes = [
   { path: "apps", component: AppsComponent, canActivate: [AuthGuard] },
   {
     path: "secretariat",
+    component: LayoutComponent,
     loadChildren: () =>
       import("./secretariat/secretariat.module").then(
         (m) => m.SecretariatModule
@@ -22,11 +25,20 @@ const routes: Routes = [
   },
   {
     path: "medical-base",
+    component: LayoutComponent,
     loadChildren: () =>
       import("./medical-base/medical-base.module").then(
         (m) => m.MedicalBaseModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+    path: "hospitalisation",
+    component: HospitalisationComponent,
+    loadChildren: () =>
+      import("./hospitalisation/hospitalisation.module").then(
+        (m) => m.HospitalisationModule
+      ),
   },
 ];
 

@@ -1,0 +1,41 @@
+.accordion-button {
+    font-size: 1rem;
+
+    .accordion-title {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .accordion-click {
+            background: #0000ff3d;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 45px;
+            margin-right: 20px;
+        }
+    }
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(75, 56, 179, 0.1);
+    box-shadow: inset 0 -1px 0 var(--vz-border-color);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #3577f1;
+}  
+
+.nav-link {
+    font-size: 15px;
+}
+
+.infos-patient {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    span {
+        font-size: 18px;
+    }
+}

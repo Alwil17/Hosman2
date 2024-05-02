@@ -1,0 +1,52 @@
+.cursor-pointer {
+    cursor: pointer;
+    &:hover {
+      background-color: #4a38b34b;
+    }
+  }
+  
+.hospit-list {
+    button {
+        width: 100%;
+
+        img {
+            width: 100%;
+            padding: 0;
+            // &:hover, .inactive {
+            //     filter: grayscale(1)
+            // }
+        }
+        .content {
+            text-align: left;
+            padding-left: 0;
+        }
+
+        &.empty-bed {
+            opacity: .2;
+        }
+
+        .patient-name {
+            font-weight: bold;
+            color: #db3400;
+        }
+
+        .date-hospit {
+            font-weight: bold;
+        }
+    }
+
+    .room-name {
+        font-weight: bold;
+    }
+}
+
+.patient-grid {
+    margin-right: 60px;
+}
+
+.table {
+    border-color: #a8a8a8;
+    > thead {
+        border-color: #a8a8a8;
+    }
+}
