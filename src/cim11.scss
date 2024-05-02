@@ -1,0 +1,1776 @@
+$color_1: #333;
+$color_2: #721c24;
+$color_3: #004085;
+$color_4: #aea79f;
+$color_5: #555;
+$color_6: #4e4c48;
+$color_7: #404040;
+$color_8: #606060;
+$color_9: #df7030;
+$color_10: #b96021;
+$color_11: #777;
+$color_12: #4169e1;
+$color_13: #fff;
+$color_14: #d45800;
+$color_15: #424242;
+$color_16: #668;
+$color_17: #999;
+$color_18: maroon;
+$color_19: rgba(128, 0, 0, 0.6);
+$color_20: #505050;
+$color_21: #8080e0;
+$color_22: #666;
+$color_23: #444;
+$color_24: #b0a0a0;
+$color_25: red;
+$color_26: #728ead;
+$color_27: #eee;
+$color_28: #03038d;
+$color_29: #d19405;
+$font-family_1: "Courier New";
+$font-family_2: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+$background-color_1: #f8d7da;
+$background-color_2: #cce5ff;
+$background-color_3: #eee;
+$background-color_4: #fff;
+$background-color_5: #cae1ed;
+$background-color_6: #feeebd;
+$background-color_7: #f8f8f8;
+$background-color_8: #000;
+$background-color_9: rgba(0, 0, 0, 0.5);
+$background-color_10: #e8e8f0;
+$background-color_11: #4f74e3;
+$background-color_12: #fef6e8;
+$background-color_13: #f7c3b5;
+$background-color_14: #e5cbf8;
+$background-color_15: #beeb9f;
+$background-color_16: #79bd8f;
+$background-color_17: #d0fcff;
+$background-color_18: #ededed;
+$background-color_19: #f2e088;
+$background-color_20: #95c3c7;
+$background-color_21: #ffff9d;
+$background-color_22: #c6f4d5;
+$background-color_23: #e3d2b4;
+$background-color_24: #fff7ea;
+$background-color_25: #7da626;
+$background-color_26: #bcd952;
+$background-color_27: #eefec3;
+$background-color_28: #6dbcdb;
+$background-color_29: #ff9c47;
+$background-color_30: #facdac;
+$background-color_31: #94e5d5;
+$background-color_32: #d1dbbd;
+$background-color_33: #91aa9d;
+$background-color_34: #bdd4de;
+$background-color_35: #f2ebbf;
+$background-color_36: #c3cfeb;
+$background-color_37: #d7d8dc;
+$background-color_38: #d9cb9e;
+$background-color_39: #dbf2fe;
+$background-color_40: #03038d;
+$background-color_41: #ececec;
+$background-color_42: #ddd;
+$background-color_43: #9acbb1;
+$border-color_1: #f5c6cb;
+$border-color_2: #b8daff;
+$border-color_3: #4169e1;
+
+@keyframes blink {
+	0% {
+		opacity: 0.2;
+	}
+	20% {
+		opacity: 1;
+	}
+	to {
+		opacity: 0.2;
+	}
+}
+@keyframes fadeOut {
+	0%,90% {
+		background-color: #fbdaa0;
+	}
+	to {
+		background-color: transparent;
+	}
+}
+@keyframes shake {
+	10%,90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+	20%,80% {
+		transform: translate3d(2px, 0, 0);
+	}
+	30%,50%,70% {
+		transform: translate3d(-4px, 0, 0);
+	}
+	40%,60% {
+		transform: translate3d(4px, 0, 0);
+	}
+}
+#tom {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: $color_1;
+	.clearfix {
+		&:after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+	}
+	.defaultFontColor {
+		color: $color_1;
+	}
+	.defaultErrorAlert {
+		display: block;
+		padding: 0.75rem 1.25rem;
+		color: $color_2;
+		background-color: $background-color_1 !important;
+		border-color: $border-color_1;
+		font-size: 85%;
+	}
+	.syntaxErrorAlert {
+		display: block;
+		padding: 0.75rem 1.25rem;
+		color: $color_3;
+		background-color: $background-color_2 !important;
+		border-color: $border-color_2;
+		font-size: 85%;
+	}
+	.overflowBox {
+		overflow: auto;
+	}
+	.browserContent {
+		height: 85vh;
+	}
+	.browserBodyLeft {
+		overflow: auto;
+		height: 80vh;
+		.hierarchy {
+			.rtitle {
+				font-weight: 600;
+				color: $color_20;
+			}
+		}
+	}
+	.browserBodyRight {
+		overflow: auto;
+		height: 80vh;
+	}
+	.browserCloseiconWrapper {
+		float: right;
+	}
+	ol {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	ul {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.embeddedBrowser {
+		.browser {
+			height: inherit;
+			max-height: inherit;
+			.browserBody {
+				margin-top: 0;
+			}
+			.browserBody.hierarchyNotAvailable {
+				display: inline;
+				display: initial;
+			}
+		}
+		.browserBody {
+			height: inherit;
+			max-height: inherit;
+		}
+		.browserBodyLeft {
+			height: inherit;
+			max-height: inherit;
+		}
+		.browserBodyRight {
+			height: inherit;
+			max-height: inherit;
+		}
+		.browserContent {
+			height: inherit;
+			max-height: inherit;
+		}
+	}
+	.popupMode {
+		position: relative;
+		.popupModeTop {
+			margin-top: 4px;
+			.entityLoading {
+				margin-left: 6px;
+			}
+			.closeicon {
+				float: right;
+				margin-right: 6px;
+			}
+		}
+		.popupModeResults {
+			position: absolute;
+			z-index: 100002;
+			top: 0;
+			background-color: $background-color_4;
+			border: 1px solid #ccc;
+			min-width: 40%;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			height: auto;
+		}
+	}
+	#ctwFlexContainer {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+	.ctwFlexItem25 {
+		width: 25%;
+	}
+	.ctwFlexItem50 {
+		width: 50%;
+	}
+	.ctwFlexItem75 {
+		width: 75%;
+	}
+	.ctwFlexItem100 {
+		width: 100%;
+	}
+	.ctwFlexItemPadding {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.entityHead.currentEntityHighlighted {
+		background-color: $background-color_3;
+	}
+	.entityHead {
+		&:not(.keyboardOnlyHighlight) {
+			&:hover {
+				background-color: $background-color_3;
+			}
+		}
+		display: flex;
+		flex-direction: row;
+		&:hover {
+			>.openicon {
+				display: inline;
+			}
+		}
+	}
+	.importantlabel {
+		&:not(.keyboardOnlyHighlight) {
+			&:hover {
+				background-color: $background-color_5 !important;
+			}
+		}
+		background-color: $background-color_39 !important;
+	}
+	.importantlabelCurrentEntityHighlighted {
+		background-color: $background-color_5 !important;
+	}
+	.entityTheCode {
+		flex-basis: 7em;
+		cursor: pointer;
+		color: $color_5;
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		direction: ltr;
+	}
+	.entityTitleAndIcons {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+	}
+	.entityTheCodeInDetails {
+		cursor: pointer;
+		color: $color_5;
+		font-weight: 600;
+		margin-right: 10px;
+	}
+	.entityTitle {
+		width: 100%;
+	}
+	.entityTitlePointer {
+		cursor: pointer;
+	}
+	.entityPv {
+		border-right: 2px solid #fff;
+		border-bottom: 2px solid #fff;
+		.entityPvBadge {
+			font-size: 80%;
+			white-space: nowrap;
+			background-color: $background-color_6;
+			border: 1px solid #d19405;
+			text-align: center;
+			border-radius: 2px;
+			margin: 0 5px;
+			padding: 0 5px;
+			vertical-align: 1px;
+			cursor: default;
+		}
+	}
+	.entityPvPointer {
+		cursor: pointer;
+	}
+	.entityDetails {
+		margin-top: 10px;
+		margin-bottom: 13px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		background-color: $background-color_7 !important;
+		.entityDetailsSelection {
+			.entityHead {
+				padding-left: 8px;
+				padding-right: 8px;
+			}
+		}
+		.showAllEntities {
+			.entityHead {
+				padding-left: 4px;
+			}
+		}
+		.entityDetailsContentAfterHead {
+			font-size: 85%;
+			margin-top: 4px;
+		}
+		.entityDetailsContent {
+			padding: 4px 8px;
+			.propertyWrapper {
+				margin-bottom: 8px;
+			}
+			.propertyWrapper.lastPropertyWrapper {
+				margin-bottom: 4px;
+			}
+			.propertyHeader {
+				font-weight: 700;
+				color: $color_6;
+			}
+			.propertyHeaderSelection {
+				font-size: 85%;
+				font-weight: 700;
+				color: $color_6;
+			}
+			.property {
+				margin-left: 10px;
+			}
+		}
+		.entityDetailsProperties {
+			margin-top: 8px;
+			font-size: 85%;
+		}
+		.circleiconWithinDetails {
+			cursor: pointer;
+		}
+	}
+	.entityDetailsError {
+		margin-bottom: 13px;
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+	.entityDetailsCodeAndTitle {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 8px;
+		.entityDetailsTheCode {
+			color: $color_5;
+			font-weight: 600;
+			white-space: nowrap;
+			margin-right: 10px;
+		}
+	}
+	.entityDetailsSelectionHeader {
+		display: flex;
+		flex-direction: row;
+		.mitHeader {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			.mitHeaderFlex {
+				width: 100%;
+			}
+		}
+		.pcHeader {
+			white-space: nowrap;
+		}
+	}
+	.entityDetailsSelection {
+		background-color: $background-color_4 !important;
+		border: 1px solid #e8e6e6;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		.showAllEntities {
+			.entityTitleSelection {
+				font-size: 85%;
+				.showlink {
+					margin-left: 4px !important;
+				}
+			}
+		}
+	}
+	.entityTitleSelection {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+	}
+	.entityTitleSelectionFlex {
+		width: 100%;
+	}
+	.entityTitlePointerSelection {
+		cursor: pointer;
+	}
+	.embeddedBrowserAllIndexTerms {
+		.subIndexTerm {
+			margin-left: 2.5rem;
+			font-size: 85%;
+			display: list-item;
+			list-style-type: circle;
+		}
+	}
+	.entityLoading {
+		font-weight: 700;
+		span {
+			margin-left: 2px;
+			animation-name: blink;
+			animation-duration: 1.4s;
+			animation-iteration-count: infinite;
+			animation-fill-mode: both;
+			&:nth-child(2) {
+				animation-delay: 0.2s;
+			}
+			&:nth-child(3) {
+				animation-delay: 0.4s;
+			}
+		}
+	}
+	.elementToFadeOut {
+		animation: fadeOut 5s linear forwards;
+		border-radius: 2px;
+		padding-bottom: 1px;
+	}
+	.foundationCodingTool {
+		.ulDescendants {
+			padding-left: 30px;
+		}
+		.pvs {
+			margin-left: 1.4em;
+		}
+	}
+	.browser.browserModal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 99999;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background-color: $background-color_8;
+		background-color: $background-color_9 !important;
+		.browserContent {
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			background-color: $background-color_4 !important;
+			margin: 3% 5%;
+			padding: 10px;
+		}
+	}
+	.browser {
+		.browserBodyTitle {
+			font-weight: 700;
+			font-size: 1.2em;
+			color: $color_7;
+			margin-bottom: 6px;
+			margin-right: 0;
+			border-bottom: 1px solid #ccc;
+		}
+		.browserBody {
+			margin-top: 20px;
+			display: grid;
+			grid-template-columns: auto 1fr;
+		}
+		.browserBodyLeft {
+			width: 31vw;
+			border-right: 1px solid #ccc;
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+		.browserBodyLeft.hierarchyResizable {
+			resize: horizontal;
+			min-width: 15vw;
+			max-width: 60vw;
+		}
+		.browserBodyRight {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+		.propertyHeader {
+			font-weight: 700;
+			margin-bottom: 8px;
+		}
+		.property {
+			margin-left: 10px;
+			margin-bottom: 15px;
+		}
+		.subproperty {
+			font-size: 85%;
+			font-style: italic;
+			margin-left: 8px;
+		}
+		.parentcode {
+			font-weight: 600;
+			font-style: normal;
+			margin-right: 4px;
+		}
+		.propertyHeaderCodingNote {
+			background-color: $background-color_10;
+			padding: 2px 10px 4px;
+			margin-top: 20px;
+		}
+		.propertyHeaderDiagnosticCriteria {
+			background-color: $background-color_10;
+			padding: 2px 10px 4px;
+			margin-top: 20px;
+		}
+		.propertyHeaderPostcoordination {
+			background-color: $background-color_10;
+			padding: 2px 10px 4px;
+			margin-top: 20px;
+		}
+		.propertyHeaderCodingNoteSub {
+			margin-left: 10px;
+		}
+		.idclass {
+			margin-right: 2px;
+			vertical-align: bottom;
+			color: $color_8;
+			font-style: italic;
+			font-size: 0.8em;
+			white-space: nowrap;
+		}
+		.idclass2 {
+			color: $color_8;
+			font-style: italic;
+			font-size: 0.8em;
+			white-space: nowrap;
+			margin-left: 8px;
+		}
+		.orangetextbutton {
+			font-size: 0.8em;
+			color: $color_9;
+			margin-left: 8px;
+			text-decoration: none;
+			vertical-align: bottom;
+		}
+		.markdownDefinition {
+			li {
+				list-style-type: disc;
+			}
+			table {
+				td {
+					border-bottom: 1px solid #ddd;
+					padding: 4px 20px 4px 0;
+				}
+				th {
+					border-bottom: 1px solid #ddd;
+					padding: 4px 20px 4px 0;
+					text-align: left;
+				}
+				ul {
+					margin-left: 0;
+					padding-left: 0;
+				}
+				li {
+					list-style: none;
+				}
+			}
+		}
+		.propertyDiagnosticCriteria {
+			font-size: 14px;
+		}
+		.diagnosticCriteria {
+			h1 {
+				font-weight: 700;
+				font-size: 1em;
+				color: $color_10;
+				margin-bottom: 4px;
+				margin-top: 18px;
+				padding-bottom: 0;
+			}
+			h2 {
+				font-weight: 400;
+				font-size: 1em;
+				color: $color_10;
+				margin-bottom: 4px;
+				margin-top: 18px;
+				padding-bottom: 0;
+			}
+			h3 {
+				font-weight: 400;
+				font-size: 0.9em;
+				color: $color_10;
+				margin-bottom: 4px;
+				margin-top: 18px;
+				padding-bottom: 0;
+			}
+			h4 {
+				font-weight: 700;
+				font-size: 0.9em;
+				color: $color_1;
+				margin-bottom: 4px;
+				margin-top: 18px;
+				padding-bottom: 0;
+			}
+		}
+		ul.toplevel {
+			list-style: none;
+			margin-left: -40px;
+		}
+		em.foundpc {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_25;
+			em.wbe {
+				font-weight: 700;
+				font-style: normal;
+				color: $color_25;
+			}
+			em.nonwbe {
+				font-weight: 400;
+				font-style: normal;
+				color: $color_25;
+			}
+		}
+		em.found {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_14;
+			em.wbe {
+				font-weight: 700;
+				font-style: normal;
+				color: $color_14;
+			}
+			em.nonwbe {
+				font-weight: 400;
+				font-style: normal;
+				color: $color_14;
+			}
+		}
+		em.wbe {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_14;
+		}
+		em.nonwbe {
+			font-weight: 400;
+			font-style: normal;
+			color: $color_14;
+		}
+		direction: ltr;
+	}
+	.openicon {
+		margin-right: 4px;
+	}
+	.closeicon {
+		font-size: 9.8px;
+		color: $color_11;
+		cursor: pointer;
+		margin-right: 4px;
+		vertical-align: text-top;
+		font-weight: 700;
+		&:hover {
+			color: $color_1;
+			background-color: $background-color_3;
+		}
+	}
+	.entityDetailsCloseiconWrapper {
+		position: relative;
+		float: right;
+	}
+	.entityDetailsCloseicon {
+		position: absolute;
+		top: -3px;
+		right: -3px;
+		font-size: 9.8px;
+		color: $color_11;
+		border-radius: 3px;
+		padding: 0 3px 1px 2px;
+		cursor: pointer;
+		background: #fff;
+		border: 1px solid #ccc;
+		font-weight: 700;
+		&:hover {
+			color: $color_1;
+			background-color: $background-color_3;
+		}
+	}
+	.dimensionicon {
+		font-size: smaller;
+		color: $color_11;
+		cursor: pointer;
+		margin-right: 4px;
+		margin-left: 6px;
+		vertical-align: top;
+		&:hover {
+			color: $color_1;
+			background-color: $background-color_3;
+		}
+	}
+	.showlink {
+		color: $color_12 !important;
+		cursor: pointer;
+		font-size: 85%;
+		font-weight: 400;
+		margin-left: 6px;
+		&:hover {
+			color: $color_12;
+			text-decoration: none;
+		}
+	}
+	.showlinkPostcoordination {
+		font-size: 85%;
+		margin-right: 3px;
+		vertical-align: 2px;
+	}
+	.showlinkNormalSize {
+		color: $color_12 !important;
+		cursor: pointer;
+		font-size: 100%;
+		font-weight: 400;
+		margin-left: 6px;
+		&:hover {
+			color: $color_12;
+			text-decoration: none;
+		}
+	}
+	.showlinkSeeInHierarchy {
+		color: $color_12 !important;
+		cursor: pointer;
+		font-size: 85%;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	.iconSeeInHierarchy {
+		font-size: 120%;
+		color: $color_13;
+		background-color: $background-color_11;
+		padding: 0 4px;
+		border-radius: 3px;
+		margin-right: 2px;
+	}
+	.showdetails {
+		font-size: 85%;
+		padding-right: 2px;
+		vertical-align: 2px;
+		word-break: keep-all;
+		white-space: nowrap;
+	}
+	.unicodeicon {
+		color: $color_12;
+		font-size: 8px;
+		cursor: pointer;
+	}
+	.mandatoryPostcoord {
+		color: $color_14;
+	}
+	.circleicon {
+		cursor: pointer;
+		font-family: $font-family_1;
+		font-weight: 700;
+		font-size: 9.8px;
+		color: $color_15;
+		border-radius: 50%;
+		padding: 1px 4px;
+		margin-left: 2px;
+		vertical-align: 2px;
+	}
+	.circleiconWithinDetails {
+		font-family: $font-family_1;
+		font-weight: 700;
+		font-size: 9.8px;
+		color: $color_15;
+		border-radius: 50%;
+		padding: 1px 4px;
+		margin-left: 2px;
+		vertical-align: 2px;
+		cursor: default;
+	}
+	.circleiconWithinDetailsHeaders {
+		font-family: $font-family_1;
+		font-weight: 700;
+		font-size: 9.8px !important;
+		color: $color_15;
+		border-radius: 50%;
+		padding: 1px 4px;
+		margin-left: 6px;
+		cursor: default;
+		vertical-align: 2px;
+	}
+	.pacolor {
+		background: #eee;
+		border: 1px solid #ccc;
+		padding-right: 3px !important;
+		font-weight: 700;
+	}
+	.prcolor {
+		background: #facdac;
+		border: 1px solid #f8b687;
+		padding-right: 3px !important;
+		font-weight: 700;
+	}
+	.mlcolor {
+		background: #f8ee69;
+		border: 1px solid #f0f00f;
+		font-weight: 700;
+	}
+	.plcolor {
+		background: #e2d0e2;
+		border: 1px solid #cfb0cf;
+		font-weight: 700;
+	}
+	.cncolor {
+		background: #ace259;
+		border: 1px solid #9ac754;
+		padding: 1px 3px 1px 2px !important;
+		font-weight: 700;
+	}
+	.hierarchy {
+		ul {
+			list-style: none;
+			padding-left: 0;
+			ul {
+				padding-left: 18px;
+			}
+		}
+		.topul {
+			li {
+				margin-bottom: 3px;
+			}
+		}
+		.collapsed {
+			cursor: pointer;
+			width: 16px;
+			display: inline-block;
+			font-size: 0.8em;
+			vertical-align: top;
+		}
+		.expanded {
+			vertical-align: top;
+			position: relative;
+			top: 2px;
+		}
+		.empty {
+			width: 16px;
+			display: inline-block;
+		}
+		.codeinh {
+			font-weight: 600;
+		}
+		.nodeWindow {
+			.codeinh {
+				color: $color_16;
+			}
+			.titleinh {
+				color: $color_16;
+			}
+		}
+		.nodeAdoptedChild {
+			.codeinh {
+				color: $color_17;
+			}
+			.titleinh {
+				color: $color_17;
+			}
+		}
+		.nodeResidual {
+			.codeinh {
+				color: $color_18;
+			}
+			.titleinh {
+				color: $color_18;
+			}
+		}
+		.nodeAdoptedResidual {
+			.codeinh {
+				color: $color_19;
+			}
+			.titleinh {
+				color: $color_19;
+			}
+		}
+		.hideNodeWindow {
+			display: none;
+		}
+		.labelinh {
+			cursor: pointer;
+			width: calc(100% - 16px);
+			display: inline-block;
+			&:hover {
+				background-color: $background-color_3;
+			}
+		}
+		.selected {
+			background-color: $background-color_12 !important;
+		}
+		.rsubtitle {
+			font-style: italic;
+			color: $color_20;
+		}
+		.nodeError {
+			border-radius: 3px;
+			margin-right: 10px;
+		}
+	}
+	.postcoordinatedCodeLeft {
+		float: left;
+	}
+	.postcoordinatedCodeRight {
+		float: right;
+	}
+	.postcoordColored {
+		font-style: normal;
+		color: $color_14;
+	}
+	.postcoordAction {
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-bottom: 10px;
+		font-size: 0.9em;
+		margin-top: 5px;
+		margin-bottom: 10px;
+		margin-left: 0;
+		border-left: thin solid #b96021;
+		background-color: $background-color_7;
+		.hierarchy {
+			max-height: 300px;
+			overflow: auto;
+		}
+	}
+	.postcoordActionClickable {
+		cursor: pointer;
+		&:hover {
+			background-color: $background-color_3;
+		}
+	}
+	.highlightedEntity {
+		background-color: $background-color_3;
+	}
+	.highlightedEntityPv {
+		background-color: $background-color_3;
+		border-right: 2px solid #eee !important;
+		border-bottom: 2px solid #eee !important;
+	}
+	.highlightedParent {
+		position: relative;
+	}
+	.highlightedEntityArrow {
+		left: -15px;
+		position: absolute;
+		color: $color_14;
+	}
+	.icdcodewpc {
+		.stemcodestyle {
+			font-weight: 500;
+		}
+		.simplifiedcode {
+			text-decoration: underline;
+			display: inline-block;
+			animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+			animation-iteration-count: 1;
+			transform: translateZ(0);
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			perspective: 1000px;
+		}
+		.codedelimamp {
+			display: inline-block;
+			margin: 0 1px;
+			color: $color_21;
+			font-weight: 500;
+			font-size: 0.9em;
+		}
+		.codedelimsl {
+			display: inline-block;
+			margin: 0 3px;
+			color: $color_9;
+			font-weight: 700;
+			font-size: 0.9em;
+		}
+		.xchaptercodestyle {
+			font-size: 0.9em;
+			color: $color_22;
+		}
+	}
+	.postcoordSticky {
+		position: -webkit-sticky;
+		position: sticky;
+		top: -10px;
+		background-color: $background-color_4;
+		padding-top: 10px;
+		padding-bottom: 20px;
+		z-index: 100001;
+	}
+	.postcoordForSelection {
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		background-color: $background-color_12 !important;
+		padding: 10px;
+		.postcoordCode {
+			font-size: 110%;
+			cursor: pointer;
+		}
+		button {
+			color: $color_12;
+			background-color: $background-color_4;
+			border: 1px solid #7a7a7a;
+			border-radius: 3px;
+			&:hover {
+				background-color: $background-color_3;
+			}
+		}
+		.postcoordForSelectionLeft {
+			float: left;
+		}
+		.postcoordForSelectionRight {
+			float: right;
+		}
+	}
+	.postcoorForSelectionURI {
+		margin-top: 6px;
+		.postcoordURI {
+			color: $color_8;
+			font-style: italic;
+			font-size: 0.8em;
+			white-space: normal;
+			cursor: pointer;
+			.codedelimamp {
+				font-style: normal;
+				font-size: 1.2em;
+			}
+			.codedelimsl {
+				font-style: normal;
+				font-size: 1.2em;
+			}
+		}
+	}
+	.propertyPostcoordinationSummary {
+		.pccodeset {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+		.liFlex {
+			display: flex;
+		}
+		.axis {
+			width: 200px;
+			color: $color_20;
+			font-size: 0.9em;
+			font-weight: 400;
+			color: $color_10;
+		}
+		.axisWithName {
+			margin-top: 10px;
+		}
+		.values {
+			flex-grow: 1;
+		}
+		.pccode {
+			font-weight: 600;
+			color: $color_23;
+			font-size: 0.9em;
+			margin-right: 10px;
+		}
+		.pctitle {
+			color: $color_23;
+			font-size: 0.9em;
+			margin-right: 10px;
+		}
+		.pcdelete {
+			font-size: 0.8em;
+			cursor: pointer;
+		}
+	}
+	.postcoordSearch {
+		.rtitle {
+			color: $color_10;
+		}
+		.rsubtitle {
+			font-style: italic;
+			color: $color_20;
+		}
+	}
+	.postcoordSearchInput {
+		input {
+			margin-right: 10px;
+			width: 40%;
+		}
+	}
+	.postcoordSearchInputToResult {
+		position: relative;
+	}
+	.postcoordSearchResult {
+		position: absolute;
+		z-index: 100000;
+		top: 0;
+		background-color: $background-color_4;
+		border: 1px solid #ccc;
+		margin-right: 10px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		min-width: 40%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		max-height: 300px;
+		overflow-y: auto;
+		.closeSearch {
+			float: right;
+			font-size: 9.8px;
+			margin-right: 10px;
+			margin-left: 10px;
+			cursor: pointer;
+			position: -webkit-sticky;
+			position: sticky;
+			top: 0;
+		}
+		.postcoordSearchResultList {
+			float: left;
+		}
+		ul {
+			list-style: none;
+			padding-left: 0;
+			ul {
+				padding-left: 18px;
+			}
+		}
+		.postcoordFlex {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+		}
+		.labelinh {
+			cursor: pointer;
+			margin-left: 1em;
+			margin-right: 1em;
+			margin-bottom: 4px;
+		}
+		.titleinh {
+			width: 100%;
+		}
+		.postcoordPvs {
+			font-size: small;
+			background-color: $background-color_12;
+			z-index: 1002;
+			overflow: auto;
+			margin-left: 7em;
+			cursor: auto;
+		}
+		.clickinh {
+			&:hover {
+				background-color: $background-color_3;
+			}
+		}
+		.searchError {
+			border-radius: 3px;
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+	}
+	.messageright {
+		float: right;
+	}
+	.messageleft {
+		float: left;
+	}
+	.wordlist {
+		ul {
+			list-style: none;
+			margin-left: -40px;
+		}
+		li {
+			cursor: pointer;
+			width: 140px;
+			text-indent: -10px;
+			padding-left: 10px;
+			&:hover {
+				background-color: $background-color_3;
+			}
+		}
+		.dontChangeResult {
+			color: $color_24;
+		}
+	}
+	.entitylist {
+		ul.toplevel {
+			list-style: none;
+			margin-left: -40px;
+		}
+		em.foundpc {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_25;
+			em.wbe {
+				font-weight: 700;
+				font-style: normal;
+				color: $color_25;
+			}
+			em.nonwbe {
+				font-weight: 400;
+				font-style: normal;
+				color: $color_25;
+			}
+		}
+		em.found {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_14;
+			em.wbe {
+				font-weight: 700;
+				font-style: normal;
+				color: $color_14;
+			}
+			em.nonwbe {
+				font-weight: 400;
+				font-style: normal;
+				color: $color_14;
+			}
+		}
+		em.wbe {
+			font-weight: 700;
+			font-style: normal;
+			color: $color_14;
+		}
+		em.nonwbe {
+			font-weight: 400;
+			font-style: normal;
+			color: $color_14;
+		}
+	}
+	.searchresults {
+		h5 {
+			color: $color_14;
+		}
+		h4 {
+			color: $color_14;
+			margin-bottom: 0;
+			font-size: 18px;
+			font-family: $font-family_2;
+			font-weight: 500;
+			line-height: 1.1;
+		}
+		.title {
+			text-align: left;
+			margin-left: 10px;
+		}
+		ul {
+			dt.thecode {
+				font-weight: 700;
+				color: $color_8;
+				text-align: left;
+				cursor: pointer;
+			}
+			dt.thecode-4 {
+				width: 3em;
+			}
+			dt.thecode-5 {
+				width: 3.4em;
+			}
+			dt.thecode-6 {
+				width: 3.9em;
+			}
+			dt.thecode-7 {
+				width: 4.6em;
+			}
+			dt.thecode-8 {
+				width: 4.9em;
+			}
+			dt.thecode-9 {
+				width: 5.2em;
+			}
+			dt.thecode-10 {
+				width: 5.9em;
+			}
+			dt.thecode-11 {
+				width: 6.5em;
+			}
+			dt.thecode-12 {
+				width: 7em;
+			}
+		}
+		dl {
+			margin-top: 0;
+			margin-bottom: 3px;
+		}
+	}
+	.detailsicon {
+		font-size: 8px;
+		color: $color_26;
+		cursor: pointer;
+	}
+	.browsericon {
+		font-size: smaller;
+		color: $color_14;
+		cursor: pointer;
+	}
+	a.browsericon {
+		text-decoration: none;
+		&:visited {
+			color: $color_14;
+		}
+	}
+	.pvs {
+		font-size: small;
+		background-color: $background-color_12;
+		z-index: 1002;
+		overflow: auto;
+		margin-left: 8em;
+	}
+	.destinationentitiesdiv {
+		.toplevel {
+			li {
+				margin-bottom: 3px;
+			}
+		}
+	}
+	.toplevel {
+		li {
+			list-style: none;
+		}
+	}
+	.sortoption {
+		position: relative;
+		float: right;
+		font-size: 0.9em;
+		color: $color_12;
+	}
+	.listhead {
+		margin-bottom: 35px;
+		h4 {
+			margin-top: 10px !important;
+		}
+	}
+	.chdistro {
+		margin-left: -40px;
+		list-style: none;
+	}
+	.ch01 {
+		background-color: $background-color_13;
+	}
+	.ch02 {
+		background-color: $background-color_14;
+	}
+	.ch03 {
+		background-color: $background-color_15;
+	}
+	.ch04 {
+		background-color: $background-color_16;
+	}
+	.ch05 {
+		background-color: $background-color_17;
+	}
+	.ch06 {
+		background-color: $background-color_18;
+	}
+	.ch07 {
+		background-color: $background-color_19;
+	}
+	.ch08 {
+		background-color: $background-color_20;
+	}
+	.ch09 {
+		background-color: $background-color_21;
+	}
+	.ch10 {
+		background-color: $background-color_22;
+	}
+	.ch11 {
+		background-color: $background-color_23;
+	}
+	.ch12 {
+		background-color: $background-color_24;
+	}
+	.ch13 {
+		background-color: $background-color_25;
+	}
+	.ch14 {
+		background-color: $background-color_26;
+	}
+	.ch15 {
+		background-color: $background-color_27;
+	}
+	.ch16 {
+		background-color: $background-color_28;
+	}
+	.ch17 {
+		background-color: $background-color_29;
+	}
+	.ch18 {
+		background-color: $background-color_30;
+	}
+	.ch19 {
+		background-color: $background-color_19;
+	}
+	.ch20 {
+		background-color: $background-color_31;
+	}
+	.ch21 {
+		background-color: $background-color_32;
+	}
+	.ch22 {
+		background-color: $background-color_33;
+	}
+	.ch23 {
+		background-color: $background-color_34;
+	}
+	.ch24 {
+		background-color: $background-color_35;
+	}
+	.ch25 {
+		background-color: $background-color_36;
+	}
+	.ch26 {
+		background-color: $background-color_37;
+	}
+	.ch27 {
+		background-color: $background-color_38;
+	}
+	.chapter {
+		font-size: 0.9em;
+		vertical-align: central;
+	}
+	.freq {
+		font-style: italic;
+		font-size: 0.9em;
+		position: absolute;
+		right: 8px;
+		top: 0;
+	}
+	.chtitlediv {
+		position: relative;
+		margin-left: 10px;
+		padding-right: 24px;
+		padding-left: 20px;
+		text-indent: -20px;
+	}
+	.chaptertitle {
+		cursor: pointer;
+		text-decoration: underline;
+	}
+	.showallbutton {
+		cursor: pointer;
+		text-decoration: underline;
+		position: absolute;
+		top: -20px;
+		white-space: nowrap;
+	}
+	#chapters {
+		position: relative;
+	}
+	.important {
+		margin-left: 6px;
+		cursor: default;
+	}
+	#flexisearchbtn {
+		background-color: $background-color_40;
+		color: $color_27;
+		padding: 1px 8px;
+		cursor: pointer;
+		margin-right: 2px;
+		display: inline-block;
+	}
+	.flexisearchwarning {
+		position: absolute;
+		top: 30px;
+		right: 6px;
+		color: $color_28;
+		font-weight: 300;
+	}
+	.flexi {
+		color: $color_28;
+		font-weight: 300;
+	}
+	.clipboard {
+		color: $color_11;
+		font-weight: 300;
+	}
+	.pcicon {
+		color: $color_11;
+		font-weight: 300;
+		font-size: 0.8em;
+	}
+	.entityInList {
+		.notleaf {
+			background-color: $background-color_41;
+			color: $color_5;
+			font-weight: 400;
+			padding-left: 2px;
+			font-size: 1.1em;
+			padding-right: 2px;
+		}
+	}
+	.postcoordSearchResultList {
+		.notleaf {
+			background-color: $background-color_41;
+			color: $color_5;
+			font-weight: 400;
+			padding-left: 2px;
+			font-size: 1.1em;
+			padding-right: 2px;
+		}
+	}
+	.chopped {
+		color: $color_14;
+	}
+	select {
+		color: $color_12;
+	}
+	.filterSwitch {
+		position: relative;
+		display: inline-block;
+		top: 2px;
+		right: 1px;
+		width: 43px;
+		height: 17px;
+		input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+			&:checked {
+				+ {
+					.slider {
+						background-color: $background-color_43;
+						&:before {
+							transform: translateX(26px);
+						}
+					}
+				}
+			}
+			&:focus {
+				+ {
+					.slider {
+						box-shadow: 0 0 1px #9acbb1;
+					}
+				}
+			}
+		}
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: $background-color_42;
+			transition: 0.4s;
+			&:before {
+				position: absolute;
+				content: "";
+				height: 13px;
+				width: 13px;
+				left: 2px;
+				bottom: 2px;
+				background-color: $background-color_4;
+				transition: 0.4s;
+			}
+		}
+		.slider.round {
+			border-radius: 34px;
+			&:before {
+				border-radius: 50%;
+			}
+		}
+	}
+	.filterSwitchLabel {
+		margin-right: 6px;
+		margin-left: 6px;
+		color: $color_11;
+	}
+	.filterSwitchStar {
+		color: $color_14;
+		cursor: help;
+	}
+	#statusFlexContainer {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+	.statusFlexWords {
+		text-align: left;
+		color: $color_11;
+	}
+	.statusFlexInfo {
+		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		.clipboard {
+			direction: ltr;
+		}
+	}
+	.statusFlexFilter {
+		text-align: right;
+	}
+	.statusError {
+		border-bottom-right-radius: 3px;
+		border-bottom-left-radius: 3px;
+	}
+	.textNotFound {
+		color: $color_11;
+	}
+	.tooltipWrapper {
+		text-align: left;
+		text-align: initial;
+		position: relative;
+		display: inline-block;
+		z-index: 100003;
+	}
+	.tooltipContent {
+		position: absolute;
+		width: 25vw;
+		max-width: 80vw;
+		max-height: 600px;
+		overflow: auto;
+		background-color: $background-color_4;
+		border: 1px solid #ccc;
+		padding: 10px;
+		border-radius: 3px;
+		box-shadow: 0 4px 8px 0 rgb(0 0 0/20%), 0 6px 20px 0 rgb(0 0 0/19%);
+		color: $color_11;
+		font-size: 14px;
+		font-weight: 400;
+	}
+	.tooltipCloseiconWrapper {
+		float: right;
+	}
+	.tooltipLinkKeyboard {
+		color: $color_11;
+		vertical-align: -1px;
+		cursor: help;
+		margin-right: 25px;
+		&:hover {
+			background-color: $background-color_3;
+		}
+	}
+	.tooltipLinkKeyboardOpen {
+		background-color: $background-color_3;
+	}
+	.tooltipContentKeyboard {
+		top: 5px;
+		right: 1vw;
+	}
+	.tooltipPostcoordination {
+		font-family: $font-family_1;
+		font-weight: 700;
+		font-size: 9.8px;
+		border-radius: 50%;
+		padding: 1px 4px;
+		cursor: help;
+		vertical-align: 2px;
+		color: $color_12;
+		background-color: $background-color_4;
+		border: 1px solid #7a7a7a;
+		margin-left: 4px;
+		margin-right: 6px;
+		&:hover {
+			background-color: $background-color_3;
+			border-color: $border-color_3;
+		}
+	}
+	.tooltipOpenEndedPostcoordination {
+		vertical-align: 3px !important;
+	}
+	.tooltipContentPostcoordination {
+		list-style-type: none;
+		ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+	}
+	.statusAdvancedsearch {
+		white-space: nowrap;
+		color: $color_29 !important;
+		cursor: pointer;
+		font-size: 100%;
+		font-weight: 400;
+		margin-right: 0.5em;
+		.unicodeicon {
+			color: $color_29 !important;
+			vertical-align: 0;
+		}
+	}
+	.advancedsearchdiv {
+		display: flex;
+		background-color: $background-color_6;
+		border: 1px solid #d19405;
+		border-radius: 3px;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+		margin-bottom: 1em;
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+		padding-left: 0.5em;
+		.advancedsearchIndexTerms {
+			display: inline-block;
+			margin-right: 1em;
+			input {
+				vertical-align: 1px;
+				cursor: pointer;
+			}
+			label {
+				vertical-align: 1px;
+				cursor: pointer;
+			}
+		}
+		.advancedsearchInput {
+			display: inline-block;
+			margin-right: 0.5em;
+			input {
+				vertical-align: 1px;
+				cursor: pointer;
+			}
+			label {
+				vertical-align: 1px;
+				cursor: pointer;
+			}
+		}
+	}
+	.postcoordCode {
+		direction: ltr;
+	}
+}
+.ctw-input {
+	&:not(.apiInitializationCompleted) {
+		background-color: $background-color_3;
+		pointer-events: none;
+		color: $color_4;
+	}
+}
+.ctw-eb-window {
+	.embeddedBrowserSearchbox {
+		width: 30%;
+		margin-left: 20px;
+		height: 30px;
+	}
+	.popupMode {
+		max-width: 60vw;
+	}
+	.popupModeResults {
+		margin-left: 20px;
+	}
+}
+.hierarchy {
+	.expanded {
+		cursor: pointer;
+		width: 16px;
+		display: inline-block;
+		font-size: 0.8em;
+	}
+}

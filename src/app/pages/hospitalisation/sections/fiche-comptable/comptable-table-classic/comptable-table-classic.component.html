@@ -62,7 +62,7 @@
 
   <!-- All other data types -->
   <table *ngIf="typeData !== 'evolution' && typeData !== 'watches'"
-    class="table table-responsive table-bordered align-middle table-nowrap mb-0">
+    class="table table-responsive table-bordered align-middle table-nowrap mb-0 other-data">
     <thead>
       <tr>
         <th scope="col" class="fixed-column des-title">Désignation</th>
@@ -73,7 +73,7 @@
     <tbody>
       <tr *ngFor="let item of filtered_list; let i = index">
         <td class="fixed-column des-title">{{ item.libelle || item.nom_officiel }}</td>
-        <td *ngFor="let d of days; let k = index" class="cursor-pointer t-content"
+        <td *ngFor="let d of days; let k = index" class="cursor-pointer t-content l-td"
           [class.active]="setActive(d.o, item.id, typeData === 'chambres' ? item.chambre : null )"
           (dblclick)="dbClick(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"
           (click)="sClick(d.o, item.id, typeData === 'chambres' ? item.chambre : null)"

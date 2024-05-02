@@ -58,6 +58,7 @@ export class HospitHomeComponent implements OnInit {
           if (this.hospitalisation !== null) {
             
             // show fiches
+            
             const admissionSection = document.querySelector(
               "#accordion-admission"
             );
@@ -74,7 +75,14 @@ export class HospitHomeComponent implements OnInit {
             fichesSection
               ?.querySelector(".accordion-collapse")
               ?.classList.add("show");
+
+            fichesSection?.classList.remove('d-none')  
           }
+        } else {
+          const admissionSection = document.querySelector(
+            "#accordion-admission"
+          );
+          admissionSection?.classList.remove('d-none') 
         }
 
         if (hasStateChanges(this.suivis, previous.suivis, current.suivis)) {

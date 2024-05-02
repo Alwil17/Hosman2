@@ -10,7 +10,7 @@ import { HospitalisationStore } from "@stores/hospitalisation";
 import { FormControl, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import * as Yup from "yup";
-import { formatDate, slugify, validateYupSchema } from "src/app/helpers/utils";
+import { formatDate, hasStateChanges, slugify, validateYupSchema } from "src/app/helpers/utils";
 import { ErrorMessages, WarningMessages } from "src/app/helpers/messages";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Chart, ChartOptions, registerables } from "chart.js";
@@ -56,7 +56,7 @@ export class ComptableTableClassicComponent implements OnInit {
   filtered_list: any[] = []; // filtered list
   numberOfPages: number = 0;
   searchResults: any[] = [];
-  rowsPerPage: number = 10;
+  rowsPerPage: number = 20;
   currentPage: number = 1;
   suivis: any[] = [];
   chartsLabels: any[] = [];
@@ -107,12 +107,19 @@ export class ComptableTableClassicComponent implements OnInit {
       watchValue: this.watchValue,
     });
 
-    this.subscription = this.hospitalisationStore.stateChanged.subscribe(
-      (state) => {
-        if (state) {
-          this.patient = state.patient;
-          this.hospitalisation = state.hospitalisation;
-          this.suivis = state.suivis;
+    this.subscription = this.hospitalisationStore.stateChanged.pipe(pairwise())
+    .subscribe(([p, c]) => {
+        if (hasStateChanges(this.patient, p.patient, c.patient)) {
+          this.patient = c.patient;
+        }
+
+        if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
+          this.hospitalisation = c.hospitalisation;
+          this.genDays()
+        }
+
+        if (hasStateChanges(this.suivis, p.suivis, c.suivis)) {
+          this.suivis = c.suivis;
         }
       }
     );
@@ -159,8 +166,6 @@ export class ComptableTableClassicComponent implements OnInit {
 
     this.calculateNumberOfPages();
     this.setCurrentPage(1);
-
-    this.genDays();
   }
 
   get numberOfPagesArray(): number[] {

@@ -225,7 +225,7 @@ export class AdmissionComponent implements OnInit {
                 this.lit.setValue(null);
                 console.log
                 if (this.suivis === null || this.suivis.length === 0) {
-                    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
+                 
                   const ch = this.chambres.find((c) => c.id === n);
                   if (ch) {
                     this.lits = ch["lits"].filter(
@@ -293,7 +293,7 @@ export class AdmissionComponent implements OnInit {
       this.diagnostic.setValue(
         this.consultation.diagnostics
           .map(function (c: any) {
-            return c["theCode"];
+            return c["theCode"] + " - " + c["title"];
           })
           .join(",")
       );
@@ -306,7 +306,7 @@ export class AdmissionComponent implements OnInit {
       this.hospitalisation = hospitalisation;
       this.hospitalisation_id = hospitalisation.id;
       this.motif.setValue(hospitalisation["motif"]["libelle"]);
-      this.diagnostic.setValue(hospitalisation["diagnostic"]["theCode"]);
+      this.diagnostic.setValue(hospitalisation["diagnostic"]["theCode"] + " - " + hospitalisation["diagnostic"]["title"]);
       this.arrive.setValue(hospitalisation["arrive"]);
       this.sector.setValue(hospitalisation["secteur_code"]);
       this.hospit_date.setValue(
@@ -447,7 +447,7 @@ export class AdmissionComponent implements OnInit {
         const data = {
           id: this.hospitalisation_id,
           motif: this.admissionFormGroup.value.motif,
-          diagnostic: this.admissionFormGroup.value.diagnostic,
+          diagnostic: this.admissionFormGroup.value.diagnostic.split(" - ")[0],
           hdm: this.admissionFormGroup.value.hdm,
           patient_ref: this.patient.reference,
           secteur_code: this.admissionFormGroup.value.sector,
