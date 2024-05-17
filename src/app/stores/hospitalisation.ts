@@ -28,7 +28,7 @@ const sortieEndpoint = environment.hospitalisation_base + "sorties";
 const medecinsListEndpoint = environment.hospitalisation_base + "medecins";
 const patientsListEndpoint = environment.hospitalisation_base + "patients";
 const freeBedsEndPoint = environment.hospitalisation_base + "lits?vue=UNTAKEN"
-const cim11tokenEndPoint = environment.hospitalisation_base + "diagnostics/token"
+
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -435,7 +435,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   changePage(pageName: string){
-    const state = this.getState();
     this.updateStore(
       { currentPage: pageName },
       "CHANGE PAGE"

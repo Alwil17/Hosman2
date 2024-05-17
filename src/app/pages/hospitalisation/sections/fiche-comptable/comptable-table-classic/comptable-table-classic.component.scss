@@ -24,12 +24,14 @@
   position: sticky;
   left: 0;
   z-index: 1;
+  background-color: #fff;
 }
 
 .fixed-column:last-child {
   position: sticky;
   right: 0;
   z-index: 1;
+  background-color: #fff;
 }
 
 .des-title {

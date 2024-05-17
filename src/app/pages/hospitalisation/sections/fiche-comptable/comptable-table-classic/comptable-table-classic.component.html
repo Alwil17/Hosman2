@@ -70,6 +70,7 @@
         <th scope="col" class="fixed-column text-right">Total</th>
       </tr>
     </thead>
+    <!-- Creeer un tableau qui a déja les infos pour éviter que a chaque click les functions sont exécuter -->
     <tbody>
       <tr *ngFor="let item of filtered_list; let i = index">
         <td class="fixed-column des-title">{{ item.libelle || item.nom_officiel }}</td>
