@@ -1,0 +1,124 @@
+<app-simple-modal title="Coefficient social - Score de protection social">
+  <form [formGroup]="coefficientSocialForm">
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="NBE"
+          [control]="nbeControl"
+          [options]="nbeOptions"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6">
+        <app-input [readOnly]="true" label="SMF" [control]="smfControl">
+        </app-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="NIM"
+          [control]="nimControl"
+          [options]="niOptions"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6">
+        <app-input [readOnly]="true" label="MNI" [control]="mniControl">
+        </app-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="NIP"
+          [control]="nipControl"
+          [options]="niOptions"
+        >
+        </app-select>
+      </div>
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="MF"
+          [control]="mfControl"
+          [options]="mfOptions"
+        >
+        </app-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="PF"
+          [control]="pfControl"
+          [options]="pfOptions"
+        >
+        </app-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="ASS"
+          [control]="assControl"
+          [options]="assOptions"
+        >
+        </app-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">
+        <app-select
+          [isMandatory]="true"
+          label="IMV"
+          [control]="imvControl"
+          [options]="imvOptions"
+        >
+        </app-select>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <app-input
+          [readOnly]="true"
+          label="Coefficient social"
+          [control]="coefficientSocialControl"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <app-input
+          [readOnly]="true"
+          label="Interprétation"
+          [control]="interpretationControl"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-success btn-label" (click)="registerCoefficientSocial()">
+        <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</app-simple-modal>

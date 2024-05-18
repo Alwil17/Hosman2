@@ -1,0 +1,203 @@
+<app-simple-modal title="Fiche du produit">
+  <div class="d-flex justify-content-center">
+    <h3>{{ productInfos.nom }} ({{ productInfos.dci }})</h3>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Classes thérapeutiques : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.classes">
+        <ng-container
+          *ngFor="
+            let class of productInfos.classes;
+            let i = index;
+            let count = count
+          "
+        >
+          <div class="col-12">
+            <h5>
+              <b class="text-success">{{ class.nom | uppercase }}</b>
+            </h5>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Indications : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.indications">
+        <ng-container
+          *ngFor="
+            let indication of productInfos.indications;
+            let i = index;
+            let count = count
+          "
+        >
+          <div class="col-12">
+            <h5>
+              <b class="text-secondary">{{ indication.libelle }}</b>
+            </h5>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Posologies enfant : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.posologies">
+        <ng-container
+          *ngFor="
+            let childPosology of productInfos.posologies;
+            let i = index;
+            let count = count
+          "
+        >
+          <ng-container *ngIf="childPosology.type === 'enfant'">
+            <div class="col-12">
+              <h5>
+                <b class="text-secondary"> {{ childPosology.libelle }}</b>
+              </h5>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Posologies adulte : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.posologies">
+        <ng-container
+          *ngFor="
+            let adultPosology of productInfos.posologies;
+            let i = index;
+            let count = count
+          "
+        >
+          <ng-container *ngIf="adultPosology.type === 'adulte'">
+            <div class="col-12">
+              <h5>
+                <b class="text-secondary"> {{ adultPosology.libelle }}</b>
+              </h5>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Contre-indications : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.contre_indications">
+        <ng-container
+          *ngFor="
+            let contraIndication of productInfos.contre_indications;
+            let i = index;
+            let count = count
+          "
+        >
+          <div class="col-12">
+            <h5>
+              <b class="text-secondary"> {{ contraIndication.libelle }}</b>
+            </h5>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Effets secondaires : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.effet_secondaires">
+        <ng-container
+          *ngFor="
+            let sideEffect of productInfos.effet_secondaires;
+            let i = index;
+            let count = count
+          "
+        >
+          <div class="col-12">
+            <h5>
+              <b class="text-secondary">
+                {{ sideEffect.libelle }}
+              </b>
+            </h5>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-md-6">
+      <h4><b>Informations complémentaires et composition : </b></h4>
+    </div>
+    <div class="col-md-6">
+      <ng-container *ngIf="productInfos.infos">
+        <div class="col-12">
+          <h5>
+            <b class="text-secondary">
+              {{ productInfos.infos }}
+            </b>
+          </h5>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row border border-1 border-dark p-1 mb-1">
+    <div class="col-12">
+      <h4><b>Formes : </b></h4>
+    </div>
+    <div class="col-12">
+      <div class="table-responsive" style="max-height: 400px">
+        <!-- table-card -->
+        <table
+          class="table table-one-liner table-bordered table-hover table-striped align-middle"
+        >
+          <thead
+            class="table-light text-muted"
+            style="position: sticky; top: -1px; background-color: whitesmoke"
+          >
+            <tr>
+              <th scope="col">{{ "Présentation(s)" | uppercase }}</th>
+              <th scope="col">{{ "Dosage(s)" | uppercase }}</th>
+              <th scope="col">{{ "Conditionnement(s)" | uppercase }}</th>
+              <th scope="col">{{ "Prix" | uppercase }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let form of productInfos.formes"
+              class="user-select-none"
+            >
+              <td>{{ form.presentation }}</td>
+              <td>{{ form.dosage }}</td>
+              <td>{{ form.conditionnement }}</td>
+              <td class="text-end">{{ form.prix | mask : "separator" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</app-simple-modal>

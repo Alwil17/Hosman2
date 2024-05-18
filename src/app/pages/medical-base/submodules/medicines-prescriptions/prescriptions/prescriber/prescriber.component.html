@@ -1,0 +1,380 @@
+<div class="col-12">
+  <form [formGroup]="prescriptionForm">
+    <div class="row">
+      <div class="col-lg-3">
+        <app-select
+          label="Nom de spécialité"
+          [isMandatory]="true"
+          [control]="productNameController"
+          [options]="products"
+          [isFormSubmitted]="isPrescriptionFormSubmitted"
+        ></app-select>
+      </div>
+      <div class="col-lg-3">
+        <app-input
+          label="DCI"
+          [readOnly]="true"
+          [control]="productDciController"
+        ></app-input>
+      </div>
+
+      <!-- <div class="col-lg-6 d-flex align-items-center" *ngIf="patientInfos">
+        <h4 class="mb-0">
+          <span class="badge bg-primary"
+            ><i class="mdi mdi-circle-medium"></i>
+            {{
+              patientInfos.reference +
+                " - " +
+                patientInfos.nom +
+                " " +
+                patientInfos.prenoms
+            }}</span
+          >
+        </h4>
+      </div> -->
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <!-- TABLE ROW -->
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="table-responsive" style="max-height: 150px">
+              <!-- table-card -->
+              <table
+                class="table table-one-liner table-bordered table-hover table-striped align-middle"
+              >
+                <thead
+                  class="table-light text-muted"
+                  style="
+                    position: sticky;
+                    top: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th scope="col">
+                      {{ "Présentation(s) et dosage(s)" | uppercase }}
+                    </th>
+                    <th scope="col">{{ "Conditionnement(s)" | uppercase }}</th>
+                    <!-- <th scope="col"></th> -->
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <ng-container *ngIf="productForms.length === 0">
+                    <tr>
+                      <td colspan="3">
+                        <div class="d-flex justify-content-center">
+                          Aucun contenu dans la table
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+
+                  <tr
+                    *ngFor="let productForm of productForms"
+                    class="user-select-none"
+                    (click)="selectProductForm(productForm)"
+                  >
+                    <td>
+                      {{ productForm.presentation }} - {{ productForm.dosage }}
+                    </td>
+
+                    <td>
+                      {{ productForm.conditionnement }}
+                    </td>
+
+                    <!-- <td>
+                      <div class="d-inline-block" ngbDropdown container="body">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                          ngbDropdownToggle
+                        >
+                          <i class="ri-more-fill fs-24"></i>
+                        </button>
+                      </div>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FIELDS ROW -->
+        <ng-container>
+          <div class="row">
+            <div class="col-12">
+              <app-input
+                label="Présentation(s) et dosage(s)"
+                [readOnly]="true"
+                [isMandatory]="true"
+                [control]="productFormController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
+              ></app-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <app-input
+                label="Quantité"
+                maskFormat="separator"
+                [isMandatory]="true"
+                [alignRight]="true"
+                [control]="quantityController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
+              ></app-input>
+            </div>
+            <div class="col-md-8">
+              <app-input
+                label="Conditionnement"
+                [isMandatory]="true"
+                [control]="packagingController"
+                [isFormSubmitted]="isPrescriptionFormSubmitted"
+              ></app-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <app-input
+                label="Dose prescrite"
+                maskFormat="separator"
+                [alignRight]="true"
+                [control]="dosageQuantityController"
+              ></app-input>
+            </div>
+            <div class="col-md-8">
+              <app-select
+                label="Unité"
+                [canAddOption]="true"
+                [options]="doses"
+                [control]="dosageController"
+              ></app-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-select
+                label="Période"
+                [canAddOption]="true"
+                [options]="periods"
+                [control]="periodController"
+              ></app-select>
+            </div>
+            <div class="col-md-6">
+              <app-select
+                label="Adverbe"
+                [canAddOption]="true"
+                [options]="adverbs"
+                [control]="adverbController"
+              ></app-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <app-input
+                label="Durée du traitement"
+                maskFormat="separator"
+                [alignRight]="true"
+                [control]="timeController"
+              ></app-input>
+            </div>
+            <div class="col-md-8">
+              <app-select
+                label="Unité"
+                [canAddOption]="true"
+                [options]="durations"
+                [control]="timeUnitController"
+              ></app-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <app-input label="Note" [control]="noteController"> </app-input>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-info me-2">Heures de prise</button>
+
+            <button
+              class="btn btn-secondary btn-label right me-2"
+              (click)="validatePrescription()"
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i>
+              <b>Valider la prescription</b>
+            </button>
+
+            <button
+              class="btn btn-success btn-label"
+              (click)="registerPrescriptions()"
+              *ngIf="patientInfos"
+            >
+              <i class="ri-save-2-line label-icon align-middle fs-16"></i>
+              <b>Enregistrer l'ordonnance</b>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="col-lg-6">
+        <!-- PRESCRIPTION DISPLAY ROW -->
+        <div
+          class="row border rounded-3"
+          style="overflow-y: scroll; min-height: 230px; max-height: 230px"
+        >
+          <div class="col-12">
+            <div
+              class="d-table mt-2"
+              *ngFor="let prescription of prescriptions"
+            >
+              <div class="d-table-row">
+                <div class="d-table-cell" style="width: 1%">
+                  <h5>
+                    <b
+                      ><u>
+                        {{
+                          prescription.produit.nom +
+                            " " +
+                            prescription.forme.presentation +
+                            " - " +
+                            prescription.forme.dosage
+                        }}
+                      </u></b
+                    >
+                  </h5>
+                </div>
+                <div class="d-table-cell" style="width: 1%">
+                  {{ prescription.qte + " " + prescription.conditionnement }}
+                </div>
+              </div>
+              <div class="d-table-row">
+                <div class="d-table-cell" style="width: 1%">
+                  {{
+                    (prescription.periode ? prescription.periode + " " : "") +
+                      (prescription.adverbe ? prescription.adverbe + " " : "") +
+                      (prescription.duree_qte
+                        ? prescription.duree_qte + " "
+                        : "") +
+                      (prescription.duree ? prescription.duree + " " : "")
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRESCRIPTION GRID ROW -->
+        <div
+          class="row border rounded-3"
+          style="min-height: 230px; max-height: 230px"
+        >
+          <div class="col-12 px-0">
+            <div class="table-responsive" style="max-height: 230px">
+              <!-- table-card -->
+              <table
+                class="table table-one-liner table-bordered table-hover table-striped align-middle"
+              >
+                <thead
+                  class="table-light text-muted"
+                  style="
+                    position: sticky;
+                    top: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th scope="col">
+                      {{ "Médicament" | uppercase }}
+                    </th>
+                    <th scope="col">{{ "Présentation" | uppercase }}</th>
+                    <th scope="col">{{ "Quantité" | uppercase }}</th>
+                    <th scope="col">{{ "Dose" | uppercase }}</th>
+                    <th scope="col">{{ "Période" | uppercase }}</th>
+                    <th scope="col">{{ "Adverbe" | uppercase }}</th>
+                    <th scope="col">{{ "Durée" | uppercase }}</th>
+                    <th scope="col">{{ "Note" | uppercase }}</th>
+                    <!-- <th scope="col"></th> -->
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <ng-container *ngIf="prescriptions.length === 0">
+                    <tr>
+                      <td colspan="9">
+                        <div class="d-flex justify-content-center">
+                          Aucun contenu dans la table
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+
+                  <tr
+                    *ngFor="let prescription of prescriptions"
+                    class="user-select-none"
+                  >
+                    <td>
+                      {{ prescription.produit.nom }}
+                    </td>
+                    <td>
+                      {{ prescription.forme.presentation }}
+                    </td>
+                    <td style="text-align: right">
+                      {{ prescription.qte }}
+                    </td>
+                    <td>
+                      {{
+                        (prescription.dose_qte
+                          ? prescription.dose_qte + " "
+                          : "") +
+                          (prescription.dose ? prescription.dose + " " : "")
+                      }}
+                    </td>
+                    <td>
+                      {{ prescription.periode }}
+                    </td>
+                    <td>
+                      {{ prescription.adverbe }}
+                    </td>
+                    <td>
+                      {{
+                        (prescription.duree_qte
+                          ? prescription.duree_qte + " "
+                          : "") +
+                          (prescription.duree ? prescription.duree + " " : "")
+                      }}
+                    </td>
+                    <td>
+                      {{ prescription.note }}
+                    </td>
+
+                    <!-- <td>
+                      <div class="d-inline-block" ngbDropdown container="body">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                          ngbDropdownToggle
+                        >
+                          <i class="ri-more-fill fs-24"></i>
+                        </button>
+                      </div>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

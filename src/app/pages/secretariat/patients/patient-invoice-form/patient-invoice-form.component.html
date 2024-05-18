@@ -1,0 +1,652 @@
+<!-- <div class="modal-header border-bottom border-1 border-dark">
+  <h5 class="modal-title">Règlement</h5>
+  <button
+    type="button"
+    class="btn-close btn-danger"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="modal.close('Close click')"
+  ></button>
+</div> -->
+
+<app-simple-modal title="Requêtes des activités du secrétariat">
+  <div class="d-flex align-items-center">
+    <h5 class="mb-0 me-4">Patient</h5>
+
+    <h5>
+      <span class="badge bg-primary me-3">
+        <i class="mdi mdi-circle-medium"></i>
+        {{ patientInfos.reference }}
+      </span>
+    </h5>
+
+    <h5>
+      <span class="badge bg-info">{{
+        patientInfos.nom + " " + patientInfos.prenoms
+      }}</span>
+    </h5>
+  </div>
+
+  <hr class="mb-1 mt-0" />
+
+  <div class="row">
+    <div class="col-lg-5">
+      <form [formGroup]="invoiceForm!">
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Montant total de la facture"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="totalAmountControl"
+          maskFormat="separator"
+        ></app-input>
+
+        <app-input
+          type="number"
+          [isLayoutHorizontal]="true"
+          label="Taux de PEC (%)"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="insuranceRateControl"
+        ></app-input>
+
+        <app-input
+          type="number"
+          [isLayoutHorizontal]="true"
+          label="Surplus"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="invoiceSurplusControl"
+        ></app-input>
+
+        <div class="row mb-2">
+          <!--  justify-content-end -->
+          <div class="col-6 d-flex justify-content-start">
+            <b>Le patient souhaite <span class="text-danger">*</span></b>
+          </div>
+
+          <div class="col-6">
+            <!--  d-flex justify-content-around -->
+            <div class="form-check form-radio-outline form-radio-secondary">
+              <!--  form-check-inline -->
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rptpRadio"
+                id="rp"
+                value="rp"
+                [formControl]="rptpRadioControl"
+                [ngClass]="{
+                  'is-invalid':
+                    isInvoiceFormSubmitted && rptpRadioControl.errors
+                }"
+              />
+              <label class="form-check-label" for="rp"> payer sa part </label>
+            </div>
+
+            <div class="form-check form-radio-outline form-radio-secondary">
+              <!--  form-check-inline -->
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rptpRadio"
+                id="tp"
+                value="tp"
+                [formControl]="rptpRadioControl"
+                [ngClass]="{
+                  'is-invalid':
+                    isInvoiceFormSubmitted && rptpRadioControl.errors
+                }"
+              />
+              <label class="form-check-label" for="tp"> tout payer </label>
+
+              <ng-container *ngIf="isInvoiceFormSubmitted">
+                <div
+                  *ngIf="rptpRadioControl.errors?.['required']"
+                  class="invalid-feedback"
+                >
+                  Veuillez faire un choix (entre "payer sa quote-part" et "tout
+                  payer")
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-1">
+          <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Montant à payer par le patient</label>
+          </div>
+          <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <h2 class="text-secondary">
+              <b>
+                {{ patientShareAmount | mask : "separator" }}
+              </b>
+            </h2>
+          </div>
+        </div>
+
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Part de l'assurance"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="insuranceShareControl"
+          maskFormat="separator"
+        ></app-input>
+
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Montant créances antérieures"
+          [alignRight]="true"
+          [readOnly]="true"
+          [control]="previousDebtsTotalControl"
+          maskFormat="separator"
+        ></app-input>
+
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Date de la facture"
+          type="date"
+          [readOnly]="true"
+          [maxDate]="today"
+          [control]="invoiceDateControl"
+        >
+        </app-input>
+
+        <app-input
+          [isLayoutHorizontal]="true"
+          label="Date du règlement"
+          type="date"
+          [readOnly]="true"
+          [maxDate]="today"
+          [control]="paymentDateControl"
+        >
+        </app-input>
+
+        <ngb-accordion
+          #acc="ngbAccordion"
+          (panelChange)="beforePanelChange($event)"
+          activeIds="payment"
+        >
+          <!-- [closeOthers]="true" -->
+          <ngb-panel id="discount">
+            <ng-template ngbPanelTitle class="accordion-header">
+              <h2 class="accordion-header" id="gen-ques-headingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#gen-ques-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="gen-ques-collapseOne"
+                >
+                  Réduction
+                </button>
+              </h2>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div
+                    class="form-check form-radio-outline form-radio-secondary m-0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="discountRadios"
+                      id="discountValue"
+                      value="value"
+                      [formControl]="discountRadioControl"
+                    />
+                    <label class="form-check-label" for="discountValue">
+                      En valeur
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #discountValueField
+                    [alignRight]="true"
+                    [control]="discountValueControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div
+                    class="form-check form-radio-outline form-radio-secondary m-0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="discountRadios"
+                      id="discountPercent"
+                      value="percent"
+                      [formControl]="discountRadioControl"
+                    />
+                    <label class="form-check-label" for="discountPercent">
+                      En pourcentage
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #discountPercentField
+                    [alignRight]="true"
+                    [control]="discountPercentControl"
+                    maskFormat="percent"
+                    maskSuffix=" %"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <app-input
+                  [isLayoutHorizontal]="true"
+                  label="Motif"
+                  placeholder="Motif de la réduction"
+                  [control]="discountReasonControl"
+                ></app-input>
+              </div>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="markup">
+            <ng-template ngbPanelTitle class="accordion-header">
+              <h2 class="accordion-header" id="gen-ques-headingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#gen-ques-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="gen-ques-collapseOne"
+                >
+                  Majoration
+                </button>
+              </h2>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div
+                    class="form-check form-radio-outline form-radio-secondary m-0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="markupRadios"
+                      id="markupValue"
+                      value="value"
+                      [formControl]="markupRadioControl"
+                    />
+                    <label class="form-check-label" for="markupValue">
+                      En valeur
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #markupValueField
+                    [alignRight]="true"
+                    [control]="markupValueControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div
+                    class="form-check form-radio-outline form-radio-secondary m-0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="markupRadios"
+                      id="markupPercent"
+                      value="percent"
+                      [formControl]="markupRadioControl"
+                    />
+                    <label class="form-check-label" for="markupPercent">
+                      En pourcentage
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #markupPercentField
+                    [alignRight]="true"
+                    [control]="markupPercentControl"
+                    maskFormat="percent"
+                    maskSuffix=" %"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <app-input
+                  [isLayoutHorizontal]="true"
+                  label="Motif"
+                  placeholder="Motif de la majoration"
+                  [control]="markupReasonControl"
+                ></app-input>
+              </div>
+            </ng-template>
+          </ngb-panel>
+
+          <ngb-panel id="payment">
+            <ng-template ngbPanelTitle class="accordion-header">
+              <h2 class="accordion-header" id="gen-ques-headingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#gen-ques-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="gen-ques-collapseOne"
+                >
+                  <b class="text-primary text-uppercase">Règlement</b>
+                </button>
+              </h2>
+            </ng-template>
+
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div class="form-check form-check-secondary">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="paymentCash"
+                      [formControl]="paymentCheckCashControl"
+                    />
+                    <label class="form-check-label" for="paymentCash">
+                      Espèces (montant)
+                    </label>
+                  </div>
+                  <!-- <div
+                  class="form-check form-radio-outline form-radio-secondary m-0"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentRadios"
+                    id="paymentCash"
+                    value="cash"
+                    [formControl]="paymentRadioControl"
+                  />
+                  <label class="form-check-label" for="paymentCash">
+                    Espèces
+                  </label>
+                </div> -->
+                </div>
+
+                <div class="col-lg-6">
+                  <app-input
+                    #paymentCashField
+                    [alignRight]="true"
+                    [control]="paymentCashControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div class="form-check form-check-secondary">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="paymentCard"
+                      [formControl]="paymentCheckCardControl"
+                    />
+                    <label class="form-check-label" for="paymentCard">
+                      Carte bancaire (montant)
+                    </label>
+                  </div>
+                  <!-- <div
+                  class="form-check form-radio-outline form-radio-secondary m-0"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentRadios"
+                    id="paymentCard"
+                    value="card"
+                    [formControl]="paymentRadioControl"
+                  />
+                  <label class="form-check-label" for="paymentCard">
+                    Carte bancaire
+                  </label>
+                </div> -->
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #paymentCardField
+                    [alignRight]="true"
+                    [control]="paymentCardControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+
+                <div
+                  class="col-lg-12 mt-1"
+                  *ngIf="paymentCheckCardControl.value == true"
+                >
+                  <app-input
+                    [isLayoutHorizontal]="true"
+                    label="N° Reçu"
+                    [control]="paymentCardReceiptNumberControl"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div class="form-check form-check-secondary">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="paymentCheque"
+                      [formControl]="paymentCheckChequeControl"
+                    />
+                    <label class="form-check-label" for="paymentCheque">
+                      Chèque (montant)
+                    </label>
+                  </div>
+                  <!-- <div
+                  class="form-check form-radio-outline form-radio-secondary m-0"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentRadios"
+                    id="paymentCheque"
+                    value="cheque"
+                    [formControl]="paymentRadioControl"
+                  />
+                  <label class="form-check-label" for="paymentCheque">
+                    Chèque
+                  </label>
+                </div> -->
+                </div>
+                <div class="col-lg-6">
+                  <app-input
+                    #paymentChequeField
+                    [alignRight]="true"
+                    [control]="paymentChequeControl"
+                    maskFormat="separator"
+                  ></app-input>
+                </div>
+
+                <div
+                  class="col-lg-12 mt-1"
+                  *ngIf="paymentCheckChequeControl.value == true"
+                >
+                  <app-input
+                    [isLayoutHorizontal]="true"
+                    label="N° Chèque"
+                    [control]="paymentChequeReceiptNumberControl"
+                  ></app-input>
+                </div>
+                <div
+                  class="col-lg-12 mt-1"
+                  *ngIf="paymentCheckChequeControl.value == true"
+                >
+                  <app-input
+                    [isLayoutHorizontal]="true"
+                    label="Banque"
+                    [control]="paymentChequeBankControl"
+                  ></app-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 d-flex align-items-center">
+                  <label class="form-label m-0">Total</label>
+                </div>
+                <div
+                  class="col-lg-6 d-flex justify-content-end align-items-center"
+                >
+                  <h2>
+                    {{ patientGivenAmount | mask : "separator" }}
+                  </h2>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+
+        <div class="d-flex justify-content-end mt-2">
+          <!-- <button type="button" class="btn btn-light btn-label">
+            <i
+              class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+            ></i>
+            Annuler
+          </button> -->
+
+          <button
+            type="button"
+            class="btn btn-info btn-label ms-auto"
+            [disabled]="true"
+          >
+            <i class="ri-printer-fill label-icon align-middle fs-16 me-2"></i>
+            Imprimer
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary btn-label ms-2"
+            (click)="validatePayment()"
+          >
+            <i
+              class="ri-check-double-fill label-icon align-middle fs-16 me-2"
+            ></i>
+            Valider
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-7 d-flex flex-column justify-content-between">
+      <div class="table-responsive" style="max-height: 400px">
+        <table
+          class="table table-one-liner table-hover table-striped table-bordered table-sm align-middle mb-0"
+        >
+          <thead
+            style="position: sticky; top: -1px; background-color: whitesmoke"
+          >
+            <tr>
+              <th scope="col">Rubrique</th>
+              <th scope="col">Prestation</th>
+              <th scope="col">Prix unitaire</th>
+              <th scope="col">Quantité</th>
+              <th scope="col">Prix total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of patientActivities">
+              <td>{{ item.rubrique }}</td>
+              <td>{{ item.prestation }}</td>
+              <td class="text-end">{{ item.price | mask : "separator" }}</td>
+              <td class="text-end">{{ item.quantity }}</td>
+              <td class="text-end">
+                {{ item.total_price | mask : "separator" }}
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot
+            style="position: sticky; bottom: -1px; background-color: whitesmoke"
+          >
+            <tr>
+              <th colspan="1">Total</th>
+              <th>{{ patientActivities.length }}</th>
+              <th colspan="2"></th>
+              <th class="text-end">
+                {{ patientActivitiesTotal | mask : "separator" }}
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="border border-dark rounded p-2">
+        <div class="row mb-2">
+          <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Reliquat</label>
+          </div>
+          <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <h2 class="text-secondary">
+              <b>
+                {{ remainderAmount | mask : "separator" }}
+              </b>
+            </h2>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Créance</label>
+          </div>
+          <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <h2 class="text-secondary">
+              <b>
+                {{ debtAmount | mask : "separator" }}
+              </b>
+            </h2>
+          </div>
+        </div>
+
+        <!-- <div class="row">
+          <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Montant en lettres</label>
+          </div>
+          <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <h5>
+              <b>
+                {{ "..." }}
+              </b>
+            </h5>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</app-simple-modal>
+
+<!-- <div class="modal-body"></div>
+
+<div class="modal-footer py-1 border-top border-1 border-dark">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-link link-success fw-medium shadow-none"
+    data-bs-dismiss="modal"
+    (click)="modal.close('Close click')"
+    ><i class="ri-close-line me-1 align-middle"></i>Fermer</a
+  >
+</div> -->

@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-md-12"><h5 class="fw-semibold">Transfusé(e)</h5></div>
+    <div class="col-md-2 mb-3">
+      <h-select
+        [isMandatory]="true"
+        [clearable]="false"
+        [options]="displayOptions"
+        [bindValue]="'value'"
+        [control]="showControl"
+      ></h-select>
+    </div>
+    <div class="col-md-12" *ngIf="showControl.value">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <h-input
+                label="Provenance"
+                type="text"
+                [isMandatory]="true"
+                [control]="provenance"
+              ></h-input>
+            </div>
+  
+            <div class="col-md-12 mb-3">
+                <h-select
+                  label="Groupe sanguin transfusé"
+                  [isMandatory]="true"
+                  [options]="patients"
+                  [control]="donneur"
+                  [bindLabel]="'fullname'"
+                  [bindValue]="'reference'"
+                ></h-select>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <h-select
+                  label="Groupe sanguin du reçeveur"
+                  [isMandatory]="true"
+                  [options]="patients"
+                  [control]="receveur"
+                  [bindLabel]="'fullname'"
+                  [bindValue]="'reference'"
+                ></h-select>
+              </div>
+
+            <div class="col-md-12 mb-3">
+              <h-input
+                label="Taux d'hémoglobine"
+                type="text"
+                [isMandatory]="true"
+                [control]="hemoglobine"
+              ></h-input>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <h-input
+                label="Date"
+                type="date"
+                [isMandatory]="true"
+                [control]="date_op"
+              ></h-input>
+            </div>
+            <div class="col-md-12 mb-3">
+              <h-input
+                label="Motif"
+                type="text"
+                [isMandatory]="true"
+                [control]="motif"
+              ></h-input>
+            </div>
+            <div class="col-md-12 mb-3">
+              <app-text placeholder="..." [rows]="5"
+              [control]="comment" label="Commentaires"></app-text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-start">
+      <button
+      type="button"
+      class="btn btn-success btn-label right"
+      (click)="confirmAction()"
+    >
+      <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+      ENREGISTRER
+    </button>
+  </div>
+  </div>
+  

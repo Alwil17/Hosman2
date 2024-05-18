@@ -1,0 +1,25 @@
+<app-simple-modal [title]="title">
+  <form [formGroup]="multiInputForm">
+    <ng-container formArrayName="multiInput">
+      <ng-container
+        *ngFor="
+          let multiInput of multiInputFields.controls;
+          let i = index;
+          let count = count
+        "
+      >
+        <div class="col-md-12">
+          <app-input
+            [label]="label + ' ' + (i + 1)"
+            [control]="multiInput"
+          ></app-input>
+        </div> </ng-container
+    ></ng-container>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-success" (click)="submit()">
+        Valider et fermer
+      </button>
+    </div>
+  </form>
+</app-simple-modal>

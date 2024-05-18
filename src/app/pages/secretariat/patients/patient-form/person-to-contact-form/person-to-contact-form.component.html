@@ -1,0 +1,60 @@
+<app-simple-modal
+  title="Personne à prévenir"
+  [isFullscreenControlDisplayed]="false"
+>
+  <form [formGroup]="personToContactForm">
+    <div class="row">
+      <div class="col-md-6">
+        <app-input
+          #firstField
+          label="Nom"
+          placeholder="Sasir le nom"
+          [isMandatory]="true"
+          [uppercased]="true"
+          [control]="ptcLastnameControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
+      </div>
+      <div class="col-md-6">
+        <app-input
+          label="Prénom(s)"
+          placeholder="Saisir le(s) prénom(s)"
+          [isMandatory]="true"
+          [titlecased]="true"
+          [control]="ptcFirstnameControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
+      </div>
+
+      <div class="col-md-6">
+        <app-input
+          label="Téléphone"
+          placeholder="XX XX XX XX"
+          [isMandatory]="true"
+          [control]="ptcTelControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+          maskFormat="09 09 09 09 09 09 09 09 09 09"
+        >
+        </app-input>
+      </div>
+      <div class="col-md-6">
+        <app-input
+          label="Adresse"
+          placeholder="Saisir l'adresse"
+          [isMandatory]="true"
+          [control]="ptcAddressControl"
+          [isFormSubmitted]="isPersonToContactFormSubmitted"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-start gap-3 mt-4">
+      <button type="button" class="btn btn-success ms-auto" (click)="submit()">
+        Valider et fermer
+      </button>
+    </div>
+  </form>
+</app-simple-modal>

@@ -1,0 +1,11 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="BASE MEDICALE"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<app-patient-list
+  [isInMedicalBase]="true"
+  (doubleClickedPatient)="goToPatientVisitsSummary($event)"
+></app-patient-list>

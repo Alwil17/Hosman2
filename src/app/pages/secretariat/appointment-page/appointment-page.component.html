@@ -1,0 +1,12 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="SECRETARIAT"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<app-card title="Rendez-vous" [hasHeader]="true" [hasBody]="true">
+  <ng-container customCardBody>
+    <app-appointment-form></app-appointment-form>
+  </ng-container>
+</app-card>

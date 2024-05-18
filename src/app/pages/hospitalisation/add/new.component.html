@@ -1,0 +1,144 @@
+<!-- Accordions with Icons -->
+
+
+<div class="accordion custom-accordionwithicon hospitalisation" id="accordionWithicon" oncontextmenu="return false;"
+  appIncreaseFontSize>
+  <div class="accordion-item d-none" id="accordion-admission">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+        data-bs-target="#accordion-admission-content" aria-expanded="true" aria-controls="accor_iconExamplecollapse1">
+        <div class="accordion-title">
+          <div><i class="ri-hotel-bed-line"></i>&nbsp; Admission </div> 
+          <div class="accordion-click">Cliquez pour afficher / cacher</div>
+        </div>
+      </button>
+    </h2>
+    <div id="accordion-admission-content" class="accordion-collapse collapse show"
+      aria-labelledby="accordionwithiconExample1" data-bs-parent="#accordionWithicon">
+      <div class="accordion-body">
+        <app-hosp-admission></app-hosp-admission>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item d-none" id="accordion-fiches">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse"
+        data-bs-target="#accordion-fiches-content" aria-expanded="false" aria-controls="accor_iconExamplecollapse2">
+        <div class="accordion-title">
+          <div><i class="ri-hotel-bed-line"></i>&nbsp; Station / Infirmerie </div> 
+          <div class="accordion-click">Cliquez pour afficher / cacher</div>
+        </div>
+      </button>
+    </h2>
+    <div id="accordion-fiches-content" class="accordion-collapse collapse" aria-labelledby="accordionwithiconExample2"
+      data-bs-parent="#accordionWithicon">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="col-md-12 my-5" *ngIf="hospitalisation == null || hospitalisation.id == undefined">
+            <h4 class="text-center"> Vous devez hospitaliser le patient pour pouvoir continuer </h4>
+          </div>
+
+          <div class="col-md-12" *ngIf="hospitalisation !== null && hospitalisation.id !== undefined">
+            <div class="row">
+              <div class="col-md-23">
+                <h5 class="fw-semibold">Infos patient</h5>
+                <div class="row">
+                  <div class="col-md-2 infos-patient">
+                    <label class="form-label m-0">NOM</label>
+                    <h5 class="fw-semibold">{{ patient.nom }}</h5>
+                  </div>
+                  <div class="col-md-2 infos-patient">
+                    <label class="form-label m-0">PRENOM(S)</label>
+                    <h5 class="fw-semibold">{{ patient.prenoms }}</h5>
+                  </div>
+                  <div class="col-md-2 infos-patient">
+                    <label class="form-label m-0">DATE DE NAISSANCE</label>
+                    <h5 class="fw-semibold">{{ patient.date_naissance | date: 'dd/MM/yyyy' }}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-dm-12">
+                <hr>
+              </div>
+              <div class="col-md-10">
+                <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
+                  <div class="tab-pane fade show active" id="v-pills-comptable" role="tabpanel"
+                    aria-labelledby="v-pills-comptable-tab">
+                    <app-fiche-comptable> </app-fiche-comptable>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-synthese" role="tabpanel"
+                    aria-labelledby="v-pills-synthese-tab">
+                    <app-fiche-synthese></app-fiche-synthese>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-externes" role="tabpanel"
+                    aria-labelledby="v-pills-externes-tab">
+                    <app-medecin-externe> </app-medecin-externe>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-interventions" role="tabpanel"
+                    aria-labelledby="v-pills-interventions-tab">
+                    <app-intervention-chirurgicale> </app-intervention-chirurgicale>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-adresse" role="tabpanel" aria-labelledby="v-pills-adresse-tab">
+                    <app-fiche-adresse> </app-fiche-adresse>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-transfuse" role="tabpanel"
+                    aria-labelledby="v-pills-transfuse-tab">
+                    <app-fiche-transfuse> </app-fiche-transfuse>
+                  </div>
+                  <!-- <div class="tab-pane fade" id="v-pills-transfere" role="tabpanel"
+                    aria-labelledby="v-pills-transfere-tab">
+                    <app-fiche-transfere> </app-fiche-transfere>
+                  </div> -->
+                  <div class="tab-pane fade" id="v-pills-scam" role="tabpanel" aria-labelledby="v-pills-scam-tab">
+                    <app-fiche-scam> </app-fiche-scam>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-decede" role="tabpanel" aria-labelledby="v-pills-decede-tab">
+                    <app-fiche-decede> </app-fiche-decede>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-sortie" role="tabpanel" aria-labelledby="v-pills-sortie-tab">
+                    <app-fiche-sortie></app-fiche-sortie>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 border-start">
+                <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist"
+                  aria-orientation="vertical">
+                  <a class="nav-link mb-2 active border-bottom" id="v-pills-comptable-tab" data-bs-toggle="pill"
+                    href="#v-pills-comptable" role="tab" aria-controls="v-pills-comptable" aria-selected="true">Fiche
+                    comptable</a>
+                  <a class="nav-link mb-2 border-bottom" id="v-pills-synthese-tab" data-bs-toggle="pill"
+                    href="#v-pills-synthese" role="tab" aria-controls="v-pills-synthese" aria-selected="false"
+                    (click)="selectPage('fiche-synthese')">Fiche de synthèse</a>
+
+                  <a class="nav-link mb-2  border-bottom" id="v-pills-externes-tab" data-bs-toggle="pill"
+                    href="#v-pills-externes" role="tab" aria-controls="v-pills-externes" aria-selected="false">Médecins
+                    externes</a>
+                  <a class="nav-link mb-2  border-bottom" id="v-pills-interventions-tab" data-bs-toggle="pill"
+                    href="#v-pills-interventions" role="tab" aria-controls="v-pills-interventions"
+                    aria-selected="false">Interventions chirurgicales</a>
+                  <a class="nav-link mb-2  border-bottom" id="v-pills-adresse-tab" data-bs-toggle="pill"
+                    href="#v-pills-adresse" role="tab" aria-controls="v-pills-adresse"
+                    aria-selected="false">Adressé(e)</a>
+                  <a class="nav-link mb-2  border-bottom" id="v-pills-transfuse-tab" data-bs-toggle="pill"
+                    href="#v-pills-transfuse" role="tab" aria-controls="v-pills-transfuse"
+                    aria-selected="false">Transfusé(e)</a>
+                  <!-- <a class="nav-link mb-2  border-bottom" id="v-pills-transfere-tab" data-bs-toggle="pill"
+                    href="#v-pills-transfere" role="tab" aria-controls="v-pills-transfere"
+                    aria-selected="false">Transféré(e)</a> -->
+                  <a class="nav-link mb-2 border-bottom" id="v-pills-scam-tab" data-bs-toggle="pill"
+                    href="#v-pills-scam" role="tab" aria-controls="v-pills-scam" aria-selected="false">SCAM</a>
+                  <a class="nav-link mb-2  border-bottom" id="v-pills-decede-tab" data-bs-toggle="pill"
+                    href="#v-pills-decede" role="tab" aria-controls="v-pills-decede" aria-selected="false">Décédé(e)</a>
+                  <a class="nav-link mb-2 border-bottom" id="v-pills-sortie-tab" data-bs-toggle="pill"
+                    href="#v-pills-sortie" role="tab" aria-controls="v-pills-sortie" aria-selected="false">Sortie</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

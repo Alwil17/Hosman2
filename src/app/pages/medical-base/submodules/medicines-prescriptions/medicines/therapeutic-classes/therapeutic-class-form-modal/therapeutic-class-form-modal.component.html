@@ -1,0 +1,46 @@
+<app-simple-modal
+  title="Ajouter une classe"
+  [isFullscreenControlDisplayed]="false"
+>
+  <div class="col-12">
+    <form [formGroup]="thClassForm">
+      <!-- FIRST ROW -->
+      <div class="row">
+        <!-- NAME FIELD -->
+        <div class="col-12">
+          <app-input
+            label="Nom de la classe thérapeutique"
+            placeholder="Saisir le nom de la classe"
+            [isMandatory]="true"
+            [control]="nameController"
+            [isFormSubmitted]="isThClassSubmitted"
+          ></app-input>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <ng-container *ngIf="!thClassInfos; else modifyButton">
+          <button
+            type="button"
+            class="btn btn-success btn-label"
+            (click)="registerThClass()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer
+          </button>
+        </ng-container>
+
+        <ng-template #modifyButton>
+          <button
+            type="button"
+            class="btn btn-warning btn-label text-dark"
+            (click)="registerModifications()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer les modifications
+          </button>
+        </ng-template>
+      </div>
+    </form>
+  </div>
+</app-simple-modal>

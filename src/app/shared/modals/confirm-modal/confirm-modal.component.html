@@ -1,0 +1,24 @@
+<app-simple-modal [title]="title" [defaultFooter]="false" [isFullscreenControlDisplayed]="false">
+  <ng-container>
+    <p *ngIf="message">
+      <strong>{{ message }}</strong>
+    </p>
+
+    <p *ngIf="subMessage">
+      {{ subMessage }}
+    </p>
+  </ng-container>
+
+  <ng-container simpleModalFooter>
+    <button class="btn btn-outline-dark" (click)="confirm(false)" ngbAutofocus>
+      {{ cancelButtonText }}
+    </button>
+    <!-- ngbAutofocus -->
+    <button
+      [class]="'btn' + ' ' + (isDangerButton ? 'btn-danger' : 'btn-secondary')"
+      (click)="confirm(true)"
+    >
+      {{ confirmButtonText }}
+    </button>
+  </ng-container>
+</app-simple-modal>

@@ -1,0 +1,244 @@
+<div class="row">
+  <div class="col-lg-5 border-end border-dark">
+    <form [formGroup]="appointmentForm">
+      <app-select
+        #firstField
+        [isLayoutHorizontal]="true"
+        label="Médecin"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [options]="doctors"
+        [control]="doctorControl"
+      ></app-select>
+
+      <app-input
+        [isLayoutHorizontal]="true"
+        label="Nom patient"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [uppercased]="true"
+        [control]="patientLastnameControl"
+      ></app-input>
+
+      <app-input
+        [isLayoutHorizontal]="true"
+        label="Prénoms patient"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [titlecased]="true"
+        [control]="patientFirstnameControl"
+      ></app-input>
+
+      <app-select
+        [isLayoutHorizontal]="true"
+        label="Sexe"
+        [options]="genders"
+        [control]="patientGenderControl"
+      ></app-select>
+
+      <app-input
+        [isLayoutHorizontal]="true"
+        label="Né(e) le"
+        type="date"
+        [control]="patientBirthdayControl"
+      >
+      </app-input>
+
+      <app-input
+        [isLayoutHorizontal]="true"
+        label="Date RDV"
+        type="date"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [minDate]="today"
+        [control]="appointmentDateControl"
+      >
+      </app-input>
+
+      <app-input
+        [isLayoutHorizontal]="true"
+        label="Heure RDV"
+        type="time"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [minDate]="today"
+        [control]="appointmentTimeControl"
+      >
+      </app-input>
+
+      <app-select
+        [isLayoutHorizontal]="true"
+        label="Intervenant"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [options]="doctors"
+        [control]="interveningDoctorControl"
+      ></app-select>
+
+      <app-select
+        label="Objet du RDV"
+        [isMandatory]="true"
+        [isFormSubmitted]="isAppointmentFormSubmitted"
+        [canAddOption]="true"
+        [options]="appointmentReasons"
+        [control]="appointmentReasonControl"
+      ></app-select>
+
+      <div class="d-flex justify-content-end my-4">
+        <!-- <button type="button" class="btn btn-light btn-label">
+            <i
+              class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+            ></i>
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-info btn-label ms-2"
+            [disabled]="true"
+          >
+            <i class="ri-printer-fill label-icon align-middle fs-16 me-2"></i>
+            Imprimer
+          </button> -->
+
+        <button
+          type="button"
+          class="btn btn-success btn-label ms-2"
+          (click)="registerAppointment()"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+
+          Enregistrer
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-warning btn-label ms-auto text-dark"
+          (click)="registerModifications()"
+          *ngIf="selectedAppointmentId"
+        >
+          <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+          Enregistrer les modifications
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="row">
+      <div class="col-lg-auto d-flex align-items-center">
+        Voir les rendez-vous de :
+      </div>
+      <div class="col-lg-6">
+        <app-select
+          [options]="doctors"
+          [control]="doctorSearchControl"
+        ></app-select>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table
+        class="table table-one-liner table-hover table-striped table-bordered align-middle mb-0"
+      >
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Date RDV</th>
+            <th scope="col">Heure</th>
+            <th scope="col">Nom patient</th>
+            <th scope="col">Prénoms patient</th>
+            <th scope="col">Objet</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let appointment of appointmentsListCut"
+            class="user-select-none"
+          >
+            <td>{{ appointment.date_rdv | date : "dd/MM/yyyy" }}</td>
+            <td>{{ appointment.date_rdv | date : "HH:mm" }}</td>
+
+            <td>{{ appointment.patient_nom }}</td>
+            <td>{{ appointment.patient_prenoms }}</td>
+            <td>{{ appointment.objet }}</td>
+
+            <td>
+              <div class="d-inline-block" ngbDropdown container="body">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                  ngbDropdownToggle
+                >
+                  <i class="ri-more-fill fs-24"></i>
+                </button>
+                <div ngbDropdownMenu>
+                  <button
+                    ngbDropdownItem
+                    (click)="selectAppointment(appointment)"
+                  >
+                    <i
+                      class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                    ></i>
+                    Modifier
+                  </button>
+                  <button
+                    ngbDropdownItem
+                    (click)="cancelAppointment(appointment)"
+                  >
+                    <i
+                      class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                    ></i>
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="row" *ngIf="appointmentsList.length !== 0">
+      <div class="col-12">
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshAppointmentsTable()"
+          >
+          </ngb-pagination>
+
+          <select
+            class="form-select"
+            style="width: auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="refreshAppointmentsTable()"
+          >
+            <option [ngValue]="10">10 éléments par page</option>
+            <option [ngValue]="15">15 éléments par page</option>
+            <option [ngValue]="20">20 éléments par page</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-info btn-label ms-2"
+        (click)="openAllAppointmentsModal()"
+      >
+        <i
+          class="ri-calendar-event-fill label-icon align-middle fs-16 me-2"
+        ></i>
+
+        Rendez-vous de tous les médecins
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { Invoice } from "src/app/models/secretariat/patients/invoice.model";
+import { InvoiceRequest } from "src/app/models/secretariat/patients/requests/invoice-request.model";
+import { InvoiceResponse } from "src/app/models/secretariat/patients/responses/invoice-response.model";
+import { environment } from "src/environments/environment";
+
+const apiEndpoint = environment.secretariat + "factures";
+
+@Injectable({
+  providedIn: "root",
+})
+export class InvoiceService {
+  constructor(private http: HttpClient) {}
+
+  getAll(): Observable<Invoice[]> {
+    return this.http.get<InvoiceResponse[]>(apiEndpoint).pipe(
+      map((invoices) => {
+        const mapped: Invoice[] = invoices.map((invoice) =>
+          Invoice.fromResponse(invoice)
+        );
+
+        return mapped;
+      })
+    );
+  }
+
+  create(data: InvoiceRequest): Observable<any> {
+    console.log(JSON.stringify(data, null, 2));
+
+    return this.http.post(apiEndpoint, data);
+  }
+
+  get(id: any): Observable<Invoice> {
+    return this.http.get<Invoice>(`${apiEndpoint}/${id}`);
+  }
+
+  loadPdf(id: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+
+    return this.http.get(`${apiEndpoint}/${id}/show`, {
+      headers: headers,
+      responseType: "blob",
+    });
+  }
+
+  searchBy(criteria: {
+    minDate: Date;
+    maxDate?: Date;
+    actGroupCode?: string;
+    patientName?: string;
+  }): Observable<Invoice[]> {
+    let apiComplementary =
+      "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+
+    if (criteria.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+
+    if (criteria.actGroupCode) {
+      apiComplementary += "&code=" + criteria.actGroupCode;
+    }
+
+    if (criteria.patientName) {
+      apiComplementary += "&patient=" + criteria.patientName;
+    }
+
+    return this.http
+      .get<InvoiceResponse[]>(`${apiEndpoint}/search?${apiComplementary}`)
+      .pipe(
+        map((invoices) => {
+          const mapped: Invoice[] = invoices.map((invoice) =>
+            Invoice.fromResponse(invoice)
+          );
+
+          return mapped;
+        })
+      );
+  }
+
+  // update(id: any, data: any): Observable<any> {
+  //   return this.http.put(`${apiEndpoint}/${id}`, data);
+  // }
+}

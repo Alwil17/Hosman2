@@ -1,0 +1,71 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="REQUÊTES PRISE EN CHARGE" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="row g-3 align-items-center py-3">
+        <div class="row col-md-10 col-xl-8 gap-3">
+          <div class="col-md-3">
+            <app-input label="Date de début" type="date" [maxDate]="today" [control]="startDateControl">
+            </app-input>
+          </div>
+          <div class="col-md-3">
+            <app-input label="Date de fin" type="date" [maxDate]="today" [control]="endDateControl">
+            </app-input>
+          </div>
+          <div class="col-md-4">
+            <app-select label="Docteur" [clearable]="true" [options]="doctors" [control]="doctorControl"></app-select>
+          </div>
+        </div>
+        <div class="col-md-3 col-xl-4 align-items-end gap-3">
+          <button type="button" class="btn btn-success btn-label ms-2" (click)="printReport()">
+            <i class="ri-history-line label-icon align-middle fs-16 me-2"></i>
+            Aperçu
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive table-card">
+            <table class="table table-one-liner table-hover table-striped align-middle mb-0">
+
+              <thead class="table-light text-muted">
+                <tr>
+                  <th scope="col">{{ "Date Consultation" | uppercase }}</th>
+                  <th scope="col">{{ "ID" | uppercase }}</th>
+                  <th scope="col">{{ "Nom" | uppercase }}</th>
+                  <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
+                  <th scope="col">{{ "Né(e) le" | uppercase }}</th>
+                  <th scope="col">{{ "Sexe" | uppercase }}</th>
+                  <th scope="col">{{ "Médecin" | uppercase }}</th>
+                  <th scope="col">{{ "Secteur" | uppercase }}</th>
+                  <th scope="col">{{ "Actes" | uppercase }}</th>
+                  <th scope="col">{{ "Total Facture" | uppercase }}</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between p-2">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

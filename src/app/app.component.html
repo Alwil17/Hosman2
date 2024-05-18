@@ -1,0 +1,21 @@
+<app-toasts-container
+  aria-live="polite"
+  aria-atomic="true"
+></app-toasts-container>
+
+<router-outlet></router-outlet>
+<!-- spinnner element is 
+    defined with id loading -->
+<!-- <div class="d-flex justify-content-center" *ngIf="!(loading.visibility | async)">
+      <div class="spinner-border" role="status">
+          <span class="sr-only" id="loading"></span>
+      </div>
+  </div> -->
+
+<div class="spinner-wrapper" *ngIf="loadingSpinnerService.visibility | async">
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only" id="loading"></span>
+    </div>
+  </div>
+</div>

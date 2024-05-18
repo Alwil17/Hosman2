@@ -1,0 +1,74 @@
+<app-simple-modal
+  title="Adresse du patient"
+  [isFullscreenControlDisplayed]="false"
+>
+  <form [formGroup]="patientAddressForm">
+    <div class="row">
+      <div class="col-md-6">
+        <app-select
+          #firstField
+          label="Ville"
+          [isMandatory]="true"
+          [options]="cities"
+          [canAddOption]="true"
+          [control]="paCityControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        ></app-select>
+      </div>
+      <div class="col-md-6">
+        <app-select
+          label="Quartier"
+          [isMandatory]="true"
+          [options]="neighborhoods"
+          [canAddOption]="true"
+          [control]="paNeighborhoodControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        ></app-select>
+      </div>
+
+      <div class="col-md-6">
+        <app-input
+          label="Rue et numéro"
+          placeholder="Sasir la rue et le numéro"
+          [control]="paStreetControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        >
+        </app-input>
+      </div>
+      <div class="col-md-6">
+        <app-input
+          label="Boîte postale"
+          placeholder="Saisir la boîte postale"
+          [control]="paPOBoxControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        >
+        </app-input>
+      </div>
+
+      <div class="col-md-6">
+        <app-input
+          label="Arrondissement"
+          placeholder="Saisir l'arrondissement"
+          [control]="paDistrictControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        >
+        </app-input>
+      </div>
+      <div class="col-md-6">
+        <app-input
+          label="Numéro maison"
+          placeholder="Saisir le numéro de maison"
+          [control]="paHomeNumberControl"
+          [isFormSubmitted]="isPatientAddressFormSubmitted"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-start gap-3 mt-4">
+      <button type="button" class="btn btn-success ms-auto" (click)="submit()">
+        Valider et fermer
+      </button>
+    </div>
+  </form>
+</app-simple-modal>

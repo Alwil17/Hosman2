@@ -1,0 +1,218 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="BASE MEDICALE"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between align-items-end">
+      <div class="d-inline-block">
+        <h4>
+          <span class="badge bg-primary me-3"
+            ><i class="mdi mdi-circle-medium"></i> {{ "125064" }}</span
+          >
+        </h4>
+      </div>
+
+      <div class="d-inline-block">
+        <h5>RECAPITULATIF DES CONSULTATIONS ET HOSPITALISATIONS</h5>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-warning btn-label waves-effect waves-light text-dark"
+        (click)="goToPreviousPage()"
+      >
+        <i class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"></i>
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-10">
+        <form [formGroup]="patientVisitsForm">
+          <div class="row">
+            <div class="col-md-4">
+              <app-input
+                label="Nom"
+                [readOnly]="true"
+                [control]="lastNameControl"
+              ></app-input>
+            </div>
+
+            <div class="col-md-4">
+              <app-input
+                label="Prénoms"
+                [readOnly]="true"
+                [control]="firstNameControl"
+              ></app-input>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-7">
+                  <app-input
+                    label="Né(e) le"
+                    type="date"
+                    [readOnly]="true"
+                    [maxDate]="today"
+                    [control]="dateOfBirthControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-5">
+                  <app-select
+                    label="Sexe"
+                    [readOnly]="true"
+                    [options]="genders"
+                    [control]="genderControl"
+                  ></app-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <ng-container formArrayName="chronicDiseases">
+              <ng-container
+                *ngFor="
+                  let chronicDisease of chronicDiseasesFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-4">
+                  <app-input
+                    [label]="'Maladie chronique' + ' ' + (i + 1)"
+                    [readOnly]="true"
+                    [control]="chronicDisease"
+                  ></app-input>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="col-md-2 border-dark border-start d-flex flex-column justify-content-center align-items-center"
+      >
+        <button type="button" class="btn btn-light mb-2">
+          <b>Voir les antécédents</b>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goToPatientVisitForm()"
+        >
+          <b>Ouvrir la navette</b>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive table-card">
+          <table class="table table-one-liner table-hover table-striped align-middle mb-0">
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ "NUMERO" }}</th>
+                <th scope="col">{{ "DATE" }}</th>
+                <th scope="col">{{ "HEURE" }}</th>
+                <th scope="col">{{ "POIDS (kg)" }}</th>
+                <th scope="col">{{ "TAILLE (cm)" }}</th>
+                <th scope="col">{{ "TENSION (mmHg)" }}</th>
+                <th scope="col">{{ "TEMPERATURE (°C)" }}</th>
+                <th scope="col">{{ "PC (cm)" }}</th>
+                <th scope="col">{{ "ACTES" }}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of visitsListCut; let index = index"
+                class="user-select-none"
+                (dblclick)="openPreviousVisitsModal(index)"
+              >
+                <td>{{ item.reference }}</td>
+                <td>{{ item.date_consultation | date : "dd/MM/yyyy" }}</td>
+                <td>{{ item.date_consultation | date : "HH:mm:ss" }}</td>
+                <td>{{ item.constante?.poids }}</td>
+                <td>
+                  {{ item.constante?.taille }}
+                </td>
+                <td>{{ item.constante?.tension }}</td>
+                <td>{{ item.constante?.temperature }}</td>
+                <td>{{ item.constante?.perimetre_cranien }}</td>
+                <td>
+                  <span *ngFor="let act of item.actes">
+                    {{ act.libelle + " " }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="d-inline-block" ngbDropdown container="body">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <!-- <button ngbDropdownItem>
+                        <i
+                          class="ri-information-line label-icon align-middle fs-16 me-2 text-success"
+                        ></i>
+                        Détails de la facture
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-exchange-line label-icon align-middle fs-16 me-2 text-warning"
+                        ></i>
+                        Changer de médecin de destination
+                      </button> -->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshVisitsListTable()"
+          >
+          </ngb-pagination>
+
+          <select
+            class="form-select"
+            style="width: auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="refreshVisitsListTable()"
+          >
+            <option [ngValue]="10">10 éléments par page</option>
+            <option [ngValue]="15">15 éléments par page</option>
+            <option [ngValue]="20">20 éléments par page</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

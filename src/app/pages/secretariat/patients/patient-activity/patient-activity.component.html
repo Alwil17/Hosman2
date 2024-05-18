@@ -1,0 +1,618 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="PATIENTS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+        <h4 class="card-title mb-0 me-4">Patient</h4>
+
+        <ng-container *ngIf="selectedPatient">
+          <h4 class="m-0">
+            <span class="badge bg-primary"
+              ><i class="mdi mdi-circle-medium"></i>
+              {{
+                selectedPatient.reference +
+                  " - " +
+                  selectedPatient.nom +
+                  " " +
+                  selectedPatient.prenoms
+              }}</span
+            >
+          </h4>
+
+          <button
+            type="button"
+            class="btn btn-success btn-label waves-effect waves-light ms-auto me-3"
+            (click)="isPatientInfoCollapsed = !isPatientInfoCollapsed"
+            [attr.aria-expanded]="!isPatientInfoCollapsed"
+            aria-controls="collapseExample"
+          >
+            <i
+              class="ri-information-line label-icon align-middle fs-16 me-2"
+            ></i>
+            <span *ngIf="isPatientInfoCollapsed; else seeLess">Voir plus</span>
+            <ng-template #seeLess>
+              <span> Voir moins </span>
+            </ng-template>
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-warning btn-label waves-effect waves-light"
+            (click)="openPatientModificationModal()"
+          >
+            <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
+            Modifier
+          </button>
+        </ng-container>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body" [(ngbCollapse)]="isPatientInfoCollapsed">
+        <!-- #patientInfoCollapse="ngbCollapse" -->
+        <ng-container *ngIf="selectedPatient; else infoUnavailable">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <h6>
+                <b> Nom : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.nom | uppercase
+                }}</b>
+              </h6>
+
+              <h6>
+                <b> Né(e) le : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.date_naissance | date : "dd/MM/yyyy"
+                }}</b>
+              </h6>
+
+              <h6>
+                <b> Assurance : </b>
+                <b class="text-secondary">
+                  <span *ngIf="selectedPatient.is_assure === 0">
+                    <em>Non assuré (Local)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 1">
+                    <em>Non assuré (Etranger)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 2">
+                    {{ selectedPatient.assurance?.nom }}<em> (Locale)</em>
+                  </span>
+                  <span *ngIf="selectedPatient.is_assure === 3">
+                    {{ selectedPatient.assurance?.nom }}<em> (Etrangère)</em>
+                  </span>
+
+                  <!-- {{
+                    selectedPatient.assurance
+                      ? selectedPatient.assurance.nom
+                      : "-"
+                  }} -->
+                </b>
+              </h6>
+
+              <h6>
+                <b> Contact(s) : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.tel1 + " / " + (selectedPatient.tel2 ?? "-")
+                }}</b>
+              </h6>
+            </div>
+
+            <div class="col-12 col-lg-8">
+              <h6>
+                <b class="ms-4"> Prénoms : </b
+                ><b class="text-secondary">{{
+                  selectedPatient.prenoms | titlecase
+                }}</b>
+              </h6>
+
+              <h6>
+                <b class="ms-4"> Lieu de naissance : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.lieu_naissance ?? "-"
+                }}</b>
+              </h6>
+
+              <h6>
+                <b class="ms-4"> Taux de prise en charge : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.taux_assurance
+                    ? selectedPatient.taux_assurance + " %"
+                    : "-"
+                }}</b>
+              </h6>
+
+              <h6>
+                <b class="ms-4"> Personne à prévenir : </b>
+                <b class="text-secondary">{{
+                  selectedPatient.personne_a_prevenir.toText()
+                }}</b>
+              </h6>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #infoUnavailable>
+          <h4>
+            Informations patient indisponibles. Veuillez retourner à la liste
+            des anciens patients.
+          </h4>
+        </ng-template>
+      </div>
+      <!-- end card-body -->
+
+      <div class="card-body border-top border-dark">
+        <div class="d-flex flex-wrap">
+          <ng-container *ngFor="let actGroup of actGroups; index as i">
+            <div class="col-12 col-md-3 col-xl-2">
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                [id]="'pType-' + i"
+                [checked]="i === 0"
+              />
+              <label
+                class="btn btn-outline-secondary btn-sm d-block mx-1 my-1"
+                [for]="'pType-' + i"
+                (click)="updateTable(actGroup); scrollTo(activityFirstField)"
+                ><b>{{ actGroup.libelle | uppercase }}</b></label
+              >
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- <div class="d-flex flex-wrap">
+              <ng-container
+                *ngFor="let actGroup of actGroups | slice : 7 : 14; index as i"
+              >
+                <div class="col-12 col-md-3 col-xl">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="btnradio"
+                    [id]="'pType-' + i"
+                  />
+                  <label
+                    class="btn btn-outline-secondary btn-sm d-block mx-1 my-1"
+                    [for]="'pType-' + i"
+                    (click)="updateTable(actGroup); scrollTo(activityFirstField)"
+                    ><b>{{ actGroup.libelle | uppercase }}</b></label
+                  >
+                </div>
+              </ng-container>
+            </div> -->
+      </div>
+
+      <div
+        class="card-body border-top border-dark border-bottom"
+        #activityFirstField
+      >
+        <!-- <p class="text-muted">
+          <em
+            >Les champs marqués par <span class="text-danger">*</span> sont
+            obligatoires</em
+          >
+        </p> -->
+        <div class="row">
+          <div class="col-9">
+            <form [formGroup]="activityForm">
+              <div class="row" *ngIf="isMedicalProceduresSelected">
+                <div class="col-md-8">
+                  <app-select
+                    label="Secteur"
+                    [isMandatory]="true"
+                    [options]="sectors"
+                    [control]="sectorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+
+                <div class="col-md-4">
+                  <app-select
+                    [isMandatory]="true"
+                    label="Médecin consulteur"
+                    [options]="consultingDoctors"
+                    [control]="consultingDoctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="!isMedicalProceduresSelected">
+                <div class="col-md-4">
+                  <app-select
+                    label="Type Médecin"
+                    [isMandatory]="true"
+                    [editable]="false"
+                    [clearable]="false"
+                    [searchable]="false"
+                    [options]="doctorTypes"
+                    [control]="doctorTypeControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+                <div class="col-md-4">
+                  <app-select
+                    label="Médecin demandeur"
+                    [isMandatory]="true"
+                    [options]="doctors"
+                    [canAddOption]="docAddable"
+                    [control]="doctorControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+                <div class="col-md-4">
+                  <app-select
+                    label="Effectué par"
+                    [options]="performedBys"
+                    [control]="performedByControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <app-input
+                    label="Date"
+                    type="date"
+                    [minDate]="today"
+                    [isMandatory]="true"
+                    [control]="activityDateControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
+                </div>
+                <div class="col-md-4">
+                  <app-input
+                    label="Quantité"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    [control]="quantityControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                    maskFormat="separator"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-4">
+                  <app-input
+                    label="Provenance"
+                    placeholder="Clinique/Hôpital de provenance du patient"
+                    [control]="originControl"
+                    [isFormSubmitted]="isActivityFormSubmitted"
+                  ></app-input>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-3 border-dark border-start">
+            <div class="row">
+              <ng-container
+                *ngIf="isConsultationsLoading; else consultationsTemplate"
+              >
+              </ng-container>
+
+              <ng-template #consultationsTemplate>
+                <ng-container
+                  *ngIf="
+                    previousConsultations.length !== 0;
+                    else noConsultationsTemplate
+                  "
+                >
+                  <div class="col-5">
+                    <small><b>Dernier consulteur : </b></small>
+                  </div>
+
+                  <div class="col-7">
+                    <div class="text-secondary mb-2">
+                      <small><b>Dr ...</b></small>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        class="btn btn-light btn-sm"
+                        (click)="openPreviousConsultations()"
+                      >
+                        <b>Voir les dernières consultations</b>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-template #noConsultationsTemplate>
+                  <div class="col-12">
+                    <small><b>Pas de consultations antérieures</b></small>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body border-bottom">
+        <div class="row d-flex justify-content-between">
+          <div class="col-md-4">
+            <!-- <label class="form-label">Rechercher</label> -->
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher par prestation"
+              [control]="searchControl"
+              bottomMargin="0"
+            >
+            </app-input>
+          </div>
+
+          <div class="col-md-auto d-flex align-items-end">
+            <button
+              type="button"
+              class="btn btn-success btn-label right"
+              (click)="openInvoiceModal()"
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i>
+              Continuer / Passer au paiement
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <!-- 
+            FIRST TABLE
+           -->
+
+          <div class="col-md-6">
+            <div class="col-12">
+              <em>Double-cliquer un élément pour l'ajouter</em>
+            </div>
+
+            <div
+              class="table-responsive mt-2 mt-xl-0"
+              style="max-height: 400px"
+            >
+              <table
+                class="table table-one-liner table-hover table-striped table-bordered table-sm align-middle mb-0"
+              >
+                <thead
+                  style="
+                    position: sticky;
+                    top: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th scope="col">Prestation</th>
+                    <th scope="col">
+                      Prix
+                      <ng-container *ngIf="selectedPatient">
+                        <span *ngIf="selectedPatient.is_assure === 0">
+                          <em>(Non assuré local)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 1">
+                          <em>(Non assuré étranger)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 2">
+                          <em> (Assurance locale)</em>
+                        </span>
+                        <span *ngIf="selectedPatient.is_assure === 3">
+                          <em> (Assurance étrangère)</em>
+                        </span></ng-container
+                      >
+                    </th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+
+                <tbody class="user-select-none">
+                  <tr *ngFor="let item of activities" (dblclick)="add(item)">
+                    <td>
+                      <ngb-highlight
+                        [result]="item.designation"
+                        [term]="searchControl.value"
+                      ></ngb-highlight>
+                    </td>
+                    <td class="text-end">
+                      <b>
+                        {{ item.price | mask : "separator" }}
+                      </b>
+                    </td>
+                    <td>
+                      {{ item.description }}
+                      <!-- <ngb-highlight
+                        [result]="item.description"
+                        [term]="searchTerm"
+                      ></ngb-highlight> -->
+                    </td>
+                  </tr>
+                </tbody>
+
+                <tfoot
+                  style="
+                    position: sticky;
+                    bottom: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th colspan="2">Total des prestations</th>
+                    <th class="text-end">
+                      {{ activities.length }}
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [(page)]="table1Page"
+                [pageSize]="table1PageSize"
+                [collectionSize]="table1CollectionSize"
+                [maxSize]="5"
+                [rotate]="true"
+                (pageChange)="refreshActivities()"
+              >
+              </ngb-pagination>
+
+              <select
+                class="form-select"
+                style="width: auto"
+                [(ngModel)]="table1PageSize"
+                (ngModelChange)="refreshActivities()"
+              >
+                <option [ngValue]="5">5 éléments par page</option>
+                <option [ngValue]="10">10 éléments par page</option>
+                <option [ngValue]="15">15 éléments par page</option>
+              </select>
+            </div> -->
+          </div>
+
+          <div class="col-md-1 text-center">
+            <i class="ri-arrow-left-right-fill fs-24"></i>
+          </div>
+
+          <!-- 
+            SECOND TABLE
+           -->
+          <div class="col-md-5">
+            <div class="col-12">
+              <em>Double-cliquer un élément pour le retirer</em>
+            </div>
+
+            <div
+              class="table-responsive mt-2 mt-xl-0"
+              style="max-height: 400px"
+            >
+              <table
+                class="table table-one-liner table-hover table-striped table-bordered table-sm align-middle mb-0"
+              >
+                <thead
+                  style="
+                    position: sticky;
+                    top: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th scope="col">Rubrique</th>
+                    <th scope="col">Prestation</th>
+                    <th scope="col">Prix unitaire</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Prix total</th>
+                  </tr>
+                </thead>
+
+                <tbody class="user-select-none">
+                  <tr
+                    *ngFor="let item of activitiesSelect"
+                    (dblclick)="remove(item)"
+                  >
+                    <td>{{ item.rubrique | uppercase }}</td>
+                    <td>{{ item.prestation }}</td>
+                    <td class="text-end">
+                      {{ item.price | mask : "separator" }}
+                    </td>
+                    <td class="text-end">{{ item.quantity }}</td>
+                    <td class="text-end">
+                      {{ item.total_price | mask : "separator" }}
+                    </td>
+                  </tr>
+                </tbody>
+
+                <tfoot
+                  style="
+                    position: sticky;
+                    bottom: -1px;
+                    background-color: whitesmoke;
+                  "
+                >
+                  <tr>
+                    <th colspan="1">Total</th>
+                    <th>{{ activitiesSelect.length }}</th>
+                    <th colspan="2"></th>
+                    <th class="text-end">
+                      {{ table2Total | mask : "separator" }}
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- <div
+              class="d-flex justify-content-between p-2"
+              *ngIf="table2CollectionSize"
+            >
+              <ngb-pagination
+                [(page)]="table2Page"
+                [pageSize]="table2PageSize"
+                [collectionSize]="table2CollectionSize"
+                [maxSize]="5"
+                [rotate]="true"
+                (pageChange)="refreshActivitiesSelect()"
+              >
+              </ngb-pagination>
+
+              <select
+                class="form-select"
+                style="width: auto"
+                [(ngModel)]="table2PageSize"
+                (ngModelChange)="refreshActivitiesSelect()"
+              >
+                <option [ngValue]="5">5 éléments par page</option>
+                <option [ngValue]="10">10 éléments par page</option>
+                <option [ngValue]="15">15 éléments par page</option>
+              </select>
+            </div> -->
+          </div>
+          <!--end col-->
+        </div>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+
+<!-- ACTIVITIES/PRESTATIONS CHOICE -->
+<!-- <div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row g-4 align-items-center">
+          <div class="col-sm">
+            <div>
+              <h5 class="card-title mb-0">Rubriques</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="col-lg-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="row g-4 align-items-center">
+        <div class="col-sm">
+          <div>
+            <h5 class="card-title mb-0">Prestations</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div> -->

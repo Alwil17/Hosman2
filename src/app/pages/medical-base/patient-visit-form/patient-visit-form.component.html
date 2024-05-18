@@ -1,0 +1,155 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="BASE MEDICALE"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<!-- FIRST FORM CARD -->
+<app-card
+  [hasHeader]="true"
+  [hasBody]="!isPatientInfoCollapsed"
+  [hasFooter]="true"
+>
+  <!-- HEADER -->
+  <ng-container customCardHeader>
+    <div class="d-flex justify-content-between align-items-end">
+      <h4 *ngIf="activePatient">
+        <span class="badge bg-primary me-3"
+          ><i class="mdi mdi-circle-medium"></i>
+          {{
+            activePatient.reference +
+              " - " +
+              activePatient.nom +
+              " " +
+              activePatient.prenoms
+          }}</span
+        >
+      </h4>
+
+      <h5>Infos patient</h5>
+
+      <div>
+        <button
+          type="button"
+          class="btn btn-warning btn-label waves-effect waves-light me-2 text-dark"
+          (click)="goToPreviousPage()"
+        >
+          <i
+            class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+          ></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-info btn-label waves-effect waves-light me-2"
+          (click)="isPatientInfoCollapsed = !isPatientInfoCollapsed"
+          [attr.aria-expanded]="!isPatientInfoCollapsed"
+          aria-controls="collapseExample"
+        >
+          <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
+          <span *ngIf="isPatientInfoCollapsed; else seeLess">Voir plus</span>
+
+          <ng-template #seeLess>
+            <span> Voir moins </span>
+          </ng-template>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-warning btn-label waves-effect waves-light text-dark"
+          (click)="openPatientModificationModal()"
+        >
+          <i class="ri-pencil-fill label-icon align-middle fs-16 me-2"></i>
+          Modifier
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- BODY/CONTENT -->
+  <ng-container customCardBody>
+    <div [(ngbCollapse)]="isPatientInfoCollapsed">
+      <app-patient-infos-form
+        *ngIf="activePatient"
+        [patientInfos]="activePatient"
+      ></app-patient-infos-form>
+    </div>
+  </ng-container>
+
+  <!-- FOOTER -->
+  <ng-container customCardFooter>
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-label waves-effect waves-light text-dark"
+        [ngClass]="{
+          'btn-secondary': isVisitFormCollapsed,
+          'btn-warning': !isVisitFormCollapsed,
+          'text-dark': !isVisitFormCollapsed
+        }"
+        (click)="toggleVisitDisplay()"
+        [attr.aria-expanded]="!isVisitFormCollapsed"
+        aria-controls="collapseExample"
+      >
+        <i
+          class="label-icon align-middle fs-16 me-2"
+          [ngClass]="{
+            'ri-arrow-down-line': isVisitFormCollapsed,
+            'ri-close-fill': !isVisitFormCollapsed
+          }"
+        ></i>
+        <span *ngIf="isVisitFormCollapsed; else cancelVisit"
+          >Démarrer la consultation</span
+        >
+
+        <ng-template #cancelVisit>
+          <span> Annuler la consultation </span>
+        </ng-template>
+      </button>
+    </div>
+  </ng-container>
+</app-card>
+
+<!-- SECOND FORM CARD -->
+<app-card *ngIf="!isVisitFormCollapsed" [hasHeader]="true" [hasBody]="true">
+  <!-- HEADER -->
+  <ng-container customCardHeader>
+    <div class="d-flex justify-content-between align-items-end">
+      <div class="d-inline-block">
+        <h5>Consultation</h5>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          class="btn btn-warning btn-label waves-effect waves-light me-2 text-dark"
+          (click)="goToPreviousPage()"
+        >
+          <i
+            class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"
+          ></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-info btn-label waves-effect waves-light"
+          (click)="openPreviousVisitsModal()"
+        >
+          <i class="ri-information-line label-icon align-middle fs-16 me-2"></i>
+          Voir les anciennes consultations
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- BODY/CONTENT -->
+  <ng-container customCardBody>
+    <app-visit-infos-form
+      *ngIf="activePatient"
+      [patientInfos]="activePatient"
+    ></app-visit-infos-form>
+  </ng-container>
+</app-card>

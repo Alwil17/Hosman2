@@ -1,0 +1,240 @@
+<app-card
+  title="Récapitulatif des reçus émis"
+  [separator]="true"
+  [hasHeader]="true"
+  [hasBody]="true"
+>
+  <ng-container customCardHeader>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-7 col-xl-5">
+        <div class="hstack gap-3">
+          <div class="col-md-6">
+            <app-input
+              label="Date du jour"
+              type="date"
+              [maxDate]="today"
+              [control]="receiptsDateControl"
+            >
+            </app-input>
+          </div>
+
+          <div class="col-md-6">
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher (nom et/ou prénoms)"
+              [control]="searchControl"
+            >
+            </app-input>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <app-select
+            label="Filtrer par"
+            [editable]="false"
+            [clearable]="false"
+            [searchable]="false"
+            [options]="paymentModeCriteria"
+            [control]="paymentModeCriterionControl"
+          ></app-select>
+        </div>
+      </div>
+
+      <div class="d-flex col-md-5 col-xl-7">
+        <button
+          type="button"
+          class="btn btn-success btn-label ms-auto"
+          (click)="openActivitiesDetailModal()"
+        >
+          <i class="ri-history-line label-icon align-middle fs-16 me-2"></i>
+          Activités
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary btn-label ms-2"
+          (click)="displayReportModal()"
+        >
+          <i
+            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
+          ></i>
+          Fiche récapitulative
+        </button>
+        <button
+          type="button"
+          class="btn btn-info btn-label ms-2"
+          (click)="displayInsuranceRequestsModal()"
+        >
+          <i
+            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
+          ></i>
+          Requêtes PEC
+        </button>
+      </div>
+      <!-- <div class="d-flex col-md-5 col-xl-8">
+        <button
+          type="button"
+          class="btn btn-success btn-label ms-auto"
+          (click)="printReport()"
+        >
+          <i
+            class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2"
+          ></i>
+          Print report
+        </button>
+      </div> -->
+    </div>
+  </ng-container>
+
+  <ng-container customCardBody>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive table-card">
+          <table
+            class="table table-one-liner table-hover table-striped table-bordered align-middle mb-0"
+          >
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ "N° Reçu" | uppercase }}</th>
+                <th scope="col">{{ "Nom" | uppercase }}</th>
+                <th scope="col">{{ "Prénom(s)" | uppercase }}</th>
+                <th scope="col">{{ "Montant versé" | uppercase }}</th>
+                <th scope="col">{{ "Emetteur" | uppercase }}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let invoice of invoicesListCut"
+                class="user-select-none"
+              >
+                <td>{{ invoice.reference }}</td>
+                <!-- <td>{{ invoice.prestation.patient.nom }}</td>
+                <td>{{ invoice.prestation.patient.prenoms }}</td> -->
+                <td>
+                  <ngb-highlight
+                    [result]="invoice.prestation.patient.nom"
+                    [term]="searchControl.value.split(' ')[0]"
+                  ></ngb-highlight>
+                </td>
+                <td>
+                  <ngb-highlight
+                    [result]="invoice.prestation.patient.prenoms"
+                    [term]="[searchControl.value.split(' ')[1], searchControl.value]"
+                  ></ngb-highlight>
+                </td>
+                <td class="text-end">
+                  {{
+                    invoice.a_payer - invoice.creance.montant
+                      | mask : "separator"
+                  }}
+                </td>
+                <td>-</td>
+
+                <!-- <ng-template #noInsurance>
+                  <td><em>Non assuré</em></td>
+                </ng-template> -->
+
+                <td>
+                  <div class="d-inline-block" ngbDropdown container="body">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
+                        ></i>
+                        Détails
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Duplicata
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        (click)="printInvoice(invoice.id)"
+                      >
+                        <i
+                          class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
+                        ></i>
+                        Imprimer
+                      </button>
+                      <button ngbDropdownItem>
+                        <i
+                          class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                        ></i>
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3">Total Espèce</th>
+                <th class="text-end">{{ cashTotal | mask : "separator" }}</th>
+                <th colspan="2"></th>
+              </tr>
+              <tr>
+                <th colspan="3">Total Chèque</th>
+                <th class="text-end">{{ chequeTotal | mask : "separator" }}</th>
+                <th colspan="2"></th>
+              </tr>
+              <tr>
+                <th colspan="3">Total Visa</th>
+                <th class="text-end">{{ cardTotal | mask : "separator" }}</th>
+                <th colspan="2"></th>
+              </tr>
+              <tr>
+                <th colspan="3">Total S/C</th>
+                <th class="text-end">{{ scTotal | mask : "separator" }}</th>
+                <th colspan="2"></th>
+              </tr>
+              <tr>
+                <th colspan="3">Total Général</th>
+                <th class="text-end">
+                  {{ generalTotal | mask : "separator" }}
+                </th>
+                <th colspan="2"></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="collectionSize"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="refreshInvoices()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="pageSize"
+              (ngModelChange)="refreshInvoices()"
+            >
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-card>

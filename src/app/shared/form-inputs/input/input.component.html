@@ -1,0 +1,121 @@
+<!-- If layout is horizontal - label on same line as input -->
+<ng-container *ngIf="isLayoutHorizontal; else layoutVertical">
+  <div class="row {{ bottomMarginClass }}">
+    <div class="col-lg-6 d-flex align-items-center">
+      <!-- LABEL -->
+      <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+    </div>
+    <div class="col-lg-6">
+      <!-- INPUT -->
+      <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
+    </div>
+
+    <!-- VALIDATION TEXTS -->
+    <ng-container *ngTemplateOutlet="validationTextTemplate"></ng-container>
+  </div>
+</ng-container>
+
+<!-- If layout is vertical - label on top of input -->
+<ng-template #layoutVertical>
+  <div class="{{ bottomMarginClass }}">
+    <!-- LABEL -->
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+
+    <!-- INPUT -->
+    <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
+
+    <!-- VALIDATION TEXTS -->
+    <ng-container *ngTemplateOutlet="validationTextTemplate"></ng-container>
+  </div>
+</ng-template>
+
+<!-- LABEL TEMPLATE -->
+<ng-template #labelTemplate>
+  <label
+    *ngIf="label !== ''"
+    class="form-label m-0"
+    [ngClass]="{
+      'custom-form-label-sm': size === 'sm',
+      'custom-form-label-lg': size === 'lg'
+    }"
+    >{{ label }}
+    <span
+      *ngIf="isMandatory && !control.disabled"
+      class="text-danger"
+      [ngbTooltip]="mandatoryFieldTextTooltipTemplate"
+      container="body"
+      >*</span
+    ></label
+  >
+</ng-template>
+
+<!-- INPUT TEMPLATE -->
+<ng-template #inputTemplate>
+  <input
+    class="form-control"
+    [type]="type"
+    [placeholder]="placeholder"
+    [readOnly]="readOnly"
+    [mask]="maskFormat"
+    [suffix]="maskSuffix"
+    [dropSpecialCharacters]="dropMaskInValue"
+    [min]="minDate"
+    [max]="maxDate"
+    [formControl]="formControl"
+    [ngClass]="{
+      'is-invalid':
+        ((control.touched && control.dirty) || isFormSubmitted) &&
+        control.errors,
+      'form-control-sm': size === 'sm',
+      'form-control-lg': size === 'lg'
+    }"
+    [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
+    (dblclick)="emitOnInputClick ? emitInputClick() : null"
+    (keyup)="
+      uppercased || titlecased || firstLetterUppercased ? onChange() : null
+    "
+  />
+
+  <!-- style="text-transform: uppercase" -->
+  <!-- style="text-transform: capitalize" -->
+  <!-- [formControlName]="controlName" -->
+</ng-template>
+
+<!-- VALIDATION TEXTS TEMPLATE -->
+<ng-template #validationTextTemplate>
+  <ng-container *ngIf="(control.touched && control.dirty) || isFormSubmitted">
+    <div *ngIf="control.errors?.['required']" class="invalid-feedback">
+      Ce champ est obligatoire.
+    </div>
+
+    <div *ngIf="control.errors?.['email']" class="invalid-feedback">
+      Veuillez saisir un email valide.
+    </div>
+
+    <div *ngIf="control.errors?.['min']" class="invalid-feedback">
+      Ce champ doit être supérieur ou égale à
+      {{ control.errors?.['min']['min'] }}.
+    </div>
+
+    <div *ngIf="control.errors?.['max']" class="invalid-feedback">
+      Ce champ doit être inférieur ou égale à
+      {{ control.errors?.['max']['max'] }}.
+    </div>
+
+    <div
+      *ngIf="(control.errors?.['mask'] && type == 'tel')"
+      class="invalid-feedback"
+    >
+      Veuillez vérifier le format du numéro. Le numéro doit comporter 8
+      chiffres.
+    </div>
+  </ng-container>
+</ng-template>
+
+<!-- MANDATORY FIELD TOOLTIP TEXT TEMPLATE-->
+<ng-template #mandatoryFieldTextTooltipTemplate>
+  <em
+    >Les champs marqués par <span class="text-danger">*</span> sont
+    obligatoires</em
+  >
+</ng-template>

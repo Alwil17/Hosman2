@@ -1,0 +1,378 @@
+<app-simple-modal title="Fratrie">
+  <form [formGroup]="siblingsForm">
+    <ul
+      ngbNav
+      #siblings="ngbNav"
+      [activeId]="1"
+      class="nav nav-tabs nav-justified mb-2"
+    >
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>
+          <span class="d-sm-block">Même père, même mère</span>
+        </a>
+
+        <ng-template ngbNavContent>
+          <ng-container formArrayName="paternalAndMaternalSiblings">
+            <ng-container
+              *ngFor="
+                let formGroup of paternalAndMaternalSiblingsFields.controls;
+                let i = index;
+                let count = count
+              "
+            >
+              <div class="row gx-2">
+                <div class="col-md-3">
+                  <div class="row">
+                    <div
+                      [class]="
+                        'col-1 d-flex ' +
+                        (i === 0
+                          ? 'align-items-end mb-1'
+                          : 'align-items-center')
+                      "
+                    >
+                      <h5>{{ i + 1 + "/" }}</h5>
+                    </div>
+                    <div class="col-11">
+                      <app-input
+                        [label]="i === 0 ? 'Nom' : ''"
+                        [control]="formGroup.get('lastName')!"
+                        [uppercased]="true"
+                      >
+                      </app-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <app-input
+                    [label]="i === 0 ? 'Prénom(s)' : ''"
+                    [control]="formGroup.get('firstName')!"
+                    [titlecased]="true"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-2">
+                  <app-select
+                    [searchable]="false"
+                    [clearable]="false"
+                    [editable]="false"
+                    [label]="i === 0 ? 'Sexe' : ''"
+                    [options]="genders"
+                    [control]="formGroup.get('gender')!"
+                  >
+                  </app-select>
+                </div>
+                <div class="col-md-2">
+                  <app-input
+                    type="date"
+                    [label]="i === 0 ? 'Date de naissance' : ''"
+                    [control]="formGroup.get('dateOfBirth')!"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md-auto d-flex mb-2 align-items-end">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addPaternalAndMaternalSiblingsField()"
+                    ngbTooltip="Ajouter un autre élément"
+                    container="body"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count !== 1
+                        ? removePaternalAndMaternalSiblingsField(i)
+                        : null
+                    "
+                    ngbTooltip="Retirer cet élément"
+                    container="body"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count === 1 || i === count - 1
+                        ? null
+                        : movePaternalAndMaternalSiblingsFieldDown(i)
+                    "
+                    ngbTooltip="Déplacer vers le bas"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-top fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count === 1 || i === 0
+                        ? null
+                        : movePaternalAndMaternalSiblingsFieldUp(i)
+                    "
+                    ngbTooltip="Déplacer vers le haut"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-bottom fs-20"></i>
+                  </button>
+                </div>
+              </div> </ng-container
+          ></ng-container>
+        </ng-template>
+      </li>
+
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>
+          <span class="d-sm-block">Même père, mères différentes</span>
+        </a>
+
+        <ng-template ngbNavContent>
+          <ng-container formArrayName="paternalSiblings">
+            <ng-container
+              *ngFor="
+                let formGroup of paternalSiblingsFields.controls;
+                let i = index;
+                let count = count
+              "
+            >
+              <div class="row gx-2">
+                <div class="col-md-3">
+                  <div class="row">
+                    <div
+                      [class]="
+                        'col-1 d-flex ' +
+                        (i === 0
+                          ? 'align-items-end mb-1'
+                          : 'align-items-center')
+                      "
+                    >
+                      <h5>{{ i + 1 + "/" }}</h5>
+                    </div>
+                    <div class="col-11">
+                      <app-input
+                        [label]="i === 0 ? 'Nom' : ''"
+                        [control]="formGroup.get('lastName')!"
+                        [uppercased]="true"
+                      >
+                      </app-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <app-input
+                    [label]="i === 0 ? 'Prénom(s)' : ''"
+                    [control]="formGroup.get('firstName')!"
+                    [titlecased]="true"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-2">
+                  <app-select
+                    [searchable]="false"
+                    [clearable]="false"
+                    [editable]="false"
+                    [label]="i === 0 ? 'Sexe' : ''"
+                    [options]="genders"
+                    [control]="formGroup.get('gender')!"
+                  >
+                  </app-select>
+                </div>
+                <div class="col-md-2">
+                  <app-input
+                    type="date"
+                    [label]="i === 0 ? 'Date de naissance' : ''"
+                    [control]="formGroup.get('dateOfBirth')!"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md-auto d-flex mb-2 align-items-end">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addPaternalSiblingsField()"
+                    ngbTooltip="Ajouter un autre élément"
+                    container="body"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count !== 1 ? removePaternalSiblingsField(i) : null
+                    "
+                    ngbTooltip="Retirer cet élément"
+                    container="body"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count === 1 || i === count - 1
+                        ? null
+                        : movePaternalSiblingsFieldDown(i)
+                    "
+                    ngbTooltip="Déplacer vers le bas"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-top fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count === 1 || i === 0
+                        ? null
+                        : movePaternalSiblingsFieldUp(i)
+                    "
+                    ngbTooltip="Déplacer vers le haut"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-bottom fs-20"></i>
+                  </button>
+                </div>
+              </div> </ng-container
+          ></ng-container>
+        </ng-template>
+      </li>
+
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>
+          <span class="d-sm-block">Même mère, pères différents</span>
+        </a>
+
+        <ng-template ngbNavContent>
+          <ng-container formArrayName="maternalSiblings">
+            <ng-container
+              *ngFor="
+                let formGroup of maternalSiblingsFields.controls;
+                let i = index;
+                let count = count
+              "
+            >
+              <div class="row gx-2">
+                <div class="col-md-3">
+                  <div class="row">
+                    <div
+                      [class]="
+                        'col-1 d-flex ' +
+                        (i === 0
+                          ? 'align-items-end mb-1'
+                          : 'align-items-center')
+                      "
+                    >
+                      <h5>{{ i + 1 + "/" }}</h5>
+                    </div>
+                    <div class="col-11">
+                      <app-input
+                        [label]="i === 0 ? 'Nom' : ''"
+                        [control]="formGroup.get('lastName')!"
+                        [uppercased]="true"
+                      >
+                      </app-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <app-input
+                    [label]="i === 0 ? 'Prénom(s)' : ''"
+                    [control]="formGroup.get('firstName')!"
+                    [titlecased]="true"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-2">
+                  <app-select
+                    [searchable]="false"
+                    [clearable]="false"
+                    [editable]="false"
+                    [label]="i === 0 ? 'Sexe' : ''"
+                    [options]="genders"
+                    [control]="formGroup.get('gender')!"
+                  >
+                  </app-select>
+                </div>
+                <div class="col-md-2">
+                  <app-input
+                    type="date"
+                    [label]="i === 0 ? 'Date de naissance' : ''"
+                    [control]="formGroup.get('dateOfBirth')!"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md-auto d-flex mb-2 align-items-end">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addMaternalSiblingsField()"
+                    ngbTooltip="Ajouter un autre élément"
+                    container="body"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count !== 1 ? removeMaternalSiblingsField(i) : null
+                    "
+                    ngbTooltip="Retirer cet élément"
+                    container="body"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="
+                      count === 1 || i === count - 1
+                        ? null
+                        : moveMaternalSiblingsFieldDown(i)
+                    "
+                    ngbTooltip="Déplacer vers le bas"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-top fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count === 1 || i === 0
+                        ? null
+                        : moveMaternalSiblingsFieldUp(i)
+                    "
+                    ngbTooltip="Déplacer vers le haut"
+                    container="body"
+                  >
+                    <i class="bx bx-arrow-from-bottom fs-20"></i>
+                  </button>
+                </div>
+              </div> </ng-container
+          ></ng-container>
+        </ng-template>
+      </li>
+    </ul>
+  </form>
+
+  <!-- Tab panes -->
+  <div class="tab-content mx-2">
+    <div [ngbNavOutlet]="siblings"></div>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-success btn-label">
+        <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</app-simple-modal>

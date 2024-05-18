@@ -1,0 +1,416 @@
+<app-simple-modal
+  [title]="
+    productInfos ? 'Modifier un produit' : 'Enregistrer un nouveau produit'
+  "
+>
+  <div class="col-12">
+    <form [formGroup]="productForm">
+      <!-- FIRST ROW -->
+      <div class="row">
+        <!-- NAME FIELD -->
+        <div class="col-md-6 col-lg-3">
+          <app-input
+            label="Nom du produit"
+            placeholder="Saisir le nom du médicament"
+            [isMandatory]="true"
+            [control]="nameController"
+            [isFormSubmitted]="isProductFormSubmitted"
+          ></app-input>
+        </div>
+
+        <!-- DCI FIELD -->
+        <div class="col-md-6 col-lg-3">
+          <app-input
+            label="DCI (Molécule)"
+            placeholder="Saisir la molécule"
+            [isMandatory]="true"
+            [control]="dciController"
+            [isFormSubmitted]="isProductFormSubmitted"
+          ></app-input>
+        </div>
+
+        <!-- THERAPEUTIC CLASSES FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="classes">
+              <ng-container
+                *ngFor="
+                  let classControl of classesFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-select
+                    [label]="'Classe thérapeutique ' + (i + 1)"
+                    [isMandatory]="true"
+                    [control]="classControl"
+                    [options]="therapeuticClasses"
+                    [canAddOption]="true"
+                    [isFormSubmitted]="isProductFormSubmitted"
+                  >
+                  </app-select>
+                </div>
+                <div
+                  [class]="
+                    'col-md-3 d-flex mb-2 ' +
+                    (isProductFormSubmitted && classControl.invalid
+                      ? 'align-items-center'
+                      : 'align-items-end')
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addClassesField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeClassesField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+
+        <!-- INDICATIONS FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="indications">
+              <ng-container
+                *ngFor="
+                  let indicationControl of indicationsFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-input
+                    [label]="'Indication ' + (i + 1)"
+                    [control]="indicationControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addIndicationsField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeIndicationsField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- SECOND ROW -->
+      <div class="row">
+        <!-- SIDE EFFECTS FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="sideEffects">
+              <ng-container
+                *ngFor="
+                  let sideEffectControl of sideEffectsFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-input
+                    [label]="'Effet secondaire ' + (i + 1)"
+                    [control]="sideEffectControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addSideEffectsField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeSideEffectsField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+
+        <!-- CONTRAINDICATIONS FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="contraIndications">
+              <ng-container
+                *ngFor="
+                  let contraIndicationControl of contraIndicationsFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-input
+                    [label]="'Contre-indication ' + (i + 1)"
+                    [control]="contraIndicationControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addContraIndicationsField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="
+                      count !== 1 ? removeContraIndicationsField(i) : null
+                    "
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+
+        <!-- CHILD POSOLOGIES FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="childPosologies">
+              <ng-container
+                *ngFor="
+                  let childPosologyControl of childPosologiesFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-input
+                    [label]="'Posologie enfant ' + (i + 1)"
+                    [control]="childPosologyControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addChildPosologiesField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeChildPosologiesField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+
+        <!-- ADULT POSOLOGIES FIELDS -->
+        <div class="col-md-6 col-lg-3">
+          <div class="row gx-2">
+            <ng-container formArrayName="adultPosologies">
+              <ng-container
+                *ngFor="
+                  let adultPosologyControl of adultPosologiesFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-9">
+                  <app-input
+                    [label]="'Posologie adulte ' + (i + 1)"
+                    [control]="adultPosologyControl"
+                  >
+                  </app-input>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addAdultPosologiesField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeAdultPosologiesField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- THIRD ROW -->
+      <div class="row">
+        <!-- FORMS FIELDS -->
+        <div class="col-lg-12">
+          <div class="row">
+            <ng-container formArrayName="forms">
+              <ng-container
+                *ngFor="
+                  let formGroup of formsFields.controls;
+                  let i = index;
+                  let count = count
+                "
+              >
+                <div class="col-md-3">
+                  <app-input
+                    [label]="'Présentation ' + (i + 1)"
+                    [isMandatory]="true"
+                    [control]="formGroup.get('presentation')!"
+                    [isFormSubmitted]="isProductFormSubmitted"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md-3">
+                  <app-input
+                    [label]="'Dosage ' + (i + 1)"
+                    [isMandatory]="true"
+                    [control]="formGroup.get('dosage')!"
+                    [isFormSubmitted]="isProductFormSubmitted"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md-3">
+                  <app-input
+                    [label]="'Conditionnement ' + (i + 1)"
+                    [isMandatory]="true"
+                    [control]="formGroup.get('packaging')!"
+                    [isFormSubmitted]="isProductFormSubmitted"
+                  >
+                  </app-input>
+                </div>
+
+                <div class="col-md">
+                  <app-input
+                    [label]="'Prix ' + (i + 1)"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    maskFormat="separator"
+                    [control]="formGroup.get('price')!"
+                    [isFormSubmitted]="isProductFormSubmitted"
+                  >
+                  </app-input>
+                </div>
+
+                <div
+                  [class]="
+                    'col-md-auto d-flex mb-2 ' +
+                    (isProductFormSubmitted && formGroup.invalid
+                      ? 'align-items-center'
+                      : 'align-items-end')
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light me-1"
+                    (click)="addFormsField()"
+                  >
+                    <i class="ri-add-fill fs-20"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-icon btn-sm waves-effect waves-light"
+                    (click)="count !== 1 ? removeFormsField(i) : null"
+                  >
+                    <i class="ri-subtract-fill fs-20"></i>
+                  </button>
+                </div> </ng-container
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- FOURTH ROW -->
+      <div class="row">
+        <div class="col-12">
+          <label class="form-label" for="infosTextArea"
+            >Informations complémentaires et composition</label
+          >
+          <textarea
+            id="infosTextArea"
+            class="form-control form-control-sm mb-2"
+            placeholder="Autres informations (facultatives)"
+            rows="3"
+            [formControl]="infosController"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <ng-container *ngIf="!productInfos; else modifyButton">
+          <button
+            type="button"
+            class="btn btn-success btn-label"
+            (click)="registerProduct()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary btn-label ms-3"
+            (click)="registerProduct(true)"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer et quitter
+          </button>
+        </ng-container>
+
+        <ng-template #modifyButton>
+          <button
+            type="button"
+            class="btn btn-warning btn-label text-dark"
+            (click)="registerModifications()"
+          >
+            <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+            Enregistrer les modifications
+          </button>
+        </ng-template>
+      </div>
+    </form>
+  </div>
+</app-simple-modal>

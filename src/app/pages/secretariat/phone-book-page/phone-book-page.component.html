@@ -1,0 +1,185 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="INFORMATIONS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<app-card
+  title="Annuaire"
+  [separator]="true"
+  [hasHeader]="true"
+  [hasBody]="true"
+>
+  <ng-container customCardHeader>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-7 col-xl-5">
+        <div class="hstack gap-3">
+          <div class="col-md-6">
+            <app-input
+              label="Rechercher"
+              placeholder="Rechercher contact (nom, prénom, email ou profession)"
+              [control]="searchControl"
+            >
+            </app-input>
+          </div>
+
+          <div class="col-md-6">
+            <app-select
+              label="Groupe"
+              [options]="phoneBooksGroups"
+              [control]="phoneBooksGroupsControl"
+            ></app-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex col-md-5 col-xl-7 mt-4">
+        <button
+          type="button"
+          class="btn btn-success btn-label ms-auto"
+          (click)="openPhoneBookFormModal()"
+        >
+          <i class="ri-add-line label-icon align-middle fs-24 me-2"></i>
+          Ajouter un contact
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container customCardBody>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive table-card">
+          <table
+            class="table table-one-liner table-hover table-striped table-bordered align-middle mb-0"
+          >
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ "Nom / Raison sociale" | uppercase }}</th>
+                <th scope="col">{{ "Prénom / Dénomination" | uppercase }}</th>
+                <th scope="col">{{ "Profession / Secteur" | uppercase }}</th>
+                <th scope="col">{{ "Bureau" | uppercase }}</th>
+                <th scope="col">{{ "Cellulaire 1" | uppercase }}</th>
+                <th scope="col">{{ "Cellulaire 2" | uppercase }}</th>
+                <th scope="col">{{ "Domicile" | uppercase }}</th>
+                <th scope="col">{{ "Email" | uppercase }}</th>
+                <th scope="col">{{ "Bip" | uppercase }}</th>
+                <th scope="col">{{ "Poste" | uppercase }}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                *ngFor="let contact of phoneBooksListCut"
+                class="user-select-none"
+              >
+                <td>{{ contact.nom }}
+                  <!-- <ngb-highlight
+                  [result]="invoice.prestation.patient.nom"
+                  [term]="searchControl.value.split(' ')[0]"
+                ></ngb-highlight> -->
+                </td>
+                <td>{{ contact.prenom }}</td>
+                <td>{{ contact.profession }}</td>
+                <td>
+                  {{
+                    contact.bureau ?? ""
+                      | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.tel1 ?? "" | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.tel2 ?? "" | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>
+                  {{
+                    contact.domicile ?? ""
+                      | mask : "09 09 09 09 09 09 09 09 09 09"
+                  }}
+                </td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.bip }}</td>
+                <td>{{ contact.no_poste }}</td>
+
+                <td>
+                  <div class="d-inline-block" ngbDropdown container="body">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                      ngbDropdownToggle
+                    >
+                      <i class="ri-more-fill fs-24"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button
+                        ngbDropdownItem
+                        (click)="openPhoneBookFormModal(contact)"
+                      >
+                        <i
+                          class="ri-pencil-line label-icon align-middle fs-16 me-2 text-warning"
+                        ></i>
+                        Modifier
+                      </button>
+
+                      <button ngbDropdownItem (click)="deleteContact(contact)">
+                        <i
+                          class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                        ></i>
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <th colspan="3">
+                  Total contacts : {{ phoneBooksList.length }}
+                </th>
+                <th class="text-end"></th>
+                <th colspan="7"></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="collectionSize"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="refreshPhoneBooks()"
+            >
+            </ngb-pagination>
+
+            <select
+              class="form-select"
+              style="width: auto"
+              [(ngModel)]="pageSize"
+              (ngModelChange)="refreshPhoneBooks()"
+            >
+              <option [ngValue]="10">10 éléments par page</option>
+              <option [ngValue]="15">15 éléments par page</option>
+              <option [ngValue]="20">20 éléments par page</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-card>

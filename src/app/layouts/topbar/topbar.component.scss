@@ -1,0 +1,11 @@
+[data-layout-mode=dark] {
+    .light-dark-mode {
+        .bx-moon {
+            display: block !important;
+
+            &:before {
+                content: "\ec34";
+            }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12">
+    <h5 class="fw-semibold">Sortie</h5>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div *ngFor="let d of diagnostics; let k = index" class="col-md-12 mb-3">
+            <div class="row">
+              <div class="col-md-10">
+                <h-input [label]="'Diagnostic de sortie ' + (k+1)" type="text" [isMandatory]="true"
+                [placeholder]="'Double-click pour choisir le diagnostic'"
+                [readOnly]="true" [emitOnInputClick]="true" [control]="d" (onInputClick)="openCIM(k)"></h-input>
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                <button type="button" class="btn
+                 btn-icon waves-effect waves-light w-100" [class.btn-primary]="k === 0" [class.btn-danger]="k !== 0"
+                  (click)="k === 0 ? addDiag() : removeDiag(k)">
+                  <i [class.ri-add-line]="k === 0" [class.ri-subtract-fill]="k !== 0"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2 mb-3">
+        <h-select label="Femme enceinte" 
+        [isMandatory]="true" [clearable]="false" 
+        [options]="enceinteOptions"
+          [bindValue]="'value'" 
+          [control]="enceinte"></h-select>
+      </div>
+
+      <div class="col-md-2">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <h-input label="Date" type="date" [isMandatory]="true" [control]="date_op"></h-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="d-flex justify-content-start">
+      <button
+      type="button"
+      class="btn btn-success btn-label right"
+      (click)="confirmAction()"
+    >
+      <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+      ENREGISTRER
+    </button>
+  </div>
+</div>

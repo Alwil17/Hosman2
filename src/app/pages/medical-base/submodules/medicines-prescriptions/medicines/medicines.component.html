@@ -1,0 +1,57 @@
+<ul
+  ngbNav
+  #medicines="ngbNav"
+  [activeId]="1"
+  class="nav nav-tabs nav-justified mb-2"
+>
+  <li [ngbNavItem]="1">
+    <a ngbNavLink>
+      <span class="d-sm-block">Produits</span>
+    </a>
+
+    <ng-template ngbNavContent>
+      <app-product-list></app-product-list>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="2">
+    <a ngbNavLink>
+      <span class="d-sm-block">Classes thérapeutiques</span>
+    </a>
+
+    <ng-template ngbNavContent>
+      <app-therapeutic-class-list></app-therapeutic-class-list>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="3">
+    <a ngbNavLink>
+      <span class="d-sm-block">Agences</span>
+    </a>
+
+    <ng-template ngbNavContent>
+      <app-agency-list></app-agency-list>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="4">
+    <a ngbNavLink>
+      <span class="d-sm-block">Laboratoires</span>
+    </a>
+
+    <ng-template ngbNavContent> Laboratoires </ng-template>
+  </li>
+
+  <li [ngbNavItem]="5">
+    <a ngbNavLink>
+      <span class="d-sm-block">Délégués médicaux</span>
+    </a>
+
+    <ng-template ngbNavContent> Délégués médicaux </ng-template>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content mx-2">
+  <div [ngbNavOutlet]="medicines"></div>
+</div>

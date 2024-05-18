@@ -1,0 +1,95 @@
+<app-simple-modal title="Saisir les autres frères et soeurs">
+  <form [formGroup]="siblingsForm">
+    <ng-container formArrayName="siblings">
+      <ng-container
+        *ngFor="
+          let formGroup of siblingsFields.controls;
+          let i = index;
+          let count = count
+        "
+      >
+        <div class="row gx-2">
+          <div class="col-md-3">
+            <div class="row">
+              <div
+                [class]="
+                  'col-1 d-flex ' +
+                  (i === 0 ? 'align-items-end mb-1' : 'align-items-center')
+                "
+              >
+                <h5>{{ i + 1 + "/" }}</h5>
+              </div>
+              <div class="col-11">
+                <app-input
+                  [label]="i === 0 ? 'Nom' : ''"
+                  [control]="formGroup.get('lastName')!"
+                  [uppercased]="true"
+                  [readOnly]="i === patientRank - 1"
+                >
+                </app-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <app-input
+              [label]="i === 0 ? 'Prénom(s)' : ''"
+              [control]="formGroup.get('firstName')!"
+              [titlecased]="true"
+              [readOnly]="i === patientRank - 1"
+            >
+            </app-input>
+          </div>
+          <div class="col-md-2">
+            <app-select
+              [searchable]="false"
+              [clearable]="false"
+              [editable]="false"
+              [label]="i === 0 ? 'Sexe' : ''"
+              [options]="genders"
+              [control]="formGroup.get('gender')!"
+              [readOnly]="i === patientRank - 1"
+            >
+            </app-select>
+          </div>
+          <div class="col-md-2">
+            <app-input
+              type="date"
+              [label]="i === 0 ? 'Date de naissance' : ''"
+              [control]="formGroup.get('dateOfBirth')!"
+              [readOnly]="i === patientRank - 1"
+            >
+            </app-input>
+          </div>
+
+          <div class="col-md-auto d-flex mb-2 align-items-end">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="inlineCheckbox1"
+                value="option1"
+              />
+              <label class="form-check-label" for="inlineCheckbox1">père</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="inlineCheckbox2"
+                value="option2"
+              />
+              <label class="form-check-label" for="inlineCheckbox2">mère</label>
+            </div>
+          </div>
+        </div>
+      </ng-container></ng-container
+    >
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-success btn-label">
+        <i class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</app-simple-modal>

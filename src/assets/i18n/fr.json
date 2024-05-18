@@ -1,0 +1,54 @@
+{
+  "MENUITEMS": {
+    "MENU": {
+      "SECRETARIAT": {
+        "TEXT": "SECRETARIAT"
+      }
+    },
+    "PATIENTS": {
+      "TEXT": "Patients",
+      "LIST": {
+        "PATIENT_NEW": "Nouveau patient",
+        "PATIENTS_LIST": "Ancien patient",
+        "DEBTS": "Créances",
+        "RESTS": "Reliquats",
+        "WAITING_LIST": "Liste d'attente"
+      }
+    },
+    "ACTIVITIES": {
+      "TEXT": "Bilan financier",
+      "LIST": {
+        "EXPENSES": "Dépenses",
+        "COLLECTIONS": "Encaissements",
+        "RECEIPTS": "Récapitulatif des reçus",
+        "ACCOUNT_SHEET": "Fiche de compte"
+      }
+    },
+    "INFORMATIONS": {
+      "TEXT": "Renseignements",
+      "LIST": {
+        "TARIFFS": "Tarifs et proforma",
+        "CIM_11": "CIM-11",
+        "TELEPHONE_BOOK": "Annuaire",
+        "EXAMINATIONS": "Exams"
+      }
+    },
+    "OTHERS": {
+      "TEXT": "Autres",
+      "LIST": {}
+    },
+    "EXTERN": {
+      "TEXT": "Externe",
+      "LIST": {
+        "APPOINTMENT": "RDV",
+        "MESSAGING": "Messagerie",
+        "HOSPITALIZED_PATIENTS": "Patients hospitalisés"
+      }
+    },
+    "hosp" : {
+      "title" : "Hospitalisation",
+      "new" : "Nouveau",
+      "list": "Patients hospitalisés"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<div id="layout-wrapper" class="hospitalisation-container">
+    <!-- Top Bar -->
+    <hosp-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></hosp-topbar>
+    <!-- Side Bar -->
+    <!-- <hosp-sidebar></hosp-sidebar> -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- Main Content -->
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <!-- Footer -->
+        <!-- <app-footer></app-footer> -->
+    </div>
+  </div>
+  
