@@ -21,6 +21,7 @@ export class FicheComptableComponent implements OnInit {
   qte = new FormControl();
   suiviList: any[] = [];
   hospitalisation: any = null
+  currentSuivi = "null"
   contextMenuItems = [
     {
       content: "Ajouter/Modifier",
@@ -53,6 +54,8 @@ export class FicheComptableComponent implements OnInit {
       .subscribe(([p, c]) => {
           if (this.tabs === null || this.tabs.length === 0) {
           this.tabs = c.tabs;
+          if (this.tabs && this.tabs.length > 0)
+           this.selectSuivi(this.tabs[0].type)
         }
 
         if (hasStateChanges(this.suiviList, p.suivis, c.suivis)) {
@@ -63,6 +66,12 @@ export class FicheComptableComponent implements OnInit {
       });
 
 
+  }
+
+  
+  selectSuivi(name: string) {
+    // this.hospitalisationStore.changeSuiviCategory(name)
+    this.currentSuivi = name
   }
 
   filterInAll() {
