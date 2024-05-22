@@ -54,8 +54,7 @@ export class FicheComptableComponent implements OnInit {
       .subscribe(([p, c]) => {
           if (this.tabs === null || this.tabs.length === 0) {
           this.tabs = c.tabs;
-          if (this.tabs && this.tabs.length > 0)
-           this.selectSuivi(this.tabs[0].type)
+         
         }
 
         if (hasStateChanges(this.suiviList, p.suivis, c.suivis)) {
@@ -63,14 +62,16 @@ export class FicheComptableComponent implements OnInit {
         }
 
           this.hospitalisation = c.hospitalisation;
+
+          if (p.processing !== c.processing && c.processing === false) {
+            if (this.tabs && this.tabs.length > 0)
+              this.selectSuivi(this.tabs[0].type)   
+          }
       });
-
-
   }
 
   
   selectSuivi(name: string) {
-    // this.hospitalisationStore.changeSuiviCategory(name)
     this.currentSuivi = name
   }
 
