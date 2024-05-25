@@ -588,14 +588,38 @@ export class VisitInfosFormComponent implements OnInit {
         });
       }
     );
-/*
+
     atrdFormModalRef.componentInstance.addressed$.subscribe(
       (data: Addressed) => {
         console.log("Addressed : " + JSON.stringify(data, null, 2));
 
         this.addressed = data;
       }
-    );*/
+    );
+
+    atrdFormModalRef.componentInstance.transfered$.subscribe(
+      (data: Transfered) => {
+        console.log("Transfered : " + JSON.stringify(data, null, 2));
+
+        this.transfered = data;
+      }
+    );
+    
+    atrdFormModalRef.componentInstance.refused$.subscribe(
+      (data: Refused) => {
+        console.log("Refused : " + JSON.stringify(data, null, 2));
+
+        this.refused = data;
+      }
+    );
+
+    atrdFormModalRef.componentInstance.deceded$.subscribe(
+      (data: Deceded) => {
+        console.log("Deceded : " + JSON.stringify(data, null, 2));
+
+        this.deceded = data;
+      }
+    );
   }
 
   // OPEN HOSPITALISATION MODAL ON CONFIRM ------------------------------------------------------------------------------------------------------
@@ -665,7 +689,7 @@ export class VisitInfosFormComponent implements OnInit {
     this.motifsFields.controls.forEach((control, index) => {
       if (control.value) {
         motifs.push(
-          new MotifRequest({ motif_id: control.value?.id, caractere: "cara" })
+          new MotifRequest({ motif_id: control.value?.id, caractere: "" })
         );
       }
     });
@@ -675,7 +699,7 @@ export class VisitInfosFormComponent implements OnInit {
         diagnostics.push(
           new DiagnosticRequest({
             diagnostic: control.value?.id,
-            commentaire: "com",
+            commentaire: "",
           })
         );
       }

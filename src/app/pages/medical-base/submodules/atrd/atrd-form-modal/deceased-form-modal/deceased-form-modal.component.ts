@@ -121,13 +121,16 @@ export class DeceasedFormModalComponent implements OnInit {
   }
 
   setValues() {
-    this.showControl.setValue(true);
+    if(this.deceded){
+      this.showControl.setValue(true);
 
     this.date_op.setValue(formatDate(this.deceded!.date_op, "yyyy-MM-dd"));
     this.motif.setValue(this.deceded!.motif);
     this.comment.setValue(this.deceded!.comments);
     this.reanimation.setValue(this.deceded!.reanimation === true);
     this.deces.setValue(this.deceded!.after_out === true);
+    }
+    
   }
 
   async confirmAction() {

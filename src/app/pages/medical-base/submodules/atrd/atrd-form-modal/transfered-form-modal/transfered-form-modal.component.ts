@@ -29,13 +29,13 @@ export class TransferedFormModalComponent implements OnInit {
 
   @Input()
   transfered$ = new Subject<Transfered>();
-  
+
   @Input()
   transfered?: Transfered;
-  
+
   @Input()
   comment = new FormControl(null, []);
-  
+
 
   showControl = new FormControl(false);
   displayOptions = [
@@ -58,7 +58,7 @@ export class TransferedFormModalComponent implements OnInit {
     [],
     [validateYupSchema(Yup.string().required(ErrorMessages.REQUIRED))]
   );
-  
+
   accompagne = new FormControl(
     null,
     [],
@@ -96,7 +96,7 @@ export class TransferedFormModalComponent implements OnInit {
     private toastService: ToastService,
     private sectorService: SectorService,
     private atrdService: AtrdService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fGroup = new FormGroup({
@@ -117,7 +117,7 @@ export class TransferedFormModalComponent implements OnInit {
           this.consultation_id = consultationId;
           this.transfered!.consultation_id = consultationId;
           console.log("+++++++" + JSON.stringify(this.transfered, null, 2));
-          
+
           this.atrdService
             .saveTransfered(this.transfered!)
             .subscribe({
@@ -144,22 +144,25 @@ export class TransferedFormModalComponent implements OnInit {
         }
       },
     });
-    
+
     this.fetchSelectData();
 
     this.setValues();
   }
 
   setValues() {
-    this.showControl.setValue(true);
+    if (this.transfered) {
+      this.showControl.setValue(true);
 
-    this.specialite.setValue(this.transfered!.specialite);
-    this.transport.setValue(this.transfered!.transport);
-    this.date_op.setValue(formatDate(this.transfered!.date_op, "yyyy-MM-dd"));
-    this.motif.setValue(this.transfered!.motif);
-    this.comment.setValue(this.transfered!.comments);
-    this.accompagne.setValue(this.transfered!.accompagne);
-    this.destination.setValue(this.transfered!.destination);
+      this.specialite.setValue(this.transfered!.specialite);
+      this.transport.setValue(this.transfered!.transport);
+      this.date_op.setValue(formatDate(this.transfered!.date_op, "yyyy-MM-dd"));
+      this.motif.setValue(this.transfered!.motif);
+      this.comment.setValue(this.transfered!.comments);
+      this.accompagne.setValue(this.transfered!.accompagne);
+      this.destination.setValue(this.transfered!.destination);
+    }
+
   }
 
   fetchSelectData() {
@@ -176,7 +179,7 @@ export class TransferedFormModalComponent implements OnInit {
         console.log(error);
       },
     })
-    
+
   }
 
   private markAllControlsAsTouched(): void {

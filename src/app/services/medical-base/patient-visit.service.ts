@@ -100,6 +100,51 @@ export class PatientVisitService {
     });
   }
 
+  printRequetesJaunesReport(criteria: {
+    minDate: Date;
+    maxDate: Date;
+    sector?: string;
+    doctor?: string;
+    acte?: string;
+    motif?: number;
+    diagnostic?: string;
+    vue: string;
+  }): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+
+    let apiComplementary =
+      "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+
+    if (criteria.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+
+    if(criteria.vue === "secteur"){
+      apiComplementary += "&secteur_code=" + criteria.sector;
+    }else if(criteria.vue === "docteur"){
+      apiComplementary += "&docteur_ref=" + criteria.doctor;
+    }else if(criteria.vue === "multi"){
+      if(criteria.acte && criteria.acte != ""){
+        apiComplementary += "&acte_code=" + criteria.acte;
+      }
+      if(criteria.motif && criteria.motif != 0){
+        apiComplementary += "&motif_id=" + criteria.motif;
+      }
+      if(criteria.diagnostic && criteria.diagnostic != ""){
+        apiComplementary += "&diagnostic_code=" + criteria.diagnostic;
+      }
+    }
+    apiComplementary += "&vue=" + criteria.vue;
+    console.log(apiComplementary);
+
+    return this.http.get(`${apiEndpoint}/report-jaunes?${apiComplementary}`, {
+      headers: headers,
+      responseType: "blob",
+    });
+  }
+
   searchBy(criteria: {
     minDate: Date;
     maxDate: Date;

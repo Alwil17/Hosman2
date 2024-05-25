@@ -243,6 +243,13 @@ export const MEDICAL_BASE_MENU: MenuItem[] = [
   },
   {
     id: 5,
+    label: "REQUETES",
+    link: "/medical-base/requetes-jaunes",
+    textColor: "#000000",
+    bgColor: "#FFFF00",
+  },
+  {
+    id: 6,
     label: "MEDOR",
     link: "/medical-base/medicines-prescriptions",
     // icon: "ri-user-search-fill",

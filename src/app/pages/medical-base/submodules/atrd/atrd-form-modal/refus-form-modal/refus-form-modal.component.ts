@@ -25,7 +25,7 @@ export class RefusFormModalComponent implements OnInit {
 
   @Input()
   refused$ = new Subject<Refused>();
-  
+
   @Input()
   refused?: Refused;
 
@@ -33,7 +33,7 @@ export class RefusFormModalComponent implements OnInit {
   @Input()
   ordonnance = new FormControl(false, []);
   decharge = new FormControl(false, []);
-  
+
 
   showControl = new FormControl(false);
   displayOptions = [
@@ -67,7 +67,7 @@ export class RefusFormModalComponent implements OnInit {
     private message: MessageService,
     private toastService: ToastService,
     private atrdService: AtrdService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fGroup = new FormGroup({
@@ -85,7 +85,7 @@ export class RefusFormModalComponent implements OnInit {
           this.consultation_id = consultationId;
           this.refused!.consultation_id = consultationId;
           console.log("+++++++" + JSON.stringify(this.refused, null, 2));
-          
+
           this.atrdService
             .saveRefused(this.refused!)
             .subscribe({
@@ -112,20 +112,23 @@ export class RefusFormModalComponent implements OnInit {
         }
       },
     });
-    
+
 
     this.setValues();
 
   }
 
   setValues() {
-    this.showControl.setValue(true);
+    if (this.refused) {
+      this.showControl.setValue(true);
 
-    this.date_op.setValue(formatDate(this.refused!.date_op, "yyyy-MM-dd"));
-    this.motif.setValue(this.refused!.motif);
-    this.decharge.setValue(this.refused!.has_decharge === false);
-    this.ordonnance.setValue(this.refused!.has_ordonnance === false);
-    this.comment.setValue(this.refused!.comments);
+      this.date_op.setValue(formatDate(this.refused!.date_op, "yyyy-MM-dd"));
+      this.motif.setValue(this.refused!.motif);
+      this.decharge.setValue(this.refused!.has_decharge === false);
+      this.ordonnance.setValue(this.refused!.has_ordonnance === false);
+      this.comment.setValue(this.refused!.comments);
+    }
+
   }
 
   private markAllControlsAsTouched(): void {

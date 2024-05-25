@@ -39,6 +39,7 @@ import { PatientRecentComponent } from './patient-recent/patient-recent.componen
 import { SpecialRequestsPageComponent } from './special-requests-page/special-requests-page.component';
 import { AtrdModule } from "./submodules/atrd/atrd.module";
 import { ReqPecPageComponent } from './req-pec-page/req-pec-page.component';
+import { RequetesJaunesPageComponent } from './requetes-jaunes-page/requetes-jaunes-page.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ReqPecPageComponent } from './req-pec-page/req-pec-page.component';
     PatientRecentComponent,
     SpecialRequestsPageComponent,
     ReqPecPageComponent,
+    RequetesJaunesPageComponent,
   ],
   imports: [
     CommonModule,
