@@ -25,6 +25,7 @@ import { PhoneBookFormModalComponent } from './phone-book-page/phone-book-form-m
 import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
 import { MedicalBaseModule } from "../medical-base/medical-base.module";
 import { TariffQuantityModalComponent } from './tariffs/tariff-quantity-modal/tariff-quantity-modal.component';
+import { InsuranceDebtDetailComponent } from './activities-page/receipts-summary/insurances-debts-modal/insurance-debt-detail/insurance-debt-detail.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TariffQuantityModalComponent } from './tariffs/tariff-quantity-modal/ta
     PhoneBookFormModalComponent,
     AppointmentPageComponent,
     TariffQuantityModalComponent,
+    InsuranceDebtDetailComponent,
   ],
   imports: [
     CommonModule,

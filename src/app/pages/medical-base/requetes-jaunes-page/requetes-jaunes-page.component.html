@@ -1,0 +1,274 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="REQUÊTES JAUNES" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<!-- requete par motif -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes par motif</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="search1Form">
+                        <div class="row row-cols-lg-4 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search1StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search1EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Motif" [clearable]="true" [options]="search1Motifs"
+                                    [isLoading]="search1MotifsAreLoading" [typeahead]="search1MotifsTypeahead$"
+                                    [control]="search1MotifControl" [isMandatory]="true"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm1()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- par diagnostic -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes par Diagnostic</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <!-- par diagnostic -->
+                    <form [formGroup]="search2Form">
+                        <div class="row row-cols-lg-4 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search2StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search2EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Diagnostic" [clearable]="true" [options]="search2Diagnostics"
+                                [isLoading]="search2DiagnosticsAreLoading" [typeahead]="search2DiagnosticsTypeahead$"
+                                    [control]="search2DiagnosticControl" [isMandatory]="true"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm2()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- par secteur -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes par Secteur</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+
+                    <form [formGroup]="search3Form">
+                        <div class="row row-cols-lg-4 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search3StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search3EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Secteur" [clearable]="true" [options]="search3Secteurs"
+                                    [control]="search3SecteurControl" [isMandatory]="true"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm3()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- par medecin -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes par Medecin</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+
+                    <form [formGroup]="search4Form">
+                        <div class="row row-cols-lg-4 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search4StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search4EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Medecin" [clearable]="true" [options]="search4Medecins"
+                                    [control]="search4MedecinControl" [isMandatory]="true"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm4()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- multicriteres -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes multicriteres</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+
+                    <form [formGroup]="search5Form">
+                        <div class="row row-cols-lg-3 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search5StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search5EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                        </div><!--end row-->
+                        <div class="row row-cols-lg-4 g-3 align-items-center">
+                            <div class="col-12">
+                                <app-select label="Acte" [clearable]="true" [options]="search5Actes"
+                                    [control]="search5ActeControl" [isMandatory]="true"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Motif" [clearable]="true" [options]="search5Motifs"
+                                    [isLoading]="search1MotifsAreLoading" [typeahead]="search1MotifsTypeahead$"
+                                    [control]="search5MotifControl"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <app-select label="Diagnostic" [clearable]="true" [options]="search5Diagnostics"
+                                [isLoading]="search2DiagnosticsAreLoading" [typeahead]="search2DiagnosticsTypeahead$"
+                                    [control]="search5DiagnosticControl"></app-select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm5()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ministérielles consultations -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes Ministérielles consultations</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+
+                    <form [formGroup]="search6Form">
+                        <div class="row row-cols-lg-3 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search6StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search6EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm6()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ministérielles hospitalisations -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header py-2">
+            <span>Requêtes Ministérielles hospitalisations</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+
+                    <form [formGroup]="search7Form">
+                        <div class="row row-cols-lg-3 g-3 align-items-center">
+                            <div class="col-2">
+                                <app-input label="Date de début" type="date" [maxDate]="today"
+                                    [control]="search7StartDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <app-input label="Date de fin" type="date" [maxDate]="today"
+                                    [control]="search7EndDateControl" [isMandatory]="true">
+                                </app-input>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" (click)="submitForm7()">Valider</button>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

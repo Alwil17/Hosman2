@@ -1,5 +1,5 @@
 import { Patient } from "../secretariat/patients/patient.model";
-import { WaitingListItemShort } from "../secretariat/patients/waiting-list-item.model";
+import { WaitingListItem, WaitingListItemShort } from "../secretariat/patients/waiting-list-item.model";
 import { Sector } from "../secretariat/shared/sector.model";
 import { Tariff } from "../secretariat/shared/tariff.model";
 import { Constante } from "./constante.model";
@@ -18,7 +18,7 @@ export interface IConsultation {
   secteur_code: string;
   secteur: Sector;
   attente_num?: number;
-  attente?: WaitingListItemShort;
+  attente?: WaitingListItem;
   constante?: Constante;
   actes: Tariff[];
   motifs: Motif[];
@@ -39,7 +39,7 @@ export class Consultation {
   secteur_code: string;
   secteur: Sector;
   attente_num?: number;
-  attente?: WaitingListItemShort;
+  attente?: WaitingListItem;
   constante?: Constante;
   actes: Tariff[];
   motifs: Motif[];

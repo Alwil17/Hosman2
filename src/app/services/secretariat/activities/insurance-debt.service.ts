@@ -82,4 +82,29 @@ export class InsuranceDebtService {
       responseType: "blob",
     });
   }
+
+  printConsultationForMedecinReport(criteria: {
+    minDate: Date;
+    maxDate: Date;
+    doctor?: string;
+  }): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+
+    let apiComplementary =
+      "datemin=" + criteria.minDate.toLocaleDateString("fr-ca");
+
+    if (criteria.maxDate) {
+      apiComplementary +=
+        "&datemax=" + criteria.maxDate.toLocaleDateString("fr-ca");
+    }
+    if (criteria.doctor && criteria.doctor != "") {
+      apiComplementary += "&ref=" + criteria.doctor;
+    }
+
+    return this.http.get(`${apiEndpoint}/print-med?${apiComplementary}`, {
+      headers: headers,
+      responseType: "blob",
+    });
+  }
 }

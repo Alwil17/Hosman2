@@ -136,7 +136,7 @@
               <td>
                 <div class="d-inline-block" ngbDropdown>
                   <!-- container="body" -->
-                  <!-- <button
+                  <button
                     type="button"
                     class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
                     ngbDropdownToggle
@@ -144,31 +144,27 @@
                     <i class="ri-more-fill fs-24"></i>
                   </button>
                   <div ngbDropdownMenu>
-                    <button ngbDropdownItem>
+                    <button ngbDropdownItem
+                    (click)="showInvoiceDetails(insuranceDebt.facture.id)">
                       <i
                         class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
                       ></i>
                       Détails
                     </button>
-                    <button ngbDropdownItem>
-                      <i
-                        class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
-                      ></i>
-                      Duplicata
-                    </button>
-                    <button ngbDropdownItem>
+                    
+                    <button ngbDropdownItem class="disabled">
                       <i
                         class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
                       ></i>
                       Imprimer
                     </button>
-                    <button ngbDropdownItem>
+                    <button ngbDropdownItem class="disabled">
                       <i
                         class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
                       ></i>
                       Supprimer
                     </button>
-                  </div> -->
+                  </div>
                 </div>
               </td>
             </tr>

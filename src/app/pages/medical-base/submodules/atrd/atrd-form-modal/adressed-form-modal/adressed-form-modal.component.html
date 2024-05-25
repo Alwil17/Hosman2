@@ -1,0 +1,69 @@
+<div class="row border border-primary">
+  <div class="col-md-12">
+    <h5 class="fw-semibold">Adressé(e)</h5>
+  </div>
+  <div class="col-md-2 mb-3">
+    <h-select [isMandatory]="true" [searchable]="false" [clearable]="false" [options]="displayOptions"
+      [bindValue]="'value'" [control]="showControl"></h-select>
+  </div>
+  <div class="col-md-12" *ngIf="showControl.value">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <app-select label="Médecin" [isMandatory]="true" [clearable]="true" [options]="medecins"
+              [control]="medecin"></app-select>
+
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <h-input label="Spécialité" type="text" [isMandatory]="true" [control]="specialite"></h-input>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <h-input label="Institution" type="text" [isMandatory]="true" [control]="institution"></h-input>
+          </div>
+
+          <div class="col-md-3 form-check mb-4 mx-3">
+            <input class="form-check-input" type="checkbox" name="medical_letter" id="medical_letter" [formControl]="lettre"/>
+            <label class="form-check-label fw-semibold" for="medical_letter">
+              Lettre médicale
+            </label>
+          </div>
+
+          <div class="col-md-3 form-check mb-2 mx-3">
+            <input class="form-check-input" type="checkbox" name="medical_report" id="medical_report" [formControl]="report"/>
+            <label class="form-check-label fw-semibold" for="medical_report">
+              Rapport médical
+            </label>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <h-input label="Moyen de transport" type="text" [isMandatory]="true" [control]="transport"></h-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <h-input label="Date" type="date" [isMandatory]="true" [control]="date_op"></h-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <h-input label="Motif" type="text" [isMandatory]="true" [control]="motif"></h-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <app-text placeholder="..." [rows]="5" [control]="comment" label="Commentaires"></app-text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="d-flex justify-content-start mt-2">
+  <button type="button" class="btn btn-success btn-label right" (click)="confirmAction()">
+    <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+    ENREGISTRER
+  </button>
+</div>

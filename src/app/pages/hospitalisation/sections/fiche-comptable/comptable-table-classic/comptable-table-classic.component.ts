@@ -56,7 +56,7 @@ export class ComptableTableClassicComponent implements OnInit {
   filtered_list: any[] = []; // filtered list
   numberOfPages: number = 0;
   searchResults: any[] = [];
-  rowsPerPage: number = 15;
+  rowsPerPage: number = 20;
   currentPage: number = 1;
   suivis: any[] = [];
   chartsLabels: any[] = [];
@@ -107,53 +107,20 @@ export class ComptableTableClassicComponent implements OnInit {
       watchValue: this.watchValue,
     });
 
-    // get days
-    this.hospitalisationStore.getValue("hospitalisation")?.subscribe({
-      next: (v) => {
-          //get hospitalisation
-          this.hospitalisation = v
-
-          const res = [];
-            let date = new Date(v["date_hospit"]);
-            let currentDate = new Date();
-            let days = Math.floor(
-              (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
-            );
-            // let r = moment(this.hospitalisation["date_hospit"]);
-            for (let i = 0; i <= days; i++) {
-              let currentDate = moment(date).add(i, "days");
-              res.push({
-                o: currentDate.format("yyyy-MM-DD"),
-                i: i,
-              });
-            }
-
-            this.days = res
-      },
-    });
-
-    this.hospitalisationStore.getValue("suivis")?.subscribe({
-      next: (v) => {
-        this.suivis = v
-      },
-    });
-
     this.subscription = this.hospitalisationStore.stateChanged.pipe(pairwise())
     .subscribe(([p, c]) => {
         if (hasStateChanges(this.patient, p.patient, c.patient)) {
           this.patient = c.patient;
         }
 
+        if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
+          this.hospitalisation = c.hospitalisation;
+          this.genDays()
+        }
+
         if (hasStateChanges(this.suivis, p.suivis, c.suivis)) {
           this.suivis = c.suivis;
         }
-
-        // if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
-        //   this.hospitalisation = c.hospitalisation;          
-        // } else {
-        // }
-
-        
       }
     );
 
@@ -206,7 +173,7 @@ export class ComptableTableClassicComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // this.initLineChart();
+    this.initLineChart();
   }
 
   initLineChart() {
@@ -388,6 +355,25 @@ export class ComptableTableClassicComponent implements OnInit {
     this.charts = re_watch;
   }
 
+  genDays() {
+    const res = [];
+    let date = new Date(this.hospitalisation["date_hospit"]);
+    let currentDate = new Date();
+    let days = Math.floor(
+      (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
+    );
+    // let r = moment(this.hospitalisation["date_hospit"]);
+    for (let i = 0; i <= days; i++) {
+      let currentDate = moment(date).add(i, "days");
+      res.push({
+        o: currentDate.format("yyyy-MM-DD"),
+        i: i,
+      });
+    }
+
+    this.days = res;
+  }
+
   private calculateNumberOfPages(): void {
     if (this.list !== null) {
       const itemsToPaginate =
@@ -469,9 +455,7 @@ export class ComptableTableClassicComponent implements OnInit {
         this.currentPage * this.rowsPerPage
       );
     }
-
   }
-
 
   doFilter(text: string): void {
     try {
@@ -658,9 +642,9 @@ export class ComptableTableClassicComponent implements OnInit {
         };
 
         this.hospitalisationStore.commitSuivi(c);
-        this.suivis.push(c);
+        // this.suivis.push(c);
         this.hospitalisationStore.commitSuivi(l);
-        this.suivis.push(l);
+        // this.suivis.push(l);
       }
     } else {
       const row = this.getRowId(day, type_id, extra);
@@ -674,7 +658,6 @@ export class ComptableTableClassicComponent implements OnInit {
           id: Date.now(),
         };
         this.hospitalisationStore.commitSuivi(data);
-        this.suivis.push(data)
       } else {
         let rowValue = this.suivis.find((s) => s.id === row);
         rowValue.qte++;

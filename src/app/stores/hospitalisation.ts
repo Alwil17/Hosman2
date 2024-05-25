@@ -10,29 +10,6 @@ import { slugify } from "../helpers/utils";
 import { FASTABS } from "./suivis-tabs";
 import { environment } from "src/environments/environment";
 
-class Timer {
-  private startTime: number;
-
-  constructor() {
-    this.startTime = 0;
-  }
-
-  start() {
-    this.startTime = new Date().getTime();
-  }
-
-  getElapsedMilliseconds(): number {
-    if (this.startTime === 0) {
-      throw new Error("Timer has not been started.");
-    }
-    return new Date().getTime() - this.startTime;
-  }
-
-  processingState(lastUpdated: number) {
-    return this.getElapsedMilliseconds() - lastUpdated <= 500
-  }
-}
-
 const consultationEndpoint = environment.hospitalisation_base + "consultations";
 const hospitalisationEndpoint = environment.hospitalisation_base + "hospits";
 const tabsEndpoint = environment.hospitalisation_base + "produits";
@@ -51,9 +28,7 @@ const sortieEndpoint = environment.hospitalisation_base + "sorties";
 const medecinsListEndpoint = environment.hospitalisation_base + "medecins";
 const patientsListEndpoint = environment.hospitalisation_base + "patients";
 const freeBedsEndPoint = environment.hospitalisation_base + "lits?vue=UNTAKEN"
-
-const timer = new Timer();
-timer.start();
+const cim11tokenEndPoint = environment.hospitalisation_base + "diagnostics/token"
 
 @Injectable({ providedIn: "root" })
 export class HospitalisationStore extends ObservableStore<any> {
@@ -74,9 +49,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     externes: null,
     interventions: null,
     selectedElement: null,
-    cim11token: null,
-    lastUpdated: 0,
-    processing: true
+    cim11token: null
   };
 
   constructor(private http: HttpClient) {
@@ -85,22 +58,12 @@ export class HospitalisationStore extends ObservableStore<any> {
       trackStateHistory: true,
     });
     this.setState(this.init_state, "Hospitalisation Init");
-    this.startTrackingProcessing()
-  }
-
-  startTrackingProcessing(){
-    setInterval(() => {
-      const state = this.getState();
-      if (state['processing'] === true)
-      this.setState(Object.assign(state, {processing : timer.processingState(state['lastUpdated'])}), "PROCESSING")
-    }, 1000);
   }
 
   updateStore(data: any, tag: string) {
     const state = this.getState();
     const updatedState = Object.assign(state, data);
     this.setState(updatedState, "HOSPITALISATION : " + tag);
-    this.setState(Object.assign(state, {lastUpdated : timer.getElapsedMilliseconds()}), "LAST UPDATED");
   }
 
   getValue(name: string): Observable<any> | null {
@@ -114,7 +77,6 @@ export class HospitalisationStore extends ObservableStore<any> {
 
   /* API CALLS */
   fetchHospitalisationList(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
     const res: Observable<any> = this.http.get<any>(hospitalisationEndpoint);
 
     res.subscribe({
@@ -128,8 +90,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchHospitalisation(id: number): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any>(
       hospitalisationEndpoint + "/" + id
     );
@@ -158,9 +118,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchHospitalisationSuivi(id: number): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
-  
     const res: Observable<any> = this.http.get<any>(
       hospitalisationEndpoint + "/" + id + "/suivis"
     );
@@ -178,8 +135,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchConsultation(id: number): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any>(
       consultationEndpoint + "/" + id
     );
@@ -198,9 +153,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchSector(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
-
     const res: Observable<Sector[]> = this.http.get<Sector[]>(secteursEndpoint);
 
     res.subscribe({
@@ -214,8 +166,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchChambres(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<Chambre[]> = this.http
       .get<ChambreResponse[]>(chambresEndpoint)
       .pipe(
@@ -235,8 +185,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchFreeLits(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any>(freeBedsEndPoint);
 
     res.subscribe({
@@ -250,8 +198,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchTabs(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     let fData: any = [];
     const res: Observable<any> = this.http.get<any[]>(tabsEndpoint);
 
@@ -324,8 +270,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchMedecins(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any[]>(medecinsListEndpoint);
 
     res.subscribe({
@@ -343,8 +287,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchPatients(): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any[]>(patientsListEndpoint);
 
     res.subscribe({
@@ -362,8 +304,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchExternes(id: number): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any[]>(
       hospitalisationEndpoint + "/" + id + "/med-externes"
     );
@@ -379,8 +319,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchInterventions(id: number): void {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     const res: Observable<any> = this.http.get<any[]>(
       hospitalisationEndpoint + "/" + id + "/chirurgies"
     );
@@ -396,8 +334,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchAdressed(id: number) {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     this.http
       .get<any[]>(hospitalisationEndpoint + "/" + id + "/addressed")
       .subscribe({
@@ -411,8 +347,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchTransfused(id: number) {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     this.http
       .get<any[]>(hospitalisationEndpoint + "/" + id + "/transfused")
       .subscribe({
@@ -426,8 +360,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchScam(id: number) {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     this.http
       .get<any[]>(hospitalisationEndpoint + "/" + id + "/scams")
       .subscribe({
@@ -441,8 +373,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchDedeced(id: number) {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     this.http
       .get<any[]>(hospitalisationEndpoint + "/" + id + "/deceded")
       .subscribe({
@@ -456,8 +386,6 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   fetchSortie(id: number) {
-    this.updateStore({ processing : true }, "PROCESSING");
-
     this.http
       .get<any[]>(hospitalisationEndpoint + "/" + id + "/sorties")
       .subscribe({
@@ -507,6 +435,7 @@ export class HospitalisationStore extends ObservableStore<any> {
   }
 
   changePage(pageName: string){
+    const state = this.getState();
     this.updateStore(
       { currentPage: pageName },
       "CHANGE PAGE"

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MedicalBaseRouterService } from "@services/medical-base/router/medical-base-router.service";
 import { BehaviorSubject, Observable, Subject, forkJoin } from "rxjs";
 import { PrescriptionFields } from "src/app/models/enums/prescription-fields.enum";
 import { SelectOption } from "src/app/models/extras/select.model";
@@ -85,6 +86,7 @@ export class PrescriberComponent implements OnInit {
   isPrescriptionFormSubmitted = false;
 
   constructor(
+    private medicalBaseRouter: MedicalBaseRouterService,
     private productService: ProductService,
     private toastService: ToastService,
     private prescriberService: PrescriberService
@@ -327,5 +329,9 @@ export class PrescriberComponent implements OnInit {
     }
 
     this.prescriptionsRegistering.emit(true);
+  }
+
+  goToPreviousPage() {
+    this.medicalBaseRouter.navigateToMedicinesAndPrescriptions();
   }
 }

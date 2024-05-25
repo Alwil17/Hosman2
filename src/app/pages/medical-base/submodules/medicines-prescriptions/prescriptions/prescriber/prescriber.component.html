@@ -1,7 +1,18 @@
+<hr />
 <div class="col-12">
   <form [formGroup]="prescriptionForm">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-2">
+        <button
+        type="button"
+        class="btn btn-warning btn-label waves-effect waves-light text-dark"
+        (click)="goToPreviousPage()"
+      >
+        <i class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-2"></i>
+        Retour
+      </button>
+      </div>
+      <div class="col-lg-4">
         <app-select
           label="Nom de spécialité"
           [isMandatory]="true"
@@ -10,7 +21,7 @@
           [isFormSubmitted]="isPrescriptionFormSubmitted"
         ></app-select>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <app-input
           label="DCI"
           [readOnly]="true"
@@ -35,14 +46,14 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-7">
         <!-- TABLE ROW -->
         <div class="row mb-2">
           <div class="col-12">
             <div class="table-responsive" style="max-height: 150px">
               <!-- table-card -->
               <table
-                class="table table-one-liner table-bordered table-hover table-striped align-middle"
+                class="table table-one-liner table-hover table-info table-bordered table-striped table-sm align-middle mb-0"
               >
                 <thead
                   class="table-light text-muted"
@@ -106,127 +117,138 @@
         <!-- FIELDS ROW -->
         <ng-container>
           <div class="row">
-            <div class="col-12">
-              <app-input
-                label="Présentation(s) et dosage(s)"
-                [readOnly]="true"
-                [isMandatory]="true"
-                [control]="productFormController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
-              ></app-input>
+            <div class="col-lg-7">
+              <div class="row">
+                <div class="col-12">
+                  <app-input
+                    label="Présentation(s) et dosage(s)"
+                    [readOnly]="true"
+                    [isMandatory]="true"
+                    [control]="productFormController"
+                    [isFormSubmitted]="isPrescriptionFormSubmitted"
+                  ></app-input>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-md-4">
+                  <app-input
+                    label="Quantité"
+                    maskFormat="separator"
+                    [isMandatory]="true"
+                    [alignRight]="true"
+                    [control]="quantityController"
+                    [isFormSubmitted]="isPrescriptionFormSubmitted"
+                  ></app-input>
+                </div>
+                <div class="col-md-8">
+                  <app-input
+                    label="Conditionnement"
+                    [isMandatory]="true"
+                    [control]="packagingController"
+                    [isFormSubmitted]="isPrescriptionFormSubmitted"
+                  ></app-input>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-md-4">
+                  <app-input
+                    label="Dose prescrite"
+                    maskFormat="separator"
+                    [alignRight]="true"
+                    [control]="dosageQuantityController"
+                  ></app-input>
+                </div>
+                <div class="col-md-8">
+                  <app-select
+                    label="Unité"
+                    [canAddOption]="true"
+                    [options]="doses"
+                    [control]="dosageController"
+                  ></app-select>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-md-6">
+                  <app-select
+                    label="Période"
+                    [canAddOption]="true"
+                    [options]="periods"
+                    [control]="periodController"
+                  ></app-select>
+                </div>
+                <div class="col-md-6">
+                  <app-select
+                    label="Adverbe"
+                    [canAddOption]="true"
+                    [options]="adverbs"
+                    [control]="adverbController"
+                  ></app-select>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-md-4">
+                  <app-input
+                    label="Durée du traitement"
+                    maskFormat="separator"
+                    [alignRight]="true"
+                    [control]="timeController"
+                  ></app-input>
+                </div>
+                <div class="col-md-8">
+                  <app-select
+                    label="Unité"
+                    [canAddOption]="true"
+                    [options]="durations"
+                    [control]="timeUnitController"
+                  ></app-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="row">
+                <div class="col-12">
+                  <app-input label="Note" [control]="noteController"> </app-input>
+                </div>
+              </div>
+    
+              <div class="d-flex flex-column align-items-end mt-2">
+                <button class="btn btn-info me-2">Heures de prise</button>
+    
+
+                
+                  <button
+                  class="btn btn-secondary btn-label right me-2"
+                  (click)="validatePrescription()"
+                >
+                  <i
+                    class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                  ></i>
+                  <b>Valider la prescription</b>
+                </button>
+                <button class="btn btn-light me-2">Annuler</button>
+    
+                <button
+                  class="btn btn-success btn-label"
+                  (click)="registerPrescriptions()"
+                  *ngIf="patientInfos"
+                >
+                  <i class="ri-save-2-line label-icon align-middle fs-16"></i>
+                  <b>Enregistrer l'ordonnance</b>
+                </button>
+              </div>
             </div>
           </div>
+          
 
-          <div class="row">
-            <div class="col-md-4">
-              <app-input
-                label="Quantité"
-                maskFormat="separator"
-                [isMandatory]="true"
-                [alignRight]="true"
-                [control]="quantityController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
-              ></app-input>
-            </div>
-            <div class="col-md-8">
-              <app-input
-                label="Conditionnement"
-                [isMandatory]="true"
-                [control]="packagingController"
-                [isFormSubmitted]="isPrescriptionFormSubmitted"
-              ></app-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4">
-              <app-input
-                label="Dose prescrite"
-                maskFormat="separator"
-                [alignRight]="true"
-                [control]="dosageQuantityController"
-              ></app-input>
-            </div>
-            <div class="col-md-8">
-              <app-select
-                label="Unité"
-                [canAddOption]="true"
-                [options]="doses"
-                [control]="dosageController"
-              ></app-select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <app-select
-                label="Période"
-                [canAddOption]="true"
-                [options]="periods"
-                [control]="periodController"
-              ></app-select>
-            </div>
-            <div class="col-md-6">
-              <app-select
-                label="Adverbe"
-                [canAddOption]="true"
-                [options]="adverbs"
-                [control]="adverbController"
-              ></app-select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4">
-              <app-input
-                label="Durée du traitement"
-                maskFormat="separator"
-                [alignRight]="true"
-                [control]="timeController"
-              ></app-input>
-            </div>
-            <div class="col-md-8">
-              <app-select
-                label="Unité"
-                [canAddOption]="true"
-                [options]="durations"
-                [control]="timeUnitController"
-              ></app-select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-12">
-              <app-input label="Note" [control]="noteController"> </app-input>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-info me-2">Heures de prise</button>
-
-            <button
-              class="btn btn-secondary btn-label right me-2"
-              (click)="validatePrescription()"
-            >
-              <i
-                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
-              ></i>
-              <b>Valider la prescription</b>
-            </button>
-
-            <button
-              class="btn btn-success btn-label"
-              (click)="registerPrescriptions()"
-              *ngIf="patientInfos"
-            >
-              <i class="ri-save-2-line label-icon align-middle fs-16"></i>
-              <b>Enregistrer l'ordonnance</b>
-            </button>
-          </div>
+          
         </ng-container>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-5">
         <!-- PRESCRIPTION DISPLAY ROW -->
         <div
           class="row border rounded-3"

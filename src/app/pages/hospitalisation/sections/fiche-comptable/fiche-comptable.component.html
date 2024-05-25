@@ -20,7 +20,7 @@
 <ul class="nav nav-pills arrow-navtabs nav-success bg-light" role="tablist">
     <li *ngFor="let item of tabs; let i = index" class="nav-item border-round" [class]="item.color !== undefined ? item.color : ''">
         <a [class]="'nav-link '+ (i === 0 ? 'active' : '')" data-bs-toggle="tab" [href]="'#arrow-'+item.type"
-            role="tab" (click)="selectSuivi(item.type)">
+            role="tab">
             <span class="d-none d-sm-block one-tab">{{ item.name }}</span>
         </a>
     </li>
@@ -29,7 +29,7 @@
 <div class="tab-content text-muted" hosContextMenu [contextMenuItems]="contextMenuItems" [mandatoryClass]="'t-content'">
     <div *ngFor="let item of tabs; let i = index" [class]="'tab-pane ' + (i === 0 ? 'active' : '')"
         [id]="'arrow-'+item.type" role="tabpanel">
-        <app-comptable-table-classic [tableData]="item.data" [typeData]="item.type" *ngIf="currentSuivi === item.type"></app-comptable-table-classic>
+        <app-comptable-table-classic [tableData]="item.data" [typeData]="item.type"></app-comptable-table-classic>
     </div>
 </div>
 

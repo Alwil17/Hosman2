@@ -5,6 +5,10 @@ import { PatientVisitsSummaryPageComponent } from "./patient-visits-summary-page
 import { PatientVisitFormComponent } from "./patient-visit-form/patient-visit-form.component";
 import { PatientListPageComponent } from "./patient-list-page/patient-list-page.component";
 import { IsNotDirtyGuard } from "src/app/guards/is-not-dirty.guard";
+import { PatientRecentComponent } from "./patient-recent/patient-recent.component";
+import { SpecialRequestsPageComponent } from "./special-requests-page/special-requests-page.component";
+import { ReqPecPageComponent } from "./req-pec-page/req-pec-page.component";
+import { RequetesJaunesPageComponent } from "./requetes-jaunes-page/requetes-jaunes-page.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "patient-waiting-list", pathMatch: "full" },
@@ -22,6 +26,22 @@ const routes: Routes = [
   {
     path: "patient-list",
     component: PatientListPageComponent,
+  },
+  {
+    path: "patient-recent/:period",
+    component: PatientRecentComponent,
+  },
+  {
+    path: "special-requests/:type",
+    component: SpecialRequestsPageComponent,
+  },
+  {
+    path: "requetes-pec",
+    component: ReqPecPageComponent,
+  },
+  {
+    path: "requetes-jaunes",
+    component: RequetesJaunesPageComponent,
   },
   {
     path: "medicines-prescriptions",

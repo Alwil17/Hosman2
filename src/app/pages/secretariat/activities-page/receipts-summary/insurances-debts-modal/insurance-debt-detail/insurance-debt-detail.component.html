@@ -1,0 +1,129 @@
+<app-simple-modal title="Requêtes des Prises En Charge">
+    <div class="row">
+    <div class="col-12">
+      <div class="table-responsive table-card">
+        <table
+          class="table table-one-liner table-hover table-striped table-bordered align-middle mb-0"
+        >
+          <thead class="table-light text-muted">
+            <tr>
+              <th scope="col">{{ "Date de l'acte" | uppercase }}</th>
+              <th scope="col">{{ "N° Reçu" | uppercase }}</th>
+              <th scope="col">{{ "Secteur" | uppercase }}</th>
+              <th scope="col">{{ "Actes" | uppercase }}</th>
+              <th scope="col">{{ "Montant facture" | uppercase }}</th>
+              <th scope="col">{{ "Montant PEC" | uppercase }}</th>
+              <th scope="col">{{ "Montant payé" | uppercase }}</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="user-select-none"
+            >
+              <td>{{ invoice.reference }}</td>
+              <!-- <td>{{ invoice.prestation.patient.nom }}</td>
+              <td>{{ invoice.prestation.patient.prenoms }}</td> -->
+              <td>
+                <ngb-highlight
+                  [result]="invoice.prestation.patient.nom"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="invoice.prestation.patient.prenoms"
+                ></ngb-highlight>
+              </td>
+              <td class="td-ellipsis">
+                <ng-container
+                  *ngFor="
+                    let act of invoice.prestation.tarifs | slice : 0 : 5;
+                    index as i;
+                    count as c
+                  "
+                >
+                  <span>
+                    {{ act.libelle }}
+                  </span>
+                  <span *ngIf="i < 4 && c !== i + 1"> <b>*</b> </span>
+                  <span *ngIf="i == 4 && c < invoice.prestation.tarifs.length"
+                    ><b> * ... </b></span
+                  >
+                </ng-container>
+              </td>
+              <td class="text-end">{{ invoice.total | mask : "separator" }}</td>
+              <td class="text-end">
+                {{
+                  invoice.a_payer - invoice.creance.montant | mask : "separator"
+                }}
+              </td>
+              <td class="text-end">
+                {{ invoice.montant_pec | mask : "separator" }}
+              </td>
+              <td>{{ invoice.date_facture | date : "dd/MM/yyyy" }}</td>
+
+              <!-- <ng-template #noInsurance>
+                <td><em>Non assuré</em></td>
+              </ng-template> -->
+
+              <!-- <td>
+                <div class="d-inline-block" ngbDropdown>
+                 
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-outline-dark btn-sm waves-effect waves-light arrow-none"
+                    ngbDropdownToggle
+                  >
+                    <i class="ri-more-fill fs-24"></i>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-information-line label-icon align-middle fs-16 me-2 text-secondary"
+                      ></i>
+                      Détails
+                    </button>
+                    <button ngbDropdownItem>
+                      <i
+                        class="mdi mdi-sticker-text-outline label-icon align-middle fs-16 me-2 text-primary"
+                      ></i>
+                      Duplicata
+                    </button>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-printer-line label-icon align-middle fs-16 me-2 text-primary"
+                      ></i>
+                      Imprimer
+                    </button>
+                    <button ngbDropdownItem>
+                      <i
+                        class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2 text-danger"
+                      ></i>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+              </td> -->
+            </tr>
+          </tbody>
+          <tfoot>
+            <!-- <tr>
+              <th>Total</th>
+              <th colspan="3" class="text-end">{{ invoicesList.length }}</th>
+              <th class="text-end">{{ activityTotal | mask : "separator" }}</th>
+              <th class="text-end">{{ paidTotal | mask : "separator" }}</th>
+              <th class="text-end">{{ scTotal | mask : "separator" }}</th>
+              <th></th>
+            </tr> -->
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+</app-simple-modal>
+
+<div class="modal-body"></div>

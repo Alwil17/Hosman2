@@ -1,3 +1,4 @@
+import { link } from "fs";
 import { MenuItem } from "./menu.model";
 
 export const SECRETARIAT_MENU: MenuItem[] = [
@@ -141,13 +142,114 @@ export const MEDICAL_BASE_MENU: MenuItem[] = [
   {
     id: 3,
     label: "Consulter",
-    link: "/medical-base/patient-list",
-    // icon: "ri-user-search-fill",
+    link: "",
     textColor: "#FFFFFF",
     bgColor: "#008080",
+    subItems: [
+      {
+        id: 4,
+        label: "Anciens Patients",
+        link: "/medical-base/patient-list",
+        parentId: 3,
+      },
+      {
+        id: 5,
+        label: "Nouveau Patients",
+        link: "/medical-base/patient-list",
+        parentId: 3,
+      },
+      {
+        id: 6,
+        label: "Patients récents",
+        parentId: 3,
+        subItems: [
+          {
+            id: 7,
+            parentId: 6,
+            link: "/medical-base/patient-recent/today",
+            label: "d'Aujourd'hui",
+          },
+          {
+            id: 8,
+            parentId: 6,
+            link: "/medical-base/patient-recent/yesterday",
+            label: "d'Hier"
+          },
+          {
+            id: 9,
+            parentId: 6,
+            link: "/medical-base/patient-recent/week",
+            label: "de la Semaine"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 4,
+    id: 10,
+    label: "Requêtes spéciales",
+    link: "",
+    subItems: [
+      {
+        id: 11,
+        label: "Consultations antérieures",
+        parentId: 10,
+        subItems: [
+          {
+            id: 12,
+            parentId: 11,
+            link: "/medical-base/patient-recent/today",
+            label: "d'Aujourd'hui",
+          },
+          {
+            id: 13,
+            parentId: 11,
+            link: "/medical-base/patient-recent/yesterday",
+            label: "d'Hier"
+          },
+          {
+            id: 14,
+            parentId: 11,
+            link: "/medical-base/patient-recent/week",
+            label: "de la Semaine"
+          }
+        ]
+      },
+      {
+        id: 15,
+        label: "Générale",
+        parentId: 10,
+        link: "/medical-base/special-requests/general"
+      },
+      {
+        id: 16,
+        label: "Par Secteur",
+        parentId: 10,
+        link: "/medical-base/special-requests/sector"
+      },
+      {
+        id: 17,
+        label: "Par docteur",
+        parentId: 10,
+        link: "/medical-base/special-requests/doctor"
+      },
+      {
+        id: 18,
+        label: "Prises en charge par médecin",
+        parentId: 10,
+        link: "/medical-base/requetes-pec"
+      }
+    ],
+  },
+  {
+    id: 5,
+    label: "REQUETES",
+    link: "/medical-base/requetes-jaunes",
+    textColor: "#000000",
+    bgColor: "#FFFF00",
+  },
+  {
+    id: 6,
     label: "MEDOR",
     link: "/medical-base/medicines-prescriptions",
     // icon: "ri-user-search-fill",

@@ -1,0 +1,71 @@
+<app-simple-modal title="ATRD">
+    <ng-container>
+        <ul ngbNav #atrd="ngbNav" [activeId]="1" class="nav nav-pills nav-justified mb-2">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink>
+                    <span class="d-sm-block">Adressé(é)</span>
+                </a>
+
+                <ng-template ngbNavContent>
+                    <app-adressed-form-modal 
+                    [consultationId$]="consultationId$" 
+                    [adressed$]="addressed$" 
+                    [adressed]="addressed" 
+                    (addressedRegistering)="emitAddressedRegistration()">
+                </app-adressed-form-modal>
+                </ng-template>
+            </li>
+
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>
+                    <span class="d-sm-block">Transféré(e)</span>
+                </a>
+
+                <ng-template ngbNavContent>
+                    <app-transfered-form-modal 
+                    [consultationId$]="consultationId$" 
+                    [transfered$]="transfered$" 
+                    [transfered]="transfered" 
+                    (transferedRegistering)="emitTransferedRegistration()">
+                </app-transfered-form-modal>
+                </ng-template>
+            </li>
+
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>
+                    <span class="d-sm-block">Refus d'hospitalisation</span>
+                </a>
+
+                <ng-template ngbNavContent>
+                    <app-refus-form-modal 
+                    [consultationId$]="consultationId$" 
+                    [refused$]="refused$" 
+                    [refused]="refused"  
+                    (refusedRegistering)="emitRefusedRegistration()">
+                </app-refus-form-modal>
+                </ng-template>
+            </li>
+
+            <li [ngbNavItem]="4">
+                <a ngbNavLink>
+                    <span class="d-sm-block">Décédé(e)</span>
+                </a>
+
+                <ng-template ngbNavContent>
+                    <app-deceased-form-modal 
+                    [consultationId$]="consultationId$" 
+                    [deceded$]="deceded$" 
+                    [deceded]="deceded" 
+                    (decededRegistering)="emitDecededRegistration()">
+                </app-deceased-form-modal>
+                </ng-template>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content mx-2">
+            <div [ngbNavOutlet]="atrd"></div>
+        </div>
+
+    </ng-container>
+</app-simple-modal>

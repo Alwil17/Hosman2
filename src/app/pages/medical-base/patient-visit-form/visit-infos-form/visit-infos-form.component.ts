@@ -36,6 +36,11 @@ import { HospitalisationFormModalComponent } from "../hospitalisation-form-modal
 import { SelectOption } from "src/app/models/extras/select.model";
 import { Router } from "@angular/router";
 import { Consultation } from "src/app/models/medical-base/consultation.model";
+import { AtrdFormModalComponent } from "../../submodules/atrd/atrd-form-modal/atrd-form-modal.component";
+import { Addressed } from "src/app/models/medical-base/submodules/atrd/adressed.model";
+import { Deceded } from "src/app/models/medical-base/submodules/atrd/deceded.model";
+import { Refused } from "src/app/models/medical-base/submodules/atrd/refused.model";
+import { Transfered } from "src/app/models/medical-base/submodules/atrd/transfered.model";
 
 @Component({
   selector: "app-visit-infos-form",
@@ -94,6 +99,10 @@ export class VisitInfosFormComponent implements OnInit {
 
   consultationId?: number;
   prescriptions: Prescription[] = [];
+  addressed?: Addressed;
+  transfered?: Transfered;
+  refused?: Refused;
+  deceded?: Deceded;
 
   constructor(
     private modalService: NgbModal,
@@ -501,6 +510,117 @@ export class VisitInfosFormComponent implements OnInit {
       }
     );
   }
+  
+  // OPEN ATRD MODAL ------------------------------------------------------------------------------------------------------
+  openATRDModal() {
+
+    const atrdFormModalRef = this.modalService.open(
+      AtrdFormModalComponent,
+      {
+        size: "xl",
+        centered: true,
+        scrollable: true,
+        backdrop: "static",
+      }
+    );
+
+    atrdFormModalRef.componentInstance.addressed = this.addressed;
+    atrdFormModalRef.componentInstance.transfered = this.transfered;
+    atrdFormModalRef.componentInstance.refused = this.refused;
+    atrdFormModalRef.componentInstance.deceded = this.deceded;
+
+    atrdFormModalRef.componentInstance.addressedRegistering.subscribe(
+      (data: any) => {
+        console.log("ADDRESSED registering emitted");
+
+        this.saveVisitObservable()?.subscribe((data) => {
+          this.consultationId = parseIntOrZero(data);
+          
+          
+          atrdFormModalRef.componentInstance.consultationId$.next(
+            parseIntOrZero(this.consultationId)
+          );
+        });
+      }
+    );
+
+    atrdFormModalRef.componentInstance.transferedRegistering.subscribe(
+      (data: any) => {
+        console.log("TRANSFERED registering emitted");
+
+        this.saveVisitObservable()?.subscribe((data) => {
+          this.consultationId = parseIntOrZero(data);
+          
+          
+          atrdFormModalRef.componentInstance.consultationId$.next(
+            parseIntOrZero(this.consultationId)
+          );
+        });
+      }
+    );
+
+    atrdFormModalRef.componentInstance.refusedRegistering.subscribe(
+      (data: any) => {
+        console.log("REFUSED registering emitted");
+
+        this.saveVisitObservable()?.subscribe((data) => {
+          this.consultationId = parseIntOrZero(data);
+          
+          
+          atrdFormModalRef.componentInstance.consultationId$.next(
+            parseIntOrZero(this.consultationId)
+          );
+        });
+      }
+    );
+
+    atrdFormModalRef.componentInstance.decededRegistering.subscribe(
+      (data: any) => {
+        console.log("DECEDED registering emitted");
+
+        this.saveVisitObservable()?.subscribe((data) => {
+          this.consultationId = parseIntOrZero(data);
+          
+          
+          atrdFormModalRef.componentInstance.consultationId$.next(
+            parseIntOrZero(this.consultationId)
+          );
+        });
+      }
+    );
+
+    atrdFormModalRef.componentInstance.addressed$.subscribe(
+      (data: Addressed) => {
+        console.log("Addressed : " + JSON.stringify(data, null, 2));
+
+        this.addressed = data;
+      }
+    );
+
+    atrdFormModalRef.componentInstance.transfered$.subscribe(
+      (data: Transfered) => {
+        console.log("Transfered : " + JSON.stringify(data, null, 2));
+
+        this.transfered = data;
+      }
+    );
+    
+    atrdFormModalRef.componentInstance.refused$.subscribe(
+      (data: Refused) => {
+        console.log("Refused : " + JSON.stringify(data, null, 2));
+
+        this.refused = data;
+      }
+    );
+
+    atrdFormModalRef.componentInstance.deceded$.subscribe(
+      (data: Deceded) => {
+        console.log("Deceded : " + JSON.stringify(data, null, 2));
+
+        this.deceded = data;
+      }
+    );
+  }
 
   // OPEN HOSPITALISATION MODAL ON CONFIRM ------------------------------------------------------------------------------------------------------
   async hospitalise() {
@@ -569,7 +689,7 @@ export class VisitInfosFormComponent implements OnInit {
     this.motifsFields.controls.forEach((control, index) => {
       if (control.value) {
         motifs.push(
-          new MotifRequest({ motif_id: control.value?.id, caractere: "cara" })
+          new MotifRequest({ motif_id: control.value?.id, caractere: "" })
         );
       }
     });
@@ -579,7 +699,7 @@ export class VisitInfosFormComponent implements OnInit {
         diagnostics.push(
           new DiagnosticRequest({
             diagnostic: control.value?.id,
-            commentaire: "com",
+            commentaire: "",
           })
         );
       }

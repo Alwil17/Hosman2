@@ -8,6 +8,7 @@ import { InsuranceDebtService } from "src/app/services/secretariat/activities/in
 import { InsuranceService } from "src/app/services/secretariat/patients/insurance.service";
 import { ToastService } from "src/app/services/secretariat/shared/toast.service";
 import { PdfModalComponent } from "src/app/shared/modals/pdf-modal/pdf-modal.component";
+import { InsuranceDebtDetailComponent } from "./insurance-debt-detail/insurance-debt-detail.component";
 
 type InsuranceDebtSwitch = InsuranceDebt & { switchBackgroundColor: boolean };
 
@@ -17,6 +18,7 @@ type InsuranceDebtSwitch = InsuranceDebt & { switchBackgroundColor: boolean };
   styleUrls: ["./insurances-debts-modal.component.scss"],
 })
 export class InsurancesDebtsModalComponent implements OnInit {
+
   insuranceTypeFirstOption = { id: -1, text: "Tous les types d'assurance" };
   insuranceFirstOption = { id: -1, text: "Toutes les assurances" };
 
@@ -246,5 +248,17 @@ export class InsurancesDebtsModalComponent implements OnInit {
           });
         },
       });
+  }
+
+  showInvoiceDetails(invoiceId: number) {
+    const invoiceModalRef = this.modalService.open(InsuranceDebtDetailComponent, {
+      size: "xl",
+      centered: true,
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+
+    invoiceModalRef.componentInstance.invoiceId = invoiceId;
   }
 }

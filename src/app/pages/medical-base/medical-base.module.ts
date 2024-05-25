@@ -35,6 +35,11 @@ import { SiblingsDetailModalComponent } from './patient-visit-form/siblings-deta
 import { HospitalisationFormModalComponent } from './patient-visit-form/hospitalisation-form-modal/hospitalisation-form-modal.component';
 import { PatientInfosFormComponent } from './patient-visit-form/patient-infos-form/patient-infos-form.component';
 import { VisitInfosFormComponent } from './patient-visit-form/visit-infos-form/visit-infos-form.component';
+import { PatientRecentComponent } from './patient-recent/patient-recent.component';
+import { SpecialRequestsPageComponent } from './special-requests-page/special-requests-page.component';
+import { AtrdModule } from "./submodules/atrd/atrd.module";
+import { ReqPecPageComponent } from './req-pec-page/req-pec-page.component';
+import { RequetesJaunesPageComponent } from './requetes-jaunes-page/requetes-jaunes-page.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +62,10 @@ import { VisitInfosFormComponent } from './patient-visit-form/visit-infos-form/v
     HospitalisationFormModalComponent,
     PatientInfosFormComponent,
     VisitInfosFormComponent,
+    PatientRecentComponent,
+    SpecialRequestsPageComponent,
+    ReqPecPageComponent,
+    RequetesJaunesPageComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +83,7 @@ import { VisitInfosFormComponent } from './patient-visit-form/visit-infos-form/v
     MedicinesPrescriptionsModule,
     NgbTooltipModule,
     NgbNavModule,
+    AtrdModule
   ],
   exports: [AppointmentFormComponent],
 })
