@@ -148,11 +148,12 @@ export class ComptableTableClassicComponent implements OnInit {
           this.suivis = c.suivis;
         }
 
-
         // if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
         //   this.hospitalisation = c.hospitalisation;          
         // } else {
         // }
+
+        
       }
     );
 
