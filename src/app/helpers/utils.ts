@@ -67,8 +67,14 @@ export function hasStateChanges(
   } else {
     return (
       (state !== null && state !== undefined) ||
-      JSON.stringify(olddata) !== JSON.stringify(newdata) || 
+      JSON.stringify(olddata) !== JSON.stringify(newdata) ||
       JSON.stringify(state) !== JSON.stringify(newdata)
     );
+  }
+}
+
+export function getCurrentStateValue(c: any, name: string) {
+  if (c !== undefined && c.processing === false) {
+    return c[name];
   }
 }

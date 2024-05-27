@@ -7,10 +7,12 @@
 
 <textarea
   class="form-control"
+  [class.pointer]="pointer"
   [formControl]="control"
   [rows]="rows"
   [placeholder]="placeholder"
   [style.font-size]="fontSize"
+  [readonly]="readOnly"
   (dblclick)="onDoubleClick()"
 ></textarea>
 

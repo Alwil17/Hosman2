@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
-import { AbstractControl, FormControl } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup } from "@angular/forms";
 import { SelectOption } from "../../../models/extras/select.model";
 import { Subject } from "rxjs";
 
@@ -16,6 +16,8 @@ export class HSelectComponent implements OnInit {
   @Input() placeholder = "Sélectionner...";
   @Input() options: SelectOption[] | any[] = [];
   @Input() control: AbstractControl | FormControl = new FormControl();
+  @Input() group?: FormGroup;
+  @Input() name?: string;
   @Input() canAddOption = false;
   @Input() editable = true;
   @Input() clearable = true;
@@ -34,6 +36,10 @@ export class HSelectComponent implements OnInit {
   ngOnInit(): void {
     if (this.control instanceof AbstractControl)
       this.formControl = this.control as FormControl;
+
+    if (this.group !== null && this.group !== undefined && this.name !== null && this.name !== undefined) {
+      this.group?.addControl( this.name, this.formControl)
+    }
   }
 
   addTagFn(value: string) {

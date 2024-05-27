@@ -4,6 +4,7 @@ import { AppsComponent } from "./apps.component";
 import { AuthGuard } from "../guards/auth.guard";
 import { HospitalisationComponent } from "../layouts/hospitalisation/hospitalisation.component";
 import { LayoutComponent } from "../layouts/layout.component";
+import { CrComponent } from "../layouts/cr/cr.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "auth", pathMatch: "full" },
@@ -38,6 +39,14 @@ const routes: Routes = [
     loadChildren: () =>
       import("./hospitalisation/hospitalisation.module").then(
         (m) => m.HospitalisationModule
+      ),
+  },
+  {
+    path: "cr",
+    component: CrComponent,
+    loadChildren: () =>
+      import("./cr/cr.module").then(
+        (m) => m.CrModule
       ),
   },
 ];

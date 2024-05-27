@@ -159,4 +159,20 @@
       height: 42px;
     }
   }
+
+  .fixed-column:first-child, .fixed-column:last-child {
+    background-color: #fff !important;
+  }
+}
+
+[data-layout-mode="dark"] {
+
+  .fixed-column:first-child, .fixed-column:last-child {
+    background-color: #212529 !important;
+  }
+  
+}
+
+.pointer {
+  cursor: pointer;
 }

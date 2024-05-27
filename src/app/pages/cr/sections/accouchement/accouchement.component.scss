@@ -1,0 +1,12 @@
+.copy-paste {
+    text-align: right;
+    & span:hover {
+        cursor: pointer;
+        font-weight: 500;
+        color: orange;
+    }
+}
+
+app-text {
+    cursor: pointer !important;
+}
