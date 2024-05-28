@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, EventEmitter, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, EventEmitter, Output, Input} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '@services/messages/message.service';
@@ -6,6 +6,7 @@ import { CrStore } from '@stores/cr';
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { fields } from "./fields";
 import {Section} from "../../field.model";
+import {extractFormControls} from "../../../../helpers/utils";
 
 @Component({
   selector: 'cr-accouchement',
@@ -14,8 +15,10 @@ import {Section} from "../../field.model";
 })
 export class AccouchementComponent implements OnInit  {
   @ViewChild("accouchement") modal!: TemplateRef<any>;
+  @Input() control: FormControl = new FormControl();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
+  selectedValues : any = null
   phrase = new FormControl(null, []);
   fields :  Section[] = fields
 
@@ -53,7 +56,12 @@ export class AccouchementComponent implements OnInit  {
         phrasologie = phrasologie + this.translate(section)
     }
     this.phrase.setValue(phrasologie.trim())
-    // this.activeModal.close();
+
+    /* sending data to CR main group */
+    const values = extractFormControls(this.fg)
+    this.control.setValue({phrase : this.phrase.value, values : values})
+    /* ******************************** */
+
     this.modalService.dismissAll()
   }
 

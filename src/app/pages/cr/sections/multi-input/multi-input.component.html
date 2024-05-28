@@ -1,7 +1,7 @@
 <div class="{{ 'w-100' }}" *ngIf="config.type === 'select'">
     <h-select  label="{{ config.label }}" [isMandatory]="true"
         [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
-        [clearable]="false" [group]="group" [name]="name" [control]="control"></h-select>
+        [clearable]="false" [searchable]="false" [group]="group" [name]="name" [control]="control"></h-select>
 </div>
 
 <div class="{{ 'w-100' }}" *ngIf="config.type === 'radio'">
@@ -23,4 +23,21 @@
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'checkbox'">
     <h-checkbox label="{{ config.label }}" [isMandatory]="true" [control]="control"
              [group]="group" [name]="name"></h-checkbox>
+</div>
+
+<div class="{{ 'w-100 '}}" *ngIf="config.type === 'component'">
+    <div class="row">
+       <div class="col-4">
+           <label class="form-label fw-semibold" *ngIf="config.label"
+           >{{ config.label }}
+               <span *ngIf="!control.disabled" class="text-danger"
+               >*</span
+               ></label
+           >
+       </div>
+        <div class="col-8">
+            <ng-template #dynamicComponentContainer></ng-template>
+        </div>
+
+    </div>
 </div>

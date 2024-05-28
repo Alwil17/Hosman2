@@ -101,11 +101,25 @@ export const fields : Section[]  = [
         conditions: [
           {
             eval: "v !== ''",
-            text: "A noter la survenue d'un incident au cours de l'accouchemet : %v%",
+            text: "A noter la survenue d'un incident au cours de l'accouchemet : %v%.",
           },
         ],
       },
     ],
     resume : "{{ details_incident }}"
+  },
+
+  {
+    template: [
+      {
+        name: 'apgar',
+        label: "Apgar",
+        type: 'component',
+        component: 'apgar',
+        col: 12,
+        show:true,
+      }
+    ],
+    resume: "{{ apgar }}"
   }
 ];

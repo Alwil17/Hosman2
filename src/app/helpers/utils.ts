@@ -78,3 +78,17 @@ export function getCurrentStateValue(c: any, name: string) {
     return c[name];
   }
 }
+
+
+export function extractFormControls(formGroup: FormGroup): { name: string, value: any }[] {
+  const controlsArray: { name: string, value: any }[] = [];
+
+  Object.keys(formGroup.controls).forEach(controlName => {
+    const control = formGroup.get(controlName);
+    if (control) {
+      controlsArray.push({ name: controlName, value: control.value });
+    }
+  });
+
+  return controlsArray;
+}

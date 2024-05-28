@@ -80,6 +80,9 @@ export class CreateComponent implements OnInit {
 
   patient : any = null
 
+  /* fields controls */
+  accouchement = new FormControl(null, []);
+
   constructor(
     private store: CrStore,
     private message: MessageService,
@@ -122,7 +125,7 @@ export class CreateComponent implements OnInit {
           cr_date: new Date(this.fg.value.cr_date),
         };
 
-        this.store.saveUserData(data)
+        await this.store.saveUserData(data)
 
         this.openCR()
       // }
@@ -131,5 +134,9 @@ export class CreateComponent implements OnInit {
 
   openCR() {
 
+  }
+
+  saveCR(){
+    console.log(this.accouchement.value)
   }
 }

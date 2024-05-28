@@ -64,13 +64,31 @@
 <hr>
 
 <!-- NOUVEAU NE -->
-<div *ngIf="statut.value === 1 && patient && patient.firstname !== undefined">
-
-    <div class="row">
-        <div class="col-6">
-            <cr-accouchement></cr-accouchement>
+<div *ngIf="patient && patient.firstname !== undefined" class="row">
+    <div class="col-12">
+        <div *ngIf="statut.value === 1">
+            <div class="row">
+                <div class="col-6">
+                    <cr-accouchement [control]="accouchement"></cr-accouchement>
+                </div>
+                <div class="col-6"></div>
+            </div>
         </div>
-        <div class="col-6"></div>
     </div>
 
+</div>
+
+
+
+
+<!-- Save data -->
+<div class="row">
+    <div class="col mb-3 col mb-3 d-flex align-items-end justify-content-end">
+        <div class="">
+            <button type="button" class="btn btn-primary btn-label w-100" (click)="saveCR()">
+                <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+                Enregistrer
+            </button>
+        </div>
+    </div>
 </div>

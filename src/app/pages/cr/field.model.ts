@@ -13,8 +13,9 @@ interface Field {
     label: string;
     subtext?: string;
     type: string;
+    component?: string;
     col: number;
-    show: boolean;
+    show?: boolean;
     options?: Option[];
     if?: { name: string; value: any }[];
     conditions?: Condition[];

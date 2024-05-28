@@ -31,6 +31,8 @@ import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
 import { GlasgowComponent } from './components/glasgow/glasgow.component';
 import { Cim11Component } from './components/cim11/cim11.component';
+import { ApgarComponent } from './components/apgar/apgar.component';
+import {DynamicLoaderService} from "@services/shared/dynamic-loader.service";
 
 // Register french locale for datePape
 registerLocaleData(localeFr, "fr");
@@ -46,7 +48,7 @@ if (environment.defaultauth === "firebase") {
 }
 
 @NgModule({
-  declarations: [AppComponent, GlasgowComponent, Cim11Component],
+  declarations: [AppComponent, GlasgowComponent, Cim11Component, ApgarComponent],
   imports: [
     TranslateModule.forRoot({
       defaultLanguage: "fr",
@@ -78,6 +80,7 @@ if (environment.defaultauth === "firebase") {
       useClass: LoadingSpinnerHttpInterceptor,
       multi: true,
     },
+    DynamicLoaderService
   ],
   bootstrap: [AppComponent],
 })
