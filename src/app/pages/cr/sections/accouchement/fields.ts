@@ -101,7 +101,7 @@ export const fields : Section[]  = [
         conditions: [
           {
             eval: "v !== ''",
-            text: "A noter la survenue d'un incident au cours de l'accouchemet : %v%.",
+            text: "A noter la survenue d'un incident au cours de l'accouchement : %v%.",
           },
         ],
       },
@@ -121,5 +121,26 @@ export const fields : Section[]  = [
       }
     ],
     resume: "{{ apgar }}"
+  },
+
+  {
+    template: [
+      {
+        name: 'reanime',
+        label: "Réanimé",
+        type: 'checkbox',
+        col: 3,
+        show:true,
+      },
+      {
+        name: 'details_reanime',
+        label: "Details de la réanimation",
+        type: 'textarea',
+        col: 9,
+        show:true,
+        if: [{ name: "reanime", value: true }],
+      }
+    ],
+    resume: "{{ details_reanime }}"
   }
 ];
