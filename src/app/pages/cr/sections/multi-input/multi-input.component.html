@@ -2,9 +2,25 @@
     <h-select  label="{{ config.label }}" [isMandatory]="true"
         [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
         [clearable]="false" [group]="group" [name]="name" [control]="control"></h-select>
-</div> 
+</div>
+
+<div class="{{ 'w-100' }}" *ngIf="config.type === 'radio'">
+    <h-radio  label="{{ config.label }}"
+               [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
+               [group]="group" [name]="name" [control]="control"></h-radio>
+</div>
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'input'">
     <h-input label="{{ config.label }}" [isMandatory]="true" [control]="control"
         [group]="group" [name]="name"></h-input>
-</div> 
+</div>
+
+<div class="{{ 'w-100 '}}" *ngIf="config.type === 'textarea'">
+    <h-text label="{{ config.label }}" [isMandatory]="true" [control]="control"
+             [group]="group" [name]="name" [rows]="5"></h-text>
+</div>
+
+<div class="{{ 'w-100 '}}" *ngIf="config.type === 'checkbox'">
+    <h-checkbox label="{{ config.label }}" [isMandatory]="true" [control]="control"
+             [group]="group" [name]="name"></h-checkbox>
+</div>

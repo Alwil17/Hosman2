@@ -11,6 +11,7 @@ interface Condition {
 interface Field {
     name: string;
     label: string;
+    subtext?: string;
     type: string;
     col: number;
     show: boolean;
@@ -18,6 +19,7 @@ interface Field {
     if?: { name: string; value: any }[];
     conditions?: Condition[];
     bindlabel?: string;
+    format?: string;
 }
 
 export interface Section {

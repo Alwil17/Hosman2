@@ -82,8 +82,8 @@ export const fields : Section[]  = [
       {
         name : 'incident',
         label : "Incident",
-        type: "select",
-        col : 4,
+        type: "radio",
+        col : 3,
         show : true,
         options : [
           { id : 1 , text : 'Sans incident' },
@@ -93,8 +93,8 @@ export const fields : Section[]  = [
       {
         name : 'details_incident',
         label : "Details de l'incident",
-        type: "input",
-        col : 8,
+        type: "textarea",
+        col : 9,
         show : true,
         options : [],
         if: [{ name: "incident", value: 2 }],

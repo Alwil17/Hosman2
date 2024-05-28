@@ -46,7 +46,7 @@ export class AccouchementComponent implements OnInit  {
   }
 
   validate(){
-    // console.log(this.fg)
+    console.log(this.fg)
 
     let phrasologie = ''
     for (const section of this.fields) {

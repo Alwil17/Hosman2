@@ -1,0 +1,26 @@
+<label class="form-label" *ngIf="label"
+>{{ label }}
+    <span *ngIf="!control.disabled" class="text-danger"
+    >*</span
+    ></label
+>
+<div class="d-flex flex-column">
+    <ng-container *ngFor="let option of options; index as i">
+        <div class="w-100">
+            <input
+                    type="radio"
+                    class="btn-check"
+                    [name]="name"
+                    [id]="name +'-' + i"
+                    [checked]="i === 0"
+                    [value]="option.id"
+                    [formControl]="control"
+            />
+            <label
+                    class="btn btn-outline-secondary btn-sm me-2 d-block"
+                    [for]="name +'-' + i"
+            ><b>{{ option[bindLabel] }}</b></label
+            >
+        </div>
+    </ng-container>
+</div>

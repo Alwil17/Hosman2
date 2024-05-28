@@ -1,0 +1,25 @@
+<label class="form-label fw-semibold" *ngIf="label"
+  >{{ label }}
+  <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    >*</span
+  ></label
+>
+
+<textarea
+  class="form-control"
+  [class.pointer]="pointer"
+  [formControl]="control"
+  [rows]="rows"
+  [placeholder]="placeholder"
+  [style.font-size]="fontSize"
+  [readonly]="readOnly"
+  (dblclick)="onDoubleClick()"
+></textarea>
+
+<ng-container
+  *ngIf="(control.touched || control.dirty) && control.errors !== null && control.errors?.['yup'] !== undefined"
+>
+  <div class="invalid-feedback display">
+    {{ control.errors["yup"] }}
+  </div>
+</ng-container>

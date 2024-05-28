@@ -35,6 +35,9 @@ import { TextComponent } from './form-inputs/text/text.component';
 import { ResizableColumnComponent } from "./table-column-resize/resizable-column/resizable-column.component";
 import { ColumnResizerDirective } from "./directives/column-resizer.directive";
 import { MultiChoicesModalComponent } from "./modals/multi-choices-modal/multi-choices-modal.component";
+import { HTextComponent } from "./form-inputs/h-text/text.component";
+import { HCheckboxComponent } from './form-inputs/h-checkbox/h-checkbox.component';
+import { HRadioComponent } from './form-inputs/h-radio/h-radio.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -47,6 +50,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ScrollspyDirective, // Used ???
     InputComponent,
     HInputComponent,
+    HTextComponent,
     SelectComponent,
     HSelectComponent,
     SimpleModalComponent,
@@ -59,6 +63,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ResizableColumnComponent,
     ColumnResizerDirective,
     MultiChoicesModalComponent,
+    HCheckboxComponent,
+    HRadioComponent,
   ],
   imports: [
     CommonModule,
@@ -78,8 +84,11 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ScrollspyDirective, // Used ??
     InputComponent,
     HInputComponent,
+    HTextComponent,
     SelectComponent,
     HSelectComponent,
+    HRadioComponent,
+    HCheckboxComponent,
     ToastsContainerComponent,
     SimpleModalComponent,
     CardComponent,

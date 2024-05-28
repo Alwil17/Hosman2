@@ -1,0 +1,18 @@
+<div class="form-check form-check-left mb-3">
+    <input class="form-check-input" type="checkbox" [name]="name" [id]="name"
+           [class.pointer]="pointer"
+           [formControl]="control"
+           [style.font-size]="fontSize"
+           [readonly]="readOnly">
+    <label class="form-check-label fw-semibold" [for]="name">
+        {{ label }} <span *ngIf="isMandatory && !control.disabled" class="text-danger"
+    >*</span>
+    </label>
+</div>
+<ng-container
+        *ngIf="(control.touched || control.dirty) && control.errors !== null && control.errors?.['yup'] !== undefined"
+>
+    <div class="invalid-feedback display">
+        {{ control.errors["yup"] }}
+    </div>
+</ng-container>

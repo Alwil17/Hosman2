@@ -129,7 +129,7 @@ export class CrStore extends ObservableStore<any> {
             selectedValue =
               field.bindlabel !== undefined
                 ? option[field.bindlabel]
-                : option.label;
+                : option.text;
           }
         } else {
           selectedValue = controls[name]?.value;

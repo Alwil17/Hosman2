@@ -34,11 +34,8 @@ export class MultiInputComponent implements OnInit {
         if (this.group.get(fi.name)!.value !== fi.value) this.config.show = false;
 
         this.group.get(fi.name)!.valueChanges.subscribe((value) => {
-          if (value === null || value !== fi.value) {
-            this.config.show = false
-          } else {
-            this.config.show = true
-          }
+          console.log(value)
+          this.config.show = !(value === null || value !== fi.value);
         });
       });
     }
