@@ -72,10 +72,6 @@ export class CrComponent implements OnInit {
       }
     })
     document.documentElement.setAttribute('data-layout-mode', 'light');
-
-    // fetching data
-    this.store.fetchSector()
-
   }
 
    /***

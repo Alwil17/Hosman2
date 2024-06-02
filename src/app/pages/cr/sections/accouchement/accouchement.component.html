@@ -25,14 +25,14 @@
     <div class="modal-body">
         <div class="row" *ngFor="let section of fields">
             <div class="col-12">
-                <div class="row">
+                <div class="row mb-3">
                     <div *ngFor="let input of section.template" class="{{ 'col-' + input.col }}" [class.d-none]="!input.show">
                         <multi-input [config]="input" [group]="fg"
                         ></multi-input>
                     </div>
-                    <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
-                        {{ translate(section) }}
-                    </div>   
+<!--                    <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">-->
+<!--                        {{ translate(section) }}-->
+<!--                    </div>   -->
                 </div>
             </div>
         </div>

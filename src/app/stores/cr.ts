@@ -38,11 +38,110 @@ export class CrStore extends ObservableStore<any> {
     state = {
         lastUpdated: 0,
         processing: true,
-        statuts: [
-            {id: 1, text: "Nouveau né"},
-            {id: 2, text: "Nourrisson"},
-            {id: 3, text: "Enfant"},
-            {id: 4, text: "Adulte"},
+        sectors : [
+            {
+                "id": 1,
+                "libelle": "Médecine Interne et Générale",
+                "slug": "medecine-interne-et-generale",
+                "couleur": "bleu",
+                "code": "MIG",
+               statuts: [
+{id: 3, text: "Enfant", sector : "PDI"},
+{id: 4, text: "Adulte" },
+],
+            },
+            {
+                "id": 2,
+                "libelle": "Pédiatrie",
+                "slug": "pediatrie",
+                "couleur": "bleu",
+                "code": "PDI",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                ],
+            },
+            {
+                "id": 3,
+                "libelle": "Cardiologie",
+                "slug": "cardiologie",
+                "couleur": "bleu",
+                "code": "CAR",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "id": 4,
+                "libelle": "Neurologie",
+                "slug": "neurologie",
+                "couleur": "bleu",
+                "code": "NER",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "id": 5,
+                "libelle": "Ophtalmologie",
+                "slug": "ophtalmologie",
+                "couleur": "bleu",
+                "code": "OPH",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "id": 9,
+                "libelle": "Logistique",
+                "slug": "logistique",
+                "couleur": "bleu",
+                "code": "LOG",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "id": 10,
+                "libelle": "Gynécologie",
+                "slug": "gynecologie",
+                "couleur": "bleu",
+                "code": "GYN",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "id": 11,
+                "libelle": "Maternité",
+                "slug": "maternite",
+                "couleur": "bleu",
+                "code": "MAT",
+                statuts: [
+                    {id: 2, text: "Nourrisson", sector : "PDI"},
+                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 4, text: "Adulte" },
+                ],
+            },
+            {
+                "code": "NEONAT",
+                "couleur": "",
+                "id": 99,
+                "libelle": "Néonatologie",
+                statuts: [
+                    {id: 1, text: "Nouveau né", sector : "NEO"},
+                ],
+            }
         ],
         genders: [
             {id: 1, text: "Masculin", short: "M"},
@@ -95,20 +194,24 @@ export class CrStore extends ObservableStore<any> {
         }
     }
 
-    fetchSector(): void {
-        this.updateStore({processing: true}, "PROCESSING");
-
-        const res: Observable<Sector[]> = this.http.get<Sector[]>(secteursEndpoint);
-
-        res.subscribe({
-            next: (sectors: Sector[]) => {
-                this.updateStore({sectors}, "FETCH SECTORS");
-            },
-            error: (response) => {
-                console.log("Error: " + response);
-            },
-        });
-    }
+    // fetchSector(): void {
+    //     this.updateStore({processing: true}, "PROCESSING");
+    //
+    //     const res: Observable<Sector[]> = this.http.get<Sector[]>(secteursEndpoint);
+    //
+    //     res.subscribe({
+    //         next: (sectors: Sector[]) => {
+    //             sectors.push({
+    //                 code: "NEO", couleur: "bleu", id: 99, libelle: "Néonatologie"
+    //             })
+    //             console.log(sectors)
+    //             this.updateStore({sectors}, "FETCH SECTORS");
+    //         },
+    //         error: (response) => {
+    //             console.log("Error: " + response);
+    //         },
+    //     });
+    // }
 
     theMixer(controls: any, fields: any, phrase: string) {
         const formula = /{{\s*([^}]+)\s*}}/g;
