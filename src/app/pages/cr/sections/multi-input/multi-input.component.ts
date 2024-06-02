@@ -60,6 +60,11 @@ export class MultiInputComponent implements OnInit, AfterViewInit {
     if (this.config.type === 'component' && this.dynamicComponentContainer) {
       this.loadComponent(this.config.component)
     }
+
+    // set default value
+    if (this.config.default !== undefined) {
+      this.control.setValue(this.config.default)
+    }
   }
 
   loadComponent(componentName: string) {

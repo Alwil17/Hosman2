@@ -38,17 +38,32 @@ export class CrStore extends ObservableStore<any> {
     state = {
         lastUpdated: 0,
         processing: true,
-        sectors : [
+        statuts : [
+            {id: 1, text: "Nouveau né"},
+            {id: 2, text: "Nourrisson"},
+            {id: 3, text: "Enfant"},
+            {id: 4, text: "Adulte"},
+        ],
+        sectors: [
+            {
+                "code": "NEONAT",
+                "couleur": "",
+                "id": 99,
+                "libelle": "Néonatologie",
+                statuts: [
+                    {id: 1, text: "Nouveau né"},
+                ],
+            },
             {
                 "id": 1,
                 "libelle": "Médecine Interne et Générale",
                 "slug": "medecine-interne-et-generale",
                 "couleur": "bleu",
                 "code": "MIG",
-               statuts: [
-{id: 3, text: "Enfant", sector : "PDI"},
-{id: 4, text: "Adulte" },
-],
+                statuts: [
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
+                ],
             },
             {
                 "id": 2,
@@ -57,8 +72,8 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "PDI",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
                 ],
             },
             {
@@ -68,9 +83,9 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "CAR",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
             {
@@ -80,9 +95,9 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "NER",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
             {
@@ -92,9 +107,9 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "OPH",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
             {
@@ -104,9 +119,9 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "LOG",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
             {
@@ -116,9 +131,9 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "GYN",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
             {
@@ -128,20 +143,11 @@ export class CrStore extends ObservableStore<any> {
                 "couleur": "bleu",
                 "code": "MAT",
                 statuts: [
-                    {id: 2, text: "Nourrisson", sector : "PDI"},
-                    {id: 3, text: "Enfant", sector : "PDI"},
-                    {id: 4, text: "Adulte" },
+                    {id: 2, text: "Nourrisson", sector: "PDI"},
+                    {id: 3, text: "Enfant", sector: "PDI"},
+                    {id: 4, text: "Adulte"},
                 ],
             },
-            {
-                "code": "NEONAT",
-                "couleur": "",
-                "id": 99,
-                "libelle": "Néonatologie",
-                statuts: [
-                    {id: 1, text: "Nouveau né", sector : "NEO"},
-                ],
-            }
         ],
         genders: [
             {id: 1, text: "Masculin", short: "M"},
@@ -247,7 +253,7 @@ export class CrStore extends ObservableStore<any> {
 
                         for (const condition of field.conditions) {
                             const v = selectedValue;
-                            if (v && eval(condition.eval)) {
+                            if (v !== undefined && v !== null && eval(condition.eval)) {
                                 wording = condition.text.toString().replace("%v%", v);
                                 break;
                             }

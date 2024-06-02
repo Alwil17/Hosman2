@@ -1,41 +1,46 @@
 <div class="{{ 'w-100' }}" *ngIf="config.type === 'select'">
-    <h-select  label="{{ config.label }}" [isMandatory]="true"
-        [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
-        [clearable]="false" [searchable]="false" [group]="group" [name]="name" [control]="control"></h-select>
+    <h-select label="{{ config.label }}" [isMandatory]="true"
+              [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
+              [clearable]="false" [searchable]="false" [group]="group" [name]="name" [control]="control"></h-select>
 </div>
 
 <div class="{{ 'w-100' }}" *ngIf="config.type === 'radio'">
-    <h-radio  label="{{ config.label }}"
-               [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
-               [group]="group" [name]="name" [control]="control"></h-radio>
+    <h-radio label="{{ config.label }}"
+             [options]="config.options" [bindLabel]="config.bindlabel ?? 'text'" [bindValue]="'id'"
+             [group]="group" [name]="name" [control]="control"></h-radio>
 </div>
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'input'">
     <h-input label="{{ config.label }}" [isMandatory]="true" [control]="control"
-        [group]="group" [name]="name"></h-input>
+             [group]="group" [name]="name"></h-input>
 </div>
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'textarea'">
     <h-text label="{{ config.label }}" [isMandatory]="true" [control]="control"
-             [group]="group" [name]="name" [rows]="5"></h-text>
+            [group]="group" [name]="name" [rows]="5"></h-text>
 </div>
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'checkbox'">
     <h-checkbox label="{{ config.label }}" [isMandatory]="true" [control]="control"
-             [group]="group" [name]="name"></h-checkbox>
+                [group]="group" [name]="name"></h-checkbox>
+</div>
+
+<div class="{{ 'w-100 '}}" *ngIf="config.type === 'label'">
+    <label class="form-label fw-semibold"
+    >{{ config.label }}</label>
 </div>
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'component'">
     <div class="row">
-       <div class="col-3">
-           <label class="form-label fw-semibold" *ngIf="config.label"
-           >{{ config.label }}
-               <span *ngIf="!control.disabled" class="text-danger"
-               >*</span
-               ></label
-           >
-       </div>
-        <div class="col-8">
+        <div class="col-3">
+            <label class="form-label fw-semibold" *ngIf="config.label"
+            >{{ config.label }}
+                <span *ngIf="!control.disabled" class="text-danger"
+                >*</span
+                ></label
+            >
+        </div>
+        <div class="col-9">
             <ng-template #dynamicComponentContainer></ng-template>
         </div>
 

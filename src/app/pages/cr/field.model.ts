@@ -10,11 +10,12 @@ interface Condition {
 
 interface Field {
     name: string;
-    label: string;
+    label?: string;
     subtext?: string;
     type: string;
     component?: string;
     col: number;
+    default?: any;
     show?: boolean;
     options?: Option[];
     if?: { name: string; value: any }[];

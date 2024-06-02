@@ -12,14 +12,14 @@ export const fields : Section[]  = [
           { id: 2, text: "Cesarienne" },
           { id: 3, text: "Forceps" },
         ],
-        col: 5,
+        col: 3,
         show: true,
       },
       {
         name: "cesarienne",
         label: "Cause de la cesarienne",
         type: "input",
-        col: 5,
+        col: 6,
         if: [{ name: "accouchement", value: 2 }],
         conditions: [
           {
@@ -59,7 +59,7 @@ export const fields : Section[]  = [
           { id: 42 },
         ],
         bindlabel: "id",
-        col: 2,
+        col: 3,
         show: true,
         conditions: [
           {
@@ -85,10 +85,17 @@ export const fields : Section[]  = [
         type: "radio",
         col : 3,
         show : true,
+        default : 1,
         options : [
           { id : 1 , text : 'Sans incident' },
           { id : 2 , text : 'Avec incident' }
         ],
+        conditions : [
+          {
+            eval: "v === 1",
+            text: "Il n'y a pas eu d'incident au cours de l'accouchement. L'enfant a crié de suite",
+          },
+        ]
       },
       {
         name : 'details_incident',
@@ -101,12 +108,12 @@ export const fields : Section[]  = [
         conditions: [
           {
             eval: "v !== ''",
-            text: "A noter la survenue d'un incident au cours de l'accouchement : %v%.",
+            text: "A noter comme incident au cours de l'accouchement : %v%.",
           },
         ],
       },
     ],
-    resume : "{{ details_incident }}"
+    resume : "{{ incident }} {{ details_incident }}"
   },
 
   {
@@ -114,13 +121,40 @@ export const fields : Section[]  = [
       {
         name: 'apgar',
         label: "Apgar",
-        type: 'component',
-        component: 'apgar',
-        col: 12,
+        type: 'label',
+        col: 3,
         show:true,
-      }
+      },
+      {
+        name: 'apgar_value_1',
+        label: "",
+        type: 'select',
+        col: 2,
+        options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
+        bindlabel: "id",
+        show:true,
+      },
+      {
+        name: 'apgar_value_2',
+        label: "",
+        type: 'select',
+        col: 2,
+        options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
+        bindlabel: "id",
+
+        show:true,
+      },
+      {
+        name: 'apgar_value_3',
+        label: "",
+        type: 'select',
+        col: 2,
+        options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
+        bindlabel: "id",
+        show:true,
+      },
     ],
-    resume: "{{ apgar }}"
+    resume: "L'apgar est a {{ apgar_value_1 }}, {{ apgar_value_2 }}, {{ apgar_value_3 }}."
   },
 
   {
@@ -130,7 +164,19 @@ export const fields : Section[]  = [
         label: "Réanimé",
         type: 'checkbox',
         col: 3,
+        default : false,
+        conditions: [
+          {
+            eval: "v === false",
+            text: "Il n'y a pas eu manoeuvre de réanimation.",
+          },
+          {
+            eval: "v === true",
+            text: "Le nouveau né a été réanimé.",
+          },
+        ],
         show:true,
+
       },
       {
         name: 'details_reanime',
@@ -141,6 +187,6 @@ export const fields : Section[]  = [
         if: [{ name: "reanime", value: true }],
       }
     ],
-    resume: "{{ details_reanime }}"
+    resume: "{{ reanime }} {{ details_reanime }}"
   }
 ];
