@@ -12,6 +12,7 @@ import { CreateComponent } from './create/create.component';
 import { CrRoutingModule } from './cr-routing.module';
 import { AccouchementComponent } from './sections/accouchement/accouchement.component';
 import { MultiInputComponent } from './sections/multi-input/multi-input.component';
+import { ExamenbabyComponent } from './sections/examenbaby/examenbaby.component';
 
 
 
@@ -20,7 +21,8 @@ import { MultiInputComponent } from './sections/multi-input/multi-input.componen
     CrBoardComponent,
     CreateComponent,
     AccouchementComponent,
-    MultiInputComponent
+    MultiInputComponent,
+    ExamenbabyComponent
   ],
   imports: [
     CommonModule,

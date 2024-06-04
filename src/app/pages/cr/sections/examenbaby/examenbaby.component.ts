@@ -9,12 +9,12 @@ import {Section} from "../../field.model";
 import {extractFormControls} from "../../../../helpers/utils";
 
 @Component({
-  selector: 'cr-accouchement',
-  templateUrl: './accouchement.component.html',
-  styleUrls: ['./accouchement.component.scss']
+  selector: 'cr-examen-baby',
+  templateUrl: './examenbaby.component.html',
+  styleUrls: ['./examenbaby.component.scss']
 })
-export class AccouchementComponent implements OnInit  {
-  @ViewChild("accouchement") modal!: TemplateRef<any>;
+export class ExamenbabyComponent implements OnInit {
+  @ViewChild("examenbaby") modal!: TemplateRef<any>;
   @Input() control: FormControl = new FormControl();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
@@ -23,12 +23,11 @@ export class AccouchementComponent implements OnInit  {
   fields :  Section[] = fields
 
   fg: FormGroup = new FormGroup({});
-
   constructor(
-    private store: CrStore,
-    private message: MessageService,
-    private modalService: NgbModal,
-    private cdr: ChangeDetectorRef,
+      private store: CrStore,
+      private message: MessageService,
+      private modalService: NgbModal,
+      private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -36,11 +35,11 @@ export class AccouchementComponent implements OnInit  {
 
   open() {
     this.modalService.open(this.modal, {
-      size: "lg",
+      size: "md",
       centered: true,
       keyboard: true,
       backdrop: "static",
-    });    
+    });
 
   }
 
@@ -52,7 +51,7 @@ export class AccouchementComponent implements OnInit  {
 
     let phrasologie = ''
     for (const section of this.fields) {
-        phrasologie = phrasologie + this.translate(section)
+      phrasologie = phrasologie + this.translate(section)
     }
     this.phrase.setValue(phrasologie.trim())
 
@@ -63,5 +62,6 @@ export class AccouchementComponent implements OnInit  {
 
     this.modalService.dismissAll()
   }
+
 
 }

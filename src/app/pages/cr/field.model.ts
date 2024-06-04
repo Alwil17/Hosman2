@@ -17,6 +17,7 @@ interface Field {
     col: number;
     default?: any;
     show?: boolean;
+    padding?: boolean;
     options?: Option[];
     if?: { name: string; value: any }[];
     conditions?: Condition[];

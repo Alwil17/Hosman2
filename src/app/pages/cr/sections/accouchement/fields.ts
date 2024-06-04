@@ -129,29 +129,31 @@ export const fields : Section[]  = [
         name: 'apgar_value_1',
         label: "",
         type: 'select',
-        col: 2,
+        col: 1,
         options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
         bindlabel: "id",
         show:true,
+        padding: false
       },
       {
         name: 'apgar_value_2',
         label: "",
         type: 'select',
-        col: 2,
+        col: 1,
         options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
         bindlabel: "id",
-
         show:true,
+        padding: false
       },
       {
         name: 'apgar_value_3',
         label: "",
         type: 'select',
-        col: 2,
+        col: 1,
         options: [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},],
         bindlabel: "id",
         show:true,
+        padding: false
       },
     ],
     resume: "L'apgar est a {{ apgar_value_1 }}, {{ apgar_value_2 }}, {{ apgar_value_3 }}."

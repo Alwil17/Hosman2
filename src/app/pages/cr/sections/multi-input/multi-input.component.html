@@ -32,7 +32,7 @@
 
 <div class="{{ 'w-100 '}}" *ngIf="config.type === 'component'">
     <div class="row">
-        <div class="col-3">
+        <div class="col-3" *ngIf="config.label !== undefined">
             <label class="form-label fw-semibold" *ngIf="config.label"
             >{{ config.label }}
                 <span *ngIf="!control.disabled" class="text-danger"
@@ -40,7 +40,7 @@
                 ></label
             >
         </div>
-        <div class="col-9">
+        <div class="{{ config.label !== undefined ? 'col-9' : 'col-12'  }}">
             <ng-template #dynamicComponentContainer></ng-template>
         </div>
 

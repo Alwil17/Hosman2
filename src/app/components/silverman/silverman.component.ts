@@ -4,12 +4,12 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgbModalRef} from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
 
 @Component({
-  selector: 'app-apgar',
-  templateUrl: './apgar.component.html',
-  styleUrls: ['./apgar.component.scss'],
+  selector: 'app-silverman',
+  templateUrl: './silverman.component.html',
+  styleUrls: ['./silverman.component.scss'],
 })
-export class ApgarComponent implements OnInit {
-  @ViewChild("apgar") apgar!: TemplateRef<any>;
+export class SilvermanComponent implements OnInit {
+  @ViewChild("silverman") silverman!: TemplateRef<any>;
   @Input() modal: any = null;
   @Output() valueEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -33,16 +33,12 @@ export class ApgarComponent implements OnInit {
   }
 
   open() {
-    this.modalRef = this.modalService.open(this.apgar, {
+    this.modalRef = this.modalService.open(this.silverman, {
       size: "md",
       centered: true,
       keyboard: true,
       backdrop: "static",
     });
-
-    // modalRef.componentInstance.closeModal.subscribe((data: any) => {
-    //   // return data
-    // });
 
   }
 
@@ -54,7 +50,7 @@ export class ApgarComponent implements OnInit {
 
     // ici on es obliger de formuler directement vu qu'on peut pas stocker les selections pour le moment
     // console.log(m)
-    this.valueEmitter.emit(`Le score d'apgar est de ${this.score} : ${m.reduce(
+    this.valueEmitter.emit(`Le score de silverman est de ${this.score} : ${m.reduce(
         (text, item) =>
             text + item.label + ' - ' + item.selected.label + ', ' ,
         ''

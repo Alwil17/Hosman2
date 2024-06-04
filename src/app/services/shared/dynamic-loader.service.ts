@@ -1,6 +1,7 @@
 // dynamic-loader.service.ts
 import {Injectable, ComponentFactoryResolver, ViewContainerRef, Type, ComponentRef} from '@angular/core';
-import {ApgarComponent} from "../../components/apgar/apgar.component";
+import {SilvermanComponent} from "../../components/silverman/silverman.component";
+import {GlasgowOnflyComponent} from "../../components/glasgow-onfly/glasgow-onfly.component";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,10 @@ export class DynamicLoaderService {
 
   private getComponentType(componentName: string): Type<any> | null {
     switch (componentName) {
-      case 'apgar':
-        return ApgarComponent;
+      case 'silverman':
+        return SilvermanComponent;
+      case 'glasgow' :
+        return GlasgowOnflyComponent
       default:
         return null;
     }

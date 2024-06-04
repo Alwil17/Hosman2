@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApgarComponent } from './apgar.component';
+import { GlasgowOnflyComponent } from './glasgow-onfly.component';
 
-describe('ApgarComponent', () => {
-  let component: ApgarComponent;
-  let fixture: ComponentFixture<ApgarComponent>;
+describe('GlasgowOnflyComponent', () => {
+  let component: GlasgowOnflyComponent;
+  let fixture: ComponentFixture<GlasgowOnflyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApgarComponent ]
+      declarations: [ GlasgowOnflyComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApgarComponent);
+    fixture = TestBed.createComponent(GlasgowOnflyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
