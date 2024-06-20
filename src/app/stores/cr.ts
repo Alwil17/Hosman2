@@ -229,6 +229,7 @@ export class CrStore extends ObservableStore<any> {
 
             if (field) {
                 let selectedValue = '';
+                let selectedId = '';
 
                 if (field.type === "select") {
                     const option = field.options.find(
@@ -239,6 +240,8 @@ export class CrStore extends ObservableStore<any> {
                             field.bindlabel !== undefined
                                 ? option[field.bindlabel]
                                 : option.text;
+
+                        selectedId = controls[name]?.value
                     }
                 } else {
                     selectedValue = controls[name]?.value;
@@ -253,7 +256,9 @@ export class CrStore extends ObservableStore<any> {
 
                         for (const condition of field.conditions) {
                             const v = selectedValue;
-                            if (v !== undefined && v !== null && eval(condition.eval)) {
+                            const i = selectedId;
+                            if ((v !== undefined && v !== null && eval(condition.eval))
+                            || (i !== undefined && i !== null && eval(condition.eval))) {
                                 wording = condition.text.toString().replace("%v%", v);
                                 break;
                             }
@@ -294,6 +299,10 @@ export class CrStore extends ObservableStore<any> {
             mixed = mixed.replace("{{ " + match + " }}", values[index] ? values[index] : '');
 
         });
+
+        if (mixed.includes('{{')) {
+            mixed = this.theMixer(controls, fields, mixed)
+        }
 
         // console.log(matches)
         // console.log(values)

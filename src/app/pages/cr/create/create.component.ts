@@ -83,6 +83,8 @@ export class CreateComponent implements OnInit {
     /* fields controls */
     accouchement = new FormControl(null, []);
     examenbaby = new FormControl(null, []);
+    familyhistory = new FormControl(null, []);
+    pregnancyhistory = new FormControl(null, []);
 
     constructor(
         private store: CrStore,

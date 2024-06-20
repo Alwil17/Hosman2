@@ -69,18 +69,6 @@ export const fields: Section[] = [
                 col: 8,
                 show: true
             },
-            // {
-            //     name: 'conscience',
-            //     type: "select",
-            //     options: [
-            //         { id: 1, text: "Normal" },
-            //         { id: 2, text: "Altere" },
-            //         { id: 3, text: "Tres altere" },
-            //         { id: 4, text: "Abolie" },
-            //     ],
-            //     col: 4,
-            //     show: true,
-            // },
         ],
         resume: "{{ conscience }}"
     },

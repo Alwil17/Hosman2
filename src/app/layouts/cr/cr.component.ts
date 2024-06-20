@@ -129,6 +129,10 @@ export class CrComponent implements OnInit {
     }
   }
 
+  goToAppsList() {
+    this.router.navigateByUrl("apps");
+  }
+
     /**
    * Logout the user
    */

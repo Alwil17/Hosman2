@@ -9,10 +9,10 @@ interface Condition {
 }
 
 interface Field {
-    name: string;
+    name?: string;
     label?: string;
     subtext?: string;
-    type: string;
+    type?: string;
     component?: string;
     col: number;
     default?: any;

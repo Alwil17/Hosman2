@@ -13,6 +13,8 @@ import { CrRoutingModule } from './cr-routing.module';
 import { AccouchementComponent } from './sections/accouchement/accouchement.component';
 import { MultiInputComponent } from './sections/multi-input/multi-input.component';
 import { ExamenbabyComponent } from './sections/examenbaby/examenbaby.component';
+import { FamiliyHistoryComponent } from './sections/familiy-history/familiy-history.component';
+import { PregnancyHistoryComponent } from './sections/pregnancy-history/pregnancy-history.component';
 
 
 
@@ -22,7 +24,9 @@ import { ExamenbabyComponent } from './sections/examenbaby/examenbaby.component'
     CreateComponent,
     AccouchementComponent,
     MultiInputComponent,
-    ExamenbabyComponent
+    ExamenbabyComponent,
+    FamiliyHistoryComponent,
+    PregnancyHistoryComponent
   ],
   imports: [
     CommonModule,
