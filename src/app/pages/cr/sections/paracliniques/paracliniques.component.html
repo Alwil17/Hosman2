@@ -26,7 +26,7 @@
     </div>
     <div class="modal-body enterToTab" enterToTab>
         <div class="row" *ngFor="let section of paracliniqueFields">
-            <div class="col-12">
+            <div class="col-12" *ngIf="section.groupName === undefined">
                 <div class="row mb-3">
                     <div *ngFor="let input of section.template" class="{{ 'col-' + input.col }}"
                          [class.px-0]="input.padding !== undefined && !input.padding"
@@ -34,9 +34,41 @@
                         <multi-input [config]="input" [group]="fg"
                         ></multi-input>
                     </div>
-                                        <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
-                                            {{ translate(section) }}
-                                        </div>
+                    <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
+                        {{ translate(section) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- for tabs implementation  -->
+        <div class="row" *ngIf="paracliniqueTabs.length > 0">
+            <div class="col-12">
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" *ngFor="let groupSection of paracliniqueTabs">
+                        <a class="nav-link" [class.active]="paracliniqueTabs.indexOf(groupSection) === 0"
+                           data-bs-toggle="tab" [href]="'#'+sluTheName(groupSection.name)"
+                           role="tab" aria-selected="false">
+                            {{ groupSection.section.groupName }}
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content text-muted">
+                    <div class="tab-pane"
+                         [class.active]="paracliniqueTabs.indexOf(groupSection) === 0"
+                         *ngFor="let groupSection of paracliniqueTabs"
+                         [id]="sluTheName(groupSection.name)"  role="tabpanel">
+                        <div class="row mb-3">
+                            <div *ngFor="let input of groupSection.section.template" class="{{ 'col-' + input.col }}"
+                                 [class.px-0]="input.padding !== undefined && !input.padding"
+                                 [class.d-none]="!input.show">
+                                <multi-input [config]="input" [group]="fg"
+                                ></multi-input>
+                            </div>
+                            <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
+                                {{ translate(groupSection.section) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

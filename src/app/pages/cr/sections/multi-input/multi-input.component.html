@@ -30,6 +30,10 @@
     >{{ config.label }}</label>
 </div>
 
+<div class="w-100 mb-2" *ngIf="config.type === 'space'">
+
+</div>
+
 <div class="w-100 mb-2" *ngIf="config.type === 'component'">
     <div class="row">
         <div class="col-3" *ngIf="config.label !== undefined">

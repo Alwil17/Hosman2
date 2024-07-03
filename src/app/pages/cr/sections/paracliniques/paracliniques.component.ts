@@ -6,7 +6,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {paracliniqueFields} from './fields/paraclinique-fields';
 import {traitementFields} from './fields/traitement-fields';
 import {suiviFields} from './fields/suivi-fields';
-import {extractFormControls} from "../../../../helpers/utils";
+import {extractFormControls, slugify} from "../../../../helpers/utils";
 import {fields} from "../accouchement/fields";
 
 @Component({
@@ -31,6 +31,9 @@ export class ParacliniquesComponent implements OnInit {
 
     fg: FormGroup = new FormGroup({});
 
+    // for tabs
+    paracliniqueTabs : any = []
+
     constructor(
         private store: CrStore,
         private modalService: NgbModal,
@@ -38,6 +41,22 @@ export class ParacliniquesComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.paracliniqueTabs = this.getGroupedFields(paracliniqueFields)
+    }
+
+    sluTheName(name : string) {
+        return slugify(name)
+    }
+    getGroupedFields(fields :Section[]) {
+        const g = fields.filter((f) => f.groupName !== undefined)
+        // console.log(g.map((w) => ({
+        //     name : this.slugify(w.groupName!),
+        //     data : w
+        // })))
+        return g.map((w) => ({
+            name : this.slugify(w.groupName!),
+            section : w
+        }))
     }
 
     open(name: TemplateRef<any>) {
@@ -69,4 +88,5 @@ export class ParacliniquesComponent implements OnInit {
         // this.modalService.dismissAll()
     }
 
+    protected readonly slugify = slugify;
 }
