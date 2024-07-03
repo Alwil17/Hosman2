@@ -47,7 +47,7 @@
                     [control]="sortie_date" [group]="fg" [name]="'sortie_date'"></h-input>
             </div>
             <div class="col  mb-3">
-                <h-input label="Date du compte rendu" type="datetime-local" [isMandatory]="true" [maxDate]="today"
+                <h-input label="Date du compte rendu" type="datetime-local" [maxDate]="today"
                     [control]="cr_date" [group]="fg" [name]="'cr_date'"></h-input>
             </div>
             <div class="col mb-3 col mb-3 d-flex align-items-end">
@@ -86,6 +86,9 @@
                 <div class="col-6"></div>
             </div>
         </div>
+    </div>
+    <div class="col-12">
+        <cr-paracliniques [control]="paracliniques"></cr-paracliniques>
     </div>
 
 </div>

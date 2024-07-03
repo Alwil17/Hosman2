@@ -15,6 +15,7 @@ import { MultiInputComponent } from './sections/multi-input/multi-input.componen
 import { ExamenbabyComponent } from './sections/examenbaby/examenbaby.component';
 import { FamiliyHistoryComponent } from './sections/familiy-history/familiy-history.component';
 import { PregnancyHistoryComponent } from './sections/pregnancy-history/pregnancy-history.component';
+import { ParacliniquesComponent } from './sections/paracliniques/paracliniques.component';
 
 
 
@@ -27,6 +28,7 @@ import { PregnancyHistoryComponent } from './sections/pregnancy-history/pregnanc
     ExamenbabyComponent,
     FamiliyHistoryComponent,
     PregnancyHistoryComponent,
+    ParacliniquesComponent,
   ],
   imports: [
     CommonModule,

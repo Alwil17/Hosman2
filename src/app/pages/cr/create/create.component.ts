@@ -67,7 +67,7 @@ export class CreateComponent implements OnInit {
     cr_date = new FormControl(
         null,
         [],
-        [validateYupSchema(Yup.date().required(ErrorMessages.REQUIRED))]
+        []
     );
     gender = new FormControl(
         null,
@@ -85,6 +85,7 @@ export class CreateComponent implements OnInit {
     examenbaby = new FormControl(null, []);
     familyhistory = new FormControl(null, []);
     pregnancyhistory = new FormControl(null, []);
+    paracliniques = new FormControl(null, []);
 
     constructor(
         private store: CrStore,

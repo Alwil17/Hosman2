@@ -1,0 +1,23 @@
+.copy-paste {
+  text-align: right;
+  & span:hover {
+    cursor: pointer;
+    font-weight: 500;
+    color: orange;
+  }
+}
+
+h-text {
+  cursor: pointer !important;
+}
+
+.tab {
+  div {
+    margin-right: 5px;
+
+    button {
+      height: 30px;
+      padding: 5px 10px;
+    }
+  }
+}
