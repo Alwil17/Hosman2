@@ -26,7 +26,7 @@ import { PregnancyHistoryComponent } from './sections/pregnancy-history/pregnanc
     MultiInputComponent,
     ExamenbabyComponent,
     FamiliyHistoryComponent,
-    PregnancyHistoryComponent
+    PregnancyHistoryComponent,
   ],
   imports: [
     CommonModule,

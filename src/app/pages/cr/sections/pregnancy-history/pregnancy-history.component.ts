@@ -29,37 +29,66 @@ export class PregnancyHistoryComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.fg.valueChanges.subscribe((data) => {
-        //     if (this.fg.controls['nbh'] !== undefined && this.fg.controls['nbh'].value !== null) {
-        //         this.fg.controls['nbh'].valueChanges.subscribe((data) => {
-        //             console.log('---------')
-        //             console.log(data)
-        //             this.fields[this.fields.length - 1].template = []
-        //             for (let i = 1; i <= data; i++) {
-        //                 if (this.fg.controls['nbh'+i] === undefined) {
-        //                     this.fields[this.fields.length - 1].template.push(
-        //                         {
-        //                             name: 'nbh_d_l' + i,
-        //                             label: "Hospitalisation " + i,
-        //                             type: 'label',
-        //                             col: 4,
-        //                             show: true,
-        //                         },
-        //                     )
-        //                     this.fields[this.fields.length - 1].template.push(
-        //                         {
-        //                             name: 'nbh_d' + i,
-        //                             type: "input",
-        //                             col: 8,
-        //                             show: true,
-        //                         },
-        //                     )
-        //                 }
-        //             }
-        //         })
-        //     }
-        //
-        // })
+        this.fg.valueChanges.subscribe((data) => {
+
+            // if (this.fg.controls['hg'] !== undefined && this.fg.controls['hg'].value !== null){
+            //     this.fg.controls['hg'].valueChanges.subscribe((data) => {
+            //            if (data === 2) {
+            //                     this.fg.controls['nbh'].setValue(1)
+            //             }
+            //     })
+            // }
+
+            if (this.fg.controls['nbh'] !== undefined && this.fg.controls['nbh'].value !== null) {
+                this.fg.controls['nbh'].valueChanges.subscribe((data) => {
+                    this.addHospitDetails(data)
+                })
+            }
+        })
+    }
+
+    clearHospitDetails() {
+        let hdetails = this.fields.find((f) => f.name === 'hdetails')!
+        hdetails.template = []
+        hdetails.resume = ''
+    }
+    addHospitDetails(count : number){
+        let hdetails = this.fields.find((f) => f.name === 'hdetails')!
+        hdetails.template = []
+        hdetails.resume = ''
+        if (this.fg.controls['hg'].value === 1) {
+            for (let i = 1; i <= count; i++) {
+                if (this.fg.controls['nbh'+i] === undefined) {
+                    hdetails.template.push(
+                        {
+                            name: 'nbh_d_l' + i,
+                            label: "Hospitalisation " + i,
+                            type: 'label',
+                            if: [{ name: "hg", value: 1 }],
+                            col: 4,
+                            show: true,
+                        },
+                    )
+                    hdetails.template.push(
+                        {
+                            name: 'nbh_d' + i,
+                            type: "input",
+                            col: 8,
+                            show: true,
+                            if: [{ name: "hg", value: 1 }],
+                            conditions: [
+                                {
+                                    eval: "v !== null && v !== ''",
+                                    text: `Hospitalisation ${i} : %v% .`,
+                                },
+                            ],
+                        },
+                    )
+
+                    hdetails.resume += `{{ nbh_d${i} }}\n`
+                }
+            }
+        }
     }
 
     open() {

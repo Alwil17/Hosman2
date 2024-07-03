@@ -394,5 +394,10 @@ export const fields : Section[]  = [
             },
         ],
         resume : "{{ hg }}"
+    },
+    {
+        name: 'hdetails',
+        template:[],
+        resume: "{{ hdetails }}"
     }
 ];

@@ -28,9 +28,7 @@
         }"
         [ngStyle]="{ 'text-align': alignRight ? 'end' : 'start' }"
         (dblclick)="emitOnInputClick ? emitInputClick() : null"
-        (keyup)="
-          uppercased || titlecased || firstLetterUppercased ? onChange() : null
-        "
+        enterToTab
       />
       <!-- style="text-transform: uppercase" -->
       <!-- [formControlName]="controlName" -->

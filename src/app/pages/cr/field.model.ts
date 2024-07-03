@@ -26,6 +26,7 @@ interface Field {
 }
 
 export interface Section {
+    name?:string;
     template: Field[];
     resume: string;
 }

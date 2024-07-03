@@ -38,6 +38,7 @@ import { MultiChoicesModalComponent } from "./modals/multi-choices-modal/multi-c
 import { HTextComponent } from "./form-inputs/h-text/text.component";
 import { HCheckboxComponent } from './form-inputs/h-checkbox/h-checkbox.component';
 import { HRadioComponent } from './form-inputs/h-radio/h-radio.component';
+import {EnterToTabDirective} from "./directives/enter-to-tab.directive";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -65,6 +66,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     MultiChoicesModalComponent,
     HCheckboxComponent,
     HRadioComponent,
+    EnterToTabDirective
   ],
   imports: [
     CommonModule,
@@ -97,6 +99,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ResizableColumnComponent,
     ColumnResizerDirective,
     MultiChoicesModalComponent,
+    EnterToTabDirective,
   ],
   providers: [TitleCasePipe],
 })
