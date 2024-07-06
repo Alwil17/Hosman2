@@ -23,6 +23,8 @@ public class HospitResponse {
     private String secteur_code;
     private SecteurResponse secteur;
     private String arrive;
+    private String extras;
+    private int status;
     private String consultation_ref;
     private ConsultationResponse consultation;
     private LocalDateTime date_hospit;

@@ -20,4 +20,7 @@ public interface ConsultationActeRepository extends JpaRepository<ConsultationAc
     @Modifying
     @Query("DELETE FROM ConsultationActe em WHERE em.consultation.id = :consultationId")
     void deleteByConsultationId(@Param("consultationId") long consultationId);
+
+    @Query("select c from ConsultationActe c JOIN c.consultation ch where ch.id = :consultationId")
+    List<ConsultationActe> findAllByConsultation(@Param("consultationId") long id);
 }

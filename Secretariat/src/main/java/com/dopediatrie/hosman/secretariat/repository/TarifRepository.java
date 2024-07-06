@@ -26,4 +26,7 @@ public interface TarifRepository extends JpaRepository<Tarif,Long> {
 
     @Query("select t from Tarif t JOIN t.acte a where a.code in ('kine', 'idr', 'radio', 'echo', 'ecg', 'eeg', 'scan', 'irm', 'ana', 'endo', 'hemo', 'kine')")
     List<Tarif> getAllExamens();
+
+    @Query("SELECT tarif FROM Tarif tarif WHERE concat(tarif.code,' ', tarif.libelle) like concat('%', :acte ,'%')")
+    List<Tarif> findAllByActe(@Param("acte") String acte);
 }

@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.hospi.payload.request;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class SuiviRequest {
     private double qte;
     private LocalDateTime apply_date;
     private long hospit_id;
+    private String extras;
 }

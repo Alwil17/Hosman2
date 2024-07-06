@@ -29,7 +29,7 @@ public class PatientServiceImpl implements PatientService {
     public List<PatientResponse> getAllPatients() {
         List<PatientResponse> patientResponses = Collections.emptyList();
         ResponseEntity<PatientResponse[]> responseEntity = restTemplate
-                .getForEntity(baseUrl+"/search?departement=DS", PatientResponse[].class);
+                .getForEntity(baseUrl, PatientResponse[].class);
         patientResponses = Arrays.asList(responseEntity.getBody());
         return patientResponses;
     }

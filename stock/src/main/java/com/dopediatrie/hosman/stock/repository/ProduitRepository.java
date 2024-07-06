@@ -15,12 +15,6 @@ public interface ProduitRepository extends JpaRepository<Produit,Long> {
     @Query("SELECT p from Produit p where p.dci like concat('%',:dci,'%')")
     List<Produit> findByDciLike(@Param("dci") String dci);
 
-    @Query("SELECT p from Produit p JOIN Indication i on p.id = i.produit.id where i.libelle like concat('%',:indication,'%')")
-    List<Produit> findByIndicationLike(@Param("indication") String indication);
-
-    @Query("SELECT p from Produit p JOIN ProduitClasse pc on p.id = pc.produit.id JOIN Classe c on c.id = pc.classe.id where c.nom like concat('%',:classe,'%')")
-    List<Produit> findByClasseLike(@Param("classe") String classe);
-
     @Query("SELECT p from Produit p where p.code_acte like concat('%',:code_acte,'%')")
     List<Produit> findByCodeActeLike(@Param("code_acte") String code_acte);
 }

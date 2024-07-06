@@ -28,4 +28,15 @@ public class DiagnosticServiceImpl implements DiagnosticService {
 
         return responseEntity.getBody();
     }
+
+    @Override
+    public String getToken() {
+        log.info("DiagnosticServiceImpl | getToken is called");
+
+        ResponseEntity<String> responseEntity = restTemplate
+                .getForEntity(baseUrl + "/token",
+                        String.class);
+
+        return responseEntity.getBody();
+    }
 }

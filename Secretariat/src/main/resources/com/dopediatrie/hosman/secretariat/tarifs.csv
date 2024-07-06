@@ -88,310 +88,310 @@ ACT135;40000;40000;40000;65500;BILAN 5  (ORTHOPHONIE);BILAN ET EVALUATION DES TR
 ACT136;40000;40000;40000;65500;BILAN 6  (ORTHOPHONIE);BILAN ET EVALUATION DES BEGAIEMENTS ET DES AUTRES TROUBLES DE LA FLUENCE;24
 ACT137;40000;56000;56000;54000;K40;Acte en K * 40 fois sa valeur;2
 ACT138;80000;112000;112000;108000;K80;Acte en K * 80 fois sa valeur;2
-ANA001;1500;3250;3250;3000;Vitesse de sédimentation (VS);;18
-ANA002;1500;1500;1500;2500;NB (GB) Numération blanche;;18
-ANA003;2000;2500;2500;3000;GE (Goutte Epaisse);;18
-ANA004;1500;2000;2000;2500;HB (taux d'hémoglobine);;18
-ANA005;5000;8750;8750;11000;NFS/Plaquettes;;18
-ANA006;1500;6250;6250;6000;Taux de réticulocytes;;18
-ANA007;40000;25300;25300;40000;Myélogramme;;18
-ANA008;4500;7500;7500;7000;Groupe Sanguin+Rhésus (GS);;18
-ANA009;6000;5000;5000;10000;Test de compatibilité;;18
-ANA010;2000;3750;3750;3300;TS (Temps de Saignement);;18
-ANA011;3000;8750;8750;8400;TP (Taux de prothrombine) / INR;;18
-ANA012;3000;7500;7500;6000;TCK (TCA);;18
-ANA013;3000;7500;7500;9000;TT (Temps de thrombine);;18
-ANA014;14000;15000;15000;15000;Hémoglobine Glycosylée (Hémoglobine glyquée);;18
-ANA015;3000;7500;7500;7000;Fibrinogéne;;18
-ANA016;5000;10000;10000;9500;Electrophorése de l'hémoglobine;;18
-ANA017;3000;4000;4000;5000;Lithuim (Li);;18
-ANA018;5000;8750;8750;11000;Hémogramme;;18
-ANA019;2000;2500;2500;3000;Glycémie é jeun;;18
-ANA020;2000;2500;2500;3000;Glycémie post prandiale;;18
-ANA021;11500;25000;25000;30000;HGPO;;18
-ANA022;1500;2500;2500;3000;Urémie = Azotémie (Urée);;18
-ANA023;2000;3750;3750;4000;Créatininémie (créatinine);;18
-ANA024;2500;4500;4500;4500;Acide urique (uricémie);;18
-ANA025;3500;5000;5000;5800;Cholestérol total;;18
-ANA026;3500;5000;5000;5800;HDL cholestérol;;18
-ANA027;3500;5000;5000;5800;LDL cholestérol;;18
-ANA028;3500;5750;5750;5800;Triglycérides;;18
-ANA029;20000;20000;20000;20000;Test covid19;;18
-ANA030;3500;10000;10000;5800;LDH;;18
-ANA031;2500;3250;3250;4125;ASAT / GOT;;18
-ANA032;2500;3250;3250;4125;ALAT / GPT;;18
-ANA033;5000;6250;6250;8250;Transaminases (ASAT+ALAT) GOT+GPT;;18
-ANA034;3000;6250;6250;6000;Gamma GT ;;18
-ANA035;3000;5000;5000;5000;PAL (Phosphatases alcalines);;18
-ANA036;5000;12500;12500;9000;Phosphatases acides;;18
-ANA037;5000;12500;12500;11000;Phosphatases prostatiques;;18
-ANA038;3500;5000;5000;5000;Bilirubinémie totale;;18
-ANA039;3500;5000;5000;5000;Bilirubinémie directe;;18
-ANA040;4000;7000;7000;7000;CK (créatine kinase);;18
-ANA041;4000;10000;10000;9000;CK-MB;;18
-ANA042;4000;8750;8750;8000;Amylasémie;;18
-ANA043;14000;18750;18750;15000;Lipases;;18
-ANA044;2000;5000;5000;5000;Protidémie (protéines totales);;18
-ANA045;10000;11250;11250;14400;Protidogramme (électrophorése des protides);;18
-ANA046;24275;15000;15000;24275;Mycoplasme;;18
-ANA047;13000;20000;20000;14000;Troponine;;18
-ANA048;4000;5000;5000;7000;Natriémié (Sodium:Na+);;18
-ANA049;4000;5000;5000;7000;Kaliémie (Potassium:K+);;18
-ANA050;4000;5000;5000;7000;Chlorémie (Chlore:Cl- );;18
-ANA051;3000;6250;6250;5000;Calciurie;;18
-ANA052;4000;5000;5000;5800;Calcémie (Calcium: Ca++ );;18
-ANA053;3500;5000;5000;5800;Phosphorémie (Phosphore:PO3-);;18
-ANA054;4000;5000;5000;6600;Magnésémie (Magnésium:Mg++ );;18
-ANA055;17000;18750;18750;20000;Fer sérique  + CTS+CS;;18
-ANA056;14000;6250;6250;14000;Fer sérique (sidérémie);;18
-ANA057;4000;6250;6250;6600;CO2 (gaz du sang);;18
-ANA058;17000;18750;18750;17000;Ferritinémie (Ferritine );;18
-ANA059;8000;8000;8000;10000;Albuminurie;;18
-ANA060;1000;1250;1250;3000;Glucosurie;;18
-ANA061;2000;3000;3000;4000;Glucosurie des 24h;;18
-ANA062;1000;2500;2500;3000;Albuminurie   ;;18
-ANA063;3000;7500;7500;4000;Albuminurie des 24h/protéinurie;;18
-ANA064;3000;12500;12500;12500;Combur 9 (10 paramétres);;18
-ANA065;700;2500;2500;1500;Corps cétonique;;18
-ANA066;4000;8750;8750;6600;Amylasurie;;18
-ANA067;3000;3750;3750;5500;Créatinemie ;;18
-ANA068;25584;25584;25584;25584;BNP;;18
-ANA069;3500;5000;5000;5000;Phosphore urinaire;;18
-ANA070;2500;6250;6250;5000;HLM (Hematies- Leucocytes - Minutes);;18
-ANA071;1000;3000;3000;4000;Sédiments urinaires;;18
-ANA072;3500;7500;7500;9000;Cytologie urine;;18
-ANA073;3500;7500;7500;6000;Protéine C-Réactive (CRP);;18
-ANA074;3500;6250;6250;5800;Facteur Rhumatoéde (FR) (Water Rose);;18
-ANA075;4000;7500;7500;7000;Antistreptoloysine O (ASLO);;18
-ANA076;4000;7500;7500;7000;Sérologie de Widal&Félix (fiévre typhoéde);;18
-ANA077;1600;3250;3250;3500;VDRL (Syphilis);;18
-ANA078;3500;6250;6250;6000;TPHA (Syphilis);;18
-ANA079;12000;20000;20000;16000;sérologie de la toxoplasmose (IgG/IgM) (Dye test);;18
-ANA080;13000;20000;20000;21500;Sérologie de rubéole IgG/IgM;;18
-ANA081;9000;20000;20000;19800;Sérologie amibienne;;18
-ANA082;16000;22500;22500;17000;Hépatite A/ IgM;;18
-ANA083;14000;25000;25000;25000;Antigéne Hbe;;18
-ANA084;17000;25000;25000;25000;Anticorps Hbe;;18
-ANA085;15000;20000;20000;20000;Anticorps Hbs;;18
-ANA086;13000;18750;18750;18000;Anticorps Hbc total;;18
-ANA087;9000;16250;16250;15000;Hépatite B AgHBs (Antigéne Australia);;18
-ANA088;13000;20000;20000;21500;Sérologie HCV;;18
-ANA089;13000;20000;20000;21500;Hépatite C;;18
-ANA090;10000;15000;15000;16500;Sérologie retrovirale VIH;;18
-ANA091;10000;15000;15000;16500;HIV;;18
-ANA092;14000;20000;20000;19800;Sérologie chlamidienne;;18
-ANA093;5500;6000;6000;6000;Albumine;;18
-ANA094;3000;8750;8750;8000;Amylasémie_cspt;;18
-ANA095;12000;20000;20000;21500;Sérologie HCV_cspt;;18
-ANA096;10000;20000;20000;16000;BHCG (test grossesse sang)_cspt;;18
-ANA097;3000;5000;5000;5000;Bilirubinémie totale_cspt;;18
-ANA098;3000;5000;5000;5000;Bilirubinémie directe_cspt;;18
-ANA099;3000;10000;10000;9000;CK-MB_cspt;;18
-ANA100;2500;12500;12500;12500;Combur 9 (10 paramétres)_cspt;;18
-ANA101;4000;10000;10000;9500;Coproculture_cspt;;18
-ANA102;12000;13000;13000;19800;Chlamidyae (IgA,IgG);;18
-ANA103;3000;4000;4000;4000;CPK_cspt;;18
-ANA104;14000;16000;16000;16000;D-Diméres_cspt;;18
-ANA105;4000;10000;10000;9500;ECBU + ATB_cspt;;18
-ANA106;10000;12000;12000;19800;Ionogramme sanguin (Na+,K+,Cl-)_cspt;;18
-ANA107;3000;10000;10000;5800;LDH_cspt;;18
-ANA108;13000;18750;18750;15000;Lipases_cspt;;18
-ANA109;3000;5000;5000;5800;Phosphorémie (Phosphore:PO3-)_cspt;;18
-ANA110;1500;5000;5000;5000;Protidémie (protéines totales)_cspt;;18
-ANA111;10000;18750;18750;18000;PSA total_cspt;;18
-ANA112;12000;20000;20000;21500;Sérologie de rubéole IgG/IgM_cspt;;18
-ANA113;12000;32200;32200;15000;IgE sérique;;18
-ANA114;10000;20000;20000;16000;sérologie de la toxoplasmose (IgG/IgM) (Dye test)_cspt;;18
-ANA115;9000;20000;20000;17000;FT3_cspt;;18
-ANA116;9000;20000;20000;17000;FT4_cspt;;18
-ANA117;2500;7500;7500;6000;TCK (TCA)_cspt;;18
-ANA118;1500;3250;3250;3500;VDRL (Syphilis)_cspt;;18
-ANA119;3000;6250;6250;6000;TPHA (Syphilis)_cspt;;18
-ANA120;12000;20000;20000;14000;Troponine_cspt;;18
-ANA121;9000;20000;20000;17000;TSHus_cspt;;18
-ANA122;12000;17500;17500;15000;IgE totales;;18
-ANA123;3500;6250;6250;5800;Test de grossesse (Urine);;18
-ANA124;7000;12500;12500;13000;MNI test;;18
-ANA125;8000;8000;8000;13200;Sérologie TB (tuberculose);;18
-ANA126;14000;20000;20000;18000;Alpha foeto protéine (AFP);;18
-ANA127;17000;31250;31250;17000;ACE;;18
-ANA128;12000;20000;20000;16000;BHCG (test grossesse sang);;18
-ANA129;14000;20000;20000;17000;FSH;;18
-ANA130;14000;20000;20000;17000;LH;;18
-ANA131;14000;20000;20000;17000;Oestradiol;;18
-ANA132;14000;20000;20000;17000;Prolactine;;18
-ANA133;14000;20000;20000;17000;Progestérone;;18
-ANA134;10000;20000;20000;17000;TSHus;;18
-ANA135;10000;20000;20000;17000;FT3;;18
-ANA136;10000;20000;20000;17000;FT4;;18
-ANA137;27000;31250;31250;28500;Cortisolémie;;18
-ANA138;3000;3000;3000;4000;Créatinurie des 24 h;;18
-ANA139;12000;18750;18750;18000;PSA total;;18
-ANA140;25000;31250;31250;30000;CA 19-9;;18
-ANA141;36000;45000;45000;43000;CA 72-4;;18
-ANA142;24000;31250;31250;30000;CA 15-3;;18
-ANA143;14000;31250;31250;30000;CA 125;;18
-ANA144;2000;3250;3250;3300;Selles KOP;;18
-ANA145;4000;5000;5000;5000;Recherche d'oxyure;;18
-ANA146;2000;3750;3750;4100;Recherche de schistosome dans les urines;;18
-ANA147;2000;2500;2500;3000;GE + Frottis;;18
-ANA148;2500;4000;4000;7000;BCE (Biopsie cutanée exsangue);;18
-ANA149;5000;10000;10000;9500;Coproculture;;18
-ANA150;5000;10000;10000;9500;ECBU + ATB;;18
-ANA151;5000;10000;10000;9500;Pus + autres sérosités ;;18
-ANA152;5000;10000;10000;9500;PV (Prélévement Vaginal);;18
-ANA153;5000;10000;10000;9500;PU (Prélévement / curétage Urétral) ;;18
-ANA154;5000;10000;10000;9500;Spermoculture ;;18
-ANA155;10000;10000;10000;11500;Hémoculture;;18
-ANA156;7000;7500;7500;11500;LCR cyto-chimie;;18
-ANA157;3000;7500;7500;5000;LCR cytologie;;18
-ANA158;6000;10000;10000;9900;ECBC (crachats);;18
-ANA159;3000;3750;3750;5800;Recherche BK recherche BAAR;;18
-ANA160;9000;12000;12000;14850;PL + LCR (cyto+chimie+culture);;18
-ANA161;8000;8000;8000;8800;Recherche d'Ag solubles (LCR);;18
-ANA162;8000;6000;6000;12000;Spermogramme;;18
-ANA163;20000;20000;20000;25000;Frottis vaginal / cervical;;18
-ANA164;3500;3000;3000;5000;Urine (cytologie);;18
-ANA165;12000;12000;12000;12000;CD8;;18
-ANA166;6000;5000;5000;5000;CD4;;18
-ANA167;19000;19000;19000;28000;Testostérone;;18
-ANA168;14000;16000;16000;17000;Homocystéine;;18
-ANA169;29000;29000;29000;32000;Antigénemie P24;;18
-ANA170;15000;15000;15000;18000;RAI (Recherche Agglo irr);;18
-ANA171;12000;12000;12000;19800;Ionogramme sanguin (Na+,K+,Cl-);;18
-ANA172;3000;7000;7000;8000;Hemofec;;18
-ANA173;10000;10000;10000;10000;Recherche de drogue;;18
-ANA174;0;0;0;0;Culot Urinaire;;18
-ANA175;20000;20000;20000;20000;D-Diméres;;18
-ANA176;15500;15500;15500;15500;Anticorps- Anti  nucléaire;;18
-ANA177;54000;54000;54000;54000;Sérologie Chikungunya (IgM IgG);;18
-ANA178;46500;46500;46500;46500;Sérologie Dengue (IgM IgG);;18
-ANA179;41500;41500;41500;41500;Sérologie Herpes Simplex Virus 1 et 2  (IgM IgG);;18
-ANA180;78000;78000;78000;78000;Sérologie Arbo Virus (Dengue Acephalite é tiques , chikungunya);;18
-ANA181;21500;21500;21500;21500;Sérologie Rickettsioges;;18
-ANA182;15500;15500;15500;15500;Facteur IX;;18
-ANA183;8860;8860;8860;8860;Facteur V (Dosage de l'activité);;18
-ANA184;12140;12140;12140;12140;Facteur VIII ;;18
-ANA185;15500;15500;15500;15500;Facteur Willebrand (Antigéne);;18
-ANA186;17500;17500;17500;17500;Facteur X;;18
-ANA187;17500;17500;17500;17500;Facteur XI;;18
-ANA188;17500;17500;17500;17500;Facteur XII;;18
-ANA189;17500;17500;17500;17500;Facteur XIII;;18
-ANA190;8000;8000;8000;8000;Recherche ADN parental (Ambassade d'Allemagne);;18
-ANA191;370000;370000;370000;370000;Recherche ADN parental (justice);;18
-ANA192;12000;12000;12000;12000;Recherche ADN parental (CANADA);;18
-ANA193;52400;52400;52400;52400;Hépatite C (ARN virale quantification);;18
-ANA194;1000;1000;1000;1000;Haemoglucotest;;18
-ANA195;5000;8000;8000;9500;ECB de Pus;;18
-ANA196;26000;26000;26000;26000;Anticorps Anti BHC IgG IgM;;18
-ANA197;50000;50000;50000;50000;ANAPATH EUROPE;;18
-ANA198;30000;30000;30000;30000;PIECES OPERATOIRES;;18
-ANA199;85000;85000;85000;85000;Benzéne;;18
-ANA200;0;0;0;0;Diurése;;18
-ANA201;10000;12000;12000;16500;PACK;;18
-ANA202;0;0;0;0;GE Accouchement (Goutte Epaisse);;18
-ANA203;12000;17000;17000;20000;G6PD (dosage);;18
-ANA204;24500;24500;24500;24500;Anticorps- Anti antigéne nucléaire soluble recheche ;;18
-ANA205;36000;36000;36000;36000;Anticorps- Anti antigéne nucléaire soluble dosage;;18
-ANA206;14000;14000;14000;14000;Transferrine;;18
-ANA207;15415;15415;15415;15415;Ac. Antinucléaire;;18
-ANA208;21975;21975;21975;21975;Ac. Anti DNA Natif;;18
-ANA209;60348;60348;60348;60348;Ac. Anti U1RNP;;18
-ANA210;21975;21975;21975;21975;Ac. Anti Histones;;18
-ANA211;29910;29910;29910;29910;Dosage Pondéral Immunoglobulines;;18
-ANA212;91835;91835;91835;91835;Typage HLA Classe 1 Locus A et B;;18
-ANA213;42630;42630;42630;42630;Typage HLA Classe 1 Locus B;;18
-ANA214;149230;149230;149230;149230;Typage HLA Classe 2 (Génotypage);;18
-ANA215;4000;4000;4000;4000;CPK;;18
-ANA216;27000;27000;27000;27000;Vitamine D;;18
-ANA217;15000;15000;15000;15000;Vitamine B12;;18
-ANA218;3500;4000;4000;5000;Bilirubinémie indirecte;;18
-ANA219;15000;20000;20000;18040;AgHBe ;;18
-ANA220;15000;20000;20000;18040;Anticorps anti HBe;;18
-ANA221;18040;18040;18040;18040;Anticorps anti HBC totaux (Europe) ;;18
-ANA222;18370;18370;18370;18370;Alpha 2 macroglobuline ;;18
-ANA223;16730;16730;16730;16730;Haptoglobine;;18
-ANA224;44940;44940;44940;44940;EBV (EPSTEIN-BARR VIRUS) AC anti VCA IgM/IgG;;18
-ANA225;31490;31490;31490;31490;Cytomégolovirus (IgG +IgM);;18
-ANA226;13000;13000;13000;13000;Crachats-Bar Biologie Moléculaire ;;18
-ANA227;27000;27000;27000;32000;PSA total + PSA libre;;18
-ANA228;5000;8000;8000;8000;Bilharziose (Recherche des oeufs dans l'urine );;18
-ANA229;18040;20000;20000;18040;AgHBe (Europe);;18
-ANA230;18040;20000;20000;18040;Anticorps anti HBe (Europe);;18
-ANA231;16000;16000;16000;20000;Anticorps Hbs (Europe);;18
-ANA232;13000;13000;13000;13000;Anticorps anti HBC totaux;;18
-ANA233;71180;0;0;71180;Fibrotest / Actitest;;18
-ANA234;37390;37390;37390;37390;Charge virale VHB ( ADN viral Hépatite B);;18
-ANA235;78100;78100;78100;78100;Hépatite virale C (GENOTIPAGE);;18
-ANA236;9000;9000;9000;9000;Test de coombes direct;;18
-ANA237;10000;10000;10000;10000;Test de coombes indirect;;18
-ANA238;52480;52480;52480;52480;Charge virale HIV;;18
-ANA239;2500;3000;3000;3000;Crachats-Bar ;;18
-ANA240;3000;0;0;0;Recherche de filaire dans le sang;;18
-ANA241;23600;0;0;23600;Chromatographie des acides aminés urinaires;;18
-ANA242;10900;0;0;0;Dosage Complement C3;;18
-ANA243;10900;0;0;0;Dosage Complement C4;;18
-ANA244;71180;71180;71180;71180;Fibrotest-Actitest;;18
-ANA245;8000;8000;8000;8000;Prélévement EDPA pour HLA;;18
-ANA246;19680;19680;19680;19680;Parathormone / PTH intacte;;18
-ANA247;48500;48500;48500;48500;Herpés Simplex Virus (1 et 2) /PCR;;18
-ANA248;24000;24000;24000;24000;Herpés Simplex Virus (1 et 2) /IGN;;18
-ANA249;59000;59000;59000;59000;Recherche BK Biologie moléculaire (CERBA);;18
-ANA250;26000;26000;26000;26000;Recherche de Hélicobater pylori;;18
-ANA251;25000;25000;25000;25000;Vitamine B9;;18
-ANA252;387000;387000;387000;387000;Génotype de résistance HIV;;18
-ANA253;27000;27000;27000;27000;PSA libre;;18
-ANA254;12000;12000;12000;12000;Test d'alcool (Alcoolemie-Ethanol);;18
-ANA255;29600;29600;29600;29600;Vitamine B3;;18
-ANA256;29600;29600;29600;29600;Vitamine B6;;18
-ANA257;34100;34100;34100;34100;Vitamine C;;18
-ANA258;29600;29600;29600;29600;Vitamine E;;18
-ANA259;15800;15800;15800;15800;Vitamine D3;;18
-ANA260;30000;30000;30000;30000;PROCALCITONINE;;18
-ANA261;40000;40000;40000;40000;Sérologie amibienne (Cerba);;18
-ANA262;19700;19700;19700;19700;Légionellose (Dépistage) CERBA;;18
-ANA263;37400;37400;37400;37400;Légionellose (Titrage) CERBA;;18
-ANA264;10000;10000;10000;10000;Recherche de Hélicobater pylorin (selle);;18
-ANA265;18400;18400;18400;18400;PHADIATOP (CERBA);;18
-ANA266;27600;27600;27600;27600;ALDOSTERONE (CERBA);;18
-ANA267;27600;27600;27600;27600;RENINE (CERBA);;18
-ANA268;14000;14000;14000;19800;Ionogramme urinaire;;18
-ANA269;10000;10000;10000;10000;Lactatémie;;18
-ANA270;8000;8000;8000;8000;Antigéne Dengue NS1;;18
-ANA271;31480;31480;31480;31480;INHIBINE B CERBA;;18
-ANA272;52480;52480;52480;52480;sérologie bilharzienne CERBA ;;18
-ANA273;20500;20500;20500;20500;Haptoglobine;;18
-ANA274;30000;30000;30000;30000;ACTH (hormone de croissance);;18
-ANA275;27070;27070;27070;27070;GH (hormone de croissance);;18
-ANA276;27550;27550;27550;27550;ERYTHROPOIETINE (CERBA);;18
-ANA277;28000;28000;28000;28000;Légionellose (Antigéne soluble Urine) CERBA;;18
-ANA278;20500;20500;20500;20500;Cortisolémie (Cerba);;18
-ANA279;21500;21500;21500;21500;Phénobarbitémie (Phénobarbital);;18
-ANA280;20000;20000;20000;20000;PARAHORMONE 1-84;;18
-ANA281;2000;2000;2000;2000;TDR Malaria Quick (QBC);;18
-ANA282;15000;15000;15000;15000;CBE (Curétage Biopsie de l'Endométre);;18
-ANA283;30000;30000;30000;30000;ANAPATH BIOPSIES CHU;;18
-ANA284;31485;31485;31485;31485;Identification et dosage d' Amphétamines dans le sang;;18
-ANA285;106265;106265;106265;106265;Recherche de drogue dans l'urine;;18
-ANA286;38100;38100;38100;38100;ANATOMO-CYPATHOLOGIE (CERBA);;18
-ANA287;28000;28000;28000;28000;Anticorps anti-recepteurs de l'acetylcholine (anti-RACH);;18
-ANA288;35000;35000;35000;35000;Test multi-drogue;;18
-ANA289;4000;4000;4000;4000;Recherche BK Biologie moléculaire;;18
-ANA290;14105;14105;14105;14105;Protééne S (Activité);;18
-ANA291;14105;14105;14105;14105;Protééne S (Antigéne);;18
-ANA292;24930;24930;24930;24930;Protééne C (Antigéne);;18
-ANA293;8860;8860;8860;8860;Facteur II;;18
-ANA294;14105;14105;14105;14105;Protééne C (Activité);;18
-ANA295;21650;21650;21650;21650;PROGRAF - TACROLIMUS;;18
-ANA296;12465;12465;12465;12465;25 Hydroxycalciférol (Vitamine D);;18
-ANA297;29520;29520;29520;29520;1.25 DisHydroxycalciférol (Vitamine D);;18
-ANA298;36735;36735;36735;36735;AMH Hormono anti-mullérienne CERBA;;18
-ANA299;21700;0;0;0;HILV I+II;;18
-ANA300;16000;16000;16000;16000;Anticorps Anti HBC  IgM;;18
-ANA301;21360;21360;21360;21360;Sérologie de la rage (Cerba);;18
-ANA302;2000;2000;2000;2000;Hémoglobine é reflotron;;18
-ANA303;0;0;0;0;ECB de liquide de ponction de genou;;18
-ANA304;0;0;0;0;ECB de liquide pleurral;;18
+ANA001;1800;3250;3250;3600;Vitesse de sédimentation (VS);Vitesse de sédimentation (VS);18
+ANA002;1800;1500;1500;3000;NB (GB) Numération blanche;NB (GB) Numération blanche;18
+ANA003;2300;2500;2500;3600;GE (Goutte Epaisse);GE (Goutte Epaisse);18
+ANA004;1800;2000;2000;3000;HB (taux d'hémoglobine);HB (taux d'hémoglobine);18
+ANA005;6000;8750;8750;13200;NFS/Plaquettes;NFS/Plaquettes;18
+ANA006;1800;6250;6250;7500;Taux de réticulocytes;Taux de réticulocytes;18
+ANA007;46000;25300;25300;48000;Myélogramme;Myélogramme;18
+ANA008;5500;7500;7500;8400;Groupe Sanguin+Rhésus (GS);Groupe Sanguin+Rhésus (GS);18
+ANA009;7000;5000;5000;12000;Test de compatibilité;Test de compatibilité;18
+ANA010;2300;3750;3750;4000;TS (Temps de Saignement);TS (Temps de Saignement);18
+ANA011;3500;8750;8750;10000;TP (Taux de prothrombine) / INR;TP (Taux de prothrombine) / INR;18
+ANA012;3500;7500;7500;7500;TCK (TCA);TCK (TCA);18
+ANA013;3500;7500;7500;10800;TT (Temps de thrombine);TT (Temps de thrombine);18
+ANA014;16100;15000;15000;18000;Hémoglobine Glycosylée (Hémoglobine glyquée);Hémoglobine Glycosylée (Hémoglobine glyquée);18
+ANA015;3500;7500;7500;8400;Fibrinogène;Fibrinogène;18
+ANA016;6000;10000;10000;11500;Electrophorèse de l'hémoglobine;Electrophorèse de l'hémoglobine;18
+ANA017;3500;4000;4000;6000;Lithuim (Li);;18
+ANA018;6000;8750;8750;13200;Hémogramme;Hémogramme;18
+ANA020;2300;2500;2500;3600;Glycémie à jeun;Glycémie à jeun;18
+ANA021;2300;2500;2500;3600;Glycémie post prandiale;Glycémie post prandiale;18
+ANA022;13500;25000;25000;36000;HGPO;HGPO;18
+ANA023;1800;2500;2500;3600;Urémie = Azotémie (Urée);Urémie = Azotémie (Urée);18
+ANA024;2300;3750;3750;4800;Créatininémie (créatinine);Créatininémie (créatinine);18
+ANA025;3000;4500;4500;5400;Acide urique (uricémie);Acide urique (uricémie);18
+ANA026;4000;5000;5000;7000;Cholestérol total;Cholestérol total;18
+ANA027;4000;5000;5000;7000;HDL cholestérol;HDL cholestérol;18
+ANA028;4000;5000;5000;7000;LDL cholestérol;LDL cholestérol;18
+ANA029;4000;5750;5750;7000;Triglycérides;Triglycérides;18
+ANA030;23000;20000;20000;24000;Test covid19;Test covid19;18
+ANA032;4000;10000;10000;7000;LDH;LDH;18
+ANA033;3000;3250;3250;5000;ASAT / GOT;ASAT / GOT;18
+ANA034;3000;3250;3250;5000;ALAT / GPT;ALAT / GPT;18
+ANA035;6000;6250;6250;10000;Transaminases (ASAT+ALAT) GOT+GPT;Transaminases (ASAT+ALAT) GOT+GPT;18
+ANA036;3500;6250;6250;7500;Gamma GT ;Gamma GT ;18
+ANA037;3500;5000;5000;6000;PAL (Phosphatases alcalines);PAL (Phosphatases alcalines);18
+ANA038;6000;12500;12500;10800;Phosphatases acides;Phosphatases acides;18
+ANA039;6000;12500;12500;13500;Phosphatases prostatiques;Phosphatases prostatiques;18
+ANA040;4000;5000;5000;6000;Bilirubinémie totale;Bilirubinémie totale;18
+ANA041;4000;5000;5000;6000;Bilirubinémie directe;Bilirubinémie directe;18
+ANA042;4600;7000;7000;8400;CK (créatine kinase);CK (créatine kinase);18
+ANA043;4600;10000;10000;10800;CK-MB;CK-MB;18
+ANA044;4600;8750;8750;9600;Amylasémie;Amylasémie ;18
+ANA045;16100;18750;18750;18000;Lipases;Lipases;18
+ANA046;2300;5000;5000;6000;Protidémie (protéines totales);Protidémie (protéines totales);18
+ANA047;11500;11250;11250;17500;Protidogramme (électrophorèse des protides);Protidogramme (électrophorèse des protides);18
+ANA048;28000;15000;15000;29500;Mycoplasme;Mycoplasme;18
+ANA049;14950;20000;20000;17000;Troponine;Troponine;18
+ANA050;4600;5000;5000;8400;Natriémié (Sodium:Na+);Natriémié (Sodium:Na+);18
+ANA051;4600;5000;5000;8400;Kaliémie (Potassium:K+);Kaliémie (Potassium:K+);18
+ANA052;4600;5000;5000;8400;Chlorémie (Chlore:Cl- );Chlorémie (Chlore:Cl- );18
+ANA054;3500;6250;6250;6000;Calciurie;Calciurie;18
+ANA055;4600;5000;5000;7000;Calcémie (Calcium: Ca++ );Calcémie (Calcium: Ca++ );18
+ANA056;4000;5000;5000;7000;Phosphorémie (Phosphore:PO3-);Phosphorémie (Phosphore:PO3-);18
+ANA057;4600;5000;5000;8000;Magnésémie (Magnésium:Mg++ );Magnésémie (Magnésium:Mg++ );18
+ANA058;2000;18750;18750;24000;Fer sérique  + CTS+CS;Fer sérique  + CTS+CS;18
+ANA059;16100;6250;6250;17000;Fer sérique (sidérémie);Fer sérique ;18
+ANA060;4600;6250;6250;8000;CO2 (gaz du sang);CO2 (gaz du sang);18
+ANA061;20000;18750;18750;20400;Ferritinémie (Ferritine );Ferritinémie (Ferritine);18
+ANA062;9200;8000;8000;12000;Albuminurie;albumine sang (albuminurie);18
+ANA064;1200;1250;1250;3600;Glucosurie;Glucosurie;18
+ANA065;2300;3000;3000;4800;Glucosurie des 24h;Glucosurie des 24h;18
+ANA066;1200;2500;2500;3600;Albuminurie   ;Albuminurie;18
+ANA067;3500;7500;7500;4800;Albuminurie des 24h/protéinurie;Albuminurie des 24h/protéinurie;18
+ANA068;3500;12500;12500;15000;Combur 9 (10 paramètres);Combur 9 (10 paramètres);18
+ANA069;800;2500;2500;1800;Corps cétonique;Corps cétonique;18
+ANA070;4600;8750;8750;8000;Amylasurie;Amylasurie;18
+ANA071;3500;3750;3750;6600;Créatinemie ;Créatinemie ;18
+ANA072;29500;25584;25584;30700;BNP;ECB de liquide pleurral;18
+ANA073;4000;5000;5000;6000;Phosphore urinaire;Phosphore;18
+ANA074;3000;6250;6250;6000;HLM (Hematies- Leucocytes - Minutes);HLM (compte d'Addis);18
+ANA075;1200;3000;3000;4800;Sédiments urinaires;Sédiments urinaires;18
+ANA076;4000;7500;7500;10800;Cytologie urine;Cytologie urine;18
+ANA077;4000;7500;7500;7500;Protéine C-Réactive (CRP);Protéine C-Réactive (CRP);18
+ANA078;4000;6250;6250;7000;Facteur Rhumatoïde (FR) (Water Rose);Facteur Rhumatoïde (FR) (Water Rose);18
+ANA079;4600;7500;7500;8400;Antistreptoloysine O (ASLO);Antigène de la streptoloysine O (ASLO);18
+ANA080;4600;7500;7500;8400;Sérologie de Widal&Félix (fièvre typhoïde);Sérologie de Widal&Félix (fièvre typhoïde);18
+ANA081;1800;3250;3250;4200;VDRL (Syphilis);VDRL (Syphilis);18
+ANA082;4000;6250;6250;7200;TPHA (Syphilis);TPHA (Syphilis);18
+ANA083;13800;20000;20000;19200;sérologie de la toxoplasmose (IgG/IgM) (Dye test);sérologie de la toxoplasmose (IgG/IgM) (Dye test);18
+ANA084;15000;20000;20000;25800;Sérologie de rubéole IgG/IgM;Sérologie de rubéole IgG/IgM;18
+ANA085;10500;20000;20000;23760;Sérologie amibienne;Sérologie amibienne;18
+ANA086;18500;22500;22500;20400;Hépatite A/ IgM;Hépatite A/ IgM;18
+ANA087;16000;25000;25000;30000;Antigène Hbe;Antigène Hbe;18
+ANA088;20000;25000;25000;30000;Anticorps Hbe;Anticorps Hbe;18
+ANA089;17500;20000;20000;24000;Anticorps Hbs;Anticorps Hbs;18
+ANA090;15000;18750;18750;21600;Anticorps Hbc total;Anticorps Hbc total;18
+ANA092;10500;16250;16250;18000;Hépatite B AgHBs (Antigène Australia);Hépatite B AgHBs (Antigène Australia);18
+ANA095;15000;20000;20000;25800;Sérologie HCV;Sérologie HCV;18
+ANA096;15000;20000;20000;25800;Hépatite C;Hépatite C;18
+ANA098;11500;15000;15000;19800;Sérologie retrovirale VIH;Sérologie retrovirale;18
+ANA099;11500;15000;15000;19800;HIV;HIV;18
+ANA100;16000;20000;20000;24000;Sérologie chlamidienne;Sérologie chlamidienne;18
+ANA1000;6500;6000;6000;7500;Albumine;Albumine;18
+ANA1001;3500;8750;8750;7000;Amylasémie_cspt;Amylasémie ;18
+ANA1002;13800;20000;20000;26000;Sérologie HCV_cspt;Sérologie HCV;18
+ANA1003;11500;20000;20000;19500;BHCG (test grossesse sang)_cspt;BHCG (test grossesse sang);18
+ANA1005;3500;5000;5000;6000;Bilirubinémie totale_cspt;Bilirubinémie totale;18
+ANA1006;3500;5000;5000;6000;Bilirubinémie directe_cspt;Bilirubinémie directe;18
+ANA1007;3500;10000;10000;10800;CK-MB_cspt;CK-MB;18
+ANA1008;3500;12500;12500;15000;Combur 9 (10 paramètres)_cspt;Combur 9 (10 paramètres);18
+ANA1009;4600;10000;10000;11400;Coproculture_cspt;Coproculture;18
+ANA101;13800;13000;13000;24000;Chlamidyae (IgA,IgG);Chlamidyae (IgA,IgG);18
+ANA1010;3500;4000;4000;4800;CPK_cspt;CPK;18
+ANA1011;16000;16000;16000;24000;D-Dimères_cspt;D-Dimères;18
+ANA1012;4600;10000;10000;12000;ECBU + ATB_cspt;ECB examen cytobactériologique Urines (ECBU) + ATB;18
+ANA1013;11500;12000;12000;24000;Ionogramme sanguin (Na+,K+,Cl-)_cspt;Ionogramme sanguin (Na+,K+,Cl-);18
+ANA1014;3500;10000;10000;7000;LDH_cspt;LDH;18
+ANA1015;15000;18750;18750;18000;Lipases_cspt;Lipases;18
+ANA1016;3500;5000;5000;7000;Phosphorémie (Phosphore:PO3-)_cspt;Phosphorémie (Phosphore:PO3-);18
+ANA1017;1800;5000;5000;6000;Protidémie (protéines totales)_cspt;Protidémie (protéines totales);18
+ANA1018;11500;18750;18750;22000;PSA total_cspt;PSA (Antigène Spécifique de prostate;18
+ANA1019;13800;20000;20000;26000;Sérologie de rubéole IgG/IgM_cspt;Sérologie de rubéole IgG/IgM;18
+ANA102;13800;32200;32200;18000;IgE sérique;IgE sérique;18
+ANA1020;11500;20000;20000;19200;sérologie de la toxoplasmose (IgG/IgM) (Dye test)_cspt;sérologie de la toxoplasmose (IgG/IgM) (Dye test);18
+ANA1021;10500;20000;20000;20400;FT3_cspt;FT3;18
+ANA1022;10500;20000;20000;20400;FT4_cspt;FT4;18
+ANA1023;3000;7500;7500;7200;TCK (TCA)_cspt;TCK (TCA);18
+ANA1025;1800;3250;3250;4500;VDRL (Syphilis)_cspt;VDRL (Syphilis);18
+ANA1026;3500;6250;6250;7500;TPHA (Syphilis)_cspt;TPHA (Syphilis);18
+ANA1027;13800;20000;20000;16800;Troponine_cspt;Troponine;18
+ANA1028;10500;20000;20000;20400;TSHus_cspt;TSHus;18
+ANA103;13800;17500;17500;18000;IgE totales;IgE totales;18
+ANA104;4000;6250;6250;7000;Test de grossesse (Urine);Test de grossesse;18
+ANA105;8000;12500;12500;15600;MNI test;MNI test;18
+ANA106;9200;8000;8000;15840;Sérologie TB (tuberculose);Sérologie TB (tuberculose);18
+ANA107;16000;20000;20000;21600;Alpha foeto protéine (AFP);Alpha foeto protéine (AFP);18
+ANA108;20000;31250;31250;20400;ACE;ACE;18
+ANA109;13800;20000;20000;19200;BHCG (test grossesse sang);BHCG (test grossesse sang);18
+ANA110;16000;20000;20000;20400;FSH;LH;18
+ANA111;16000;20000;20000;20400;LH;FSH;18
+ANA112;16000;20000;20000;20400;Oestradiol;Oestradiol;18
+ANA113;16000;20000;20000;20400;Prolactine;Prolactine;18
+ANA115;16000;20000;20000;20400;Progestérone;Progestérone;18
+ANA116;11500;20000;20000;20400;TSHus;TSHus;18
+ANA117;11500;20000;20000;20400;FT3;FT3;18
+ANA118;11500;20000;20000;20400;FT4;FT4;18
+ANA119;31000;31250;31250;34200;Cortisolémie;Cortisolémie;18
+ANA120;3450;3000;3000;4800;Créatinurie des 24 h;Créatinurie des 24 h;18
+ANA121;13800;18750;18750;21600;PSA total;PSA (Antigène Spécifique de prostate;18
+ANA122;28750;31250;31250;36000;CA 19-9;CA 19-9;18
+ANA123;41400;45000;45000;51600;CA 72-4;CA 72-4;18
+ANA124;27600;31250;31250;36000;CA 15-3;CA 15-3;18
+ANA125;16000;31250;31250;36000;CA 125;CA 125;18
+ANA126;2300;3250;3250;4000;Selles KOP;Selles KOP;18
+ANA127;4600;5000;5000;6000;Recherche d'oxyure;Recherche d'oxyure;18
+ANA128;2300;3750;3750;5000;Recherche de schistosome dans les urines;Recherche de schistosome dans les urines;18
+ANA129;2300;2500;2500;4000;GE + Frottis;GE + Frottis;18
+ANA130;3000;4000;4000;8500;BCE (Biopsie cutanée exsangue);BCE (Biopsie cutanée exsangue);18
+ANA131;6000;10000;10000;11500;Coproculture;Coproculture;18
+ANA132;6000;10000;10000;11500;ECBU + ATB;ECB examen cytobactériologique Urines (ECBU) + ATB;18
+ANA133;6000;10000;10000;11500;Pus + autres sérosités ;Pus + autres sérosités ;18
+ANA134;6000;10000;10000;11500;PV (Prélèvement Vaginal);PV (Prélèvement Vaginal) + ABG;18
+ANA135;6000;10000;10000;11500;PU (Prélèvement / curétage Urétral) ;PU (Prélèvement / curétage Urétral) ;18
+ANA136;6000;10000;10000;11500;Spermoculture ;Spermoculture ;18
+ANA137;11500;10000;10000;14000;Hémoculture;Hémoculture;18
+ANA138;8000;7500;7500;14000;LCR cyto-chimie;LCR cyto-chimie;18
+ANA139;3500;7500;7500;6000;LCR cytologie;LCR cytologie;18
+ANA140;7000;10000;10000;12000;ECBC (crachats);ECBC (crachats);18
+ANA141;3500;3750;3750;7000;Recherche BK recherche BAAR;Recherche BK recherche BAAR;18
+ANA142;10500;12000;12000;18000;PL + LCR (cyto+chimie+culture);PL + LCR (cyto+chimie+culture);18
+ANA143;9500;8000;8000;11000;Recherche d'Ag solubles (LCR);Recherche d'Ag solubles (LCR);18
+ANA144;9500;6000;6000;15000;Spermogramme;Spermogramme;18
+ANA145;23000;23000;23000;30000;Frottis vaginal / cervical;Frottis vaginal / cervical;18
+ANA146;4000;3000;3000;6000;Urine (cytologie);Urine (cytologie);18
+ANA147;13800;12000;12000;15000;CD8;CD8;18
+ANA148;7000;5000;5000;6000;CD4;CD4;18
+ANA149;22000;19000;19000;34000;Testostérone;Testostérone;18
+ANA150;16000;16000;16000;20400;Homocystéine;Homocystéine;18
+ANA151;33500;29000;29000;38500;Antigènemie P24;Antigènemie P24;18
+ANA152;17500;15000;15000;21600;RAI (Recherche Agglo irr);RAI;18
+ANA153;13800;12000;12000;24000;Ionogramme sanguin (Na+,K+,Cl-);Ionogramme sanguin (Na+,K+,Cl-);18
+ANA154;3500;7000;7000;9600;Hemofec;Hemofec;18
+ANA155;11500;10000;10000;12000;Recherche de drogue;Recherche de drogue;18
+ANA156;0;0;0;0;Culot Urinaire;Culot Urinaire;18
+ANA157;20000;20000;20000;24000;D-Dimères;D-Dimères;18
+ANA158;18000;15500;15500;18600;Anticorps- Anti  nucléaire;Anticorps- Anti  nucléaire;18
+ANA159;62000;54000;54000;65000;Sérologie Chikungunya (IgM IgG);;18
+ANA160;55000;46500;46500;56000;Sérologie Dengue (IgM IgG);;18
+ANA161;48000;41500;41500;50000;Sérologie Herpes Simplex Virus 1 et 2  (IgM IgG);;18
+ANA162;89700;78000;78000;93600;Sérologie Arbo Virus (Dengue Acephalite à tiques , chikungunya);;18
+ANA163;25000;21500;21500;26000;Sérologie Rickettsioges;;18
+ANA164;18000;15500;15500;20000;Facteur IX;Facteur IX;18
+ANA165;10500;8860;8860;11000;Facteur V (Dosage de l'activité);Facteur V (Dosage de l'activité);18
+ANA166;14000;12140;12140;15000;Facteur VIII ;Facteur VIII ;18
+ANA167;18000;15500;15500;20000;Facteur Willebrand (Antigène);Facteur Willebrand (Antigène);18
+ANA169;20000;17500;17500;21000;Facteur X;Facteur X;18
+ANA170;20000;17500;17500;21000;Facteur XI;Facteur XI;18
+ANA171;20000;17500;17500;21000;Facteur XII;Facteur XII;18
+ANA172;20000;17500;17500;21000;Facteur XIII;Facteur XIII;18
+ANA173;9500;8000;8000;9600;Recherche ADN parental (Ambassade d'Allemagne);;18
+ANA174;425500;370000;370000;444000;Recherche ADN parental (justice);;18
+ANA175;13800;12000;12000;14400;Recherche ADN parental (CANADA);;18
+ANA177;60260;52400;52400;62880;Hépatite C (ARN virale quantification);;18
+ANA178;1200;1000;1000;1200;Haemoglucotest;Haemoglucotest;18
+ANA179;6000;8000;8000;11400;ECB de Pus;;18
+ANA180;29900;26000;26000;31500;Anticorps Anti BHC IgG IgM;Anticorps Anti BHC IgG IgM;18
+ANA181;58000;58000;58000;60000;ANAPATH EUROPE;;18
+ANA182;35000;30000;35000;36000;PIECES OPERATOIRES;Pièces opératoires;18
+ANA183;98000;85000;85000;102000;Benzène;Benzène;18
+ANA185;0;0;0;0;Diurèse;Diurèse;18
+ANA199;11500;12000;12000;20000;PACK;Sérologie retrovirale;18
+ANA200;0;0;0;0;GE Accouchement (Goutte Epaisse);GE Accouchement (Goutte Epaisse);18
+ANA201;13800;17000;17000;24000;G6PD (dosage);G6PD (dosage);18
+ANA202;28500;24500;24500;29400;Anticorps- Anti antigène nucléaire soluble recheche ;Anticorps- Anti antigène nucléaire soluble recheche ;18
+ANA203;41500;36000;36000;43200;Anticorps- Anti antigène nucléaire soluble dosage;Anticorps- Anti antigène nucléaire soluble dosage;18
+ANA206;16000;14000;14000;17000;Transferrine;PARASITOLOGIE/ SANG;18
+ANA207;18000;15415;15415;18500;Ac. Antinucléaire;Ac. Antinucléaire;18
+ANA208;25500;21975;21975;27000;Ac. Anti DNA Natif;Ac. Anti DNA Natif;18
+ANA209;69500;60348;60348;72500;Ac. Anti U1RNP;Ac. Anti U1RNP;18
+ANA210;25500;21975;21975;26500;Ac. Anti Histones;Ac. Anti Histones;18
+ANA211;34500;29910;29910;36000;Dosage Pondéral Immunoglobulines;Dosage Pondéral Immunoglobulines;18
+ANA213;105600;91835;91835;110500;Typage HLA Classe 1 Locus A et B;Typage HLA Classe 1 Locus A et B;18
+ANA214;49000;42630;42630;52000;Typage HLA Classe 1 Locus B;Typage HLA Classe 1 Locus B;18
+ANA215;171600;149230;149230;179000;Typage HLA Classe 2 (Génotypage);Typage HLA Classe 2 (Génotypage);18
+ANA216;4600;4000;4000;5000;CPK;CPK;18
+ANA340;31000;27000;27000;33000;Vitamine D;Vitamine D;18
+ANA350;17500;15000;15000;18000;Vitamine B12;Vitamine B12;18
+ANA351;4000;4000;4000;6000;Bilirubinémie indirecte;Bilirubinémie indirecte;18
+ANA352;17500;20000;20000;22000;AgHBe ;;18
+ANA353;17500;20000;20000;22000;Anticorps anti HBe;;18
+ANA354;21000;18040;18040;22000;Anticorps anti HBC totaux (Europe) ;;18
+ANA355;21500;18370;18370;22000;Alpha 2 macroglobuline ;;18
+ANA356;19500;16730;16730;20000;Haptoglobine;;18
+ANA357;51700;44940;44940;54000;EBV (EPSTEIN-BARR VIRUS) AC anti VCA IgM/IgG;EBV (EPSTEIN-BARR VIRUS) AC anti VCA IgM/IgG;18
+ANA358;36500;31490;31490;38000;Cytomégolovirus (IgG +IgM);Cytomégolovirus (IgG +IgM);18
+ANA359;15000;13000;13000;16000;Crachats-Bar Biologie Moléculaire ;Crachats-Bar Biologie Moléculaire ;18
+ANA360;31000;27000;27000;38500;PSA total + PSA libre;PSA total + PSA libre;18
+ANA361;6000;8000;8000;10000;Bilharziose (Recherche des oeurs dans l'urine );Bilharziose (Recherche des oeufs dans l'urine );18
+ANA362;20800;20000;20000;22000;AgHBe (Europe);;18
+ANA363;20800;20000;20000;22000;Anticorps anti HBe (Europe);;18
+ANA364;18500;16000;16000;24000;Anticorps Hbs (Europe);Anticorps Hbs;18
+ANA365;15000;13000;13000;16000;Anticorps anti HBC totaux;;18
+ANA366;82000;0;0;85500;Fibrotest / Actitest;Fibrotet / Actitest;18
+ANA367;43000;37390;37390;45000;Charge virale VHB ( ADN viral Hépatite B);charge virale VHB ;18
+ANA368;90000;78100;78100;94000;Hépatite virale C (GENOTIPAGE);Hépatite virale C (GENOTIPAGE);18
+ANA400;10500;9000;9000;10800;Test de coombes direct;;18
+ANA401;11500;10000;10000;12000;Test de coombes indirect;;18
+ANA402;60500;52480;52480;63000;Charge virale HIV;ECB de liquide pleurral;18
+ANA403;3000;3000;3000;3600;Crachats-Bar ;Crachats-Bar ;18
+ANA404;3500;0;0;0;Recherche de filaire dans le sang;Recherche de filaire dans le sang;18
+ANA405;27500;0;0;28500;Chromatographie des acides aminés urinaires;Chromatographie des acides aminés urinaires;18
+ANA406;12500;0;0;0;Dosage Complement C3;ECB de liquide pleurral;18
+ANA407;12500;0;0;0;Dosage Complement C4;ECB de liquide pleurral;18
+ANA408;82000;71180;71180;85416;Fibrotest-Actitest;Fibrotest-Actitest;18
+ANA409;9500;8000;8000;9600;Prélèvement EDPA pour HLA;Prélèvement EDPA pour HLA;18
+ANA411;22600;19680;19680;24000;Parathormone / PTH intacte;Parathormone / PTH intacte;18
+ANA412;56000;48500;48500;58500;Herpès Simplex Virus (1 et 2) /PCR;Herpès Simplex Virus (1 et 2) /PCR;18
+ANA413;27600;24000;24000;28800;Herpès Simplex Virus (1 et 2) /IGN;Herpès Simplex Virus (1 et 2) /IGN;18
+ANA415;68000;59000;59000;70800;Recherche BK Biologie moléculaire (CERBA);Recherche BK Biologie moléculaire;18
+ANA416;30000;26000;26000;31500;Recherche de Hélicobater pylori;Recherche de Hélicobater pylori;18
+ANA417;29000;25000;25000;30000;Vitamine B9;Vitamine B12;18
+ANA480;445000;387000;387000;464400;Génotype de résistance HIV;Génotype de résistance HIV;18
+ANA524;31000;27000;27000;32400;PSA libre;PSA libre;18
+ANA658;13800;12000;12000;15000;Test d'alcool (Alcoolemie-Ethanol);Alcoolemie (Ethanol);18
+ANA700;34000;29600;29600;36000;Vitamine B3;Vitamine B3;18
+ANA701;34000;29600;29600;36000;Vitamine B6;Vitamine B6;18
+ANA702;39500;34100;34100;41000;Vitamine C;Vitamine C;18
+ANA703;34000;29600;29600;36000;Vitamine E;Vitamine E;18
+ANA704;18500;15800;15800;19000;Vitamine D3;Vitamine D3;18
+ANA705;34500;30000;30000;36000;PROCALCITONINE;PROCALCITONINE;18
+ANA800;46000;40000;40000;48000;Sérologie amibienne (Cerba);Sérologie amibienne;18
+ANA888;22700;19700;19700;24000;Légionellose (Dépistage) CERBA;Légionellose (Dépistage) CERBA;18
+ANA889;43000;37400;37400;45000;Légionellose (Titrage) CERBA;Légionellose (Titrage) CERBA;18
+ANA926;11500;10000;10000;12000;Recherche de Hélicobater pylorin (selle);Recherche de Hélicobater pylorin (selle);18
+ANA940;21500;18400;18400;22000;PHADIATOP (CERBA);PHADIATOP (CERBA)l;18
+ANA941;31800;27600;27600;31500;ALDOSTERONE (CERBA);ALDOSTERONE (CERBA);18
+ANA942;31740;27600;27600;33500;RENINE (CERBA);RENINE (CERBA);18
+ANA943;16100;14000;14000;24000;Ionogramme urinaire;Ionogramme urinaire;18
+ANA944;11500;10000;10000;12000;Lactatémie;Lactatémie;18
+ANA945;9200;8000;8000;9600;Antigène Dengue NS1;Antigène Dengue NS1;18
+ANA946;36500;31480;31480;38000;INHIBINE B CERBA;INHIBINE B CERBA;18
+ANA948;60500;52480;52480;63000;sérologie bilharzienne CERBA ;sérologie bilharzienne CERBA ;18
+ANA949;23500;20500;20500;24600;Haptoglobine;sérologie bilharzienne CERBA ;18
+ANA950;34500;30000;30000;36000;ACTH (hormone de croissance);ACTH (hormone de croissance) CERBA ;18
+ANA951;31200;27070;27070;32500;GH (hormone de croissance);GH (hormone de croissance)CERBA ;18
+ANA952;31700;27550;27550;33060;ERYTHROPOIETINE (CERBA);ERYTHROPOIETINE;18
+ANA953;32200;28000;28000;33600;Légionellose (Antigène soluble Urine) CERBA;Légionellose (Antigène soluble Urine) CERBA;18
+ANA954;23500;20500;20500;24600;Cortisolémie (Cerba);Cortisolémie (Cerba);18
+ANA955;25000;21500;21500;25800;Phénobarbitémie (Phénobarbital);Phénobarbitémie (Phénobarbital);18
+ANA956;23000;20000;20000;24000;PARAHORMONE 1-84;PARAHORMONE 1-84;18
+ANA957;2300;2000;2000;2400;TDR Malaria Quick (QBC);PARAHORMONE 1-84;18
+ANA958;17500;15000;15000;18000;CBE (Curétage Biopsie de l'Endomètre);CBE (Curétage Biopsie de l'Endomètre);18
+ANA976;35000;35000;35000;36000;ANAPATH BIOPSIES CHU;ANAPATH BIOPSIES CHU;18
+ANA977;36500;31485;31485;38000;Identification et dosage d' Amphétamines dans le sang;Identification et dosage d' Amphétamines dans le sang;18
+ANA978;122500;106265;106265;127500;Recherche de drogue dans l'urine;Recherche de drogue dans l'urine;18
+ANA979;44000;44000;44000;46000;ANATOMO-CYATHOLOGIE (CERBA);ANATOMO-CYPATHOLOGIE (CERBA);18
+ANA982;32200;28000;28000;33600;Anticorps anti-recepteurs de l'acetylcholine (anti-RACH);Anticorps anti-recepteurs de l'acetylcholine (anti-RACH);18
+ANA983;40500;35000;35000;42000;Test multi-drogue;Test multi-drogue;18
+ANA984;4600;4000;4000;5000;Recherche BK Biologie moléculaire;Recherche BK Biologie moléculaire;18
+ANA985;16500;14105;14105;17000;Protéïne S (Activité);Protéïne S (Activité);18
+ANA986;16500;14105;14105;17000;Protéïne S (Antigène);Protéïne S (Antigène);18
+ANA987;28700;24930;24930;30000;Protéïne C (Antigène);Protéïne C (Antigène);18
+ANA988;10500;8860;8860;11000;Facteur II;Facteur II;18
+ANA989;16500;14105;14105;17000;Protéïne C (Activité);Protéïne C (Activité);18
+ANA990;25000;21650;21650;26000;PROGRAF - TACROLIMUS;PROGRAF - TACROLIMUS;18
+ANA991;14500;12465;12465;15000;25 Hydroxycalciférol (Vitamine D);25 Hydroxycalciférol (Vitamine D);18
+ANA992;34000;29520;29520;35500;1.25 DisHydroxycalciférol (Vitamine D);25 Hydroxycalciférol (Vitamine D);18
+ANA993;42500;36735;36735;44000;AMH Hormono anti-mullérienne CERBA;AMH Hormono anti-mullérienne CERBA;18
+ANA994;25000;0;0;0;HILV I+II;HILV I+II;18
+ANA995;18400;16000;16000;19500;Anticorps Anti HBC  IgM;Anticorps Anti HBC  IgM;18
+ANA996;24500;21360;21360;26000;Sérologie de la rage (Cerba);Sérologie de la rage (Cerba);18
+ANA997;2300;2000;2000;2400;Hémoglobine à reflotron;Hémoglobine à reflotron;18
+ANA998;0;0;0;0;ECB de liquide de ponction de genou;ECB de liquide de ponction de genou;18
+ANA999;0;0;0;0;ECB de liquide pleurral;ECB de liquide pleurral;18
 DIA001;100000;100000;100000;147590;HEMODIALYSE 1e séance ;HEMODIALYSE 1e séance;20
 DIA0010;1000000;1000000;1000000;1475900;HEMODIALYSE 10 séances;HEMODIALYSE 10 séances;20
 DIA002;200000;200000;200000;295180;HEMODIALYSE  2 séances;HEMODIALYSE 2 séances;20
@@ -473,14 +473,14 @@ PAN014;15000;15000;15000;15000;Soin en urgence type 3;Soin en urgence type 3;6
 PAN015;20000;20000;20000;20000;Soin en urgence type 4;Soin en urgence type 4;6
 PAN016;25000;25000;25000;25000;Soin en urgence type 5;Soin en urgence type 5;6
 PAN017;2500;2500;2500;2500;Soin en urgence type 6;Soin en urgence type 6;6
-PAN018;6500;6500;15000;6500;Sejours & Soins pre-Scanner type 1;;6
-PAN019;8000;8000;25000;8000;Sejours & Soins pre-Scanner type 2;;6
-PAN020;14000;14000;35000;14000;Sejours & Soins pre-Scanner type 3;;6
-PAN021;28000;28000;45000;28000;Sejours & Soins pre-Scanner type 4;;6
-PAN022;6500;6500;15000;6500;Sejours & Soins pre - IRM type 1;;6
-PAN023;8000;8000;25000;8000;Sejours & Soins pre - IRM type 2;;6
-PAN024;14000;14000;35000;14000;Sejours & Soins pre - IRM type 3;;6
-PAN025;28000;28000;45000;28000;Sejours & Soins pre - IRM type 4;;6
+PAN018;6500;15000;6500;6500;Sejours & Soins pre-Scanner type 1;;6
+PAN019;8000;25000;8000;8000;Sejours & Soins pre-Scanner type 2;;6
+PAN020;14000;35000;14000;14000;Sejours & Soins pre-Scanner type 3;;6
+PAN021;28000;45000;28000;28000;Sejours & Soins pre-Scanner type 4;;6
+PAN022;6500;15000;6500;6500;Sejours & Soins pre - IRM type 1;;6
+PAN023;8000;25000;8000;8000;Sejours & Soins pre - IRM type 2;;6
+PAN024;14000;35000;14000;14000;Sejours & Soins pre - IRM type 3;;6
+PAN025;28000;45000;28000;28000;Sejours & Soins pre - IRM type 4;;6
 PAN026;1000;1000;1000;1000;Lavage Nasal type 1;;6
 PAN027;2000;2000;2000;2000;Lavage Nasal type 2 ;;6
 PAN028;4000;4000;4000;4000;Lavage Nasal type 3 ;;6
@@ -611,7 +611,7 @@ SCA006;105000;105000;105000;140000;SCANNER 2 org ( 2 rachis);SCANNER 2 org ( 2 r
 SCA007;250000;250000;250000;300000;SCANNER CORPS ENTIER;SCANNER CORPS ENTIER;16
 SCA008;100000;90000;90000;200000;ANGIO SCANNER;ANGIO SCANNER;16
 SCA009;100000;70000;70000;150000;MYELOSCANNER;MYELOSCANNER;16
-SCA010;30000;30000;70000;90000;PELVISCAN;PELVISCAN;16
+SCA010;30000;70000;30000;90000;PELVISCAN;PELVISCAN;16
 SCA012;70000;80000;80000;120000;SCANNER (Genou, hanches);SCANNER (Genou, hanches ,,,);16
 SCA013;155000;180000;180000;200000;SCANNER 3 org (céré + 2rachis);SCANNER 3 org (céré + 2rachis);16
 SCA014;175000;180000;180000;200000;SCANNER 3 org ( 3 rachis);SCANNER 3 org ( 3 rachis);16
@@ -635,3 +635,66 @@ SCA031;105000;105000;105000;140000;SCANNER Abdomino-pelvienne ;SCANNER Abdomino-
 SCA034;105000;105000;105000;140000;SCANNER thoraco-abdominal;SCANNER Abdomino-pelvienne ;16
 SCA035;25000;20000;20000;25000;PRODUIT DE CONTRASTE;SCANNER CEREBRAL;16
 SCA036;70000;90000;90000;120000;SCANNER PELVIENNE;SCANNER PELVIENNE;16
+ACT089;43505;43505;43505;43505;KIT pour HERNIORAPHIE;Kit pour HERNIORAPHIE;23
+ACT090;70730;70730;70730;70730;KIT pour OSTEOSYNTHESE;Kit pour OSTEOSYNTHESE;23
+ACT091;64655;64655;64655;64655;KIT RACHI ANESTHESIE;KIT RACHI ANESTHESIE;23
+ACT092;52610;52610;52610;52610;KIT pour MASTECTOMIE ou QUADRANTECTOMIE;KIT pour MASTECTOMIE ou QUADRANTECTOMIE;23
+ACT093;96185;96185;96185;96185;KIT pour MYOMECTOMIE;KIT pour MYOMECTOMIE;23
+ACT094;97265;97265;97265;97265;KIT pour CESARIENNE;KIT pour CESARIENNE;23
+ACT095;230510;230510;230510;230510;KIT pour CRANE;KIT pour CRANE;23
+ACT096;169550;169550;169550;169550;KIT pour RACHIS LOMBAIRE;KIT pour RACHIS LOMBAIRE;23
+ACT097;101850;101850;101850;101850;KIT pour LAPAROTOMIE (PERITONITE);KIT pour LAPAROTOMIE (PERITONITE);23
+ACT098;36055;36055;36055;36055;KIT pour HYSTEROSCOPIE;KIT pour HYSTEROSCOPIE;23
+ACT099;50830;50830;50830;50830;KIT pour CERCLAGE;KIT pour CERCLAGE;23
+ACT100;25740;25740;25740;25740;KIT pour CIRCONCISION;KIT pour CIRCONCISION;23
+ACT101;123890;123890;123890;123890;KIT pour HYSTERECTOMIE;KIT pour HYSTERECTOMIE;23
+ACT102;73545;73545;73545;73545;KIT pour MASTECTOMIE ou QUADRANTECTOMIE + CUR;KIT pour MASTECTOMIE ou QUADRANTECTOMIE + CURAGE AXILLAIRE;23
+ACT103;43125;43125;43125;43125;KIT pour APPENDICECTOMIE;KIT pour APPENDICECTOMIE;23
+ACT104;51110;51110;51110;51110;KIT pour FAV;KIT pour FAV;23
+ACT105;107065;107065;107065;107065;KIT pour OSTEOSYNTHESE (Fémur,hanche);KIT pour OSTEOSYNTHESE (Fémur,hanche);23
+ACT106;39650;39650;39650;39650;KIT pour CHIRURGIE MINEURE;KIT pour CHIRURGIE MINEURE;23
+ACT107;64655;64655;64655;64655;KIT AG;KIT POUR ANESTHESIE GENERALE;23
+ACT108;36395;36395;36395;36395;KIT pour BLOC AXILLAIRE (PLEXUS);KIT pour BLOC AXILLAIRE (PLEXUS);23
+ACT109;77950;77950;77950;77950;KIT pour ACCOUCHEMENT;KIT KIT pour ACCOUCHEMENT;23
+ACT110;64735;64735;64735;64735;KIT pour ADENO-AMYGDALECTOMIE ;KIT pour ADENO-AMYGDALECTOMIE ;23
+ACT111;99620;99620;99620;99620;KIT CHIRURGIE MAXILLO-FACIALE;KIT CHIRURGIE MAXILLO-FACIALE;23
+ACT112;30000;30000;30000;30000;KIT PERIDURAL;KIT PERIDURAL;23
+ACT113;34255;34255;34255;34255;KIT CURETAGE DE PROPETE;KIT CURETAGE DE PROPETE;23
+ACT114;51955;51955;51955;51955;KIT NODULECTOMIE SOUS ANESTHESIE LOCALE;KIT NODULECTOMIE SOUS ANESTHESIE LOCALE;23
+ACT116;158150;158150;158150;158150;KIT HEMATOME EXTRADURAL ;KIT HEMATOME EXTRADURAL ;23
+ACT117;127360;127360;127360;127360;KIT HEMATOME SOUS DURAL CHRONIQUE;KIT HEMATOME SOUS DURAL CHRONIQUE;23
+ACT118;139685;139685;139685;139685;KIT LAMINECTOMIE OU OSTEOSYNTHESE;KIT LAMINECTOMIE OU OSTEOSYNTHESE;23
+ACT119;95375;95375;95375;95375;KIT DE THYROÏDECTOMIE;KIT DE THYROÏDECTOMIE;23
+ACT125;127360;127360;127360;127360;KIT HEMATOME SOUS DURAL AIGU;KIT HEMATOME SOUS DURAL AIGU;23
+ACT126;30000;30000;30000;30000;KIT DILATATION URETRALE(ACTE;;23
+ACT127;87625;87625;87625;87625;KIT CYSTOSCOPIE;;23
+ACT128;35085;35085;35085;35085;KIT BIOPSIE PROSTATIQUE;;23
+ECG001;12000;15000;15000;19800;ECG;ECG;14
+ECG002;14000;21840;21840;33000;ECG d'effort;ECG d'effort;14
+EEG001;30000;30000;30000;30000;EEG;EEG;15
+EEG002;25000;25000;25000;25000;Audiogramme;Audiogramme;15
+EEG003;80000;80000;80000;80000;EMG;EMG;15
+DIV001;1000;1000;1000;1000;Carnet Enfant;carnet ;24
+DIV002;1000;1000;1000;1000;Spéculum;Spéculum pour PV;24
+DIV003;2500;2500;2500;2500;Bande (1);;24
+DIV004;5000;5000;5000;5000;Bandes (2);;24
+DIV005;7500;7500;7500;7500;Bandes (3);;24
+DIV006;0;0;0;0;Hospitalisation;Hospitalisation;24
+DIV007;25000;80000;80000;80000;AMBULANCE;;24
+DIV008;350000;350000;350000;350000;Plaques + Vis;;24
+DIV009;13500;13500;13500;13500;Monitoring du RCF;;24
+DIV010;500;500;500;500;Eau Mineral;;24
+DIV011;1500;1500;1500;1500;Petit Déjeuner;;24
+DIV012;3000;3000;3000;3000;Déjeuner;;24
+DIV013;3000;3000;3000;3000;Diner;;24
+DIV014;30000;30000;30000;30000;Contrôle Pacemaker;Contrôle de pacemaker;24
+DIV015;3500;3500;3500;3500;Séjour Accompagnateur ;Séjour Accompagnateur ;24
+DIV016;20000;20000;20000;20000;Canne Anglaise;;24
+DIV017;10000;10000;10000;10000;Séjour Scanner;Séjour Scanner;24
+DIV018;100000;100000;100000;100000;Cathéter;Cathéter;24
+DIV019;6000;6000;6000;6000;Autotransfustion;Autotransfustion;24
+DIV024;1200;1200;1200;1200;Majoration;Majoration;24
+DIV025;1000;1000;1000;1000;Carnet Adulte;carnet ;24
+DIV026;3120;3120;3120;3120;Abstreinte ;Abstreinte ;24
+DIV027;65600;65600;65600;65600;ESCORTE ASSURE;ESCORTE ASSURE;24
+DIV028;44720;44720;44720;44720;Repas Indien;;24

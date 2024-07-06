@@ -15,10 +15,8 @@ public class TransfusedResponse {
     private long id;
     private LocalDateTime date_op;
     private String provenance;
-    private String donneur_ref;
-    private PatientResponse donneur;
-    private String receveur_ref;
-    private PatientResponse receveur;
+    private String donneur;
+    private String receveur;
     private String hemoglobine;
     private String comments;
     private String motif;

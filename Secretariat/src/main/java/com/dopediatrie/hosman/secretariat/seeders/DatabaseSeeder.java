@@ -345,8 +345,9 @@ public class DatabaseSeeder {
             EtatRequest ar5 = EtatRequest.builder().nom("Annulée").couleur("red").indice(2).build();
             EtatRequest ar6 = EtatRequest.builder().nom("Payée").couleur("green").indice(3).build();
             EtatRequest ar7 = EtatRequest.builder().nom("Remboursée").couleur("red").indice(4).build();
+            EtatRequest ar8 = EtatRequest.builder().nom("Programmé").couleur("blue").indice(5).build();
 
-            etatService.addEtat(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6, ar7));
+            etatService.addEtat(Arrays.asList(ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8));
 
             log.info("Etat table seeded");
         }else {

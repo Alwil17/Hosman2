@@ -47,10 +47,8 @@ public class FiliationServiceImpl implements FiliationService {
             filiation = filiationRepository.findByFiliationByPatientIdAndType(filiationRequest.getPatient_id(), filiationRequest.getType()).orElseThrow();
             editFiliation(filiationRequest, filiation.getId());
         }else {
-            AssuranceRequest assuranceRequest = AssuranceRequest.builder().nom(filiationRequest.getAssurance()).build();
             ProfessionRequest professionRequest = ProfessionRequest.builder().denomination(filiationRequest.getProfession()).build();
             EmployeurRequest employeurRequest = EmployeurRequest.builder().nom(filiationRequest.getEmployeur()).build();
-            long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(assuranceRequest) : 0;
             long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(professionRequest) : 0;
             long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(employeurRequest) : 0;
 
@@ -60,7 +58,7 @@ public class FiliationServiceImpl implements FiliationService {
                     .prenoms(filiationRequest.getPrenoms())
                     .profession(professionRepository.findById(profession_id).orElseThrow())
                     .employeur(employeurRepository.findById(employeur_id).orElseThrow())
-                    .assurance(assuranceRepository.findById(assurance_id).orElseThrow())
+                    .assurance(filiationRequest.getAssurance())
                     .telephone(filiationRequest.getTelephone())
                     .sexe(filiationRequest.getSexe())
                     .type(filiationRequest.getType())
@@ -68,8 +66,6 @@ public class FiliationServiceImpl implements FiliationService {
                     .patient(patientRepository.findById(filiationRequest.getPatient_id()).orElseThrow())
                     .build();
 
-            if(assurance_id != 0)
-                filiation.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
             if(profession_id != 0)
                 filiation.setProfession(professionRepository.findById(profession_id).orElseThrow());
             if(employeur_id != 0)
@@ -105,10 +101,8 @@ public class FiliationServiceImpl implements FiliationService {
     public void editFiliation(FiliationRequest filiationRequest, long filiationId) {
         log.info("FiliationServiceImpl | editFiliation is called");
 
-        AssuranceRequest assuranceRequest = AssuranceRequest.builder().nom(filiationRequest.getAssurance()).build();
         ProfessionRequest professionRequest = ProfessionRequest.builder().denomination(filiationRequest.getProfession()).build();
         EmployeurRequest employeurRequest = EmployeurRequest.builder().nom(filiationRequest.getEmployeur()).build();
-        long assurance_id = (filiationRequest.getAssurance() != null) ? assuranceService.addAssurance(assuranceRequest) : 0;
         long profession_id = (filiationRequest.getProfession() != null) ? professionService.addProfession(professionRequest) : 0;
         long employeur_id = (filiationRequest.getEmployeur() != null) ? employeurService.addEmployeur(employeurRequest) : 0;
 
@@ -123,6 +117,7 @@ public class FiliationServiceImpl implements FiliationService {
         filiation.setTelephone(filiationRequest.getTelephone());
         filiation.setSexe(filiationRequest.getSexe());
         filiation.setType(filiationRequest.getType());
+        filiation.setAssurance(filiationRequest.getAssurance());
         filiation.setAnnee_naissance(filiationRequest.getAnnee_naissance());
         filiation.setPatient(patientRepository.findById(filiationRequest.getPatient_id()).orElseThrow());
 
@@ -130,8 +125,6 @@ public class FiliationServiceImpl implements FiliationService {
             filiation.setProfession(professionRepository.findById(profession_id).orElseThrow());
         if(employeur_id != 0)
             filiation.setEmployeur(employeurRepository.findById(employeur_id).orElseThrow());
-        if(assurance_id != 0)
-            filiation.setAssurance(assuranceRepository.findById(assurance_id).orElseThrow());
 
         filiationRepository.save(filiation);
 

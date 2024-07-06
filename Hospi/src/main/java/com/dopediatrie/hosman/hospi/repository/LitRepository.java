@@ -26,4 +26,10 @@ public interface LitRepository extends JpaRepository<Lit,Long> {
 
     @Query("select lit from Lit lit JOIN lit.chambre ch where ch.nom = :chambreNom")
     List<Lit> findByChambreNom(@Param("chambreNom") String chambre_nom);
+
+    @Query("select lit from Lit lit LEFT JOIN Suivi s on s.type_id = lit.id and s.type = 'lits' WHERE s.id IS NULL")
+    List<Lit> findAllUntaken();
+
+    @Query("select lit from Lit lit JOIN lit.chambre ch LEFT JOIN Suivi s on s.type_id = lit.id and s.type = 'lits' WHERE ch.id = :cId and s.id IS NULL")
+    List<Lit> findAllUntakenByCHambreId(@Param("cId") long chambreId);
 }

@@ -55,9 +55,6 @@ public class Patient implements Serializable {
     private List<Prestation> prestations;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
-    private List<RendezVous> rdvs;
-    @OneToMany(mappedBy = "patient")
-    @JsonIgnore
     private List<PrestationTemp> temp_prestations;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
@@ -93,8 +90,13 @@ public class Patient implements Serializable {
             joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "maladie_id", referencedColumnName = "id"))
     private List<Maladie> maladies;
+    @OneToOne
+    @JoinColumn(name = "antecedant_id")
+    private Antecedant antecedant;
+    @OneToOne
+    @JoinColumn(name = "coefficient_id")
+    private Coefficient coefficient;
     private String commentaire;
-    private String antecedent;
 
     @Override
     public String toString() {

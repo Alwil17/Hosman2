@@ -118,6 +118,16 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/ref/{ref}/bm")
+    public ResponseEntity<Void> editPatientCaracsFromBM(@RequestBody PatientRequest patientRequest,
+                                                  @PathVariable("ref") String patientRef
+    ) {
+        log.info("PatientController | editPatientCaracs is called");
+
+        patientService.editPatientCaracs(patientRequest, patientRef);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public void deletePatientById(@PathVariable("id") long patientId) {
         patientService.deletePatientById(patientId);

@@ -25,6 +25,8 @@ public class Suivi {
     private LocalDateTime apply_date;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+    @Column(columnDefinition = "TEXT")
+    private String extras;
     @ManyToOne
     @JoinColumn(name = "hospit_id")
     private Hospit hospit;

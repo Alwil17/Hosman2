@@ -4,7 +4,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
 import org.jsoup.parser.Parser;
-import org.w3c.tidy.Tidy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -79,5 +78,57 @@ public class Utils {
                     "left join ("+baseRequest+")b on a.libelle = b.actec order by a.position asc";
         }
         return finalRequest;
+    }
+
+    public static String convertirMontantEnLettres(double nombre) {
+        if (nombre == 0) {
+            return "Zéro";
+        }
+
+        // Définir les unités et les dizaines
+        String[] unites = {"", "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf"};
+        String[] dizaines = {"", "Dix", "Vingt", "Trente", "Quarante", "Cinquante", "Soixante", "Soixante-Dix", "Quatre-Vingts", "Quatre-Vingt-Dix"};
+
+        // Convertir le nombre en lettres
+        String valeurEnLettres = "";
+        if (nombre < 0) {
+            valeurEnLettres += "Moins ";
+            nombre = Math.abs(nombre);
+        }
+
+        if (nombre >= 1000000000) {
+            valeurEnLettres += convertirMontantEnLettres(nombre / 1000000000) + " Milliards ";
+            nombre %= 1000000000;
+        }
+
+        if (nombre >= 1000000) {
+            valeurEnLettres += convertirMontantEnLettres(nombre / 1000000) + " Millions ";
+            nombre %= 1000000;
+        }
+
+        if (nombre >= 1000) {
+            valeurEnLettres += convertirMontantEnLettres(nombre / 1000) + " Mille ";
+            nombre %= 1000;
+        }
+
+        if (nombre >= 100) {
+            valeurEnLettres += unites[(int) (nombre / 100)] + " Cent ";
+            nombre %= 100;
+        }
+
+        if (nombre > 0) {
+            if (nombre < 10) {
+                valeurEnLettres += unites[(int) nombre];
+            } else if (nombre < 20) {
+                valeurEnLettres += unites[(int) (nombre % 10)] + " Dix";
+            } else {
+                valeurEnLettres += dizaines[(int) (nombre / 10)];
+                if (nombre % 10 > 0) {
+                    valeurEnLettres += "-" + unites[(int) (nombre % 10)];
+                }
+            }
+        }
+
+        return valeurEnLettres + " ";
     }
 }

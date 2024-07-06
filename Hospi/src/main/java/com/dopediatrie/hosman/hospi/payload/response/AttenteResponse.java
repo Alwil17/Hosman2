@@ -16,7 +16,9 @@ public class AttenteResponse {
     private long num_attente;
     private int ordre;
     private boolean attente;
+    private MedecinResponse medecin_consulteur;
     private LocalDateTime date_attente;
+    private MedecinResponse medecin_receveur;
     private boolean urgence;
     private long structure_id;
 }

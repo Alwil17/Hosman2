@@ -20,4 +20,5 @@ public class ChirurgieResponse {
     private double coef;
     private String comments;
     private String title;
+    private int frais;
 }

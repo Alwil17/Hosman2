@@ -16,10 +16,11 @@ public class ConsultationRequest {
     private String hdm;
     private String patient_ref;
     private String secteur_code;
+    private Long consulteur_id;
     private Long attente_num;
     private ConstanteRequest constante;
+    private Long ordonnance_id;
     private List<ConsultationMotifRequest> motifs;
     private List<ConsultationActeRequest> actes;
     private List<ConsultationDiagnosticRequest> diagnostics;
-
 }

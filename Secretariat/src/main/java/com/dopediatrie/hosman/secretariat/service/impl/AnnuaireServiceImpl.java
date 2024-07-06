@@ -1,6 +1,7 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
 import com.dopediatrie.hosman.secretariat.entity.Annuaire;
+import com.dopediatrie.hosman.secretariat.entity.Categorie;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AnnuaireRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AnnuaireResponse;
@@ -36,10 +37,12 @@ public class AnnuaireServiceImpl implements AnnuaireService {
     @Override
     public List<Annuaire> getAllAnnuaires() {
         log.info("AnnuaireServiceImpl | getAllAnnuaires is called");
+        List<Annuaire> annuaireList = new ArrayList<>();
         List<Annuaire> annuaires = annuaireRepository.findAll();
 
         String sqlquery = "SELECT e.nom as nom, e.prenoms as prenom, p.denomination as profession,\n" +
-                "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email \n" +
+                "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email, \n" +
+                "e.domicile as domicile, e.bureau as bureau, e.bip as bip, e.no_poste as no_poste \n" +
                 "FROM employe e \n" +
                 "JOIN profession p on p.id = e.profession_id\n" +
                 "JOIN secteur s on s.id = e.secteur_id ";
@@ -50,22 +53,29 @@ public class AnnuaireServiceImpl implements AnnuaireService {
                 resultSet.getString("prenom"),
                 resultSet.getString("profession"),
                 resultSet.getString("secteur"),
-                "",
+                resultSet.getString("bureau"),
                 resultSet.getString("tel1"),
                 resultSet.getString("tel2"),
-                "",
+                resultSet.getString("domicile"),
                 resultSet.getString("email"),
-                "",
-                "",
+                resultSet.getString("bip"),
+                resultSet.getString("no_poste"),
                 "pisjo"
         ));
 
         for (AnnuaireResponse employe : responses) {
             Annuaire annuaire = Annuaire.builder().build();
             copyProperties(employe, annuaire);
-            annuaires.add(annuaire);
+            annuaireList.add(annuaire);
         }
-        return annuaires;
+
+        for (Annuaire ann : annuaires) {
+            NameResponse cat = categorieService.getCategorieBySlug(ann.getCategorie_slug());
+            ann.setCategorie(cat);
+            annuaireList.add(ann);
+        }
+
+        return annuaireList;
     }
 
     @Override
@@ -100,7 +110,7 @@ public class AnnuaireServiceImpl implements AnnuaireService {
     public void addAnnuaire(List<AnnuaireRequest> annuaireRequests) {
         log.info("AnnuaireServiceImpl | addAnnuaire is called");
 
-        for (AnnuaireRequest annuaireRequest: annuaireRequests) {
+        for (AnnuaireRequest annuaireRequest : annuaireRequests) {
             String categorie = categorieService.addCategorieGetSlug(annuaireRequest.getCategorie());
 
             Annuaire annuaire
@@ -148,7 +158,45 @@ public class AnnuaireServiceImpl implements AnnuaireService {
     @Override
     public List<Annuaire> getAnnuaireByCategorie(String categorie) {
         log.info("AnnuaireServiceImpl | getAnnuaireByCategorie is called");
-        return annuaireRepository.findByCategorie(categorie);
+        List<Annuaire> annuaireList = new ArrayList<>();
+        if (categorie.toLowerCase().equals("pisjo")) {
+            String sqlquery = "SELECT e.nom as nom, e.prenoms as prenom, p.denomination as profession,\n" +
+                    "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email, \n" +
+                    "e.domicile as domicile, e.bureau as bureau, e.bip as bip, e.no_poste as no_poste \n" +
+                    "FROM employe e \n" +
+                    "JOIN profession p on p.id = e.profession_id \n" +
+                    "JOIN secteur s on s.id = e.secteur_id ";
+
+            List<AnnuaireResponse> responses = jdbcTemplate.query(sqlquery, (resultSet, rowNum) -> new AnnuaireResponse(
+                    0,
+                    resultSet.getString("nom"),
+                    resultSet.getString("prenom"),
+                    resultSet.getString("profession"),
+                    resultSet.getString("secteur"),
+                    resultSet.getString("bureau"),
+                    resultSet.getString("tel1"),
+                    resultSet.getString("tel2"),
+                    resultSet.getString("domicile"),
+                    resultSet.getString("email"),
+                    resultSet.getString("bip"),
+                    resultSet.getString("no_poste"),
+                    "pisjo"
+            ));
+            for (AnnuaireResponse employe : responses) {
+                Annuaire annuaire = Annuaire.builder().build();
+                copyProperties(employe, annuaire);
+                annuaireList.add(annuaire);
+            }
+        }
+        List<Annuaire> annuaires = annuaireRepository.findByCategorie(categorie);
+        if (annuaires != null && annuaires.size() > 0) {
+            for (Annuaire ann : annuaires) {
+                NameResponse cat = categorieService.getCategorieBySlug(ann.getCategorie_slug());
+                ann.setCategorie(cat);
+                annuaireList.add(ann);
+            }
+        }
+        return annuaireList;
     }
 
     @Override
@@ -198,19 +246,129 @@ public class AnnuaireServiceImpl implements AnnuaireService {
     @Override
     public List<Annuaire> getAnnuaireByCategorieAndQueryString(String categorie, String searchString) {
         log.info("AnnuaireServiceImpl | getAnnuaireByCategorieAndQueryString is called");
-        return annuaireRepository.findByCategorieAndQueryString(categorie, searchString);
+        List<Annuaire> annuaireList = new ArrayList<>();
+        if (categorie.toLowerCase().equals("pisjo")) {
+            String sqlquery = "SELECT e.nom as nom, e.prenoms as prenom, p.denomination as profession,\n" +
+                    "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email, \n" +
+                    "e.domicile as domicile, e.bureau as bureau, e.bip as bip, e.no_poste as no_poste \n" +
+                    "FROM employe e \n" +
+                    "JOIN profession p on p.id = e.profession_id \n" +
+                    "JOIN secteur s on s.id = e.secteur_id \n" +
+                    "where concat(e.nom, e.prenoms, p.denomination, e.email) like ('%" + searchString + "%')";
+
+            List<AnnuaireResponse> responses = jdbcTemplate.query(sqlquery, (resultSet, rowNum) -> new AnnuaireResponse(
+                    0,
+                    resultSet.getString("nom"),
+                    resultSet.getString("prenom"),
+                    resultSet.getString("profession"),
+                    resultSet.getString("secteur"),
+                    resultSet.getString("bureau"),
+                    resultSet.getString("tel1"),
+                    resultSet.getString("tel2"),
+                    resultSet.getString("domicile"),
+                    resultSet.getString("email"),
+                    resultSet.getString("bip"),
+                    resultSet.getString("no_poste"),
+                    "pisjo"
+            ));
+            for (AnnuaireResponse employe : responses) {
+                Annuaire annuaire = Annuaire.builder().build();
+                copyProperties(employe, annuaire);
+                annuaireList.add(annuaire);
+            }
+        } else {
+            List<Annuaire> annuaires = annuaireRepository.findByCategorieAndQueryString(categorie, searchString);
+            if (annuaires != null && annuaires.size() > 0) {
+                for (Annuaire ann : annuaires) {
+                    NameResponse cat = categorieService.getCategorieBySlug(ann.getCategorie_slug());
+                    ann.setCategorie(cat);
+                    annuaireList.add(ann);
+                }
+            }
+        }
+        return annuaireList;
     }
 
     @Override
     public List<Annuaire> getAnnuaireByQueryString(String searchString) {
         log.info("AnnuaireServiceImpl | getAnnuaireByQueryString is called");
-        return annuaireRepository.findByQueryString(searchString);
+
+
+        List<Annuaire> annuaireList = new ArrayList<>();
+        String sqlquery = "SELECT e.nom as nom, e.prenoms as prenom, p.denomination as profession,\n" +
+                "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email, \n" +
+                "e.domicile as domicile, e.bureau as bureau, e.bip as bip \n" +
+                "FROM employe e \n" +
+                "JOIN profession p on p.id = e.profession_id \n" +
+                "JOIN secteur s on s.id = e.secteur_id \n" +
+                "where concat(e.nom, e.prenoms, p.denomination, e.email) like ('%" + searchString + "%')";
+
+        List<AnnuaireResponse> responses = jdbcTemplate.query(sqlquery, (resultSet, rowNum) -> new AnnuaireResponse(
+                0,
+                resultSet.getString("nom"),
+                resultSet.getString("prenom"),
+                resultSet.getString("profession"),
+                resultSet.getString("secteur"),
+                resultSet.getString("bureau"),
+                resultSet.getString("tel1"),
+                resultSet.getString("tel2"),
+                resultSet.getString("domicile"),
+                resultSet.getString("email"),
+                resultSet.getString("bip"),
+                resultSet.getString("no_poste"),
+                "pisjo"
+        ));
+        String sqlquery0 = "SELECT e.nom as nom, e.prenoms as prenom, p.denomination as profession,\n" +
+                "s.libelle as secteur, e.tel1 as tel1, e.tel2 as tel2, e.email as email, \n" +
+                "e.domicile as domicile, e.bureau as bureau, e.bip as bip, e.no_poste as no_poste \n" +
+                "FROM employe e \n" +
+                "JOIN profession p on p.id = e.profession_id \n" +
+                "JOIN secteur s on s.id = e.secteur_id \n"+
+                "where concat(e.nom, e.prenoms, p.denomination, e.email) like ('%"+ searchString +"%')";
+
+        List<AnnuaireResponse> responses0 = jdbcTemplate.query(sqlquery0, (resultSet, rowNum) -> new AnnuaireResponse(
+                0,
+                resultSet.getString("nom"),
+                resultSet.getString("prenom"),
+                resultSet.getString("profession"),
+                resultSet.getString("secteur"),
+                resultSet.getString("bureau"),
+                resultSet.getString("tel1"),
+                resultSet.getString("tel2"),
+                resultSet.getString("domicile"),
+                resultSet.getString("email"),
+                resultSet.getString("bip"),
+                resultSet.getString("no_poste"),
+                "pisjo"
+        ));
+        for (AnnuaireResponse employe : responses0) {
+            Annuaire annuaire = Annuaire.builder().build();
+            copyProperties(employe, annuaire);
+            annuaireList.add(annuaire);
+        }
+
+        for (AnnuaireResponse employe : responses) {
+            Annuaire annuaire = Annuaire.builder().build();
+            copyProperties(employe, annuaire);
+            annuaireList.add(annuaire);
+        }
+
+        List<Annuaire> annuaires = annuaireRepository.findByQueryString(searchString);
+        if (annuaires != null && annuaires.size() > 0) {
+            for (Annuaire ann : annuaires) {
+                NameResponse cat = categorieService.getCategorieBySlug(ann.getCategorie_slug());
+                ann.setCategorie(cat);
+                annuaireList.add(ann);
+            }
+        }
+
+        return annuaireList;
     }
 
     @Override
     public Map<String, List<AnnuaireResponse>> getAnnuaireBips() {
         log.info("AnnuaireServiceImpl | getAnnuaireBips is called");
-        String sqlQuery = "select s.libelle as secteur, concat(e.nom, ' ',e.prenoms) as nom, \n" +
+        String sqlQuery = "select s.libelle as secteur, e.nom as nom, e.prenoms as prenom, \n" +
                 "e.no_poste as poste, e.bip as bip, e.bureau as contact \n" +
                 "from employe e \n" +
                 "JOIN secteur s ON e.secteur_id = s.id";
@@ -218,6 +376,7 @@ public class AnnuaireServiceImpl implements AnnuaireService {
         List<AnnuaireResponse> responses = jdbcTemplate.query(sqlQuery, (resultSet, rowNum) -> new AnnuaireResponse(
                 0,
                 resultSet.getString("nom"),
+                resultSet.getString("prenom"),
                 resultSet.getString("secteur"),
                 resultSet.getString("contact"),
                 resultSet.getString("bip"),

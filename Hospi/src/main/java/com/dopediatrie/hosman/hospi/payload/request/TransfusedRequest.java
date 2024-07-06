@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class TransfusedRequest {
     private LocalDateTime date_op;
     private String provenance;
-    private String donneur_ref;
-    private String receveur_ref;
+    private String donneur;
+    private String receveur;
     private String hemoglobine;
     private String comments;
     private String motif;

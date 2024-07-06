@@ -22,10 +22,13 @@ public class LitController {
     private final LitService litService;
 
     @GetMapping
-    public ResponseEntity<List<Lit>> getAllLits() {
-
+    public ResponseEntity<List<Lit>> getAllLits(@RequestParam(value = "vue", required = false) String vue) {
         log.info("LitController | getAllLits is called");
-        return new ResponseEntity<>(litService.getAllLits(), HttpStatus.OK);
+        List<Lit> lits = litService.getAllLits();
+        if((vue!=null) && !vue.isBlank() && vue.equals("UNTAKEN")){
+            lits = litService.getAllLitsUntaken();
+        }
+        return new ResponseEntity<>(lits, HttpStatus.OK);
     }
 
     @PostMapping

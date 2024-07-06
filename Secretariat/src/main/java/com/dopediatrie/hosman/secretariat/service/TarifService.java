@@ -1,7 +1,9 @@
 package com.dopediatrie.hosman.secretariat.service;
 
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
+import com.dopediatrie.hosman.secretariat.payload.request.ProformatRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
+import com.dopediatrie.hosman.secretariat.payload.response.ProformatResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
 
 import java.util.List;
@@ -26,4 +28,8 @@ public interface TarifService {
     public void deleteTarifById(long tarifId);
 
     List<TarifResponse> getTarifForExamen();
+
+    List<ProformatResponse> processProformat(ProformatRequest proformatRequest);
+
+    List<Tarif> getTarifForActe(String acte);
 }

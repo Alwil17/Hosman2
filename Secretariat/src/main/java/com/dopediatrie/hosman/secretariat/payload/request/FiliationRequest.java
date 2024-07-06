@@ -12,7 +12,7 @@ public class FiliationRequest {
     private String prenoms;
     private String profession;
     private String employeur;
-    private String assurance;
+    private int assurance;
     private String telephone;
     private char sexe;
     private String type;

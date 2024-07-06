@@ -49,6 +49,7 @@ public class ChirurgieServiceImpl implements ChirurgieService {
                     .coef(chirurgieRequest.getCoef())
                     .date_op(chirurgieRequest.getDate_op())
                     .comments(chirurgieRequest.getComments())
+                    .frais(chirurgieRequest.getFrais())
                     .hospit(hospitRepository.findById(chirurgieRequest.getHospit_id()).orElseThrow())
                     .build();
             chirurgie = chirurgieRepository.save(chirurgie);
@@ -76,6 +77,7 @@ public class ChirurgieServiceImpl implements ChirurgieService {
                         .coef(chirurgieRequest.getCoef())
                         .date_op(chirurgieRequest.getDate_op())
                         .comments(chirurgieRequest.getComments())
+                        .frais(chirurgieRequest.getFrais())
                         .hospit(hospitRepository.findById(chirurgieRequest.getHospit_id()).orElseThrow())
                         .build();
                 chirurgieRepository.save(chirurgie);
@@ -136,6 +138,7 @@ public class ChirurgieServiceImpl implements ChirurgieService {
         chirurgie.setMed_type(chirurgieRequest.getMed_type());
         chirurgie.setDate_op(chirurgieRequest.getDate_op());
         chirurgie.setTitle(chirurgieRequest.getTitle());
+        chirurgie.setFrais(chirurgieRequest.getFrais());
         chirurgie.setHospit(hospitRepository.findById(chirurgieRequest.getHospit_id()).orElseThrow());
         chirurgieRepository.save(chirurgie);
 

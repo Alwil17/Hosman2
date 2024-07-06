@@ -10,6 +10,7 @@ public class TarifRequest {
     private String slug;
     private String code;
     private String description;
+    private int qte = 1;
     private double tarif_non_assure = 0;
     private double tarif_etr_non_assure = 0;
     private double tarif_assur_locale = 0;

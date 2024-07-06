@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DiagnosticService {
     DiagnosticResponse getDiagnosticByCode(String diagnostic);
+    String getToken();
 }

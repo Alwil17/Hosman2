@@ -69,6 +69,15 @@ public class HospitController {
         return new ResponseEntity<>(suivis, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Hospit>> getHospitBySearch(@RequestParam("status") int status) {
+        log.info("HospitController | getHospitBySearch is called");
+
+        List<Hospit> hospits
+                = hospitService.getHospitByStatus(status);
+        return new ResponseEntity<>(hospits, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/chirurgies")
     public ResponseEntity<List<ChirurgieResponse>> getChirurgieByHospitId(@PathVariable("id") long hospitId) {
         log.info("HospitController | getHospitById is called");
@@ -146,6 +155,15 @@ public class HospitController {
         log.info("HospitController | editHospit | hospitId : " + hospitId);
 
         hospitService.editHospit(hospitRequest, hospitId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Void> updateStatus(@PathVariable("id") long hospitId, @RequestParam("status") int status) {
+        log.info("HospitController | updateStatus is called");
+        log.info("HospitController | updateStatus | hospitId : " + hospitId);
+
+        hospitService.updateStatus(hospitId, status);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

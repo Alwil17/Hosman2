@@ -81,14 +81,17 @@ public class PrestationTempServiceImpl implements PrestationTempService {
                     break;
                 case 2:
                     double base_remb = 0;
-                    if(patient.getAssurance().getTarifs() != null && patient.getAssurance().getTarifs().size() > 0){
-                        log.info("Entered");
-                        if(assuranceTarifRepository.existsByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId())){
-                            AssuranceTarif at = assuranceTarifRepository.findByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId()).get();
-                            base_remb = at.getBase_remboursement();
-                            surplus += tarif.getTarif_assur_locale() - base_remb;
+                    if(patient.getAssurance() != null){
+                        if(patient.getAssurance().getTarifs() != null && patient.getAssurance().getTarifs().size() > 0){
+                            log.info("Entered");
+                            if(assuranceTarifRepository.existsByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId())){
+                                AssuranceTarif at = assuranceTarifRepository.findByAssuranceAndTarifId(patient.getAssurance().getId(), tarif.getId()).get();
+                                base_remb = at.getBase_remboursement();
+                                surplus += tarif.getTarif_assur_locale() - base_remb;
+                            }
                         }
                     }
+
                     total_prix_gros = (base_remb != 0) ? base_remb : tarif.getTarif_assur_locale();
 
                     break;

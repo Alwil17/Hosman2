@@ -22,4 +22,8 @@ public interface LitService {
     List<Lit> getLitByChambreId(long chambreId);
 
     List<Lit> getLitByNom(String nom);
+
+    List<Lit> getAllLitsUntakenForChambreId(long chambreId);
+
+    List<Lit> getAllLitsUntaken();
 }

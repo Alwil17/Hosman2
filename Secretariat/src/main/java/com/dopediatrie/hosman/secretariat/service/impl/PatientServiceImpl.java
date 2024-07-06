@@ -1,13 +1,16 @@
 package com.dopediatrie.hosman.secretariat.service.impl;
 
+import com.dopediatrie.hosman.secretariat.entity.Antecedant;
 import com.dopediatrie.hosman.secretariat.entity.Patient;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
-import com.dopediatrie.hosman.secretariat.payload.request.FiliationRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.PatientMaladieRequest;
-import com.dopediatrie.hosman.secretariat.payload.request.PatientRequest;
+import com.dopediatrie.hosman.secretariat.payload.request.*;
+import com.dopediatrie.hosman.secretariat.payload.response.AntecedantResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.*;
+import com.dopediatrie.hosman.secretariat.utils.Str;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -23,6 +27,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @RequiredArgsConstructor
 @Log4j2
 public class PatientServiceImpl implements PatientService {
+    private final String NOT_FOUND = "PATIENT_NOT_FOUND";
+
     private final AdresseRepository adresseRepository;
     private final AssuranceRepository assuranceRepository;
     private final PatientRepository patientRepository;
@@ -30,6 +36,8 @@ public class PatientServiceImpl implements PatientService {
     private final ProfessionRepository professionRepository;
     private final EmployeurRepository employeurRepository;
     private final PersonneAPrevenirRepository personneAPrevenirRepository;
+    private final AntededantRepository antededantRepository;
+    private final CoefficientRepository coefficientRepository;
 
     private final PersonneAPrevenirService personneAPrevenirService;
     private final AdresseService adresseService;
@@ -38,11 +46,28 @@ public class PatientServiceImpl implements PatientService {
     private final EmployeurService employeurService;
     private final PatientMaladieService patientMaladieService;
     private final FiliationService filiationService;
-    private final String NOT_FOUND = "PATIENT_NOT_FOUND";
+    private final AntecedantService antecedantService;
+    private final CoefficientService coefficientService;
 
     @Override
     public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+        List<Patient> patients = patientRepository.findAll();
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
@@ -110,27 +135,58 @@ public class PatientServiceImpl implements PatientService {
 
         PatientResponse patientResponse = new PatientResponse();
         //copyProperties(patient, patientResponse, PatientResponse.class);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
         patientResponse = mapper.convertValue(patient, PatientResponse.class);
-
-//        log.info("PatientServiceImpl | getPatientById | patientResponse :" + patientResponse.toString());
-
+        if(patient.getAntecedant() != null) {
+            AntecedantResponse atd = antecedantService.getAntecedantById(patient.getAntecedant().getId());
+            patientResponse.setAntecedant(atd);
+        }
         return patientResponse;
     }
 
     @Override
     public List<Patient> getPatientByNomAndPrenoms(String nom) {
         log.info("PatientServiceImpl | getPatientByNomAndPrenoms is called");
-
-        return patientRepository.findByNomAndPrenomsLike(nom);
+        List<Patient> patients = patientRepository.findByNomAndPrenomsLike(nom);
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
     public List<Patient> getPatientByReference(String reference) {
         log.info("PatientServiceImpl | getPatientByReference is called");
-
-        return patientRepository.findByReferenceLike(reference);
+        List<Patient> patients = patientRepository.findByReferenceLike(reference);
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
@@ -145,9 +201,13 @@ public class PatientServiceImpl implements PatientService {
         PatientResponse patientResponse = new PatientResponse();
 
         //copyProperties(patient, patientResponse, PatientResponse.class);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
         patientResponse = mapper.convertValue(patient, PatientResponse.class);
+        if(patient.getAntecedant() != null) {
+            AntecedantResponse atd = antecedantService.getAntecedantById(patient.getAntecedant().getId());
+            patientResponse.setAntecedant(atd);
+        }
         return patientResponse;
     }
 
@@ -155,19 +215,67 @@ public class PatientServiceImpl implements PatientService {
     public List<Patient> getPatientByPrenoms(String prenoms) {
         log.info("PatientServiceImpl | getPatientByPrenoms is called");
 
-        return patientRepository.findByPrenomsLike(prenoms);
+        List<Patient> patients = patientRepository.findByPrenomsLike(prenoms);
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
     public List<Patient> getPatientByDateNaissance(LocalDateTime dateNaissance, LocalDateTime dateNaissanceLimit) {
         log.info("PatientServiceImpl | getPatientByDateNaissance is called");
-        return patientRepository.findAllByDate_naissance(dateNaissance, dateNaissanceLimit);
+        List<Patient> patients = patientRepository.findAllByDate_naissance(dateNaissance, dateNaissanceLimit);
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
     public List<Patient> getPatientByDateEntree(LocalDateTime dateEntree, LocalDateTime dateEntreeLimit) {
         log.info("PatientServiceImpl | getPatientByDateEntree is called");
-        return patientRepository.findAllByDate_ajout(dateEntree, dateEntreeLimit);
+        List<Patient> patients = patientRepository.findAllByDate_ajout(dateEntree, dateEntreeLimit);
+        if(patients.size() > 0){
+            return patients.stream().map(patient -> {
+                if(patient.getAntecedant() != null) {
+                    Antecedant antecedant = patient.getAntecedant();
+                    if(antecedant.getHospits() != null && !antecedant.getHospits().isBlank())
+                        antecedant.setHospitalisations(Str.convertStringToList(antecedant.getHospits(), "#>"));
+                    if(antecedant.getChirurs() != null && !antecedant.getChirurs().isBlank())
+                        antecedant.setChirurgies(Str.convertStringToList(antecedant.getChirurs(), "#>"));
+                    if(antecedant.getMedics() != null && !antecedant.getMedics().isBlank())
+                        antecedant.setMedicaments(Str.convertStringToList(antecedant.getMedics(), "#>"));
+                    patient.setAntecedant(antecedant);
+                }
+                return patient;
+            }).collect(Collectors.toList());
+        }
+        return patients;
     }
 
     @Override
@@ -234,9 +342,18 @@ public class PatientServiceImpl implements PatientService {
                         "Patient with given Id not found",
                         NOT_FOUND
                 ));
+        long antecedantId = 0;
+        if (patientRequest.getAntecedant() != null) {
+            AntecedantRequest ar = patientRequest.getAntecedant();
+            ar.setPatient_id(patientId);
+            antecedantId = antecedantService.addAntecedant(ar);
+        }
 
+        if(antecedantId != 0) {
+            patient.setAntecedant(antededantRepository.findById(antecedantId).orElseThrow());
+        }
         patient.setCommentaire(patientRequest.getCommentaire());
-        patient.setAntecedent(patientRequest.getAntecedent());
+
         patientRepository.save(patient);
 
         if((patientRequest.getMaladies()) != null && (patientRequest.getMaladies().size() > 0)){
@@ -257,6 +374,61 @@ public class PatientServiceImpl implements PatientService {
         log.info("PatientServiceImpl | editPatientCaracs | Patient Updated");
         log.info("PatientServiceImpl | editPatientCaracs | Patient Id : " + patient.getId());
     }
+
+    @Override
+    public void editPatientCaracs(PatientRequest patientRequest, String patientRef) {
+        log.info("PatientServiceImpl | editPatientCaracs is called");
+
+        Patient patient
+                = patientRepository.findByReferenceEquals(patientRef)
+                .orElseThrow(() -> new SecretariatCustomException(
+                        "Patient with given Id not found",
+                        NOT_FOUND
+                ));
+        long antecedantId = 0;
+        if (patientRequest.getAntecedant() != null) {
+            AntecedantRequest ar = patientRequest.getAntecedant();
+            ar.setPatient_id(patient.getId());
+            antecedantId = antecedantService.addAntecedant(ar);
+        }
+
+        if(antecedantId != 0) {
+            patient.setAntecedant(antededantRepository.findById(antecedantId).orElseThrow());
+        }
+        long coefficientId = 0;
+        if (patientRequest.getCoefficient() != null) {
+            CoefficientRequest cr = patientRequest.getCoefficient();
+            cr.setPatient_id(patient.getId());
+            coefficientId = coefficientService.addCoefficient(cr);
+        }
+
+        if(coefficientId != 0) {
+            patient.setCoefficient(coefficientRepository.findById(coefficientId).orElseThrow());
+        }
+
+        patient.setCommentaire(patientRequest.getCommentaire());
+
+        patientRepository.save(patient);
+
+        if((patientRequest.getMaladies()) != null && (patientRequest.getMaladies().size() > 0)){
+            patientMaladieService.deleteAllForPatientId(patient.getId());
+            for (PatientMaladieRequest maladieRequest : patientRequest.getMaladies()) {
+                maladieRequest.setPatient_id(patient.getId());
+                patientMaladieService.addPatientMaladie(maladieRequest);
+            }
+        }
+
+        if((patientRequest.getParents()) != null && (patientRequest.getParents().size() > 0)){
+            for (FiliationRequest filiationRequest : patientRequest.getParents()) {
+                filiationRequest.setPatient_id(patient.getId());
+                filiationService.addFiliation(filiationRequest);
+            }
+        }
+
+        log.info("PatientServiceImpl | editPatientCaracs | Patient Updated");
+        log.info("PatientServiceImpl | editPatientCaracs | Patient Id : " + patient.getId());
+    }
+
 
     @Override
     public void deletePatientById(long patientId) {

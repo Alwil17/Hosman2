@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.hospi.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

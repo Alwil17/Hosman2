@@ -41,7 +41,7 @@ public class ProduitController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Produit>> getProduitBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "dci", required = false) String dci, @RequestParam(value = "indication", required = false) String indication, @RequestParam(value = "classe", required = false) String classe, @RequestParam(value = "code_acte", required = false) String code_acte) {
+    public ResponseEntity<List<Produit>> getProduitBySearch(@RequestParam(value = "nom", required = false) String nom, @RequestParam(value = "dci", required = false) String dci, @RequestParam(value = "code_acte", required = false) String code_acte) {
 
         log.info("ProduitController | getProduitBySearch is called");
         List<Produit> produitResponse = Collections.emptyList();
@@ -52,10 +52,6 @@ public class ProduitController {
             produitResponse = produitService.getProduitByDci(dci);
         if(code_acte != null && !code_acte.isBlank())
             produitResponse = produitService.getProduitByCodeActe(code_acte);
-        if(indication != null && !indication.isBlank())
-            produitResponse = produitService.getProduitByIndication(indication);
-        if(classe != null && !classe.isBlank())
-            produitResponse = produitService.getProduitByClasse(classe);
 
         return new ResponseEntity<>(produitResponse, HttpStatus.OK);
     }

@@ -13,4 +13,11 @@ public class ConsultationDiagnosticResponse {
     private long id;
     private long consultation_id;
     private String diagnostic;
+    private DiagnosticResponse diagnostic_response;
+    private int total;
+
+    public ConsultationDiagnosticResponse(String diagnostic, int total) {
+        this.diagnostic = diagnostic;
+        this.total = total;
+    }
 }

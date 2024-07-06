@@ -9,6 +9,8 @@ import java.util.List;
 public interface ConsultationActeService {
     List<ConsultationActe> getAllConsultationActes();
 
+    List<ConsultationActe> getAllForConsultation(long id);
+
     long addConsultationActe(ConsultationActeRequest consultationActeRequest);
 
     ConsultationActeResponse getConsultationActeById(long interventionActeId);

@@ -23,9 +23,5 @@ public interface ProduitService {
 
     List<Produit> getProduitByDci(String dci);
 
-    List<Produit> getProduitByIndication(String indication);
-
-    List<Produit> getProduitByClasse(String classe);
-
     List<Produit> getProduitByCodeActe(String code_acte);
 }

@@ -38,7 +38,8 @@ public class PatientRequest {
     private Date date_fin_assurance;
 
     private String commentaire;
-    private String antecedent;
+    private AntecedantRequest antecedant;
+    private CoefficientRequest coefficient;
 
     private long structure_id = 1;
 }

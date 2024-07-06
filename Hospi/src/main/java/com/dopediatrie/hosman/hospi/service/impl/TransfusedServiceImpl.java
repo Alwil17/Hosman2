@@ -42,8 +42,8 @@ public class TransfusedServiceImpl implements TransfusedService {
                 .hemoglobine(suiviRequest.getHemoglobine())
                 .comments(suiviRequest.getComments())
                 .date_op(suiviRequest.getDate_op())
-                .donneur_ref(suiviRequest.getDonneur_ref())
-                .receveur_ref(suiviRequest.getReceveur_ref())
+                .donneur(suiviRequest.getDonneur())
+                .receveur(suiviRequest.getReceveur())
                 .motif(suiviRequest.getMotif())
                 .hospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow())
                 .build();
@@ -64,8 +64,8 @@ public class TransfusedServiceImpl implements TransfusedService {
                     .hemoglobine(suiviRequest.getHemoglobine())
                     .comments(suiviRequest.getComments())
                     .date_op(suiviRequest.getDate_op())
-                    .donneur_ref(suiviRequest.getDonneur_ref())
-                    .receveur_ref(suiviRequest.getReceveur_ref())
+                    .donneur(suiviRequest.getDonneur())
+                    .receveur(suiviRequest.getReceveur())
                     .motif(suiviRequest.getMotif())
                     .hospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow())
                     .build();
@@ -88,10 +88,7 @@ public class TransfusedServiceImpl implements TransfusedService {
 
         TransfusedResponse suiviResponse = new TransfusedResponse();
         copyProperties(suivi, suiviResponse);
-        PatientResponse donneur = patientService.getPatientByRef(suivi.getDonneur_ref());
-        suiviResponse.setDonneur(donneur);
-        PatientResponse receveur = patientService.getPatientByRef(suivi.getReceveur_ref());
-        suiviResponse.setReceveur(receveur);
+
 
         log.info("TransfusedServiceImpl | getTransfusedById | suiviResponse :" + suiviResponse.toString());
 
@@ -106,10 +103,7 @@ public class TransfusedServiceImpl implements TransfusedService {
         for (Transfused s : suivis) {
             TransfusedResponse sr = new TransfusedResponse();
             copyProperties(s, sr);
-            PatientResponse donneur = patientService.getPatientByRef(s.getDonneur_ref());
-            sr.setDonneur(donneur);
-            PatientResponse receveur = patientService.getPatientByRef(s.getReceveur_ref());
-            sr.setReceveur(receveur);
+
             suiviResponses.add(sr);
         }
         return suiviResponses;
@@ -129,8 +123,8 @@ public class TransfusedServiceImpl implements TransfusedService {
         suivi.setHemoglobine(suiviRequest.getHemoglobine());
         suivi.setComments(suiviRequest.getComments());
         suivi.setDate_op(suiviRequest.getDate_op());
-        suivi.setDonneur_ref(suiviRequest.getDonneur_ref());
-        suivi.setReceveur_ref(suiviRequest.getReceveur_ref());
+        suivi.setDonneur(suiviRequest.getDonneur());
+        suivi.setReceveur(suiviRequest.getReceveur());
         suivi.setMotif(suiviRequest.getMotif());
         suivi.setHospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow());
         suiviRepository.save(suivi);

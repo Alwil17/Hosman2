@@ -133,4 +133,14 @@ public class LitServiceImpl implements LitService {
         log.info("LitServiceImpl | getLitByNom is called");
         return litRepository.findByNomLike(nom);
     }
+
+    @Override
+    public List<Lit> getAllLitsUntakenForChambreId(long chambreId) {
+        return litRepository.findAllUntakenByCHambreId(chambreId);
+    }
+
+    @Override
+    public List<Lit> getAllLitsUntaken() {
+        return litRepository.findAllUntaken();
+    }
 }

@@ -41,6 +41,7 @@ public class PatientResponse {
     private Date date_fin_assurance;
     private List<NameResponse> maladies;
     private String commentaire;
-    private String antecedent;
+    private AntecedantResponse antecedant;
+    private CoefficientResponse coefficient;
     private long structure_id;
 }

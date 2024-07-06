@@ -5,11 +5,15 @@ import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
 import com.dopediatrie.hosman.secretariat.payload.request.AttenteRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.AttenteResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.MedecinResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.RendezVousResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.SecteurResponse;
 import com.dopediatrie.hosman.secretariat.repository.*;
 import com.dopediatrie.hosman.secretariat.service.AttenteService;
 import com.dopediatrie.hosman.secretariat.service.MedecinService;
 import com.dopediatrie.hosman.secretariat.service.SecteurService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -81,7 +85,14 @@ public class AttenteServiceImpl implements AttenteService {
 
         AttenteResponse attenteResponse = new AttenteResponse();
 
-        copyProperties(attente, attenteResponse);
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new JavaTimeModule());
+        attenteResponse = mapper.convertValue(attente, AttenteResponse.class);
+        MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+        MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+        attenteResponse.setMedecin_consulteur(consulteur);
+        attenteResponse.setMedecin_receveur(receveur);
+        //copyProperties(attente, attenteResponse);
 
         log.info("AttenteServiceImpl | getAttenteById | attenteResponse :" + attenteResponse.toString());
 
@@ -99,8 +110,14 @@ public class AttenteServiceImpl implements AttenteService {
                         () -> new SecretariatCustomException("Attente with given num not found", NOT_FOUND));
 
         AttenteResponse attenteResponse = new AttenteResponse();
-
-        copyProperties(attente, attenteResponse);
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new JavaTimeModule());
+        attenteResponse = mapper.convertValue(attente, AttenteResponse.class);
+        MedecinResponse consulteur = medecinService.getMedecinByMatricule(attente.getMedecin());
+        MedecinResponse receveur = medecinService.getMedecinByMatricule(attente.getReceveur());
+        attenteResponse.setMedecin_consulteur(consulteur);
+        attenteResponse.setMedecin_receveur(receveur);
+        //copyProperties(attente, attenteResponse);
 
         log.info("AttenteServiceImpl | getAttenteById | attenteResponse :" + attenteResponse.toString());
 

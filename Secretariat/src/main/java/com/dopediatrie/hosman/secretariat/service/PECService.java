@@ -35,4 +35,6 @@ public interface PECService {
     List<PECCreanceResponse> getPECRecapByDateMinAndMaxAndType(LocalDateTime dateDebut, LocalDateTime dateFin, String assur_type);
 
     List<PECDetailsResponse> getPECRecapByDateMinAndMaxAndAssur(LocalDateTime dateDebut, LocalDateTime dateFin, String assur_slug);
+
+    List<PECDetailsResponse> getPECByDateMinAndMaxAndMedecin(LocalDateTime dateDebut, LocalDateTime dateFin, String medecin_ref);
 }

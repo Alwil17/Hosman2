@@ -19,4 +19,5 @@ public class SuiviResponse {
     private LocalDateTime apply_date;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+    private String extras;
 }

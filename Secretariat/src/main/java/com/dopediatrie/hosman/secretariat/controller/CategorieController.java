@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/annuaire/categories")
 @RequiredArgsConstructor
 @Log4j2
 public class CategorieController {

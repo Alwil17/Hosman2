@@ -44,6 +44,8 @@ public class HospitServiceImpl implements HospitService {
                 .patient_ref(hospitRequest.getPatient_ref())
                 .secteur_code(hospitRequest.getSecteur_code())
                 .arrive(hospitRequest.getArrive())
+                .extras(hospitRequest.getExtras())
+                .status(hospitRequest.getStatus())
                 .consultation_ref(hospitRequest.getConsultation_ref())
                 .date_hospit(hospitRequest.getDate_hospit())
                 .created_at(LocalDateTime.now())
@@ -68,6 +70,8 @@ public class HospitServiceImpl implements HospitService {
                     .patient_ref(hospitRequest.getPatient_ref())
                     .secteur_code(hospitRequest.getSecteur_code())
                     .arrive(hospitRequest.getArrive())
+                    .extras(hospitRequest.getExtras())
+                    .status(hospitRequest.getStatus())
                     .consultation_ref(hospitRequest.getConsultation_ref())
                     .date_hospit(hospitRequest.getDate_hospit())
                     .created_at(LocalDateTime.now())
@@ -120,6 +124,8 @@ public class HospitServiceImpl implements HospitService {
         hospit.setPatient_ref(hospitRequest.getPatient_ref());
         hospit.setSecteur_code(hospitRequest.getSecteur_code());
         hospit.setArrive(hospitRequest.getArrive());
+        hospit.setExtras(hospitRequest.getExtras());
+        hospit.setStatus(hospitRequest.getStatus());
         hospit.setConsultation_ref(hospitRequest.getConsultation_ref());
         hospit.setDate_hospit(hospitRequest.getDate_hospit());
         hospit.setUpdated_at(LocalDateTime.now());
@@ -127,6 +133,20 @@ public class HospitServiceImpl implements HospitService {
 
         log.info("HospitServiceImpl | editHospit | Hospit Updated");
         log.info("HospitServiceImpl | editHospit | Hospit Id : " + hospit.getId());
+    }
+
+    @Override
+    public void updateStatus(long hospitId, int status) {
+        log.info("HospitServiceImpl | updateStatus is called");
+
+        Hospit hospit
+                = hospitRepository.findById(hospitId)
+                .orElseThrow(() -> new HospiCustomException(
+                        "Hospit with given Id not found",
+                        NOT_FOUND
+                ));
+        hospit.setStatus(status);
+        log.info("HospitServiceImpl | updateStatus | Hospit Updated");
     }
 
     @Override
@@ -141,5 +161,11 @@ public class HospitServiceImpl implements HospitService {
         }
         log.info("Deleting Hospit with id: {}", hospitId);
         hospitRepository.deleteById(hospitId);
+    }
+
+    @Override
+    public List<Hospit> getHospitByStatus(int status) {
+        log.info("HospitServiceImpl | getHospitByStatus is called");
+        return hospitRepository.findByStatus(status);
     }
 }

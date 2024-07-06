@@ -41,9 +41,10 @@ public class AnnuaireResponse {
         this.categorie_slug = categorie_slug;
     }
 
-    public AnnuaireResponse(long id, String nom, String secteur, String bureau, String bip, String no_poste) {
+    public AnnuaireResponse(long id, String nom, String prenom, String secteur, String bureau, String bip, String no_poste) {
         this.id = id;
         this.nom = nom;
+        this.prenom = prenom;
         this.secteur = secteur;
         this.bureau = bureau;
         this.bip = bip;

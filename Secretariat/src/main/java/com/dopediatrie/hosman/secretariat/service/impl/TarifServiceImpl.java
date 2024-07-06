@@ -3,9 +3,11 @@ package com.dopediatrie.hosman.secretariat.service.impl;
 import com.dopediatrie.hosman.secretariat.entity.Acte;
 import com.dopediatrie.hosman.secretariat.entity.Tarif;
 import com.dopediatrie.hosman.secretariat.exception.SecretariatCustomException;
+import com.dopediatrie.hosman.secretariat.payload.request.ProformatRequest;
 import com.dopediatrie.hosman.secretariat.payload.request.TarifRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.ProduitResponse;
+import com.dopediatrie.hosman.secretariat.payload.response.ProformatResponse;
 import com.dopediatrie.hosman.secretariat.payload.response.TarifResponse;
 import com.dopediatrie.hosman.secretariat.repository.ActeRepository;
 import com.dopediatrie.hosman.secretariat.repository.TarifRepository;
@@ -33,7 +35,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class TarifServiceImpl implements TarifService {
     private final TarifRepository tarifRepository;
     private final ActeRepository acteRepository;
-    private final String NOT_FOUND = "ACTE_NOT_FOUND";
+    private final String NOT_FOUND = "TARIF_NOT_FOUND";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -276,5 +278,45 @@ public class TarifServiceImpl implements TarifService {
             }
         }
         return tarifResponses;
+    }
+
+    @Override
+    public List<ProformatResponse> processProformat(ProformatRequest proformatRequest) {
+        log.info("TarifServiceImpl | processProformat is called");
+        List<ProformatResponse> responses = new ArrayList<>();
+        if (proformatRequest.getActes() != null && proformatRequest.getActes().size() > 0){
+            for (TarifRequest tarifRequest : proformatRequest.getActes()) {
+                ProformatResponse res = new ProformatResponse();
+                res.setActe(tarifRequest.getLibelle());
+                res.setQte(tarifRequest.getQte());
+                switch (proformatRequest.getIs_assure()){
+                    case 0:
+                        res.setPrix_unit(tarifRequest.getTarif_non_assure());
+                        break;
+                    case 1:
+                        res.setPrix_unit(tarifRequest.getTarif_etr_non_assure());
+                        break;
+                    case 2:
+                        res.setPrix_unit(tarifRequest.getTarif_assur_locale());
+                        break;
+                    case 3:
+                        res.setPrix_unit(tarifRequest.getTarif_assur_hors_zone());
+                        break;
+                    default:
+                        res.setPrix_unit(tarifRequest.getTarif_non_assure());
+                        break;
+                }
+                res.setPrix_total(res.getPrix_unit() * res.getQte());
+                responses.add(res);
+            }
+        }
+        log.info("TarifServiceImpl | processProformat | count :"+responses.size());
+        return responses;
+    }
+
+    @Override
+    public List<Tarif> getTarifForActe(String acte) {
+        log.info("TarifServiceImpl | getTarifForActe is called");
+        return tarifRepository.findAllByActe(acte);
     }
 }

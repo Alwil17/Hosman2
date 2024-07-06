@@ -4,6 +4,8 @@ import com.dopediatrie.hosman.secretariat.entity.FactureMode;
 import com.dopediatrie.hosman.secretariat.entity.ModePayement;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -40,4 +42,30 @@ public class Str {
         }
         return sb.toString();
     }
+
+    public static String convertListToString(List<String> elements, String compactChar) {
+
+        if(elements != null && elements.size() > 0){
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < elements.size(); i++) {
+                sb.append(elements.get(i).toString());
+                if (i != elements.size() - 1) {
+                    sb.append(compactChar);
+                }
+            }
+            return sb.toString();
+        }
+        return "";
+    }
+
+    public static List<String> convertStringToList(String content, String escapeChar) {
+        List<String> result = new ArrayList<String>();
+        if(content != null && !content.isBlank()){
+            String[] indiqList = content.split(escapeChar);
+
+            result.addAll(Arrays.asList(indiqList));
+        }
+        return result;
+    }
+
 }

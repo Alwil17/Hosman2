@@ -35,8 +35,8 @@ public class SuiviServiceImpl implements SuiviService {
     public long addSuivi(SuiviRequest suiviRequest) {
         log.info("SuiviServiceImpl | addSuivi is called");
         Suivi suivi;
-        if(suiviRepository.existsByApply_dateAndTypeAndType_idAndHospitId(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id())){
-            suivi = suiviRepository.findByApply_dateAndTypeAndType_idAndHospitId(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id()).orElseThrow();
+        if(suiviRepository.existsByApply_dateAndTypeAndType_idAndHospitIdAndExtras(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id(), suiviRequest.getExtras())){
+            suivi = suiviRepository.findByApply_dateAndTypeAndType_idAndHospitIdAndExtras(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id(), suiviRequest.getExtras()).orElseThrow();
             editSuivi(suiviRequest, suivi.getId());
         }else {
             suivi = Suivi.builder()
@@ -45,6 +45,7 @@ public class SuiviServiceImpl implements SuiviService {
                     .qte(suiviRequest.getQte())
                     .apply_date(suiviRequest.getApply_date())
                     .created_at(LocalDateTime.now())
+                    .extras(suiviRequest.getExtras())
                     .hospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow())
                     .build();
             suivi = suiviRepository.save(suivi);
@@ -61,8 +62,8 @@ public class SuiviServiceImpl implements SuiviService {
 
         for (SuiviRequest suiviRequest : suiviRequests) {
             Suivi suivi;
-            if(suiviRepository.existsByApply_dateAndTypeAndType_idAndHospitId(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id())){
-                suivi = suiviRepository.findByApply_dateAndTypeAndType_idAndHospitId(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id()).orElseThrow();
+            if(suiviRepository.existsByApply_dateAndTypeAndType_idAndHospitIdAndExtras(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id(), suiviRequest.getExtras())){
+                suivi = suiviRepository.findByApply_dateAndTypeAndType_idAndHospitIdAndExtras(suiviRequest.getApply_date(), suiviRequest.getType(), suiviRequest.getType_id(), suiviRequest.getHospit_id(), suiviRequest.getExtras()).orElseThrow();
                 editSuivi(suiviRequest, suivi.getId());
             }else {
                 suivi = Suivi.builder()
@@ -71,6 +72,7 @@ public class SuiviServiceImpl implements SuiviService {
                         .qte(suiviRequest.getQte())
                         .apply_date(suiviRequest.getApply_date())
                         .created_at(LocalDateTime.now())
+                        .extras(suiviRequest.getExtras())
                         .hospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow())
                         .build();
                 suiviRepository.save(suivi);
@@ -127,7 +129,9 @@ public class SuiviServiceImpl implements SuiviService {
         suivi.setQte(suiviRequest.getQte());
         suivi.setApply_date(suiviRequest.getApply_date());
         suivi.setUpdated_at(LocalDateTime.now());
-        suivi.setHospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow());
+        suivi.setExtras(suiviRequest.getExtras());
+        if (suiviRequest.getHospit_id() != 0) suivi.setHospit(hospitRepository.findById(suiviRequest.getHospit_id()).orElseThrow());
+
         suiviRepository.save(suivi);
 
         log.info("SuiviServiceImpl | editSuivi | Suivi Updated");

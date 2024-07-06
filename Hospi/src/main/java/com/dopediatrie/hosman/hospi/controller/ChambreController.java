@@ -23,10 +23,13 @@ public class ChambreController {
     private final ChambreService chambreService;
 
     @GetMapping
-    public ResponseEntity<List<Chambre>> getAllChambres() {
-
+    public ResponseEntity<List<Chambre>> getAllChambres(@RequestParam(value = "vue", required = false) String vue) {
         log.info("ChambreController | getAllChambres is called");
-        return new ResponseEntity<>(chambreService.getAllChambres(), HttpStatus.OK);
+        List<Chambre> chambres = chambreService.getAllChambres();
+        if((vue!=null) && !vue.isBlank() && vue.equals("UNTAKEN")){
+            chambres = chambreService.getAllChambresUntaken();
+        }
+        return new ResponseEntity<>(chambres, HttpStatus.OK);
     }
 
     @PostMapping

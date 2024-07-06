@@ -19,5 +19,7 @@ public class HospitRequest {
     private String secteur_code;
     private String consultation_ref;
     private String arrive;
+    private String extras;
+    private int status;
     private LocalDateTime date_hospit;
 }

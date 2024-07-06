@@ -26,6 +26,9 @@ public class Hospit {
     private String secteur_code;
     private String consultation_ref;
     private String arrive;
+    @Column(columnDefinition = "TEXT")
+    private String extras;
+    private int status = 0;
     private LocalDateTime date_hospit;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

@@ -1,7 +1,5 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
-import com.dopediatrie.hosman.secretariat.entity.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +41,7 @@ public class PatientResponse {
     private Date date_fin_assurance;
     private List<NameResponse> maladies;
     private String commentaire;
-    private String antecedent;
+    private AntecedantResponse antecedant;
+    private CoefficientResponse coefficient;
     private long structure_id;
 }

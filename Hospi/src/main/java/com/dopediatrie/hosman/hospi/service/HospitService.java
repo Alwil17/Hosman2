@@ -17,5 +17,9 @@ public interface HospitService {
 
     void editHospit(HospitRequest hospitRequest, long hospitId);
 
+    void updateStatus(long hospitId, int status);
+
     public void deleteHospitById(long hospitId);
+
+    List<Hospit> getHospitByStatus(int status);
 }

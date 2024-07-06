@@ -1,16 +1,9 @@
 package com.dopediatrie.hosman.secretariat.payload.response;
 
-import com.dopediatrie.hosman.secretariat.entity.Assurance;
-import com.dopediatrie.hosman.secretariat.entity.Employeur;
-import com.dopediatrie.hosman.secretariat.entity.Profession;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -26,5 +19,5 @@ public class FiliationResponse {
     private int annee_naissance;
     private ProfessionResponse profession;
     private EmployeurResponse employeur;
-    private AssuranceResponse assurance;
+    private int assurance;
 }

@@ -20,4 +20,6 @@ public interface ChambreService {
     public void deleteChambreById(long chambreId);
 
     List<Chambre> getChambreByNom(String nom);
+
+    List<Chambre> getAllChambresUntaken();
 }

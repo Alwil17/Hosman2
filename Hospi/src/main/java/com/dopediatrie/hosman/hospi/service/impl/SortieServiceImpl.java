@@ -1,5 +1,6 @@
 package com.dopediatrie.hosman.hospi.service.impl;
 
+import com.dopediatrie.hosman.hospi.entity.Hospit;
 import com.dopediatrie.hosman.hospi.entity.Sortie;
 import com.dopediatrie.hosman.hospi.entity.SortieDiagnostic;
 import com.dopediatrie.hosman.hospi.exception.HospiCustomException;
@@ -10,6 +11,7 @@ import com.dopediatrie.hosman.hospi.payload.response.SortieResponse;
 import com.dopediatrie.hosman.hospi.repository.HospitRepository;
 import com.dopediatrie.hosman.hospi.repository.SortieRepository;
 import com.dopediatrie.hosman.hospi.service.DiagnosticService;
+import com.dopediatrie.hosman.hospi.service.HospitService;
 import com.dopediatrie.hosman.hospi.service.SortieDiagnosticService;
 import com.dopediatrie.hosman.hospi.service.SortieService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class SortieServiceImpl implements SortieService {
 
     private final SortieRepository sortieRepository;
     private final HospitRepository hospitRepository;
+    private final HospitService hospitService;
     private final SortieDiagnosticService sortieDiagnosticService;
     private final DiagnosticService diagnosticService;
 
@@ -40,12 +43,15 @@ public class SortieServiceImpl implements SortieService {
     @Override
     public long addSortie(SortieRequest sortieRequest) {
         log.info("SortieServiceImpl | addSortie is called");
+        Hospit hospit = hospitRepository.findById(sortieRequest.getHospit_id()).orElseThrow();
         Sortie sortie = Sortie.builder()
                 .enceinte(sortieRequest.getEnceinte())
                 .date_op(sortieRequest.getDate_op())
-                .hospit(hospitRepository.findById(sortieRequest.getHospit_id()).orElseThrow())
+                .hospit(hospit)
                 .build();
         sortie = sortieRepository.save(sortie);
+
+        hospitService.updateStatus(hospit.getId(), 1);
 
         if((sortieRequest.getDiagnostics() != null) && (sortieRequest.getDiagnostics().size() > 0)){
             sortieDiagnosticService.deleteAllForSortieId(sortie.getId());

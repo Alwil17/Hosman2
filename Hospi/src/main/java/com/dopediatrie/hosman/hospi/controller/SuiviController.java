@@ -50,18 +50,16 @@ public class SuiviController {
         return new ResponseEntity<>(suiviResponse, HttpStatus.OK);
     }
 
-    /*@PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> editSuivi(@RequestBody SuiviRequest suiviRequest,
-            @PathVariable("id") long suiviId
-    ) {
+            @PathVariable("id") long suiviId) {
 
         log.info("SuiviController | editSuivi is called");
-
         log.info("SuiviController | editSuivi | suiviId : " + suiviId);
 
         suiviService.editSuivi(suiviRequest, suiviId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }*/
+    }
 
     @DeleteMapping("/{id}")
     public void deleteSuiviById(@PathVariable("id") long suiviId) {

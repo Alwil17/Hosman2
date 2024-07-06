@@ -23,13 +23,32 @@ public class Consultation {
     private LocalDateTime date_consultation;
     private String type;
     private String commentaire;
+    @Column(columnDefinition = "TEXT")
     private String hdm;
     private String patient_ref;
     private String secteur_code;
+    private String consulteur_ref;
     private Long attente_num;
     @OneToOne
     @JoinColumn(name = "constante_id")
     private Constante constante;
+
+    @OneToOne(mappedBy = "consultation")
+    private Addressed addressed;
+
+    @OneToOne(mappedBy = "consultation")
+    private Transfered transfered;
+
+    @OneToOne(mappedBy = "consultation")
+    private Refused refused;
+
+    @OneToOne(mappedBy = "consultation")
+    private Deceded deceded;
+
+    @OneToOne
+    @JoinColumn(name = "ordonnance_id")
+    private Ordonnance ordonnance;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "motif_consultation",
             joinColumns = @JoinColumn(name = "consultation_id", referencedColumnName = "id"),

@@ -19,4 +19,5 @@ public class ChirurgieRequest {
     private String comments;
     private String title;
     private long hospit_id;
+    private int frais;
 }

@@ -29,6 +29,11 @@ public class ConsultationActeServiceImpl implements ConsultationActeService {
     }
 
     @Override
+    public List<ConsultationActe> getAllForConsultation(long id) {
+        return consultationActeRepository.findAllByConsultation(id);
+    }
+
+    @Override
     public long addConsultationActe(ConsultationActeRequest consultationActeRequest) {
         log.info("ConsultationActeServiceImpl | addConsultationActe is called");
 

@@ -1,10 +1,12 @@
 package com.dopediatrie.hosman.hospi.service.impl;
 
 import com.dopediatrie.hosman.hospi.entity.Chambre;
+import com.dopediatrie.hosman.hospi.entity.Lit;
 import com.dopediatrie.hosman.hospi.exception.HospiCustomException;
 import com.dopediatrie.hosman.hospi.payload.request.ChambreRequest;
 import com.dopediatrie.hosman.hospi.payload.response.ChambreResponse;
 import com.dopediatrie.hosman.hospi.repository.ChambreRepository;
+import com.dopediatrie.hosman.hospi.repository.LitRepository;
 import com.dopediatrie.hosman.hospi.service.ChambreService;
 import com.dopediatrie.hosman.hospi.utils.Str;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -23,6 +26,7 @@ public class ChambreServiceImpl implements ChambreService {
     private final String NOT_FOUND = "CHAMBRE_NOT_FOUND";
 
     private final ChambreRepository chambreRepository;
+    private final LitRepository litRepository;
 
     @Override
     public List<Chambre> getAllChambres() {
@@ -124,5 +128,18 @@ public class ChambreServiceImpl implements ChambreService {
     public List<Chambre> getChambreByNom(String nom) {
         log.info("ChambreServiceImpl | getChambreByNom is called");
         return chambreRepository.findByNomLike(nom);
+    }
+
+    @Override
+    public List<Chambre> getAllChambresUntaken() {
+        List<Chambre> chambres = chambreRepository.findAllUntaken();
+        if(chambres != null && chambres.size()>0){
+            chambres = chambres.stream().map(chambre -> {
+                List<Lit> lits = litRepository.findAllUntakenByCHambreId(chambre.getId());
+                chambre.setLits(lits);
+                return chambre;
+            }).collect(Collectors.toList());
+        }
+        return chambres;
     }
 }

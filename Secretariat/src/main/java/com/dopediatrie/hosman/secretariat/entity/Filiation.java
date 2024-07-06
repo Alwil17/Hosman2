@@ -32,9 +32,7 @@ public class Filiation {
     @ManyToOne
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
-    @ManyToOne
-    @JoinColumn(name = "assurance_id")
-    private Assurance assurance;
+    private int assurance;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     @JsonIgnore

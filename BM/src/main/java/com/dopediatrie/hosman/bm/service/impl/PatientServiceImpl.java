@@ -48,11 +48,16 @@ public class PatientServiceImpl implements PatientService {
         log.info("PatientServiceImpl | getPatientByRef is called");
         log.info("PatientServiceImpl | getPatientByRef | Get the patient for patientRef: {}", patientRef);
 
-        ResponseEntity<PatientResponse> responseEntity = restTemplate
-                .getForEntity(baseUrl + "/ref/" + patientRef,
-                        PatientResponse.class);
-
-        return responseEntity.getBody();
+        PatientResponse pr = new PatientResponse();
+        try {
+            ResponseEntity<PatientResponse> responseEntity = restTemplate
+                    .getForEntity(baseUrl + "/ref/" + patientRef,
+                            PatientResponse.class);
+            pr = responseEntity.getBody();
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return pr;
     }
 
     @Override

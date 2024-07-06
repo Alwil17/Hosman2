@@ -276,8 +276,6 @@ public class PECServiceImpl implements PECService {
                 "f.reference as no_facture, s.libelle as secteur, sum(f.total) as montant_facture, \n" +
                 "sum(f.montant_pec) as montant_pec, sum(mf.montant) as montant_verse\n" +
                 "from pec pe\n" +
-                "JOIN assurance a on pe.assurance_id = a.id\n" +
-                "JOIN type_assurance t on a.type_assurance_id = t.id\n" +
                 "JOIN facture f on pe.facture_id = f.id\n" +
                 "JOIN mode_facture mf on mf.facture_id = f.id\n" +
                 "JOIN prestation pr on f.prestation_id = pr.id\n" +
@@ -294,6 +292,50 @@ public class PECServiceImpl implements PECService {
 
         List<PECDetailsResponse> responses = jdbcTemplate.query(sqlquery, (resultSet, rowNum) -> new PECDetailsResponse(
                 resultSet.getString("assurance"),
+                resultSet.getString("nom_patient"),
+                resultSet.getString("prenom_patient"),
+                resultSet.getString("sexe"),
+                resultSet.getString("date_naissance"),
+                resultSet.getString("date_operation"),
+                resultSet.getString("secteur"),
+                resultSet.getString("no_facture"),
+                resultSet.getDouble("montant_facture"),
+                resultSet.getDouble("montant_pec"),
+                resultSet.getDouble("montant_verse")
+        ));
+        if(responses != null && responses.size() > 0){
+            return responses;
+        }
+        else {
+            return new ArrayList<PECDetailsResponse>();
+        }
+    }
+
+    @Override
+    public List<PECDetailsResponse> getPECByDateMinAndMaxAndMedecin(LocalDateTime dateDebut, LocalDateTime dateFin, String medecin_ref) {
+        log.info("PECServiceImpl | getPECByDateMinAndMaxAndMedecin is called");
+        String sqlquery = "select p.nom as nom_patient, p.prenoms as prenom_patient, \n" +
+                "date_format(p.date_naissance, '%d/%m/%Y') as date_naissance, p.sexe as sexe, " +
+                "date_format(f.date_facture, '%d/%m/%Y') as date_operation, \n" +
+                "f.reference as no_facture, s.libelle as secteur, f.total as montant_facture, \n" +
+                "f.montant_pec as montant_pec, sum(mf.montant) as montant_verse\n" +
+                "from pec pe\n" +
+                "JOIN facture f on pe.facture_id = f.id\n" +
+                "JOIN mode_facture mf on mf.facture_id = f.id\n" +
+                "JOIN prestation pr on f.prestation_id = pr.id\n" +
+                "JOIN patient p on pr.patient_id = p.id\n" +
+                "JOIN secteur s on pr.secteur_code = s.code\n" +
+                "where f.date_facture >= '"+ dateDebut +"' \n" +
+                "and f.date_facture <= '"+ dateFin +"' \n" +
+                "and f.montant_pec > 0\n" +
+                "and pr.consulteur = '"+ medecin_ref +"' \n" +
+                "group by p.nom, p.prenoms, \n" +
+                "p.date_naissance, p.sexe, f.date_facture,\n" +
+                "f.reference \n" +
+                "order by date_operation desc";
+
+        List<PECDetailsResponse> responses = jdbcTemplate.query(sqlquery, (resultSet, rowNum) -> new PECDetailsResponse(
+                "",
                 resultSet.getString("nom_patient"),
                 resultSet.getString("prenom_patient"),
                 resultSet.getString("sexe"),

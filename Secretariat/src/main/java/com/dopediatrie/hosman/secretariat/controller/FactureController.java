@@ -3,10 +3,10 @@ package com.dopediatrie.hosman.secretariat.controller;
 import com.dopediatrie.hosman.secretariat.entity.*;
 import com.dopediatrie.hosman.secretariat.payload.request.FactureRequest;
 import com.dopediatrie.hosman.secretariat.payload.response.FactureResponse;
-import com.dopediatrie.hosman.secretariat.payload.response.PatientResponse;
 import com.dopediatrie.hosman.secretariat.repository.FactureModeRepository;
 import com.dopediatrie.hosman.secretariat.repository.PrestationTarifRepository;
 import com.dopediatrie.hosman.secretariat.service.FactureService;
+import com.dopediatrie.hosman.secretariat.service.SecteurService;
 import com.dopediatrie.hosman.secretariat.utils.Str;
 import com.dopediatrie.hosman.secretariat.utils.Utils;
 import com.lowagie.text.DocumentException;
@@ -47,6 +47,7 @@ public class FactureController {
     private final FactureService factureService;
     private final PrestationTarifRepository tarifRepository;
     private final FactureModeRepository factureModeRepository;
+    private final SecteurService secteurService;
 
     @Autowired
     SpringTemplateEngine templateEngine;
@@ -126,7 +127,7 @@ public class FactureController {
         if(prestation.getSecteur_code() == null){
             groupe = tarifs.get(0).getTarif().getActe().getGroupe().getLibelle();
         }else{
-            groupe = prestation.getSecteur_code();
+            groupe = secteurService.getSecteurByCode(prestation.getSecteur_code()).getLibelle();
         }
         long nuum = factureResponse.getAttente() != null ? factureResponse.getAttente().getNum_attente() : 1;
 

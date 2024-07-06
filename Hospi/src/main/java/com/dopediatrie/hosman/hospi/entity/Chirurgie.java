@@ -23,6 +23,7 @@ public class Chirurgie {
     private double coef;
     private String comments;
     private String title;
+    private int frais = 0;
     @ManyToOne
     @JoinColumn(name = "hospit_id")
     private Hospit hospit;
