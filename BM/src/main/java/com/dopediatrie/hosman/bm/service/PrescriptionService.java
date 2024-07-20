@@ -26,4 +26,6 @@ public interface PrescriptionService {
     public List<String> getAllAdverbeString();
 
     public List<String> getAllDureeString();
+
+    List<String> getAllMuGroupes();
 }

@@ -28,6 +28,13 @@ public class ClasseController {
         return new ResponseEntity<>(classeService.getAllClasses(), HttpStatus.OK);
     }
 
+    @GetMapping("/withProd")
+    public ResponseEntity<List<Classe>> getAllClassesWithProdCount() {
+
+        log.info("ClasseController | getAllClassesWithProdCOunt is called");
+        return new ResponseEntity<>(classeService.getAllClassesWithProdCount(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Long> addClasse(@RequestBody ClasseRequest classeRequest) {
 

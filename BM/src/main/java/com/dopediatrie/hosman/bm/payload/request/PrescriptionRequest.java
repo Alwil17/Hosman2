@@ -21,4 +21,7 @@ public class PrescriptionRequest {
     private List<String> heures;
     private long produit_id;
     private long forme_id;
+
+    private boolean mu;
+    private String mu_groupe;
 }

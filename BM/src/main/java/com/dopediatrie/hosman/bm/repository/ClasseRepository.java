@@ -14,4 +14,5 @@ public interface ClasseRepository extends JpaRepository<Classe,Long> {
 
     @Query("select c from Classe c where concat(c.nom, c.slug) like concat('%', :q,'%') ")
     List<Classe> findByQueryString(@Param("q") String q);
+
 }

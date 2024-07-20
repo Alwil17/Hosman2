@@ -63,6 +63,9 @@ public class PrescriptionController {
             case "duree":
                 resp = prescriptionService.getAllDureeString();
                 break;
+            case "groupe":
+                resp = prescriptionService.getAllMuGroupes();
+                break;
             default:
                 break;
         }

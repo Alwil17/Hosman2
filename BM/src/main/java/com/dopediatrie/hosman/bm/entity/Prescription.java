@@ -31,6 +31,8 @@ public class Prescription {
     @Lob
     private String note;
     private String heures;
+    private boolean mu;
+    private String mu_groupe;
     @ManyToOne
     @JoinColumn(name = "produit_id")
     private Produit produit;

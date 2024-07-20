@@ -9,6 +9,8 @@ import java.util.List;
 public interface ClasseService {
     List<Classe> getAllClasses();
 
+    List<Classe> getAllClassesWithProdCount();
+
     long addClasse(ClasseRequest classeRequest);
 
     void addClasse(List<ClasseRequest> classeRequests);

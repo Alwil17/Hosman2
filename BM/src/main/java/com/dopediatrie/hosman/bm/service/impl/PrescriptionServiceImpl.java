@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 .heures(Str.convertListToString(prescriptionRequest.getHeures(), "#>"))
                 .produit(produitRepository.findById(prescriptionRequest.getProduit_id()).orElseThrow())
                 .forme(formeRepository.findById(prescriptionRequest.getForme_id()).orElseThrow())
+                .mu(prescriptionRequest.isMu())
+                .mu_groupe(prescriptionRequest.getMu_groupe())
                 .build();
         prescription = prescriptionRepository.save(prescription);
 
@@ -88,6 +91,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                     .heures(Str.convertListToString(prescriptionRequest.getHeures(), "#>"))
                     .produit(produitRepository.findById(prescriptionRequest.getProduit_id()).orElseThrow())
                     .forme(formeRepository.findById(prescriptionRequest.getForme_id()).orElseThrow())
+                    .mu(prescriptionRequest.isMu())
+                    .mu_groupe(prescriptionRequest.getMu_groupe())
                     .build();
             prescriptionRepository.save(prescription);
         }
@@ -179,5 +184,15 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<String> getAllDureeString() {
         log.info("PrescriptionServiceImpl | getAllDureeString is called");
         return helpersRepository.findByType("duree").stream().map(Helpers::getContent).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAllMuGroupes() {
+        log.info("PrescriptionServiceImpl | getAllMuGroupes is called");
+        List<Prescription> prescriptions = prescriptionRepository.getMU();
+        if(prescriptions.size() > 0){
+            return prescriptions.stream().map(Prescription::getMu_groupe).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }

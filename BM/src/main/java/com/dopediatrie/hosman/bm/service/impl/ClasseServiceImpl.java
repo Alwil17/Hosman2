@@ -9,6 +9,8 @@ import com.dopediatrie.hosman.bm.service.ClasseService;
 import com.dopediatrie.hosman.bm.utils.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +24,32 @@ public class ClasseServiceImpl implements ClasseService {
     private final ClasseRepository classeRepository;
     private final String NOT_FOUND = "CLASSE_NOT_FOUND";
 
+    @Autowired
+    private final JdbcTemplate jdbcTemplate;
+
+
     @Override
     public List<Classe> getAllClasses() {
         return classeRepository.findAll();
+    }
+
+    @Override
+    public List<Classe> getAllClassesWithProdCount() {
+        String sql = "select distinct c.id as id, c.nom as nom, c.slug as slug, c.couleur as couleur, count(distinct p.id) as prodcount\n" +
+                "from classe c\n" +
+                "left join produit_classe pc on c.id = pc.classe_id\n" +
+                "left join produit p on p.id = pc.produit_id\n" +
+                "group by c.id, c.nom, c.slug, c.couleur\n" +
+                "order by c.nom asc;";
+        List<Classe> classes = jdbcTemplate.query(sql,(rs, rowNum) -> Classe.builder()
+                .id(rs.getLong("id"))
+                .nom(rs.getString("nom"))
+                .slug(rs.getString("slug"))
+                .couleur(rs.getString("couleur"))
+                .prodCount(rs.getInt("prodcount"))
+                .build());
+
+        return classes;
     }
 
     @Override

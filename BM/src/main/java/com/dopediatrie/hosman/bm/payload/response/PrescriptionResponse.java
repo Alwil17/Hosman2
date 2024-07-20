@@ -24,7 +24,12 @@ public class PrescriptionResponse {
     private int duree_qte;
     private String duree;
     private String note;
+    private boolean mu;
+    private String mu_groupe;
+
     @JsonIgnore
     private String heures;
     private List<String> heures_prise;
+
+
 }

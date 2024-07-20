@@ -21,6 +21,8 @@ public class Classe {
     private String nom;
     private String slug;
     private String couleur;
+    @Transient
+    private int prodCount;
     @ManyToMany(mappedBy = "classes")
     @JsonIgnore
     private List<Produit> produits;
