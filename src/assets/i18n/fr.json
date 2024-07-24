@@ -54,6 +54,7 @@
 
   "CR": {
     "title": "Compte rendus",
+    "home" : "Accueil",
     "dashboard" : "Tableau de bord",
     "create" : {
       "title": "Nouveau CR",

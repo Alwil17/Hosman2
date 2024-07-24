@@ -15,6 +15,7 @@ import {extractFormControls} from "../../../../helpers/utils";
 })
 export class AccouchementComponent implements OnInit  {
   @ViewChild("accouchement") modal!: TemplateRef<any>;
+  @ViewChild("fullTextArea") fullTextArea!: TemplateRef<any>;
   @Input() control: FormControl = new FormControl();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
@@ -41,6 +42,16 @@ export class AccouchementComponent implements OnInit  {
       keyboard: true,
       backdrop: "static",
     });    
+
+  }
+
+  openFullModal() {
+    this.modalService.open(this.fullTextArea, {
+      size: "xl",
+      centered: true,
+      keyboard: true,
+      backdrop: "static",
+    });
 
   }
 

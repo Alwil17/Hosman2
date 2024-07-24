@@ -190,5 +190,19 @@ export const fields : Section[]  = [
       }
     ],
     resume: "{{ reanime }} {{ details_reanime }}"
+  },
+
+  {
+    template:[
+      {
+        name: 'acc_comments',
+        label: "Informations supplémentaires",
+        type: 'textarea',
+        col: 12,
+        show:true,
+      }
+    ],
+    resume: "{{ acc_comments }}"
   }
+
 ];

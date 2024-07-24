@@ -15,6 +15,8 @@ import {extractFormControls} from "../../../../helpers/utils";
 })
 export class ExamenbabyComponent implements OnInit {
   @ViewChild("examenbaby") modal!: TemplateRef<any>;
+  @ViewChild("fullTextArea") fullTextArea!: TemplateRef<any>;
+
   @Input() control: FormControl = new FormControl();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
@@ -42,6 +44,17 @@ export class ExamenbabyComponent implements OnInit {
     });
 
   }
+
+  openFullModal() {
+    this.modalService.open(this.fullTextArea, {
+      size: "xl",
+      centered: true,
+      keyboard: true,
+      backdrop: "static",
+    });
+
+  }
+
 
   translate(section : any){
     return this.store.theMixer(this.fg.controls, section.template, section.resume) + '\n'

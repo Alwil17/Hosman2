@@ -251,4 +251,17 @@ export const fields: Section[] = [
         ],
         resume: "{{ silverman }}."
     },
+
+    {
+        template:[
+            {
+                name: 'exam_comments',
+                label: "Informations supplémentaires",
+                type: 'textarea',
+                col: 12,
+                show:true,
+            }
+        ],
+        resume: "{{ exam_comments }}"
+    }
 ]

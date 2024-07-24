@@ -7,7 +7,6 @@ import {paracliniqueFields} from './fields/paraclinique-fields';
 import {traitementFields} from './fields/traitement-fields';
 import {suiviFields} from './fields/suivi-fields';
 import {extractFormControls, slugify} from "../../../../helpers/utils";
-import {fields} from "../accouchement/fields";
 
 @Component({
     selector: 'cr-paracliniques',
@@ -19,7 +18,7 @@ export class ParacliniquesComponent implements OnInit {
     @ViewChild("paraclinique") paracliniqueModal!: TemplateRef<any>;
     @ViewChild("traitement") traitementModal!: TemplateRef<any>;
     @ViewChild("suivi") suiviModal!: TemplateRef<any>;
-
+    @ViewChild("fullTextArea") fullTextArea!: TemplateRef<any>;
 
     @Input() control: FormControl = new FormControl();
     @Output() closeModal: EventEmitter<any> = new EventEmitter();
@@ -32,7 +31,7 @@ export class ParacliniquesComponent implements OnInit {
     fg: FormGroup = new FormGroup({});
 
     // for tabs
-    paracliniqueTabs : any = []
+    paracliniqueTabs: any = []
 
     constructor(
         private store: CrStore,
@@ -42,21 +41,41 @@ export class ParacliniquesComponent implements OnInit {
 
     ngOnInit(): void {
         this.paracliniqueTabs = this.getGroupedFields(paracliniqueFields)
+        // console.log(this.paracliniqueTabs)
     }
 
-    sluTheName(name : string) {
+    sluTheName(name: string) {
         return slugify(name)
     }
-    getGroupedFields(fields :Section[]) {
+
+    getGroupedFields(fields: Section[]) {
         const g = fields.filter((f) => f.groupName !== undefined)
-        // console.log(g.map((w) => ({
-        //     name : this.slugify(w.groupName!),
-        //     data : w
-        // })))
-        return g.map((w) => ({
-            name : this.slugify(w.groupName!),
-            section : w
-        }))
+
+        // add fields if groupname already exist
+        const combined : any[any] = []
+        g.forEach((field) => {
+            const w = combined.find((c : any) => c.groupName === field.groupName)
+            if (w === undefined) {
+                combined.push(field)
+            } else {
+                const mT = w.template.concat(field.template)
+                w.template = mT.filter((item: any, index: any) =>
+                    mT.indexOf(item) == index
+                )
+                w.resume = w.resume.concat(' ',field.resume)
+                combined.find((c : any) => c.groupName === field.groupName).resume.concat(field.resume)
+            }
+        })
+
+        console.log(combined)
+
+        return combined.map((w:any) => {
+                return {
+                    name: this.slugify(w.groupName!),
+                    section: w
+                }
+            }
+        )
     }
 
     open(name: TemplateRef<any>) {
@@ -68,24 +87,42 @@ export class ParacliniquesComponent implements OnInit {
         });
     }
 
-    translate(section : any){
+    openFullModal() {
+        this.modalService.open(this.fullTextArea, {
+            size: "xl",
+            centered: true,
+            keyboard: true,
+            backdrop: "static",
+        });
+    }
+
+
+    translate(section: any) {
         return this.store.theMixer(this.fg.controls, section.template, section.resume) + '\n'
     }
 
-    validate(){
+    validate() {
 
-        // let phrasologie = ''
-        // for (const section of this.fields) {
-        //     phrasologie = phrasologie + this.translate(section)
-        // }
-        // this.phrase.setValue(phrasologie.trim())
-        //
-        // /* sending data to CR main group */
-        // const values = extractFormControls(this.fg)
-        // this.control.setValue({phrase : this.phrase.value, values : values})
-        // /* ******************************** */
-        //
-        // this.modalService.dismissAll()
+        let validated = true
+        for (const section of paracliniqueFields) {
+            validated = this.store.checkErrors(section.template, this.fg.controls)
+            if (!validated) break
+        }
+        if (validated) {
+            let phrasologie = ''
+
+            for (const section of paracliniqueFields) {
+                phrasologie = phrasologie + this.translate(section)
+            }
+            this.phrase.setValue(phrasologie.trim())
+
+            /* sending data to CR main group */
+            const values = extractFormControls(this.fg)
+            this.control.setValue({phrase: this.phrase.value, values: values})
+            /* ******************************** */
+
+            this.modalService.dismissAll()
+        }
     }
 
     protected readonly slugify = slugify;

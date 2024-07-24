@@ -112,6 +112,7 @@ export const fields : Section[]  = [
                 bindlabel: 'id',
                 col: 4,
                 show: true,
+
             },
             {
                 col:4,
@@ -399,5 +400,17 @@ export const fields : Section[]  = [
         name: 'hdetails',
         template:[],
         resume: "{{ hdetails }}"
+    },
+    {
+        template:[
+            {
+                name: 'preghisto_comments',
+                label: "Informations supplémentaires",
+                type: 'textarea',
+                col: 12,
+                show:true,
+            }
+        ],
+        resume: "{{ preghisto_comments }}"
     }
 ];

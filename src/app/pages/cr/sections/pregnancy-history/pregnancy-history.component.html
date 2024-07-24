@@ -4,7 +4,7 @@
             <div class="col-6">
                 <h5 class="font-weight-bold">Antécédents gestationnels</h5>
             </div>
-            <div class="col-6 text-right copy-paste"><span>Copier texte</span></div>
+            <div class="col-6 text-right copy-paste"><span (click)="openFullModal()">Agrandir le texte</span></div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -14,6 +14,22 @@
         </div>
     </div>
 </div>
+
+<ng-template #fullTextArea let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title-full-modal">Antécédents gestationnels</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body enterToTab" enterToTab>
+        <div class="row">
+            <div class="col-12">
+                <app-text placeholder="..." [rows]="20" [control]="phrase" [readOnly]="true" [fontSize]="'1.2rem'"></app-text>
+            </div>
+        </div>
+    </div>
+</ng-template>
 
 <ng-template #pregnancyhistory let-modal>
     <div class="modal-header">

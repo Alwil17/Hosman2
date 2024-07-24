@@ -8,6 +8,12 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 2,
+    label: "CR.home",
+    link: "/apps",
+    icon: "bx bx-home fs-24",
+  },
+  {
+    id: 2,
     label: "CR.dashboard",
     link: "/cr/",
     icon: "ri-dashboard-2-line",

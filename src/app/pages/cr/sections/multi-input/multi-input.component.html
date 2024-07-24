@@ -54,3 +54,9 @@
 
     </div>
 </div>
+
+<div class="error_message">
+    <p *ngIf="config.errorMessage !== undefined && config.errorMessage !== ''">
+        {{ config.errorMessage }}
+    </p>
+</div>

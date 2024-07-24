@@ -13,6 +13,8 @@ import {fields} from './fields';
 })
 export class PregnancyHistoryComponent implements OnInit {
     @ViewChild("pregnancyhistory") modal!: TemplateRef<any>;
+    @ViewChild("fullTextArea") fullTextArea!: TemplateRef<any>;
+
     @Input() control: FormControl = new FormControl();
     @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
@@ -100,6 +102,18 @@ export class PregnancyHistoryComponent implements OnInit {
         });
 
     }
+
+
+    openFullModal() {
+        this.modalService.open(this.fullTextArea, {
+            size: "xl",
+            centered: true,
+            keyboard: true,
+            backdrop: "static",
+        });
+
+    }
+
 
     translate(section: any) {
         return this.store.theMixer(this.fg.controls, section.template, section.resume) + '\n'

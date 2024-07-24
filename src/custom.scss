@@ -206,4 +206,10 @@ multi-input {
   label.form-label {
       color: #212529 !important;
   }
+
+  .error_message p {
+    color: #e55528;
+    line-height: 13px;
+    font-size: 12px;
+  }
 }

@@ -219,11 +219,21 @@ export class CrStore extends ObservableStore<any> {
     //     });
     // }
 
-    theMixer(controls: any, fields: any, phrase: string) {
+    extractMatches(phrase: string): string[] {
         const formula = /{{\s*([^}]+)\s*}}/g;
-        const matches = [...phrase.matchAll(formula)].map((match) =>
-            match[1].trim()
-        );
+        let match;
+        const matches = [];
+
+        while ((match = formula.exec(phrase)) !== null) {
+            matches.push(match[1].trim());
+        }
+
+        return matches;
+    }
+
+    theMixer(controls: any, fields: any, phrase: string) {
+        const matches = this.extractMatches(phrase);
+
         const values = matches.map((name) => {
             const field = fields.find((f: any) => f.name === name);
 
@@ -252,16 +262,18 @@ export class CrStore extends ObservableStore<any> {
 
                 // has to check if field is shown to avoid useless operations
                 if (field.show) {
+
                     if (field.conditions) {
 
                         for (const condition of field.conditions) {
                             const v = selectedValue;
                             const i = selectedId;
-                            if ((v !== undefined && v !== null && eval(condition.eval))
-                            || (i !== undefined && i !== null && eval(condition.eval))) {
-                                wording = condition.text.toString().replace("%v%", v);
-                                break;
-                            }
+
+                                if ((v && eval(this.purifyExpression(condition.eval)))
+                                    || (i && eval(this.purifyExpression(condition.eval)))) {
+                                    wording = condition.text.toString().replace("%v%", v);
+                                    break;
+                                }
                         }
 
                     } else {
@@ -270,7 +282,8 @@ export class CrStore extends ObservableStore<any> {
                 }
 
                 return wording;
-            } else {
+            }
+            else {
                 // get patient data
                 const arr = name.split(".");
                 const state = this.getState();
@@ -314,4 +327,53 @@ export class CrStore extends ObservableStore<any> {
     async saveUserData(patient: any) {
         this.updateStore({patient}, "SAVE USERDATA");
     }
+
+    purifyExpression(expression: string): string {
+        // Check for potentially dangerous patterns (e.g., accessing global object properties)
+        const dangerousPatterns = [
+            /[^a-zA-Z0-9_](window|document|global|self|Function|eval)[^a-zA-Z0-9_]/,
+            /[^a-zA-Z0-9_](prototype|constructor)[^a-zA-Z0-9_]/,
+        ];
+        for (const pattern of dangerousPatterns) {
+            if (pattern.test(expression)) {
+                throw new Error('Expression contains potentially dangerous patterns');
+            }
+        }
+
+        return expression;
+    }
+
+    checkErrors(fields: any, controls:any) {
+        // test errors
+        let validated = true
+        fields.forEach((field: any) => {
+            if (field.errors) {
+                for (const error of field.errors) {
+
+                    const purifiedValidator = this.purifyExpression(error.validator
+                        .replace(/{{\s*([^{}\s]+)\s*}}/g, (m:any, p:any) => {
+                            if (controls.hasOwnProperty(p) && controls[p]?.value !== undefined && controls[p]?.value !== null && controls[p]?.value !== '') {
+                                return `controls['${p}']?.value`;
+                            } else {
+                                return 'stop_evaluation'
+                            }
+                        }))
+                    if (!purifiedValidator.includes('stop_evaluation') && !eval(purifiedValidator)) {
+                        // console.log(controls['vs_v']?.value)
+                        // console.log(eval(purifiedValidator))
+                        validated = false
+                        field.errorMessage = error.message
+                        break;
+                    } else {
+                        validated = true
+                        field.errorMessage = ''
+                    }
+                }
+            }
+        })
+
+        return validated
+
+    }
+
 }

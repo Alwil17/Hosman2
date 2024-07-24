@@ -85,4 +85,17 @@ export const fields: Section[] = [
     ],
     resume: "Le père agé de {{ age }} ans est {{ profession }}.",
   },
+
+  {
+    template:[
+      {
+        name: 'famhist_comments',
+        label: "Informations supplémentaires",
+        type: 'textarea',
+        col: 12,
+        show:true,
+      }
+    ],
+    resume: "{{ famhist_comments }}"
+  }
 ];

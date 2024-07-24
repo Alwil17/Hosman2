@@ -36,6 +36,7 @@ export class MultiInputComponent implements OnInit, AfterViewInit {
     if (this.name !== null && this.name !== undefined) {
       if (this.group?.contains(this.name!)) {
         this.control = this.group?.get(this.name!) as FormControl
+        if (this.config.default !== undefined) this.control.setValue(this.config.default)
       } else {
         this.group?.addControl(this.name!, this.control);
       }
@@ -46,11 +47,12 @@ export class MultiInputComponent implements OnInit, AfterViewInit {
     const ifs = this.config.if;
     if (ifs !== undefined) {
       ifs.forEach((fi: any) => {
-        if (this.group.get(fi.name)!.value !== fi.value) this.config.show = false;
+        // console.log(typeof fi.value)
+        if ((typeof fi.value === 'object' ? !fi.value.includes(this.group.get(fi.name)!.value) : this.group.get(fi.name)!.value !== fi.value)) this.config.show = false;
 
         this.group.get(fi.name)!.valueChanges.subscribe((value) => {
           // console.log(value)
-          this.config.show = !(value === null || value !== fi.value);
+          this.config.show = !(value === null ||(typeof fi.value === 'object' ? !fi.value.includes(value) : value !== fi.value));
         });
       });
     }
