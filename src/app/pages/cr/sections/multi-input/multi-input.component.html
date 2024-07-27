@@ -12,7 +12,7 @@
 
 <div class="w-100 mb-2" *ngIf="config.type === 'input'">
     <h-input label="{{ config.label }}" [isMandatory]="true" [control]="control"
-             [group]="group" [name]="name"></h-input>
+             [group]="group" [name]="name" [units]="config.units"></h-input>
 </div>
 
 <div class="w-100 mb-2" *ngIf="config.type === 'textarea'">

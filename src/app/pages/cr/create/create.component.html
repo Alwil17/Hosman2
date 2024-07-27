@@ -62,44 +62,42 @@
     </div>
 </div>
 <hr>
-
-<!-- NOUVEAU NE -->
-<!--<div *ngIf="patient && patient.firstname !== undefined" class="row">-->
-<!--    <div class="col-12">-->
-<!--        <div *ngIf="statut.value === 1">-->
-<!--            <div class="row mb-3">-->
-<!--                <div class="col-6">-->
-<!--                    <cr-accouchement [control]="accouchement"></cr-accouchement>-->
-<!--                </div>-->
-<!--                <div class="col-6">-->
-<!--                    <cr-examen-baby  [control]="examenbaby"></cr-examen-baby>-->
-<!--                </div>-->
-<!--                <div class="col-6"></div>-->
-<!--            </div>-->
-<!--            <div class="row mb-3">-->
-<!--                <div class="col-6">-->
-<!--                    <cr-familiy-history [control]="familyhistory"></cr-familiy-history>-->
-<!--                </div>-->
-<!--                <div class="col-6">-->
-<!--                    <cr-pregnancy-history  [control]="pregnancyhistory"></cr-pregnancy-history>-->
-<!--                </div>-->
-<!--                <div class="col-6"></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="col-12">-->
-<!--        <cr-paracliniques [control]="paracliniques"></cr-paracliniques>-->
-<!--    </div>-->
-
-<!--</div>-->
-
-
-<!-- REMOOOVE --->
-<div class="row">
+<div *ngIf="patient && patient.firstname !== undefined" class="row">
+    <div class="col-12">
+        <div *ngIf="statut.value === 1">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <cr-accouchement [control]="accouchement"></cr-accouchement>
+                </div>
+                <div class="col-6">
+                    <cr-examen-baby  [control]="examenbaby"></cr-examen-baby>
+                </div>
+                <div class="col-6"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <cr-familiy-history [control]="familyhistory"></cr-familiy-history>
+                </div>
+                <div class="col-6">
+                    <cr-pregnancy-history  [control]="pregnancyhistory"></cr-pregnancy-history>
+                </div>
+                <div class="col-6"></div>
+            </div>
+        </div>
+    </div>
     <div class="col-12">
         <cr-paracliniques [control]="paracliniques"></cr-paracliniques>
     </div>
+
 </div>
+
+
+<!-- REMOOOVE --->
+<!--<div class="row">-->
+<!--    <div class="col-12">-->
+<!--        <cr-paracliniques [control]="paracliniques"></cr-paracliniques>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 

@@ -1,6 +1,7 @@
 import {Section} from "../../../field.model";
 
 export const paracliniqueFields: Section[] = [
+    // Globule Blancs
     {
         groupName: "Paraclinique 1",
         template: [
@@ -81,6 +82,7 @@ export const paracliniqueFields: Section[] = [
         ],
         resume:  "{{ gbmm3 }}",
     },
+    // Hémoglobine
     {
         groupName: "Paraclinique 1",
         template: [
@@ -146,6 +148,7 @@ export const paracliniqueFields: Section[] = [
         ],
         resume: "{{ hemogdl }}",
     },
+    // VS
     {
         groupName: "Paraclinique 1",
         template: [
@@ -156,16 +159,11 @@ export const paracliniqueFields: Section[] = [
                 show: true,
             },
             {
-                name: "vs_l",
-                label: "VS :",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'vs_v',
                 type: "input",
-                col: 3,
+                label: "VS :",
+                units: "mm",
+                col: 6,
                 show: true,
                 conditions: [
                     {
@@ -186,19 +184,19 @@ export const paracliniqueFields: Section[] = [
                     },
                 ],
             },
-            {
-                name: "al1mm_l",
-                label: "mm",
-                type: "label",
-                col: 1,
-                show: true,
-            },
-            {
-                name: "al1h_space",
-                type: "space",
-                col: 6,
-                show: true,
-            },
+            // {
+            //     name: "al1mm_l",
+            //     label: "mm",
+            //     type: "label",
+            //     col: 1,
+            //     show: true,
+            // },
+            // {
+            //     name: "al1h_space",
+            //     type: "space",
+            //     col: 8,
+            //     show: true,
+            // },
             // {
             //     name: "al1h_l",
             //     label: "a la 1ere heure  ",
@@ -233,20 +231,73 @@ export const paracliniqueFields: Section[] = [
         ],
         resume: "{{ vs_v }}",
     },
+    // Groupe sanguin
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'grsang',
+                label: "Groupe Sanguin",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "A+" },
+                    { id: 2, text: "B+" },
+                    { id: 3, text: "AB+" },
+                    { id: 4, text: "O+" },
+                    { id: 5, text: "A-" },
+                    { id: 6, text: "B-" },
+                    { id: 7, text: "AB-" },
+                    { id: 8, text: "O-" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Le groupe sanguin est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ grsang }}"
+    },
+    // Rhesus
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'rhsang',
+                label: "Rhesus",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" }
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Le Rhesus est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ rhsang }}"
+    },
+    // CRP
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "crp_l",
-                label: "La CRP est ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'crp_v',
                 type: "select",
+                label: "La CRP est ",
                 default: 0,
                 options: [
                     { id: 0, text: "Selectionner une valeur" },
@@ -267,52 +318,68 @@ export const paracliniqueFields: Section[] = [
                 ],
             },
             {
-                name: "crpa_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-                if: [{ name: "crp_v", value: 2 }],
-            },
-            {
                 name: 'crpmg_v',
                 type: "input",
-                col: 2,
+                label: "a ",
+                units: "mg/l",
+                col: 3,
                 show: true,
-                if: [{ name: "crp_v", value: 2 }],
-            },
-            {
-                name: "crpmg_l",
-                label: "mg/l",
-                type: "label",
-                col: 2,
-                show: true,
-                if: [{ name: "crp_v", value: 2 }],
-            },
-            {
-                name: "al1h_space",
-                type: "space",
-                col: 7,
-                show: true,
-                if: [{ name: "crp_v", value: [0,1]}],
+                // if: [{ name: "crp_v", value: 2 }],
             },
         ],
         resume: "{{ crp_v }}",
     },
+    // SODIUM
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "sodiummmol",
+                type: "input",
+                label: "Sodium",
+                units: "132-150 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Sodium est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ sodiummmol }}"
+    },
+    // POTASSIUM
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "potassiummol",
+                type: "input",
+                label: "Potassium",
+                units: "3.5-5 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Potassium est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ potassiummol }}"
+    },
+    // GE
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "ge_l",
-                label: "La GE est ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'ge_v',
                 type: "select",
+                label: "La GE est ",
                 col: 3,
                 show: true,
                 default: 0,
@@ -333,53 +400,69 @@ export const paracliniqueFields: Section[] = [
                 ],
             },
             {
-                name: "gea_l",
-                label: "densité parasitaire ",
-                type: "label",
-                col: 3,
-                show: true,
-                if: [{ name: "ge_v", value: 2 }],
-            },
-            {
                 name: 'gemg_v',
                 type: "input",
-                col: 2,
+                label: "densité parasitaire ",
+                units: "/µl",
+                col: 3,
                 show: true,
-                if: [{ name: "ge_v", value: 2 }],
-            },
-            {
-                name: "gemg_l",
-                label: "/µl",
-                type: "label",
-                col: 2,
-                show: true,
-                if: [{ name: "ge_v", value: 2 }],
-            },
-            {
-                name: "ge_space",
-                type: "space",
-                col: 7,
-                show: true,
-                if: [{ name: "ge_v", value: [0,1]}],
             },
         ],
         resume: "{{ ge_v }}",
     },
+    // Chlore
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "chloremmol",
+                type: "input",
+                label: "Chlore",
+                units: "98-110 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Chlore est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ chloremmol }}"
+    },
+    // calcium
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "calciummmol",
+                type: "input",
+                label: "Calcium",
+                units: "2.2-2.6 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Calcium est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ calciummmol }}"
+    },
+    // glycemie
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "glyc_l",
-                label: "La glycemie est ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'glyc_v',
                 type: "input",
-                col: 3,
+                label: "La glycemie est ",
+                units: "mg/dl",
+                col: 6,
                 show: true,
                 conditions: [
                     {
@@ -404,36 +487,60 @@ export const paracliniqueFields: Section[] = [
                     },
                 ],
             },
-            {
-                name: "glycmg_l",
-                label: "mg/dl",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "al1h_space",
-                type: "space",
-                col: 5,
-                show: true,
-            },
         ],
         resume: "{{ glyc_v }}",
     },
+    // Phosphore
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "phosphoremmol",
+                type: "input",
+                label: "Phosphore",
+                units: "0.7-1.3 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Phosphore est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ phosphoremmol }}"
+    },
+    // Magnesium
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "magnesiummmol",
+                type: "input",
+                label: "Magnesium",
+                units: "0.65-1.05 mmol/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "v !== null",
+                        text: "Le Magnesium est %v% mmol/l.",
+                    }
+                ],
+            },
+        ],
+        resume: "{{ magnesiummmol }}"
+    },
+    // urée
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "uree_l",
-                label: "L'urée est ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'uree_v',
                 type: "select",
+                label: "L'urée est ",
                 col: 3,
                 show: true,
                 options: [
@@ -451,42 +558,77 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "ureea_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'ureemg_v',
                 type: "input",
-                col: 2,
+                label: "a ",
+                units: "mg/dl",
+                col: 3,
                 show: true,
-            },
-            {
-                name: "ureemg_l",
-                label: "mg/dl",
-                type: "label",
-                col: 2,
-                show: true,
-            },
+            }
         ],
         resume: "{{ uree_v }}",
     },
+    // Glucose
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'glucosesang',
+                label: "Glucose",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Le glucose est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ glucosesang }}"
+    },
+    // Albumine
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'albumine_v',
+                label: "Albumine",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" }
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "L'Albumine sanguin est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ albumine_v }}"
+    },
+    // créatinine
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "creat_l",
-                label: "La créatinine est ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'creat_v',
                 type: "select",
+                label: "La créatinine est ",
                 col: 3,
                 show: true,
                 options: [
@@ -504,42 +646,77 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "creata_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'creatmg_v',
                 type: "input",
-                col: 2,
+                label: "a ",
+                units: "mg/dl",
+                col: 3,
                 show: true,
-            },
-            {
-                name: "creatmg_l",
-                label: "mg/dl",
-                type: "label",
-                col: 2,
-                show: true,
-            },
+            }
         ],
         resume: "{{ creat_v }}",
     },
+    // Sang
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'sangv',
+                label: "Sang",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Le sang est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ sangv }}"
+    },
+    // Urobilinogne
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'urobilinogne_v',
+                label: "Urobilinogene",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" }
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "L'Urobilinogene sanguin est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ urobilinogne_v }}"
+    },
+    // SGOT
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "sgot_l",
-                label: "SGOT ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'sgot_v',
                 type: "select",
+                label: "SGOT ",
                 col: 3,
                 show: true,
                 options: [
@@ -556,42 +733,77 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "sgota_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'sgotmg_v',
                 type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "sgotmg_l",
-                label: "Ul/l",
-                type: "label",
-                col: 2,
+                label: "a ",
+                units: "Ul/l",
+                col: 3,
                 show: true,
             },
         ],
         resume: "{{ sgot_v }}",
     },
+    // Cetones
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'cetonesv',
+                label: "Cetones",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Les Cetones est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ cetonesv }}"
+    },
+    // Leucocytes
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'leucocytes_v',
+                label: "Leucocytes",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" }
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Les Leucocytes sont %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ leucocytes_v }}"
+    },
+    // SGPT
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "sgpt_l",
-                label: "SGPT ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'sgpt_v',
                 type: "select",
+                label: "SGPT ",
                 col: 3,
                 show: true,
                 options: [
@@ -608,41 +820,65 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "sgpta_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'sgptmg_v',
                 type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "sgptmg_l",
-                label: "Ul/l",
-                type: "label",
-                col: 2,
+                label: "a ",
+                units: "Ul/l",
+                col: 3,
                 show: true,
             },
         ],
         resume: "{{ sgpt_v }}",
     },
+    // Amylasurie
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'amylasurie_v',
+                label: "Amylasurie",
+                type: "input",
+                units:"<600 Ul/l",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "L'Amylasurie est a %v% Ul/l.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ amylasurie_v }}"
+    },
+    // pH
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'ph_v',
+                label: "pH",
+                type: "input",
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Le pH est a %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ ph_v }}"
+    },
+    // Gamma GT
     {
         groupName: "Paraclinique 1",
         template: [ // --------------------------------------------------------------------------------------------------------
             {
-                name: "gamma_l",
-                label: "Gamma GT ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'gamma_v',
                 type: "select",
+                label: "Gamma GT ",
                 col: 3,
                 show: true,
                 options: [
@@ -659,41 +895,77 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "gammaa_l",
+                name: 'gammamg_v',
+                type: "input",
                 label: "a ",
-                type: "label",
+                units: "Ul/l",
                 col: 3,
                 show: true,
             },
-            {
-                name: 'gammamg_v',
-                type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "gammamg_l",
-                label: "Ul/l",
-                type: "label",
-                col: 2,
-                show: true,
-            },],
+          ],
         resume: "{{ gamma_v }}",
     },
+    // Netrites
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'etritesv',
+                label: "Netrites",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "Les Netrites sont %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ etritesv }}"
+    },
+    // Bilirubine
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'bilirubine_v',
+                label: "Bilirubine",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" }
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "La Bilirubine est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ bilirubine_v }}"
+    },
+    // TP
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "tp_l",
-                label: "TP ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'tp_v',
                 type: "select",
+                label: "TP ",
                 col: 3,
                 show: true,
                 options: [
@@ -709,42 +981,77 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "tpa_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'tpmg_v',
                 type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "tpmg_l",
-                label: "%",
-                type: "label",
-                col: 2,
+                label: "a ",
+                units: "%",
+                col: 3,
                 show: true,
             },
         ],
         resume: "{{ tp_v }}",
     },
+    // Ac. ascorbinque
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'ascorbinquev',
+                label: "Ac. ascorbinque",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "L'Ac. ascorbinque est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ ascorbinquev }}"
+    },
+    // Immunoglobuline E
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            {
+                name: 'immunoglobulinev',
+                label: "Immunoglobuline E",
+                type: "select",
+                default: 0,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negative" },
+                    { id: 2, text: "Positive" },
+                ],
+                col: 3,
+                show: true,
+                conditions: [
+                    {
+                        eval: "parseInt(i) !== 0",
+                        text: "L'Immunoglobuline E est %v%.",
+                    },
+                ],
+            },
+        ],
+        resume : "{{ immunoglobulinev }}"
+    },
+    // TCK
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "tck_l",
-                label: "TCK ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'tck_v',
                 type: "select",
+                label: "TCK ",
                 col: 3,
                 show: true,
                 options: [
@@ -760,42 +1067,38 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "tcka_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'tckmg_v',
                 type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "tckmg_l",
-                label: "sec",
-                type: "label",
-                col: 2,
+                label: "a ",
+                units: "sec",
+                col: 3,
                 show: true,
             },
         ],
         resume: "{{ tck_v }}",
     },
+    //**************** SPACE 6 ***********************
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "al1h_space",
+                type: "space",
+                col: 6,
+                show: true,
+            },
+        ],
+        resume: ""
+    },
+    // TS
     {
         groupName: "Paraclinique 1",
         template: [
             // --------------------------------------------------------------------------------------------------------
             {
-                name: "tsk_l",
-                label: "TS ",
-                type: "label",
-                col: 2,
-                show: true,
-            },
-            {
                 name: 'tsk_v',
                 type: "select",
+                label: "TS ",
                 col: 3,
                 show: true,
                 options: [
@@ -811,28 +1114,98 @@ export const paracliniqueFields: Section[] = [
                 ]
             },
             {
-                name: "tska_l",
-                label: "a ",
-                type: "label",
-                col: 3,
-                show: true,
-            },
-            {
                 name: 'tskmg_v',
                 type: "input",
-                col: 2,
-                show: true,
-            },
-            {
-                name: "tskmg_l",
-                label: "sec",
-                type: "label",
-                col: 2,
+                label: "a ",
+                units: "sec",
+                col: 3,
                 show: true,
             },
         ],
         resume: "{{ tsk_v }}",
     },
+    //**************** SPACE 6 ***********************
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "al1h_space",
+                type: "space",
+                col: 6,
+                show: true,
+            },
+        ],
+        resume: ""
+    },
+    // TDR du paludisme
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            // --------------------------------------------------------------------------------------------------------
+            {
+                name: 'tdrp_v',
+                type: "select",
+                label: "TDR du paludisme ",
+                col: 3,
+                show: true,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" },
+                ],
+                conditions : [
+                    {
+                        eval : "v !== null && v !== 0",
+                        text: "Le TDR du paludisme est %v%."
+                    }
+                ]
+            },
+        ],
+        resume: "{{ tdrp_v }}",
+    },
+    // TDR de la dengue
+    {
+        groupName: "Paraclinique 1",
+        template: [
+            // --------------------------------------------------------------------------------------------------------
+            {
+                name: 'tdrd_v',
+                type: "select",
+                label: "TDR de la dengue ",
+                col: 3,
+                show: true,
+                options: [
+                    { id: 0, text: "Selectionner une valeur" },
+                    { id: 1, text: "Negatif" },
+                    { id: 2, text: "Positif" },
+                ],
+                conditions : [
+                    {
+                        eval : "v !== null && v !== 0",
+                        text: "Le TDR de la dengue est %v%."
+                    }
+                ]
+            },
+        ],
+        resume: "{{ tdrd_v }}",
+    },
+    //**************** SPACE 6 ***********************
+    {
+        groupName: "Paraclinique 1",
+        template:[
+            {
+                name: "al1h_space",
+                type: "space",
+                col: 6,
+                show: true,
+            },
+        ],
+        resume: ""
+    },
+
+
+
+
     {
         groupName: "Paraclinique 2",
         template: [],

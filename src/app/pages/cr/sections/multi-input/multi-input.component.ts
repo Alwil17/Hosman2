@@ -36,7 +36,7 @@ export class MultiInputComponent implements OnInit, AfterViewInit {
     if (this.name !== null && this.name !== undefined) {
       if (this.group?.contains(this.name!)) {
         this.control = this.group?.get(this.name!) as FormControl
-        if (this.config.default !== undefined) this.control.setValue(this.config.default)
+        // if (this.config.default !== undefined) this.control.setValue(this.config.default)
       } else {
         this.group?.addControl(this.name!, this.control);
       }
@@ -64,9 +64,10 @@ export class MultiInputComponent implements OnInit, AfterViewInit {
     }
 
     // set default value
-    if (this.config.default !== undefined) {
+    if (this.control.value === undefined || this.control.value === null && this.config.default !== undefined) {
       this.control.setValue(this.config.default)
     }
+    
   }
 
   loadComponent(componentName: string) {

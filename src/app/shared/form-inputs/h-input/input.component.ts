@@ -23,6 +23,7 @@ export class HInputComponent implements OnInit {
 
   @Input() maskFormat = "";
   @Input() maskSuffix = "";
+  @Input() units? : string;
   @Input() dropMaskInValue = true;
 
   // @Input() controlName: string = "";

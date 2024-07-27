@@ -17,6 +17,7 @@ interface Field {
     name?: string;
     label?: string;
     subtext?: string;
+    units?: string;
     type?: string;
     component?: string;
     col: number;

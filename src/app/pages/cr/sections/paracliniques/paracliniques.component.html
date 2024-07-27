@@ -50,7 +50,6 @@
                         <multi-input [config]="input" [group]="fg"
                         ></multi-input>
                     </div>
-                    {{ section }} +++
                     <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
                         {{ translate(section) }}
                     </div>
@@ -77,12 +76,15 @@
                         <div class="row mb-3">
                             <div *ngFor="let input of groupSection.section.template" class="{{ 'col-' + input.col }}"
                                  [class.px-0]="input.padding !== undefined && !input.padding"
-                                 [class.d-none]="!input.show">
+                                 [class.d-none]="!input.show"
+                                 [class.d-flex]="input.type === 'label'"
+                                 [class.align-items-center]="input.type === 'label'"
+                            >
                                 <multi-input [config]="input" [group]="fg"
                                 ></multi-input>
                             </div>
                             <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">
-                                {{ translate(groupSection.section) }} ...
+                                {{ translate(groupSection.section) }}
                             </div>
                         </div>
                     </div>

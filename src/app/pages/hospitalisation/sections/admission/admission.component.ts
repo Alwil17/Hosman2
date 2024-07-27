@@ -223,12 +223,11 @@ export class AdmissionComponent implements OnInit {
             .get("chambre")
             ?.valueChanges.subscribe((n) => {
                 this.lit.setValue(null);
-                console.log
                 if (this.suivis === null || this.suivis.length === 0) {
                  
                   const ch = this.chambres.find((c) => c.id === n);
                   if (ch) {
-                    this.lits = ch["lits"].filter(
+                    this.lits = this.freeBeds.length === 0 ? ch["lits"] : ch["lits"].filter(
                       (l) =>
                         this.freeBeds.find((f) => f.id === l.id) !== undefined
                     );

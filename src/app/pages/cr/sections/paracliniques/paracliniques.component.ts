@@ -62,12 +62,13 @@ export class ParacliniquesComponent implements OnInit {
                 w.template = mT.filter((item: any, index: any) =>
                     mT.indexOf(item) == index
                 )
+                if (!w.resume.includes(field.resume))
                 w.resume = w.resume.concat(' ',field.resume)
-                combined.find((c : any) => c.groupName === field.groupName).resume.concat(field.resume)
+                // combined.find((c : any) => c.groupName === field.groupName).resume.concat(field.resume)
             }
         })
 
-        console.log(combined)
+        // console.log(combined)
 
         return combined.map((w:any) => {
                 return {
@@ -98,7 +99,8 @@ export class ParacliniquesComponent implements OnInit {
 
 
     translate(section: any) {
-        return this.store.theMixer(this.fg.controls, section.template, section.resume) + '\n'
+        // console.log(section.resume)
+        return this.store.theMixer(this.fg.controls, section.template, section.resume); // + '\n'
     }
 
     validate() {
@@ -112,8 +114,10 @@ export class ParacliniquesComponent implements OnInit {
             let phrasologie = ''
 
             for (const section of paracliniqueFields) {
+                if (!phrasologie.includes(this.translate(section)))
                 phrasologie = phrasologie + this.translate(section)
             }
+
             this.phrase.setValue(phrasologie.trim())
 
             /* sending data to CR main group */
