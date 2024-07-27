@@ -25,6 +25,7 @@ import { TwoColumnComponent } from "./two-column/two-column.component";
 import { TwoColumnSidebarComponent } from "./two-column-sidebar/two-column-sidebar.component";
 import { HospitalisationComponent } from './hospitalisation/hospitalisation.component';
 import { HospSidebarComponent } from './hospitalisation/sidebar/sidebar.component';
+import { CrComponent } from './cr/cr.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { HospSidebarComponent } from './hospitalisation/sidebar/sidebar.componen
     TwoColumnSidebarComponent,
     HospitalisationComponent,
     HospSidebarComponent,
+    CrComponent,
   ],
   imports: [
     CommonModule,

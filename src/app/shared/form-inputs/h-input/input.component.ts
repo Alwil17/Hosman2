@@ -27,7 +27,8 @@ export class HInputComponent implements OnInit {
 
   // @Input() controlName: string = "";
   @Input() control: FormControl = new FormControl();
-  // @Input() group?: FormGroup;
+  @Input() group?: FormGroup;
+  @Input() name?: string;
 
   @Input() isLayoutHorizontal = false;
 
@@ -74,6 +75,10 @@ export class HInputComponent implements OnInit {
     // Due to some sort of typing problem ? Investigate later. Used for dynamic generation of filed
     if (this.control instanceof AbstractControl) {
       this.formControl = this.control as FormControl;
+    }
+
+    if (this.group !== null && this.group !== undefined && this.name !== null && this.name !== undefined) {
+        this.group?.addControl( this.name, this.formControl)
     }
   }
 

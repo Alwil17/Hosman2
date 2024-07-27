@@ -13,6 +13,8 @@ export class TextComponent implements OnInit {
   @Input() placeholder = "";
   @Input() control = new FormControl();
   @Input() fontSize: string = "0.8125rem"
+  @Input() readOnly = false;
+  @Input() pointer = false;
   @Output() doubleClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }

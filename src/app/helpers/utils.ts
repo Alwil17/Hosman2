@@ -67,8 +67,28 @@ export function hasStateChanges(
   } else {
     return (
       (state !== null && state !== undefined) ||
-      JSON.stringify(olddata) !== JSON.stringify(newdata) || 
+      JSON.stringify(olddata) !== JSON.stringify(newdata) ||
       JSON.stringify(state) !== JSON.stringify(newdata)
     );
   }
+}
+
+export function getCurrentStateValue(c: any, name: string) {
+  if (c !== undefined && c.processing === false) {
+    return c[name];
+  }
+}
+
+
+export function extractFormControls(formGroup: FormGroup): { name: string, value: any }[] {
+  const controlsArray: { name: string, value: any }[] = [];
+
+  Object.keys(formGroup.controls).forEach(controlName => {
+    const control = formGroup.get(controlName);
+    if (control) {
+      controlsArray.push({ name: controlName, value: control.value });
+    }
+  });
+
+  return controlsArray;
 }

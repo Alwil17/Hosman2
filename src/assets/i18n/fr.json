@@ -50,5 +50,16 @@
       "new" : "Nouveau",
       "list": "Patients hospitalisés"
     }
+  },
+
+  "CR": {
+    "title": "Compte rendus",
+    "dashboard" : "Tableau de bord",
+    "create" : {
+      "title": "Nouveau CR",
+      "nopatient" : "De novo",
+      "patient" : "Patient hospitalisé"
+    }
+
   }
 }

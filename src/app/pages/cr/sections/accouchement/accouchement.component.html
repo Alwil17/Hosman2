@@ -1,0 +1,47 @@
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="font-weight-bold">Déroulement de l'accouchement</h5>
+                </div>
+                <div class="col-6 text-right copy-paste"><span>Copier texte</span></div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <app-text placeholder="..." [rows]="5" (doubleClick)="open()" [control]="phrase" [readOnly]="true"
+                        [pointer]="true"></app-text>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<ng-template #accouchement let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Déroulement de l'accouchement</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body enterToTab" enterToTab>
+        <div class="row" *ngFor="let section of fields">
+            <div class="col-12">
+                <div class="row mb-3">
+                    <div *ngFor="let input of section.template" class="{{ 'col-' + input.col }}"
+                         [class.px-0]="input.padding !== undefined && !input.padding"
+                         [class.d-none]="!input.show">
+                        <multi-input [config]="input" [group]="fg"
+                        ></multi-input>
+                    </div>
+<!--                    <div class="col-12 mb-4" style="margin-top: 5px; font-style: italic;">-->
+<!--                        {{ translate(section) }}-->
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div>
+            <button type="button" class="btn btn-primary" (click)="validate()">Enregistrer</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Compte rendu médical</h4>
+        </div>
+    </div>
+</div>
+<div class="row" >
+    <div class="col-12 enterToTab" enterToTab>
+        <div class="row">
+            <div class="col  mb-3">
+                <h-select label="Secteur" [isMandatory]="true" [options]="sectors" [control]="sector"
+                    [bindLabel]="'libelle'" [bindValue]="'code'" [clearable]="false" [group]="fg"
+                    [name]="'sector'"></h-select>
+            </div>
+            <div class="col  mb-3">
+                <h-select label="Statut" [isMandatory]="true" [options]="statuts" [control]="statut" [clearable]="false"
+                    [bindValue]="'id'" [group]="fg" [name]="'statut'"></h-select>
+            </div>
+            <div class="col-2  mb-3">
+                <h-input label="Nom" [isMandatory]="true" [control]="firstname" [group]="fg"
+                    [name]="'firstname'"></h-input>
+            </div>
+            <div class="col-2">
+                <h-input label="Prénom(s)" [isMandatory]="true" [control]="lastname" [group]="fg"
+                    [name]="'lastname'"></h-input>
+            </div>
+            <div class="col mb-3">
+                <h-input label="Date de naissance" type="date" [isMandatory]="true" [maxDate]="today"
+                    [control]="birth_date" [group]="fg" [name]="'birth_date'"></h-input>
+            </div>
+            <div class="col  mb-3">
+                <h-input label="Age" [readOnly]="true" [control]="age"></h-input>
+            </div>
+            <div class="col  mb-3">
+                <h-select label="Sexe" [isMandatory]="true" [options]="genders" [control]="gender" [bindValue]="'short'"
+                    [clearable]="false" [group]="fg" [name]="'gender'"></h-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col  mb-3">
+                <h-input label="Date d'entrée" type="datetime-local" [isMandatory]="true" [maxDate]="today"
+                    [control]="hospit_date" [group]="fg" [name]="'hospit_date'"></h-input>
+            </div>
+            <div class="col  mb-3">
+                <h-input label="Date de sortie" type="datetime-local" [maxDate]="today"
+                    [control]="sortie_date" [group]="fg" [name]="'sortie_date'"></h-input>
+            </div>
+            <div class="col  mb-3">
+                <h-input label="Date du compte rendu" type="datetime-local" [maxDate]="today"
+                    [control]="cr_date" [group]="fg" [name]="'cr_date'"></h-input>
+            </div>
+            <div class="col mb-3 col mb-3 d-flex align-items-end">
+                <div class="w-100">
+                    <button type="button" class="btn btn-success btn-label w-100" (click)="savePatientData()">
+                        <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+                        Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+<!-- NOUVEAU NE -->
+<div *ngIf="patient && patient.firstname !== undefined" class="row">
+    <div class="col-12">
+        <div *ngIf="statut.value === 1">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <cr-accouchement [control]="accouchement"></cr-accouchement>
+                </div>
+                <div class="col-6">
+                    <cr-examen-baby  [control]="examenbaby"></cr-examen-baby>
+                </div>
+                <div class="col-6"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <cr-familiy-history [control]="familyhistory"></cr-familiy-history>
+                </div>
+                <div class="col-6">
+                    <cr-pregnancy-history  [control]="pregnancyhistory"></cr-pregnancy-history>
+                </div>
+                <div class="col-6"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <cr-paracliniques [control]="paracliniques"></cr-paracliniques>
+    </div>
+
+</div>
+
+
+
+
+<!-- Save data -->
+<div class="row">
+    <div class="col mb-3 col mb-3 d-flex align-items-end justify-content-end">
+        <div class="">
+            <button type="button" class="btn btn-primary btn-label w-100" (click)="saveCR()">
+                <i class="ri-save-2-fill label-icon align-middle fs-16 ms-2"></i>
+                Enregistrer
+            </button>
+        </div>
+    </div>
+</div>

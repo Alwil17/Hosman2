@@ -27,6 +27,7 @@ import { MedicalBaseModule } from './medical-base/medical-base.module';
 import { HospitalisationModule } from "./hospitalisation/hospitalisation.module";
 
 import { AppsComponent } from './apps.component';
+import { CrModule } from "./cr/cr.module";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: "horizontal",
@@ -52,6 +53,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SecretariatModule,
     MedicalBaseModule,
     HospitalisationModule,
+    CrModule
   ],
   providers: [
     {

@@ -12,5 +12,6 @@ export enum WarningMessages {
 
 export enum ErrorMessages {
   ERROR_OCCURED = "Désolé, une erreur s'est produite.",
-  REQUIRED = "Champ obligatoire"
+  REQUIRED = "Champ obligatoire",
+  INVALID = "Valeur incorrecte"
 }

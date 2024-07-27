@@ -23,4 +23,8 @@ export class AppsComponent implements OnInit {
     this.router.navigateByUrl('/hospitalisation')
   }
 
+  goToCR() {
+    this.router.navigateByUrl('/cr')
+  }
+
 }

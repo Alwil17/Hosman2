@@ -1,0 +1,26 @@
+.cursor-pointer {
+  cursor: pointer;
+  &:hover {
+    background-color: #4a38b34b;
+  }
+}
+
+.text-right {
+  text-align: right;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+tr {
+  &.active {
+    background-color: #ff9c0f
+  }
+}
+
+.cancel-button {
+  margin-right: 15px;
+}
