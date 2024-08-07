@@ -16,19 +16,24 @@
 
     <div *ngIf="!showList.value">
         <div *ngFor="let d of chambres; let k = index" class="row mb-4">
-            <div *ngFor="let m of d.lits; let i = index" class="col-md-3">
+            <div *ngFor="let m of d.lits; let i = index" class="col-md-2">
                 <h5 class="room-name">{{d.nom + " - " + m.nom }}</h5>
                 <button type="button" class="btn btn-outline-dark waves-effect waves-light p-0"
                     (click)="openHospit(d.id, m.id)" [class.empty-bed]="getDateHospit(d.id, m.id) === null">
                     <div class="row">
-                        <div class="col-md-5">
-                            <img class="" src="assets/app/images/hospibed.jpeg" alt="">
+                        <div class="col-md-12 door">
+                            <img class="" src="assets/app/images/door.png" alt="">
+                            <div class="details">
+                                <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>
+                                <div>{{ getPatientAge(d.id, m.id) }}</div>
+                                <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>
+                            </div>
                         </div>
-                        <div class="col-md-7 content pt-2">
-                            <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>
-                            <div>{{ getPatientAge(d.id, m.id) }}</div>
-                            <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>
-                        </div>
+<!--                        <div class="col-md-7 content pt-2">-->
+<!--                            <div class="patient-name">{{ getPatientName(d.id, m.id) }}</div>-->
+<!--                            <div>{{ getPatientAge(d.id, m.id) }}</div>-->
+<!--                            <div class="date-hospit">{{ getDateHospit(d.id, m.id)}}</div>-->
+<!--                        </div>-->
                     </div>
                 </button>
             </div>

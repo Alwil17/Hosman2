@@ -469,7 +469,7 @@ export class AdmissionComponent implements OnInit {
             .subscribe(
               async (response) => {
                 const responseData = response;
-                this.toast.success("Hospitalisation", "Admission effectuée");
+                this.toast.success("Hospitalisation", "Hospitalisation effectuée");
                 this.hospitalisation_id = responseData;
                 this.hospitalisationStore.updateStore(
                   { hospitalisation_id: responseData },

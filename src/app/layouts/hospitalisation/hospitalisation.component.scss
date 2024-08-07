@@ -1,3 +1,7 @@
-.main-content {
-    margin-left: 0px;
+.page-content {
+    //padding: calc(5px + 1.5rem) calc(1.5rem / 2) 60px calc(1.5rem / 2);
+    padding: 0 !important;
+    .container-fluid {
+        padding: 0 !important;
+    }
 }

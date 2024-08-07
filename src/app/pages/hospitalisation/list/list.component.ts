@@ -24,7 +24,7 @@ export class ListComponent implements OnInit {
   sectors: any[] = [];
   list: any[] = [];
   extras: any[] = [];
-  showList = new FormControl(true);
+  showList = new FormControl(false);
   filtered_list: any[] = [];
   search = new FormControl();
 
@@ -63,6 +63,7 @@ export class ListComponent implements OnInit {
             hasStateChanges(this.sectors, previous.sectors, current.sectors)
         ) {
           this.sectors = current.sectors;
+          console.log(this.sectors)
         }
 
 

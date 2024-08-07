@@ -76,6 +76,7 @@ export class HospitalisationStore extends ObservableStore<any> {
     selectedElement: null,
     cim11token: null,
     lastUpdated: 0,
+    current_week: 0,
     processing: true
   };
 

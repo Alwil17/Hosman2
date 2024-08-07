@@ -1,13 +1,36 @@
 .cursor-pointer {
     cursor: pointer;
     &:hover {
-      background-color: #4a38b34b;
+      background-color: rgba(229, 26, 26, 0.7);
     }
   }
+
+.door {
+    position: relative;
+    &:hover {
+        background-color: rgba(139, 139, 139, 0.82);
+    }
+
+    .details {
+        height: 140px;
+        width: 140px;
+        position: absolute;
+        left: 33%;
+        margin-left: -50px;
+        top: 50%;
+        margin-top: -50px;
+        text-align: left;
+    }
+}
+
+
   
 .hospit-list {
+    padding: calc(5px + 1.5rem) calc(1.5rem / 2) 60px calc(1.5rem / 2);
+
     button {
         width: 100%;
+        border: none;
 
         img {
             width: 100%;
@@ -27,7 +50,8 @@
 
         .patient-name {
             font-weight: bold;
-            color: #db3400;
+            color: #ff6a00;
+            font-size: 16px;
         }
 
         .date-hospit {

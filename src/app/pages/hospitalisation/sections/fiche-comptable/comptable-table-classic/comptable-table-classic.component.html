@@ -61,6 +61,16 @@
   </table>
 
   <!-- All other data types -->
+
+  <div class="row days-arrows">
+      <div class="col-md-4">
+          <button class="btn btn-outline-dark" (click)="prevWeek()"><< Semaine précédente</button>
+      </div>
+      <div class="col-md-4 text-center">Semaine {{ currentWeek + 1 }} / {{ daysInWeek.length }}</div>
+      <div class="col-md-4 text-right">
+          <button class="btn btn-outline-dark" (click)="nextWeek()">Semaine suivante >></button>
+      </div>
+  </div>
   <table *ngIf="typeData !== 'evolution' && typeData !== 'watches'"
     class="table table-responsive table-bordered align-middle table-nowrap mb-0 other-data">
     <thead>

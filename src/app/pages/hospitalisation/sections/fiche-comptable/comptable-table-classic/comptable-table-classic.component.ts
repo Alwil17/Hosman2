@@ -48,6 +48,8 @@ export class ComptableTableClassicComponent implements OnInit {
   patient: any;
   hospitalisation: any;
   days: any[] = [];
+  currentWeek: number = 0;
+  daysInWeek: any[] = [];
   watches: any[] = WATCHES;
   charts: any[] = WATCHES;
   search = new FormControl();
@@ -115,12 +117,15 @@ export class ComptableTableClassicComponent implements OnInit {
 
         if (hasStateChanges(this.hospitalisation, p.hospitalisation, c.hospitalisation)) {
           this.hospitalisation = c.hospitalisation;
+          this.genDaysGroupedByWeek()
           this.genDays()
         }
 
         if (hasStateChanges(this.suivis, p.suivis, c.suivis)) {
           this.suivis = c.suivis;
         }
+
+        this.currentWeek = c.current_week
       }
     );
 
@@ -355,23 +360,72 @@ export class ComptableTableClassicComponent implements OnInit {
     this.charts = re_watch;
   }
 
-  genDays() {
+  genDaysGroupedByWeek() {
     const res = [];
-    let date = new Date(this.hospitalisation["date_hospit"]);
-    let currentDate = new Date();
-    let days = Math.floor(
-      (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
-    );
-    // let r = moment(this.hospitalisation["date_hospit"]);
-    for (let i = 0; i <= days; i++) {
-      let currentDate = moment(date).add(i, "days");
-      res.push({
-        o: currentDate.format("yyyy-MM-DD"),
-        i: i,
-      });
+    const startDate = moment(this.hospitalisation["date_hospit"]);
+    const currentDate = moment();
+    let weekStart = startDate.clone();
+    let weekEnd = startDate.clone().endOf('isoWeek');
+    let dayIndex = 0;
+
+    while (weekStart.isBefore(currentDate) || weekStart.isSame(currentDate, 'day')) {
+      const currentWeek = [];
+
+      for (let day = weekStart.clone(); day.isBefore(weekEnd) || day.isSame(weekEnd, 'day'); day.add(1, 'days')) {
+        if (day.isAfter(currentDate)) break;
+        currentWeek.push({
+          o: day.format("YYYY-MM-DD"),
+          i: dayIndex++
+        });
+      }
+
+      res.push(currentWeek);
+
+      // Move to the next week
+      weekStart = weekEnd.clone().add(1, 'days').startOf('isoWeek');
+      weekEnd = weekStart.clone().endOf('isoWeek');
     }
 
-    this.days = res;
+    console.log(this.daysInWeek)
+
+    this.daysInWeek = res;
+  }
+
+  genDays() {
+
+    // const res = [];
+    // let date = new Date(this.hospitalisation["date_hospit"]);
+    // let currentDate = new Date();
+    // let days = Math.floor(
+    //   (currentDate.getTime() - date.getTime()) / 1000 / 60 / 60 / 24
+    // );
+    // // let r = moment(this.hospitalisation["date_hospit"]);
+    // for (let i = 0; i <= days; i++) {
+    //   let currentDate = moment(date).add(i, "days");
+    //   res.push({
+    //     o: currentDate.format("yyyy-MM-DD"),
+    //     i: i,
+    //   });
+    // }
+
+    this.days = this.daysInWeek[this.currentWeek];
+    console.log(this.days)
+  }
+
+  nextWeek() {
+    if (this.daysInWeek.length - 1 > this.currentWeek ) {
+      this.currentWeek++
+      this.hospitalisationStore.updateStore({ current_week : this.currentWeek }, "UPDATE CURRENT WEEK");
+    }
+    this.genDays()
+  }
+
+  prevWeek() {
+    if (this.currentWeek > 0) {
+      this.currentWeek--
+      this.hospitalisationStore.updateStore({ current_week : this.currentWeek }, "UPDATE CURRENT WEEK");
+    }
+    this.genDays()
   }
 
   private calculateNumberOfPages(): void {
